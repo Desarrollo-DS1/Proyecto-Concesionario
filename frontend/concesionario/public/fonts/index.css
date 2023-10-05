@@ -1,0 +1,4 @@
+@font-face {
+    font-family: 'Prototype';
+    src: Local('Prototype'), url('Prototype.ttf') format('truetype');
+}
