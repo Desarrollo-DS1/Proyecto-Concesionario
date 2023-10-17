@@ -35,11 +35,6 @@ import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  // { id: 'name', label: 'Name', alignRight: false },
-  // { id: 'company', label: 'Company', alignRight: false },
-  // { id: 'role', label: 'Role', alignRight: false },
-  // { id: 'isVerified', label: 'Verified', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
   { id: 'cedula', label: 'Cedula', alignRight: false },
   { id: 'nombre', label: 'Nombre', alignRight: false },
   { id: 'correo', label: 'Correo', alignRight: false },
