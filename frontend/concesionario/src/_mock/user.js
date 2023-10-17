@@ -13,10 +13,13 @@ const users = [...Array(50)].map((_, index) => ({
   segundoApellido: faker.name.lastName(),
   nombre: faker.name.fullName(),
   correo: faker.internet.email(),
+  telefono: faker.phone.phoneNumber(),
   celular: faker.phone.number(),
+  ciudad: faker.address.city(),
   direccion: faker.address.streetAddress(),
   fechaNacimiento: faker.date.birthdate().toISOString().split('T')[0],
   genero: faker.name.sex(),
+  clave: faker.internet.password(),
 
   // id: faker.datatype.uuid(),
   //
