@@ -43,8 +43,10 @@ const TABLE_HEAD = [
   { id: 'cedula', label: 'Cedula', alignRight: false },
   { id: 'nombre', label: 'Nombre', alignRight: false },
   { id: 'correo', label: 'Correo', alignRight: false },
+  { id: 'telefono', label: 'Telefono', alignRight: false },
   { id: 'celular', label: 'Celular', alignRight: false },
   { id: 'direccion', label: 'Direccion', alignRight: false },
+  { id: 'ciudad', label: 'Ciudad', alignRight: false },
   { id: 'fechaNacimiento', label: 'Fecha Nacimiento', alignRight: false },
   { id: 'genero', label: 'Genero', alignRight: false },
   { id: '' },
@@ -215,7 +217,7 @@ export default function CustomerPage() {
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
-            <TableContainer sx={{ minWidth: 800 }}>
+            <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
                 <UserListHead
                   order={order}
@@ -228,7 +230,7 @@ export default function CustomerPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, celular, direccion, fechaNacimiento, genero} = row;
+                    const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
 
@@ -244,9 +246,13 @@ export default function CustomerPage() {
 
                         <TableCell align="left">{correo}</TableCell>
 
+                        <TableCell align="left">{telefono}</TableCell>
+
                         <TableCell align="left">{celular}</TableCell>
 
                         <TableCell align="left">{direccion}</TableCell>
+
+                        <TableCell align="left">{ciudad}</TableCell>
 
                         <TableCell align="left">{fechaNacimiento}</TableCell>
 
