@@ -3,91 +3,33 @@ import Modal from "@mui/material/Modal";
 import {
     Box,
     Button,
-    Card,
     Divider,
     Grid,
-    MenuItem,
+    MenuItem, Snackbar,
     Stack,
-    TableCell,
-    TableRow,
     TextField,
     Typography
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
-import Iconify from "../../../components/iconify";
-
-// function checkFields(formData) {
-//     if (formData.primerNombre === null || formData.primerNombre === '') {
-//         return "El campo primer nombre es obligatorio";
-//     }
-//
-// }
-
-function checkEmail(email) {
-    if (email === null || email === '') {
-        return "El campo correo es obligatorio";
-    }
-    if (email.length > 320)
-    {
-        return "El correo no puede tener mas de 320 caracteres";
-    }
-    if (!email.includes('@'))
-    {
-        return "El correo debe tener un @";
-    }
-
-    return "";
-}
-
-function checkCellphone() {
-
-}
-
-function checkPhone() {
-
-}
-
-function checkPassword() {
-
-}
-
-function checkCity() {
-
-}
-
-function checkAddress() {
-
-}
-
-function checkNames() {
-
-}
-
-function checkLastNames() {
-
-}
-
-function checkBornDate() {
-
-}
+import {Alert} from "@mui/lab";
 
 export default function CustomerForm(props) {
 
     const initialFormData = {
-        primerNombre: null,
-        segundoNombre: null,
-        primerApellido: null,
-        segundoApellido: null,
-        cedula: null,
-        telefono: null,
-        celular: null,
-        ciudad: null,
-        direccion: null,
-        fechaNacimiento: null,
-        genero: null,
-        correo: null,
-        clave: null,
+        primerNombre: "",
+        segundoNombre: "",
+        primerApellido: "",
+        segundoApellido: "",
+        cedula: "",
+        telefono: "",
+        celular: "",
+        ciudad: "",
+        direccion: "",
+        fechaNacimiento: "",
+        genero: "",
+        correo: "",
+        clave: "",
     }
 
     const initialErrors = {
@@ -106,6 +48,8 @@ export default function CustomerForm(props) {
         clave: '',
     }
 
+    const [isNotError, setIsNotError] = useState(true);
+
     const [formData, setFormData] = useState(initialFormData);
 
     const [errores, setErrores] = useState(initialErrors);
@@ -118,18 +62,24 @@ export default function CustomerForm(props) {
         });
     };
 
+    const a = () => {
+        return isNotError;
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (checkFields()) {
+        const isValid = checkFields();
+        console.log(isValid);
+        if (a()) {
             console.log('Datos del formulario:', formData);
+            props.onSuccess();
         }
     };
 
     const handleModalClose = () => {
-        // Restablece los valores del formulario y los errores al estado inicial
         setFormData(initialFormData);
         setErrores(initialErrors);
-        // Llama a la función onClose para cerrar el modal desde el componente padre
+        setIsNotError(true);
         props.onClose();
     };
 
@@ -139,25 +89,166 @@ export default function CustomerForm(props) {
             ...errores,
             [name]: ''
         });
+
+        if (!isNotError){
+            setIsNotError(true);
+        }
     };
 
     const checkFields = () => {
-        setErrores({
-            primerNombre: '',
-            segundoNombre: '',
-            primerApellido: '',
-            segundoApellido: '',
-            cedula: '',
-            telefono: '',
-            celular: '',
-            ciudad: '',
-            direccion: '',
-            fechaNacimiento: '',
-            genero: '',
-            correo: checkEmail(formData.correo),
-            clave: '',
-        });
+
+        const errorData = {
+            correo: checkEmail(),
+            celular: checkCellphone(),
+            telefono: checkPhone(),
+            clave: checkPassword(),
+            ciudad: checkCity(),
+            direccion: checkAddress(),
+            primerNombre: checkFirstName(),
+            primerApellido: checkFirstLastName(),
+            fechaNacimiento: checkBornDate(),
+            cedula: checkCedula(),
+            genero: checkGender(),}
+
+        setErrores(errorData);
+        return isNotError;
     };
+
+    const checkEmail = () =>  {
+        if (formData.correo === null || formData.correo === '') {
+            setIsNotError(false)
+            return "El campo correo es requerido";
+        }
+        if ((formData.correo).length > 320)
+        {
+            setIsNotError(false)
+            return "El campo correo es requerido";
+        }
+        if (!formData.correo.match(
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        ))
+        {
+            setIsNotError(false)
+            return "El campo correo es requerido";
+        }
+
+        return "";
+    }
+
+    function checkCellphone() {
+        if (formData.celular === null || formData.celular === '') {
+            setIsNotError(false)
+            return "El campo celular es requerido"
+        }
+        if ((formData.celular).length > 10)
+        {
+            setIsNotError(false)
+            return "El celular no puede tener mas de 10 caracteres"
+        }
+        return "";
+    }
+
+    function checkPhone() {
+        if (formData.telefono === null || formData.telefono === '') {
+            setIsNotError(false)
+            return "El campo telefono es requerido"
+        }
+        if ((formData.telefono).length > 10)
+        {
+            setIsNotError(false)
+            return "El telefono no puede tener mas de 10 caracteres"
+        }
+        return "";
+    }
+
+    function checkPassword() {
+        if (formData.clave === null || formData.clave === '') {
+            setIsNotError(false);
+            return "El campo clave es requerido"
+        }
+        if ((formData.clave).length > 50)
+        {
+            setIsNotError(false)
+            return "La clave no puede tener mas de 50 caracteres"
+        }
+        return "";
+    }
+
+    function checkCity() {
+        if (formData.ciudad === null || formData.ciudad === '') {
+            setIsNotError(false);
+            return "El campo ciudad es requerido"
+        }
+        if ((formData.ciudad).length > 50)
+        {
+            setIsNotError(false)
+            return "La ciudad no puede tener mas de 50 caracteres"
+        }
+        return "";
+    }
+
+    function checkAddress() {
+        if (formData.direccion === null || formData.direccion === '') {
+            setIsNotError(false);
+            return "El campo direccion es requerido"
+        }
+        if ((formData.direccion).length > 50)
+        {
+            setIsNotError(false)
+            return "La direccion no puede tener mas de 50 caracteres"
+        }
+        return "";
+    }
+
+    function checkFirstName() {
+        if (formData.primerNombre === null || formData.primerNombre === '') {
+            setIsNotError(false);
+            return "El campo primer nombre es requerido"
+        }
+        if ((formData.primerNombre).length > 50)
+        {
+            setIsNotError(false)
+            return "El primer nombre no puede tener mas de 50 caracteres"
+        }
+        return "";
+    }
+
+    function checkFirstLastName() {
+        if (formData.primerApellido === null || formData.primerApellido === '') {
+            setIsNotError(false);
+            return "El campo primer apellido es requerido"
+        }
+        if ((formData.primerApellido).length > 50)
+        {
+            setIsNotError(false)
+            return "El primer apellido no puede tener mas de 50 caracteres"
+        }
+        return "";
+    }
+
+    function checkBornDate() {
+        if (formData.fechaNacimiento === null || formData.fechaNacimiento === '') {
+            setIsNotError(false);
+            return "El campo fecha de nacimiento es requerido"
+        }
+        return "";
+    }
+
+    function checkCedula() {
+        if (formData.cedula === null || formData.cedula === '') {
+            setIsNotError(false);
+            return "El campo cedula es requerido"
+        }
+        return "";
+    }
+
+    function checkGender() {
+        if (formData.genero === null || formData.genero === '') {
+            setIsNotError(false);
+            return "El campo genero es requerido"
+        }
+        return "";
+    }
 
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -198,14 +289,13 @@ export default function CustomerForm(props) {
               <Grid container spacing={4}>
                   <Grid item xs={12} sm={6}>
                       <TextField
-                          error={errores.primerNombre !== ''}
+                          error={errores.primerNombre !== ""}
                           fullWidth
                           required
                           name="primerNombre"
                           value={formData.primerNombre}
                           onChange={handleInputChange}
                           onClick={handleMessageError}
-                          defaultValue={props.edit !== null ? props.initialData.row.primerNombre : ''}
                           id="outlined-error-helper-text" label="Primer Nombre" variant="outlined"
                           helperText={errores.primerNombre}
                       />
@@ -216,19 +306,20 @@ export default function CustomerForm(props) {
                           name="segundoNombre"
                           value={formData.segundoNombre}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.segundoNombre : ''}
                           id="outlined-basic" label="Segundo Nombre" variant="outlined"
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          error={errores.primerApellido !== ''}
                           fullWidth
                           required
                           name={"primerApellido"}
                           value={formData.primerApellido}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.primerApellido : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Primer Apellido" variant="outlined"
+                          helperText={errores.primerApellido}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -237,67 +328,77 @@ export default function CustomerForm(props) {
                           name={"segundoApellido"}
                           value={formData.segundoApellido}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.segundoApellido : ''}
                           id="outlined-basic" label="Segundo Apellido" variant="outlined"
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          error={errores.cedula !== ''}
                           fullWidth
                           required
                           name={"cedula"}
                           value={formData.cedula}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.cedula : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Cedula" variant="outlined"
+                          helperText={errores.cedula}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.telefono !== ''}
                           fullWidth
                           required
                           name={"telefono"}
                           value={formData.telefono}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.telefono : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Telefono" variant="outlined"
+                          helperText={errores.telefono}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.celular !== ''}
                           fullWidth
                           required
                           name={"celular"}
-                          value={formData.telefono}
+                          value={formData.celular}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.celular : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Celular" variant="outlined"
+                          helperText={errores.celular}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.ciudad !== ''}
                           fullWidth
                           required
                           name={"ciudad"}
                           value={formData.ciudad}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.ciudad : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Ciudad" variant="outlined"
+                          helperText={errores.ciudad}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.direccion !== ''}
                           fullWidth
                           required
                           name={"direccion"}
                           value={formData.direccion}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.direccion : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Direccion" variant="outlined"
+                          helperText={errores.direccion}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.fechaNacimiento !== ''}
                           InputLabelProps={{ shrink: true }}
                           fullWidth
                           type={"date"}
@@ -305,20 +406,23 @@ export default function CustomerForm(props) {
                           name={"fechaNacimiento"}
                           value={formData.fechaNacimiento}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.fechaNacimiento : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Fecha de Nacimiento" variant="outlined"
+                          helperText={errores.fechaNacimiento}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          error={errores.genero !== ''}
                           select
                           fullWidth
                           required
                           name={"genero"}
                           value={formData.genero}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.genero : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Genero" variant="outlined"
+                          helperText={errores.genero}
                       >
                           <MenuItem  key="0" value="male">Masculino</MenuItem >
                           <MenuItem  key="1" value="female">Femenino</MenuItem >
@@ -328,27 +432,27 @@ export default function CustomerForm(props) {
                   <Grid item xs={12} sm={6}>
                       <TextField
                           error={errores.correo !== ''}
-                          email
                           fullWidth
                           required
                           name={"correo"}
                           value={formData.correo}
                           onChange={handleInputChange}
                           onClick={handleMessageError}
-                          defaultValue={props.edit !== null ? props.initialData.row.correo : ''}
                           id="outlined-basic" label="Correo" variant="outlined"
                           helperText={errores.correo}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          error={errores.clave !== ''}
                           fullWidth
                           required
                           name={"clave"}
                           value={formData.clave}
                           onChange={handleInputChange}
-                          defaultValue={props.edit !== null ? props.initialData.row.clave : ''}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Contraseña" variant="outlined"
+                          helperText={errores.clave}
                       />
                   </Grid>
               </Grid>

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import React, { useState } from 'react';
 // @mui
 import {
   Card,
@@ -20,9 +20,10 @@ import {
   Typography,
   IconButton,
   TableContainer,
-  TablePagination, Box,
+  TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
+import {Alert} from "@mui/lab";
 import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
@@ -82,7 +83,12 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function CustomerPage() {
-  const [open, setOpen] = useState(null);
+
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+
+  const [openMenu, setOpenMenu] = useState(null);
+
+  const [openForm, setOpenForm] = useState(false);
 
   const [page, setPage] = useState(0);
 
@@ -95,8 +101,6 @@ export default function CustomerPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [openForm, setOpenForm] = useState(null);
 
   const [selectedClient, setSelectedClient] = useState(null);
 
@@ -113,24 +117,35 @@ export default function CustomerPage() {
     }
   };
 
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  }
+
+  const handleOpenSnackbar = () => {
+    setOpenSnackbar(true);
+  }
+
   const handleOpenForm = (event) => {
     handleCloseMenu();
-    setOpenForm(event.currentTarget)
+    setOpenForm(true)
   };
 
   const handleCloseForm = () => {
     handleDesactiveEdit();
-    setOpenForm(null);
+    setOpenForm(false);
   };
 
   const handleOpenMenu = (event, rowData, name) => {
     handleActiveEdit();
     setSelectedClient(rowData);
-    setOpen(event.currentTarget);
+    setOpenMenu(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
-    setOpen(null);
+    setOpenMenu(false);
   };
 
   const handleRequestSort = (event, property) => {
@@ -206,7 +221,7 @@ export default function CustomerPage() {
           </Button>
         </Stack>
 
-        <CustomerForm open={openForm} onClose={handleCloseForm} initialData={selectedClient} edit={edit}/>
+        <CustomerForm open={openForm} onClose={handleCloseForm} initialData={selectedClient} edit={edit} onSuccess={handleOpenSnackbar}/>
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -308,8 +323,8 @@ export default function CustomerPage() {
       </Box>
 
       <Popover
-        open={Boolean(open)}
-        anchorEl={open}
+        open={Boolean(openMenu)}
+        anchorEl={openMenu}
         onClose={handleCloseMenu}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -335,6 +350,12 @@ export default function CustomerPage() {
           Eliminar
         </MenuItem>
       </Popover>
+
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
+          El cliente se ha guardado correctamente
+        </Alert>
+      </Snackbar>
     </>
   );
 }
