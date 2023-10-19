@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
-import {Alert} from "@mui/lab";
 
 export default function CustomerForm(props) {
 
@@ -48,8 +47,6 @@ export default function CustomerForm(props) {
         clave: '',
     }
 
-    const [isNotError, setIsNotError] = useState(true);
-
     const [formData, setFormData] = useState(initialFormData);
 
     const [errores, setErrores] = useState(initialErrors);
@@ -62,15 +59,10 @@ export default function CustomerForm(props) {
         });
     };
 
-    const a = () => {
-        return isNotError;
-    }
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        const isValid = checkFields();
-        console.log(isValid);
-        if (a()) {
+        if (checkFields()) {
+            handleModalClose();
             console.log('Datos del formulario:', formData);
             props.onSuccess();
         }
@@ -79,7 +71,6 @@ export default function CustomerForm(props) {
     const handleModalClose = () => {
         setFormData(initialFormData);
         setErrores(initialErrors);
-        setIsNotError(true);
         props.onClose();
     };
 
@@ -89,11 +80,13 @@ export default function CustomerForm(props) {
             ...errores,
             [name]: ''
         });
-
-        if (!isNotError){
-            setIsNotError(true);
-        }
+        console.log(errores);
     };
+
+    const handleSelectChange = (event) => {
+        handleInputChange(event);
+        handleMessageError(event);
+    }
 
     const checkFields = () => {
 
@@ -108,80 +101,99 @@ export default function CustomerForm(props) {
             primerApellido: checkFirstLastName(),
             fechaNacimiento: checkBornDate(),
             cedula: checkCedula(),
-            genero: checkGender(),}
+            genero: checkGender(),
+            segundoNombre: checkSecondName(),
+            segundoApellido: checkSecondLastName(),}
 
         setErrores(errorData);
-        return isNotError;
+
+        const isValid = Object.values(errorData).every(error => error === '')
+
+        return isValid;
     };
 
     const checkEmail = () =>  {
         if (formData.correo === null || formData.correo === '') {
-            setIsNotError(false)
-            return "El campo correo es requerido";
+            return "El campo es requerido";
         }
-        if ((formData.correo).length > 320)
+        if (formData.correo.length > 320 || formData.correo.length < 6)
         {
-            setIsNotError(false)
-            return "El campo correo es requerido";
+            return "Max: 320 caracteres, Min: 6 caracteres";
         }
         if (!formData.correo.match(
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
         ))
         {
-            setIsNotError(false)
-            return "El campo correo es requerido";
+            return "Ingrese un correo valido";
         }
 
         return "";
     }
 
     function checkCellphone() {
-        if (formData.celular === null || formData.celular === '') {
-            setIsNotError(false)
-            return "El campo celular es requerido"
+        if (formData.celular === null || formData.celular.trim() === '') {
+            return "El campo es requerido";
         }
-        if ((formData.celular).length > 10)
+        if ((formData.celular).length !== 10)
         {
-            setIsNotError(false)
-            return "El celular no puede tener mas de 10 caracteres"
+            return "Debe tener 10 digitos";
+        }
+        if (!formData.celular.match(/^[0-9]+$/))
+        {
+            return "Solo se permiten numeros";
         }
         return "";
     }
 
     function checkPhone() {
-        if (formData.telefono === null || formData.telefono === '') {
-            setIsNotError(false)
-            return "El campo telefono es requerido"
+        if (formData.telefono === null || formData.telefono.trim() === '') {
+            return "El campo es requerido";
         }
-        if ((formData.telefono).length > 10)
+        if (!formData.telefono.match(/^[0-9]+$/))
         {
-            setIsNotError(false)
-            return "El telefono no puede tener mas de 10 caracteres"
+            return "Solo se permiten numeros";
         }
+        if ((formData.telefono).length !== 7)
+        {
+            return "Debe tener 7 digitos";
+        }
+
         return "";
     }
 
     function checkPassword() {
-        if (formData.clave === null || formData.clave === '') {
-            setIsNotError(false);
-            return "El campo clave es requerido"
+        if (formData.clave === null || formData.clave.trim() === '') {
+            return "El campo es requerido"
         }
-        if ((formData.clave).length > 50)
+        if ((formData.clave).length > 50 || (formData.clave).length < 8)
         {
-            setIsNotError(false)
-            return "La clave no puede tener mas de 50 caracteres"
+            return "Max: 50 caracteres, Min: 8 caracteres"
+        }
+        if (!formData.clave.match(/^(?=.*[a-z])$/))
+        {
+            return "Debe tener al menos una letra minuscula"
+        }
+        if (!formData.clave.match(/^(?=.*[A-Z])$/))
+        {
+            return "Debe tener al menos una letra mayuscula"
+        }
+        if (!formData.clave.match(/^(?=.*[0-9])$/))
+        {
+            return "Debe tener al menos un numero"
+        }
+        if (formData.clave.match(/\s/))
+        {
+            return "No se permiten espacios en blanco"
         }
         return "";
     }
 
     function checkCity() {
         if (formData.ciudad === null || formData.ciudad === '') {
-            setIsNotError(false);
             return "El campo ciudad es requerido"
         }
         if ((formData.ciudad).length > 50)
         {
-            setIsNotError(false)
             return "La ciudad no puede tener mas de 50 caracteres"
         }
         return "";
@@ -189,63 +201,115 @@ export default function CustomerForm(props) {
 
     function checkAddress() {
         if (formData.direccion === null || formData.direccion === '') {
-            setIsNotError(false);
-            return "El campo direccion es requerido"
+            return "El campo es requerido";
         }
-        if ((formData.direccion).length > 50)
+        if ((formData.direccion).length > 50 || (formData.direccion).length < 5)
         {
-            setIsNotError(false)
-            return "La direccion no puede tener mas de 50 caracteres"
+            return "Max: 50 caracteres, Min: 5 caracteres";
         }
         return "";
     }
 
     function checkFirstName() {
-        if (formData.primerNombre === null || formData.primerNombre === '') {
-            setIsNotError(false);
-            return "El campo primer nombre es requerido"
+        if (formData.primerNombre === null || formData.primerNombre.trim() === '') {
+            return "El campo es requerido";
         }
-        if ((formData.primerNombre).length > 50)
+        if (formData.primerNombre.length > 50 || formData.primerNombre.length < 2)
         {
-            setIsNotError(false)
-            return "El primer nombre no puede tener mas de 50 caracteres"
+            return "Max: 50 caracteres, Min: 2 caracteres";
+        }
+        if (!formData.primerNombre.match(/^[a-zA-Z]+$/))
+        {
+            return "Solo se permiten letras";
+        }
+        return "";
+    }
+
+    function checkSecondName() {
+
+        if (formData.segundoNombre.trim() !== '') {
+            if (formData.segundoNombre.length > 50 || formData.segundoNombre.length < 2)
+            {
+                return "Max: 50 caracteres, Min: 2 caracteres";
+            }
+            if (!formData.segundoNombre.match(/^[a-zA-Z]+$/))
+            {
+                return "Solo se permiten letras";
+            }
         }
         return "";
     }
 
     function checkFirstLastName() {
-        if (formData.primerApellido === null || formData.primerApellido === '') {
-            setIsNotError(false);
-            return "El campo primer apellido es requerido"
+        if (formData.primerApellido === null || formData.primerApellido.trim() === '') {
+            return "El campo es requerido";
         }
-        if ((formData.primerApellido).length > 50)
+        if (formData.primerApellido.length > 50 || formData.primerApellido.length < 2)
         {
-            setIsNotError(false)
-            return "El primer apellido no puede tener mas de 50 caracteres"
+            return "Max: 50 caracteres, Min: 2 caracteres";
+        }
+        if (!formData.primerApellido.match(/^[a-zA-Z]+$/))
+        {
+            return "Solo se permiten letras";
+        }
+        return "";
+    }
+
+    function checkSecondLastName() {
+        if (formData.segundoApellido.trim() !== '') {
+            if (formData.segundoApellido.length > 50 || formData.segundoApellido.length < 2)
+            {
+                return "Max: 50 caracteres, Min: 2 caracteres";
+            }
+            if (!formData.segundoApellido.match(/^[a-zA-Z]+$/))
+            {
+                return "Solo se permiten letras";
+            }
         }
         return "";
     }
 
     function checkBornDate() {
-        if (formData.fechaNacimiento === null || formData.fechaNacimiento === '') {
-            setIsNotError(false);
-            return "El campo fecha de nacimiento es requerido"
+
+        if (formData.fechaNacimiento === null || formData.fechaNacimiento.trim() === '') {
+            return "El campo es requerido";
+        }
+        const fechaActual = new Date();
+        const fechaNac = new Date(formData.fechaNacimiento);
+        if (fechaNac > fechaActual)
+        {
+            return "Seleccione una fecha valida";
+        }
+        if (fechaNac.getFullYear() < 1900)
+        {
+            return "Seleccione una fecha valida";
+        }
+        if ((fechaActual.getFullYear() - fechaNac.getFullYear()) < 18)
+        {
+            return "Edad minima 18 años";
         }
         return "";
     }
 
     function checkCedula() {
-        if (formData.cedula === null || formData.cedula === '') {
-            setIsNotError(false);
-            return "El campo cedula es requerido"
+        if (formData.cedula === null || formData.cedula.trim() === '') {
+            return "El campo es requerido";
         }
+        if (!formData.cedula.match(/^[0-9]+$/))
+        {
+            return "Solo se permiten numeros";
+        }
+        if (formData.cedula.length !== 10)
+        {
+            return "Debe tener 10 digitos";
+        }
+
         return "";
     }
 
     function checkGender() {
         if (formData.genero === null || formData.genero === '') {
-            setIsNotError(false);
-            return "El campo genero es requerido"
+            return "El campo genero es requerido";
         }
         return "";
     }
@@ -253,7 +317,7 @@ export default function CustomerForm(props) {
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const style = {
+    const modalStyle = {
         position: 'absolute',
         top: '50%',
         left: '50%',
@@ -267,6 +331,8 @@ export default function CustomerForm(props) {
         borderRadius: 2,
     };
 
+    const textFieldStyle = { minHeight: "5rem" };
+
     return (
       <Modal
           open={props.open}
@@ -276,7 +342,7 @@ export default function CustomerForm(props) {
       >
           <Box
               component="form"
-              sx={style}
+              sx={modalStyle}
               noValidate
               autoComplete="off"
               onSubmit={handleSubmit}
@@ -286,7 +352,7 @@ export default function CustomerForm(props) {
                       Nuevo cliente
                   </Typography>
               </Stack>
-              <Grid container spacing={4}>
+              <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                       <TextField
                           error={errores.primerNombre !== ""}
@@ -298,15 +364,20 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-error-helper-text" label="Primer Nombre" variant="outlined"
                           helperText={errores.primerNombre}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          error={errores.segundoNombre !== ''}
                           fullWidth
                           name="segundoNombre"
                           value={formData.segundoNombre}
                           onChange={handleInputChange}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Segundo Nombre" variant="outlined"
+                          helperText={errores.segundoNombre}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -320,15 +391,20 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Primer Apellido" variant="outlined"
                           helperText={errores.primerApellido}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          error={errores.segundoApellido !== ''}
                           fullWidth
                           name={"segundoApellido"}
                           value={formData.segundoApellido}
                           onChange={handleInputChange}
+                          onClick={handleMessageError}
                           id="outlined-basic" label="Segundo Apellido" variant="outlined"
+                          helperText={errores.segundoApellido}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -342,6 +418,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Cedula" variant="outlined"
                           helperText={errores.cedula}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -355,6 +432,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Telefono" variant="outlined"
                           helperText={errores.telefono}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -368,6 +446,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Celular" variant="outlined"
                           helperText={errores.celular}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -381,6 +460,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Ciudad" variant="outlined"
                           helperText={errores.ciudad}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -394,6 +474,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Direccion" variant="outlined"
                           helperText={errores.direccion}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -409,6 +490,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Fecha de Nacimiento" variant="outlined"
                           helperText={errores.fechaNacimiento}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -419,14 +501,14 @@ export default function CustomerForm(props) {
                           required
                           name={"genero"}
                           value={formData.genero}
-                          onChange={handleInputChange}
-                          onClick={handleMessageError}
+                          onChange={handleSelectChange}
                           id="outlined-basic" label="Genero" variant="outlined"
                           helperText={errores.genero}
+                          style={textFieldStyle}
                       >
-                          <MenuItem  key="0" value="male">Masculino</MenuItem >
-                          <MenuItem  key="1" value="female">Femenino</MenuItem >
-                          <MenuItem  key="2" value="Otro">Otro</MenuItem >
+                          <MenuItem  key="0" value="male" name={"genero"}>Masculino</MenuItem >
+                          <MenuItem  key="1" value="female" >Femenino</MenuItem >
+                          <MenuItem  key="2" value="Otro" >Otro</MenuItem >
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -440,6 +522,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Correo" variant="outlined"
                           helperText={errores.correo}
+                          style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -453,6 +536,7 @@ export default function CustomerForm(props) {
                           onClick={handleMessageError}
                           id="outlined-basic" label="Contraseña" variant="outlined"
                           helperText={errores.clave}
+                          style={textFieldStyle}
                       />
                   </Grid>
               </Grid>
