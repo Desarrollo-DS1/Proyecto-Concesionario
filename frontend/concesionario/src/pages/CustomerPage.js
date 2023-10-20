@@ -1,37 +1,34 @@
 import { Helmet } from 'react-helmet-async';
-import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
-import React, { useState } from 'react';
+import React, {useContext, useEffect} from 'react';
 // @mui
 import {
   Card,
   Table,
   Stack,
   Paper,
-  Avatar,
   Button,
-  Popover,
   Checkbox,
   TableRow,
-  MenuItem,
   TableBody,
   TableCell,
-  Container,
   Typography,
   IconButton,
   TableContainer,
   TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import {Alert} from "@mui/lab";
-import Label from '../components/label';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import { UserListHead, UserListToolbar } from '../sections/@dashboard/customer';
+import CustomerListToolbar from "../sections/@dashboard/customer/CustomerListToolbar";
+import CustomerListHead from "../sections/@dashboard/customer/CustomerListHead";
 // mock
 import USERLIST from '../_mock/user';
 import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
+import CustomerContext from "../hooks/customer/CustomerContext";
 
 // ----------------------------------------------------------------------
 
@@ -48,74 +45,36 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
-// ----------------------------------------------------------------------
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function applySortFilter(array, comparator, query) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  if (query) {
-    return filter(array, (_user) => {
-      const nombre = (`${_user.primerNombre} ${  _user.primerApellido}`).toLowerCase();
-      const queryLowercase = query.toLowerCase();
-      return nombre.indexOf(queryLowercase) !== -1;});
-  }
-  return stabilizedThis.map((el) => el[0]);
-}
-
 export default function CustomerPage() {
 
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const {
+    getCustomers,
+    getCustomer,
+    getCustomerError,
+    order,
+    orderBy,
+    setOrder,
+    setOrderBy,
+    selected,
+    setSelected,
+    page,
+    setPage,
+    rowsPerPage,
+    setRowsPerPage,
+    filterName,
+    setFilterName,
+    filteredCustomers,
+    emptyRows,
+    isNotFound,
+    openSnackbar,
+    setOpenSnackbar,
+    openForm,
+    setOpenForm,
+    edit} = useContext(CustomerContext);
 
-  const [openMenu, setOpenMenu] = useState(null);
-
-  const [openForm, setOpenForm] = useState(false);
-
-  const [page, setPage] = useState(0);
-
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [selectedClient, setSelectedClient] = useState(null);
-
-  const [edit, setEdit] = useState(null);
-
-  const handleActiveEdit = () => {
-    setEdit(true)
-  };
-
-  const handleDesactiveEdit = () => {
-    if(edit !== null)
-    {
-      setEdit(null)
-    }
-  };
+  useEffect(() => {
+        getCustomers();
+    }, []);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -128,39 +87,20 @@ export default function CustomerPage() {
     setOpenSnackbar(true);
   }
 
-  const handleOpenForm = (event) => {
-    handleCloseMenu();
+  const handleOpenForm = (event, id) => {
+    getCustomerError();
+    getCustomer(id);
     setOpenForm(true)
   };
 
   const handleCloseForm = () => {
-    handleDesactiveEdit();
     setOpenForm(false);
-  };
-
-  const handleOpenMenu = (event, rowData, name) => {
-    handleActiveEdit();
-    setSelectedClient(rowData);
-    setOpenMenu(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpenMenu(false);
   };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleSelectAllClick = (event) => {
-    if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.nombre);
-      setSelected(newSelecteds);
-      return;
-    }
-    setSelected([]);
   };
 
   const handleClick = (event, name) => {
@@ -192,19 +132,6 @@ export default function CustomerPage() {
     setFilterName(event.target.value);
   };
 
-  const handleDeleteRow = () => {
-    const nombre = (`${selectedClient.row.primerNombre} ${selectedClient.row.primerApellido}`).toLowerCase();
-    setFilterName(nombre);
-    handleCloseMenu();
-    handleDesactiveEdit();
-  };
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-
-  const isNotFound = !filteredUsers.length && !!filterName;
-
   return (
     <>
       <Helmet>
@@ -221,25 +148,24 @@ export default function CustomerPage() {
           </Button>
         </Stack>
 
-        <CustomerForm open={openForm} onClose={handleCloseForm} initialData={selectedClient} edit={edit} onSuccess={handleOpenSnackbar}/>
+        <CustomerForm open={openForm} onClose={handleCloseForm} onSuccess={handleOpenSnackbar}/>
 
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
+                <CustomerListHead
+                    order={order}
+                    orderBy={orderBy}
+                    headLabel={TABLE_HEAD}
+                    rowCount={USERLIST.length}
+                    numSelected={selected.length}
+                    onRequestSort={handleRequestSort}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
@@ -269,10 +195,17 @@ export default function CustomerPage() {
                         <TableCell align="left">{genero}</TableCell>
 
                         <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, {row})}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
+                          <div style={{ display: 'flex' }}>
+                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                              <EditIcon />
+                            </IconButton>
+
+                            <IconButton color="error">
+                              <DeleteIcon />
+                            </IconButton>
+                          </div>
                         </TableCell>
+
                       </TableRow>
                     );
                   })}
@@ -322,38 +255,9 @@ export default function CustomerPage() {
         </Card>
       </Box>
 
-      <Popover
-        open={Boolean(openMenu)}
-        anchorEl={openMenu}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem onClick={handleOpenForm}>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }}/>
-          Editar
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }} onClick={handleDeleteRow}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Eliminar
-        </MenuItem>
-      </Popover>
-
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-          El cliente se ha guardado correctamente
+          {edit? 'Cliente actualizado correctamente' : 'Cliente guardado correctamente'}
         </Alert>
       </Snackbar>
     </>
