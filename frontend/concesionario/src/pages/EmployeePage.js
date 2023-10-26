@@ -29,6 +29,7 @@ import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
 // import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 // context
 import EmployeeContext from "../hooks/employee/EmployeeContext";
+import EmployeeDelete from "../sections/@dashboard/employee/EmployeeDelete";
 
 
 // ----------------------------------------------------------------------
@@ -77,6 +78,8 @@ export default function EmployeePage() {
                 </Stack>
 
                 <EmployeeForm />
+
+                <EmployeeDelete />
 
                 <Card>
                     <EmployeeListToolbar />
