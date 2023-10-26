@@ -17,6 +17,7 @@ import {
     TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
+import {Alert} from "@mui/lab";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Iconify from '../components/iconify';
@@ -24,21 +25,26 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import EmployeeListToolbar from "../sections/@dashboard/employee/EmployeeListToolbar";
 import EmployeeListHead from "../sections/@dashboard/employee/EmployeeListHead";
-// import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
+import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
 // import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 // context
 import EmployeeContext from "../hooks/employee/EmployeeContext";
+
 
 // ----------------------------------------------------------------------
 
 export default function EmployeePage() {
 
     const {
-        employee,
         employees,
+        openSnackbar,
+        messageSnackbar,
+        typeSnackbar,
         getEmployees,
         handleOpenForm,
         handleOpenDelete,
+        handleCloseDelete,
+        handleCloseSnackbar,
         filterName,
         page,
         rowsPerPage,
@@ -69,6 +75,8 @@ export default function EmployeePage() {
                         Empleado
                     </Button>
                 </Stack>
+
+                <EmployeeForm />
 
                 <Card>
                     <EmployeeListToolbar />
@@ -171,6 +179,12 @@ export default function EmployeePage() {
                     />
                 </Card>
             </Box>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
+                    {messageSnackbar}
+                </Alert>
+            </Snackbar>
         </>
     );
 }

@@ -1,12 +1,12 @@
-function checkEmail(customer){
-    if (customer.correo === null || customer.correo === '') {
+function checkEmail(employee){
+    if (employee.correo === null || employee.correo === '') {
         return "El campo es requerido";
     }
-    if (customer.correo.length > 320 || customer.correo.length < 6)
+    if (employee.correo.length > 320 || employee.correo.length < 6)
     {
         return "Max: 320 caracteres, Min: 6 caracteres";
     }
-    if (!customer.correo.match(
+    if (!employee.correo.match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     ))
     {
@@ -16,30 +16,30 @@ function checkEmail(customer){
     return "";
 }
 
-function checkCellphone(customer) {
-    if (customer.celular === null || customer.celular.trim() === '') {
+function checkCellphone(employee) {
+    if (employee.celular === null || employee.celular.trim() === '') {
         return "El campo es requerido";
     }
-    if ((customer.celular).length !== 10)
+    if ((employee.celular).length !== 10)
     {
         return "Debe tener 10 digitos";
     }
-    if (!customer.celular.match(/^[0-9]+$/))
+    if (!employee.celular.match(/^[0-9]+$/))
     {
         return "Solo se permiten numeros";
     }
     return "";
 }
 
-function checkPhone(customer) {
-    if (customer.telefono === null || customer.telefono.trim() === '') {
+function checkPhone(employee) {
+    if (employee.telefono === null || employee.telefono.trim() === '') {
         return "El campo es requerido";
     }
-    if (!customer.telefono.match(/^[0-9]+$/))
+    if (!employee.telefono.match(/^[0-9]+$/))
     {
         return "Solo se permiten numeros";
     }
-    if ((customer.telefono).length !== 7)
+    if ((employee.telefono).length !== 7)
     {
         return "Debe tener 7 digitos";
     }
@@ -47,77 +47,77 @@ function checkPhone(customer) {
     return "";
 }
 
-function checkPassword(customer) {
-    if (customer.clave === null || customer.clave.trim() === '') {
+function checkPassword(employee) {
+    if (employee.clave === null || employee.clave.trim() === '') {
         return "El campo es requerido"
     }
-    if ((customer.clave).length > 50 || (customer.clave).length < 8)
+    if ((employee.clave).length > 50 || (employee.clave).length < 8)
     {
         return "Max: 50 caracteres, Min: 8 caracteres"
     }
-    if (!customer.clave.match(/(?=.*[a-z])/))
+    if (!employee.clave.match(/(?=.*[a-z])/))
     {
         return "Debe tener al menos una letra minuscula"
     }
-    if (!customer.clave.match(/(?=.*[A-Z])/))
+    if (!employee.clave.match(/(?=.*[A-Z])/))
     {
         return "Debe tener al menos una letra mayuscula"
     }
-    if (!customer.clave.match(/(?=.*[0-9])/))
+    if (!employee.clave.match(/(?=.*[0-9])/))
     {
         return "Debe tener al menos un numero"
     }
-    if (customer.clave.match(/\s/))
+    if (employee.clave.match(/\s/))
     {
         return "No se permiten espacios en blanco"
     }
     return "";
 }
 
-function checkCity(customer) {
-    if (customer.ciudad === null || customer.ciudad === '') {
+function checkCity(employee) {
+    if (employee.ciudad === null || employee.ciudad === '') {
         return "El campo ciudad es requerido"
     }
-    if ((customer.ciudad).length > 50)
+    if ((employee.ciudad).length > 50)
     {
         return "La ciudad no puede tener mas de 50 caracteres"
     }
     return "";
 }
 
-function checkAddress(customer) {
-    if (customer.direccion === null || customer.direccion === '') {
+function checkAddress(employee) {
+    if (employee.direccion === null || employee.direccion === '') {
         return "El campo es requerido";
     }
-    if ((customer.direccion).length > 50 || (customer.direccion).length < 5)
+    if ((employee.direccion).length > 50 || (employee.direccion).length < 5)
     {
         return "Max: 50 caracteres, Min: 5 caracteres";
     }
     return "";
 }
 
-function checkFirstName(customer) {
-    if (customer.primerNombre === null || customer.primerNombre.trim() === '') {
+function checkFirstName(employee) {
+    if (employee.primerNombre === null || employee.primerNombre.trim() === '') {
         return "El campo es requerido";
     }
-    if (customer.primerNombre.length > 50 || customer.primerNombre.length < 2)
+    if (employee.primerNombre.length > 50 || employee.primerNombre.length < 2)
     {
         return "Max: 50 caracteres, Min: 2 caracteres";
     }
-    if (!customer.primerNombre.match(/^[a-zA-Z]+$/))
+    if (!employee.primerNombre.match(/^[a-zA-Z]+$/))
     {
         return "Solo se permiten letras";
     }
     return "";
 }
 
-function checkSecondName(customer) {
-    if (customer.segundoNombre.trim() !== '') {
-        if (customer.segundoNombre.length > 50 || customer.segundoNombre.length < 2)
+function checkSecondName(employee) {
+    if (employee.segundoNombre.trim() !== '') {
+        if (employee.segundoNombre.length > 50 || employee.segundoNombre.length < 2)
         {
             return "Max: 50 caracteres, Min: 2 caracteres";
         }
-        if (!customer.segundoNombre.match(/^[a-zA-Z]+$/))
+        if (!employee.segundoNombre.match(/^[a-zA-Z]+$/))
         {
             return "Solo se permiten letras";
         }
@@ -125,28 +125,28 @@ function checkSecondName(customer) {
     return "";
 }
 
-function checkFirstLastName(customer) {
-    if (customer.primerApellido === null || customer.primerApellido.trim() === '') {
+function checkFirstLastName(employee) {
+    if (employee.primerApellido === null || employee.primerApellido.trim() === '') {
         return "El campo es requerido";
     }
-    if (customer.primerApellido.length > 50 || customer.primerApellido.length < 2)
+    if (employee.primerApellido.length > 50 || employee.primerApellido.length < 2)
     {
         return "Max: 50 caracteres, Min: 2 caracteres";
     }
-    if (!customer.primerApellido.match(/^[a-zA-Z]+$/))
+    if (!employee.primerApellido.match(/^[a-zA-Z]+$/))
     {
         return "Solo se permiten letras";
     }
     return "";
 }
 
-function checkSecondLastName(customer) {
-    if (customer.segundoApellido.trim() !== '') {
-        if (customer.segundoApellido.length > 50 || customer.segundoApellido.length < 2)
+function checkSecondLastName(employee) {
+    if (employee.segundoApellido.trim() !== '') {
+        if (employee.segundoApellido.length > 50 || employee.segundoApellido.length < 2)
         {
             return "Max: 50 caracteres, Min: 2 caracteres";
         }
-        if (!customer.segundoApellido.match(/^[a-zA-Z]+$/))
+        if (!employee.segundoApellido.match(/^[a-zA-Z]+$/))
         {
             return "Solo se permiten letras";
         }
@@ -154,13 +154,13 @@ function checkSecondLastName(customer) {
     return "";
 }
 
-function checkBornDate(customer) {
+function checkBornDate(employee) {
 
-    if (customer.fechaNacimiento === null || customer.fechaNacimiento.trim() === '') {
+    if (employee.fechaNacimiento === null || employee.fechaNacimiento.trim() === '') {
         return "El campo es requerido";
     }
     const fechaActual = new Date();
-    const fechaNac = new Date(customer.fechaNacimiento);
+    const fechaNac = new Date(employee.fechaNacimiento);
     if (fechaNac > fechaActual)
     {
         return "Seleccione una fecha valida";
@@ -176,16 +176,16 @@ function checkBornDate(customer) {
     return "";
 }
 
-function checkCedula(customer) {
+function checkCedula(employee) {
 
-    if (customer.cedula === null || toString(customer.cedula).trim() === '') {
+    if (employee.cedula === null || toString(employee.cedula).trim() === '') {
         return "El campo es requerido";
     }
-    if (!customer.cedula.match(/^[0-9]+$/))
+    if (!employee.cedula.match(/^[0-9]+$/))
     {
         return "Solo se permiten numeros";
     }
-    if (customer.cedula.length !== 10)
+    if (employee.cedula.length !== 10)
     {
         return "Debe tener 10 digitos";
     }
@@ -193,52 +193,151 @@ function checkCedula(customer) {
     return "";
 }
 
-function checkGender(customer) {
-    if (customer.genero === null || customer.genero === '') {
-        return "El campo genero es requerido";
+function checkGender(employee) {
+    if (employee.genero === null || employee.genero === '') {
+        return "El campo es requerido";
     }
     return "";
 }
 
-export function checkCustomer(customer, name) {
+function checkSalary(employee) {
+    if (employee.salario === null || employee.salario.trim() === '') {
+        return "El campo es requerido";
+    }
+    if (!employee.salario.match(/^[0-9]+$/))
+    {
+        return "Solo se permiten numeros";
+    }
+    if (employee.salario < 0)
+    {
+        return "El salario no puede ser negativo";
+    }
+    return "";
+}
+
+function checkBloodType(employee) {
+    if (employee.tipoSangre === null || employee.tipoSangre === '') {
+        return "El campo es requerido";
+    }
+    return "";
+}
+
+function checkEps(employee) {
+    if (employee.eps === null || employee.eps.trim() === '') {
+        return "El campo es requerido";
+    }
+    return "";
+}
+
+function checkArl(employee) {
+    if (employee.arl === null || employee.arl.trim() === '') {
+        return "El campo es requerido";
+    }
+    return "";
+}
+
+function checkPosition(employee) {
+    if (employee.cargo === null || employee.cargo.trim() === '') {
+        return "El campo es requerido";
+    }
+    return "";
+}
+
+function checkAdmissionDate(employee) {
+    if (employee.fechaIngreso === null || employee.fechaIngreso.trim() === '') {
+        return "El campo es requerido";
+    }
+    const fechaActual = new Date();
+    const fechaIngreso = new Date(employee.fechaIngreso);
+    if (fechaIngreso > fechaActual)
+    {
+        return "Seleccione una fecha valida";
+    }
+    if (fechaIngreso.getFullYear() < 1900)
+    {
+        return "Seleccione una fecha valida";
+    }
+    return "";
+}
+
+function checkRetirementDate(employee) {
+    if (employee.fechaRetiro === null || employee.fechaRetiro.trim() === '') {
+        return "";
+    }
+    const fechaActual = new Date();
+    const fechaRetiro = new Date(employee.fechaRetiro);
+    if (fechaRetiro > fechaActual)
+    {
+        return "Seleccione una fecha valida";
+    }
+    if (fechaRetiro.getFullYear() < 1900)
+    {
+        return "Seleccione una fecha valida";
+    }
+    return "";
+}
+
+export function checkCustomer(employee, name) {
     if (name === 'correo') {
-        return checkEmail(customer);
+        return checkEmail(employee);
     }
     if (name === 'celular') {
-        return checkCellphone(customer);
+        return checkCellphone(employee);
     }
     if (name === 'telefono') {
-        return checkPhone(customer);
+        return checkPhone(employee);
     }
     if (name === 'clave') {
-        return checkPassword(customer);
+        return checkPassword(employee);
     }
     if (name === 'ciudad') {
-        return checkCity(customer);
+        return checkCity(employee);
     }
     if (name === 'direccion') {
-        return checkAddress(customer);
+        return checkAddress(employee);
     }
     if (name === 'primerNombre') {
-        return checkFirstName(customer);
+        return checkFirstName(employee);
     }
     if (name === 'segundoNombre') {
-        return checkSecondName(customer);
+        return checkSecondName(employee);
     }
     if (name === 'primerApellido') {
-        return checkFirstLastName(customer);
+        return checkFirstLastName(employee);
     }
     if (name === 'segundoApellido') {
-        return checkSecondLastName(customer);
+        return checkSecondLastName(employee);
     }
     if (name === 'fechaNacimiento') {
-        return checkBornDate(customer);
+        return checkBornDate(employee);
     }
     if (name === 'cedula') {
-        return checkCedula(customer);
+        return checkCedula(employee);
     }
     if (name === 'genero') {
-        return checkGender(customer);
+        return checkGender(employee);
     }
+    if (name === 'salario') {
+        return checkSalary(employee);
+    }
+    if (name === 'tipoSangre') {
+        return checkBloodType(employee);
+    }
+    if (name === 'eps') {
+        return checkEps(employee);
+    }
+    if (name === 'arl') {
+        return checkArl(employee);
+    }
+    if (name === 'cargo') {
+        return checkPosition(employee);
+    }
+    if (name === 'fechaIngreso') {
+        return checkAdmissionDate(employee);
+    }
+    if (name === 'fechaRetiro') {
+        return checkRetirementDate(employee);
+    }
+
     return "";
 }
