@@ -50,6 +50,7 @@ export function CustomerState(props) {
     const [selected, setSelected] = React.useState([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [openForm, setOpenForm] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
 
     const getCustomers = () => {
         setCustomers(USERLIST);
@@ -73,7 +74,11 @@ export function CustomerState(props) {
     }
 
     const updateCustomer = (customer) => {
-        setCustomers(customers.map((item) => (item.id === customer.id ? customer : item)))
+        setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+    }
+
+    const deleteCustomer = (customer) => {
+        setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
     }
 
     const editCustomer = (customer) => {
@@ -136,7 +141,10 @@ export function CustomerState(props) {
                 setOpenForm,
                 addCustomer,
                 updateCustomer,
-                setCustomers}}>
+                deleteCustomer,
+                setCustomers,
+                openDelete,
+                setOpenDelete}}>
             {props.children}
         </CustomerContext.Provider>
     )
