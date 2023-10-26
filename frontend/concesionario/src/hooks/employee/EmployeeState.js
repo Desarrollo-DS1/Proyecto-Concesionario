@@ -72,9 +72,11 @@ export function EmployeeState(props) {
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [messageSnackbar, setMessageSnackbar] = useState('');
+    const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getEmployees = () => {
-        setEmployees(EMPLOYEELIST);
+        setEmployees(employees);
     }
     const getEmployee = (cedula) => {
         const employee = employees.find(employee => employee.cedula === cedula);
@@ -98,8 +100,44 @@ export function EmployeeState(props) {
     const deleteEmployee = (employee) => {
         setEmployees(employees.filter((item) => item.cedula !== employee.cedula))
     }
-    const editEmployee = (employee) => {
-        setEmployee(employee)
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setEmployee({
+            ...employee,
+            [name]: value
+        });
+    }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (!validateEmployeeOnSubmit()) {
+            if(edit)
+            {
+                updateEmployee(employee);
+                setMessageSnackbar('Empleado actualizado correctamente');
+                setTypeSnackbar('success');
+            }
+            else
+            {
+                addEmployee(employee);
+                setMessageSnackbar('Empleado agregado correctamente');
+                setTypeSnackbar('success');
+            }
+            handleOpenSnackbar();
+            handleCloseForm();
+        }
+    }
+    const handleOnBlur = (event) => {
+        const {name} = event.target;
+        validateEmployeeOnBlur(employee, name);
+    }
+
+    const handleDelete = (event) => {
+        event.preventDefault();
+        deleteEmployee(employee);
+        setMessageSnackbar('Empleado eliminado correctamente');
+        setTypeSnackbar('success');
+        handleOpenSnackbar();
+        handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {
         getEmployeeError();
@@ -195,24 +233,35 @@ export function EmployeeState(props) {
                 TABLE_HEAD,
                 employee,
                 employees,
+                openForm,
+                edit,
+                openSnackbar,
+                messageSnackbar,
+                typeSnackbar,
                 getEmployees,
+                handleInputChange,
+                handleSubmit,
+                handleOnBlur,
                 handleOpenForm,
                 handleCloseForm,
                 handleOpenDelete,
+                handleCloseDelete,
+                handleCloseSnackbar,
                 filterName,
                 order,
                 orderBy,
                 page,
                 rowsPerPage,
                 selected,
+                filteredCustomers,
+                emptyRows,
+                isNotFound,
                 handleRequestSort,
                 handleClick,
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                filteredCustomers,
-                emptyRows,
-                isNotFound}}>
+                employeeError}}>
             {props.children}
         </EmployeeContext.Provider>
     )
