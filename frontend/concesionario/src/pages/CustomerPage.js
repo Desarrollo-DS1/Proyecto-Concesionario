@@ -70,11 +70,17 @@ export default function CustomerPage() {
     setOpenSnackbar,
     openForm,
     setOpenForm,
-    edit} = useContext(CustomerContext);
+    edit,
+    customers,
+    setCustomers} = useContext(CustomerContext);
+
+  // useEffect(() => {
+  //       getCustomers();
+  //   }, []);
 
   useEffect(() => {
-        getCustomers();
-    }, []);
+    setCustomers(customers);
+  }, [customers]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -196,7 +202,7 @@ export default function CustomerPage() {
 
                         <TableCell align="right">
                           <div style={{ display: 'flex' }}>
-                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />
                             </IconButton>
 
