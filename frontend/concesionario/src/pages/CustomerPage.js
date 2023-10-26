@@ -28,6 +28,7 @@ import CustomerListHead from "../sections/@dashboard/customer/CustomerListHead";
 // mock
 import USERLIST from '../_mock/user';
 import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
+import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 import CustomerContext from "../hooks/customer/CustomerContext";
 
 // ----------------------------------------------------------------------
@@ -70,11 +71,20 @@ export default function CustomerPage() {
     setOpenSnackbar,
     openForm,
     setOpenForm,
-    edit} = useContext(CustomerContext);
+    edit,
+    customers,
+    setCustomers,
+    deleteCustomer,
+    openDelete,
+    setOpenDelete} = useContext(CustomerContext);
+
+  // useEffect(() => {
+  //       getCustomers();
+  //   }, []);
 
   useEffect(() => {
-        getCustomers();
-    }, []);
+    setCustomers(customers);
+  }, [customers]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason === 'clickaway') {
@@ -132,6 +142,15 @@ export default function CustomerPage() {
     setFilterName(event.target.value);
   };
 
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  }
+
+  const handleOpenDelete = (event, id) => {
+    getCustomer(id);
+    setOpenDelete(true);
+  }
+
   return (
     <>
       <Helmet>
@@ -149,6 +168,8 @@ export default function CustomerPage() {
         </Stack>
 
         <CustomerForm open={openForm} onClose={handleCloseForm} onSuccess={handleOpenSnackbar}/>
+
+        <CustomerDelete open={openDelete} onClose={handleCloseDelete} />
 
         <Card>
           <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
@@ -196,11 +217,11 @@ export default function CustomerPage() {
 
                         <TableCell align="right">
                           <div style={{ display: 'flex' }}>
-                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />
                             </IconButton>
 
-                            <IconButton color="error">
+                            <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
                               <DeleteIcon />
                             </IconButton>
                           </div>
@@ -260,6 +281,7 @@ export default function CustomerPage() {
           {edit? 'Cliente actualizado correctamente' : 'Cliente guardado correctamente'}
         </Alert>
       </Snackbar>
+
     </>
   );
 }

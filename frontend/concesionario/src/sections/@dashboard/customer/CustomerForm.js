@@ -16,7 +16,7 @@ import CustomerContext from "../../../hooks/customer/CustomerContext";
 
 export default function CustomerForm(props) {
 
-    const {customer, editCustomer, customerError, edit, validateCustomerOnSubmit, validateCustomerOnBlur, setOpenSnackbar} = useContext(CustomerContext);
+    const {customer, editCustomer, customerError, edit, validateCustomerOnSubmit, validateCustomerOnBlur, setOpenSnackbar, addCustomer, updateCustomer} = useContext(CustomerContext);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -29,6 +29,14 @@ export default function CustomerForm(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateCustomerOnSubmit()) {
+            if(edit)
+            {
+                updateCustomer(customer);
+            }
+            else
+            {
+                addCustomer(customer);
+            }
             setOpenSnackbar(true);
             props.onClose();
         }

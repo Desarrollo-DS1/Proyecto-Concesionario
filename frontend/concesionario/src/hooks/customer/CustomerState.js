@@ -50,12 +50,13 @@ export function CustomerState(props) {
     const [selected, setSelected] = React.useState([]);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [openForm, setOpenForm] = useState(false);
+    const [openDelete, setOpenDelete] = useState(false);
 
     const getCustomers = () => {
         setCustomers(USERLIST);
     }
-    const getCustomer = (id) => {
-        const customer = USERLIST.find(customer => customer.id === id);
+    const getCustomer = (cedula) => {
+        const customer = customers.find(customer => customer.cedula === cedula);
         if(customer)
         {
             setCustomer(customer)
@@ -67,6 +68,19 @@ export function CustomerState(props) {
             setEdit(false)
         }
     }
+
+    const addCustomer = (customer) => {
+        setCustomers([...customers, customer])
+    }
+
+    const updateCustomer = (customer) => {
+        setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+    }
+
+    const deleteCustomer = (customer) => {
+        setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+    }
+
     const editCustomer = (customer) => {
         setCustomer(customer)
     }
@@ -88,8 +102,8 @@ export function CustomerState(props) {
         setCustomerError({...customerError, [name]: checkCustomer(customer, name)});
     };
 
-    const filteredCustomers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0;
     const isNotFound = !filteredCustomers.length && !!filterName;
 
     return (
@@ -124,7 +138,13 @@ export function CustomerState(props) {
                 openSnackbar,
                 setOpenSnackbar,
                 openForm,
-                setOpenForm}}>
+                setOpenForm,
+                addCustomer,
+                updateCustomer,
+                deleteCustomer,
+                setCustomers,
+                openDelete,
+                setOpenDelete}}>
             {props.children}
         </CustomerContext.Provider>
     )
