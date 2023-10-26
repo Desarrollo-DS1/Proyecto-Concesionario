@@ -76,7 +76,7 @@ export function EmployeeState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getEmployees = () => {
-        setEmployees(employees);
+        setEmployees(EMPLOYEELIST);
     }
     const getEmployee = (cedula) => {
         const employee = employees.find(employee => employee.cedula === cedula);
@@ -212,9 +212,7 @@ export function EmployeeState(props) {
     const getEmployeeError = () => {
         setEmployeeError(emptyError)
     }
-    const editEmployeeError = (employeeError) => {
-        setEmployeeError(employeeError)
-    }
+
     const validateEmployeeOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(employeeError).forEach((name) => {
@@ -238,9 +236,11 @@ export function EmployeeState(props) {
                 openSnackbar,
                 messageSnackbar,
                 typeSnackbar,
+                openDelete,
                 getEmployees,
                 handleInputChange,
                 handleSubmit,
+                handleDelete,
                 handleOnBlur,
                 handleOpenForm,
                 handleCloseForm,
