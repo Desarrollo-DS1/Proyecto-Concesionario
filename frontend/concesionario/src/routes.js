@@ -10,6 +10,8 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
+import {EmployeeState} from "./hooks/employee/EmployeeState";
+import EmployeePage from "./pages/EmployeePage";
 
 // ----------------------------------------------------------------------
 
@@ -22,7 +24,7 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'clientes', element: <CustomerState><CustomerPage /></CustomerState>},
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },
