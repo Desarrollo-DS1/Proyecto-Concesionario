@@ -53,7 +53,7 @@ export function ModelState(props) {
         setModels(MODELIST);
     }
     const getModel = (id) => {
-        const model = models.find(model => model.cedula === id);
+        const model = models.find(model => model.id === id);
         if(model)
         {
             setModel(model)
