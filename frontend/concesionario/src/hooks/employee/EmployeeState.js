@@ -67,6 +67,36 @@ export function EmployeeState(props) {
         cargo: "",
     }
 
+    const initialBloodTypes = [
+        { id: '1', label: 'A+' },
+        { id: '2', label: 'A-' },
+        { id: '3', label: 'B+' },
+        { id: '4', label: 'B-' },
+        { id: '5', label: 'AB+' },
+        { id: '6', label: 'AB-' },
+        { id: '7', label: 'O+' },
+        { id: '8', label: 'O-' },]
+
+    const initialEpss = [
+        { id: '1', label: 'Sura' },
+        { id: '2', label: 'Sanitas' },
+        { id: '3', label: 'Coomeva' },
+        { id: '4', label: 'Compensar' },
+        { id: '5', label: 'Salud Total' },
+        { id: '6', label: 'Nueva EPS' },
+        { id: '7', label: 'Medimas' },
+        { id: '8', label: 'Aliansalud' },
+        { id: '9', label: 'Cafesalud' },
+        { id: '10', label: 'Famisanar' },]
+
+    const initialPositions = [
+        { id: '1', label: 'Vendedor' },
+        { id: '2', label: 'Jefe de Taller' },]
+
+    const initialGenders = [
+        { id: '1', label: 'Masculino' },
+        { id: '2', label: 'Femenino' },]
+
     const [employee, setEmployee] = React.useState(emptyEmployee);
     const [employees, setEmployees] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
@@ -74,9 +104,31 @@ export function EmployeeState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
+    const [bloodTypes, setBloodTypes] = useState(initialBloodTypes);
+    const [epss, setEpss] = useState(initialEpss);
+    const [arls, setArls] = useState(initialEpss);
+    const [positions, setPositions] = useState(initialPositions);
+    const [genders, setGenders] = useState(initialGenders);
 
     const getEmployees = () => {
+        // Aqui se aplicaria el axios.get
         setEmployees(employees);
+    }
+    const getBloodTypes = () => {
+        // Aqui se aplicaria el axios.get
+        setBloodTypes(initialBloodTypes);
+    }
+    const getEpss = () => {
+        // Aqui se aplicaria el axios.get
+        setEpss(initialEpss);
+    }
+    const getArls = () => {
+        // Aqui se aplicaria el axios.get
+        setArls(initialEpss);
+    }
+    const getPositions = () => {
+        // Aqui se aplicaria el axios.get
+        setPositions(initialPositions);
     }
     const getEmployee = (cedula) => {
         const employee = employees.find(employee => employee.cedula === cedula);
@@ -231,6 +283,11 @@ export function EmployeeState(props) {
                 TABLE_HEAD,
                 employee,
                 employees,
+                epss,
+                arls,
+                positions,
+                bloodTypes,
+                genders,
                 openForm,
                 edit,
                 openSnackbar,
@@ -238,6 +295,10 @@ export function EmployeeState(props) {
                 typeSnackbar,
                 openDelete,
                 getEmployees,
+                getBloodTypes,
+                getEpss,
+                getArls,
+                getPositions,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,

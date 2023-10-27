@@ -64,13 +64,13 @@ export default function ModelPage() {
         getModels();
     }, [models]);
 
-    useEffect(() => {
-        getBodyworks();
-    }, [bodyworks]);
-
-    useEffect(() => {
-        getFuels();
-    }, [fuels]);
+    // useEffect(() => {
+    //     getBodyworks();
+    // }, [bodyworks]);
+    //
+    // useEffect(() => {
+    //     getFuels();
+    // }, [fuels]);
 
     return (
         <>

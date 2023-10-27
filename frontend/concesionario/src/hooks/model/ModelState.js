@@ -76,8 +76,8 @@ export function ModelState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [bodyworks, setBodyworks] = useState([]);
-    const [fuels, setFuels] = useState([]);
+    const [bodyworks, setBodyworks] = useState(initialBodyworks);
+    const [fuels, setFuels] = useState(initialFuels);
 
     const getModels = () => {
         // Aqui se aplicaria el axios.get

@@ -6,7 +6,7 @@ import {
     Divider,
     Grid, InputAdornment,
     MenuItem,
-    Stack, Tab, Tabs,
+    Stack,
     TextField,
     Typography
 } from "@mui/material";
@@ -55,6 +55,11 @@ export default function EmployeeForm() {
 
     const {
         employee,
+        bloodTypes,
+        epss,
+        arls,
+        positions,
+        genders,
         openForm,
         handleInputChange,
         handleOnBlur,
@@ -260,9 +265,11 @@ export default function EmployeeForm() {
                           helperText={employeeError.genero}
                           style={textFieldStyle}
                       >
-                          <MenuItem  key="0" value="Masculino" name={"genero"}>Masculino</MenuItem >
-                          <MenuItem  key="1" value="Femenino" >Femenino</MenuItem >
-                          <MenuItem  key="2" value="Otro" >Otro</MenuItem >
+                          {genders.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                              </MenuItem>
+                          ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={3}>
@@ -313,14 +320,11 @@ export default function EmployeeForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                          <MenuItem  key="0" value="A+">A+</MenuItem >
-                          <MenuItem  key="1" value="O+" >O+</MenuItem >
-                          <MenuItem  key="2" value="B+" >B+</MenuItem >
-                          <MenuItem  key="3" value="AB+" >AB+</MenuItem >
-                          <MenuItem  key="4" value="A-" >A-</MenuItem >
-                          <MenuItem  key="5" value="O-" >O-</MenuItem >
-                          <MenuItem  key="6" value="B-" >B-</MenuItem >
-                          <MenuItem  key="7" value="AB-" >AB-</MenuItem >
+                            {bloodTypes.map((option) => (
+                                <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -354,9 +358,11 @@ export default function EmployeeForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                          <MenuItem  key="0" value="SURA">SURA</MenuItem >
-                          <MenuItem  key="1" value="Confenalco" >Confenalco</MenuItem >
-                          <MenuItem  key="2" value="Sanitas" >Sanitas</MenuItem >
+                            {epss.map((option) => (
+                                <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -376,9 +382,11 @@ export default function EmployeeForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                          <MenuItem  key="0" value="SURA">SURA</MenuItem >
-                          <MenuItem  key="1" value="Confenalco" >Confenalco</MenuItem >
-                          <MenuItem  key="2" value="Sanitas" >Sanitas</MenuItem >
+                          {arls.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                              </MenuItem>
+                          ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={4}>
@@ -398,8 +406,11 @@ export default function EmployeeForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                          <MenuItem  key="0" value="Vendedor">Vendedor</MenuItem >
-                          <MenuItem  key="1" value="Jefe de Taller" >Jefe de Taller</MenuItem >
+                            {positions.map((option) => (
+                                <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
