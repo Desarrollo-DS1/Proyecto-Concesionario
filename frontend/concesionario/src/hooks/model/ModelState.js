@@ -50,7 +50,7 @@ export function ModelState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getModels = () => {
-        setModels(MODELIST);
+        setModels(models);
     }
     const getModel = (id) => {
         const model = models.find(model => model.id === id);

@@ -4,7 +4,7 @@ import {
     Box,
     Button,
     Divider,
-    Grid, InputAdornment,
+    Grid, InputAdornment, MenuItem,
     Stack,
     TextField,
     Typography
@@ -109,7 +109,7 @@ export default function ModelForm() {
                           error={modelError.nombre !== ""}
                           fullWidth
                           required
-                          name="primerNombre"
+                          name="nombre"
                           value={model.nombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
@@ -118,14 +118,48 @@ export default function ModelForm() {
                           style={textFieldStyle}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={3}>
+                  <Grid item xs={12} sm={4}>
+                      <TextField
+                          select
+                          error={modelError.carroceria !== ''}
+                          fullWidth
+                          required
+                          name={"carroceria"}
+                          value={model.carroceria}
+                          onChange={handleInputChange}
+                          onBlur={handleOnBlur}
+                          label="Carroceria" variant="outlined"
+                          helperText={modelError.carroceria}
+                          style={textFieldStyle}
+                          SelectProps={{
+                              MenuProps: selectMenuProps
+                          }}
+                      >
+                            <MenuItem value={"Sedan"}>Sedan</MenuItem>
+                            <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
+                            <MenuItem value={"Station Wagon"}>Station Wagon</MenuItem>
+                            <MenuItem value={"SUV"}>SUV</MenuItem>
+                            <MenuItem value={"Pickup"}>Pickup</MenuItem>
+                            <MenuItem value={"Van"}>Van</MenuItem>
+                            <MenuItem value={"Convertible"}>Convertible</MenuItem>
+                            <MenuItem value={"Coupe"}>Coupe</MenuItem>
+                            <MenuItem value={"Roadster"}>Roadster</MenuItem>
+                            <MenuItem value={"Deportivo"}>Deportivo</MenuItem>
+                            <MenuItem value={"Muscle Car"}>Muscle Car</MenuItem>
+                            <MenuItem value={"Todoterreno"}>Todoterreno</MenuItem>
+                            <MenuItem value={"Crossover"}>Crossover</MenuItem>
+                            <MenuItem value={"Furgon"}>Furgon</MenuItem>
+                            <MenuItem value={"Microbus"}>Microbus</MenuItem>
+                            <MenuItem value={"Minivan"}>Minivan</MenuItem>
+                        </TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={2}>
                       <TextField
                           error={modelError.año !== ''}
-                          InputLabelProps={{ shrink: true }}
                           fullWidth
-                          type={"year"}
                           required
                           name={"año"}
+                          type={"text"}
                           value={model.año}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
@@ -133,25 +167,11 @@ export default function ModelForm() {
                           helperText={modelError.año}
                           style={textFieldStyle}
                           inputProps={{
-                              max: new Date().getFullYear(), // Establece el año actual como el valor máximo permitido.
+                              maxLength: 4,
                           }}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                      <TextField
-                          error={modelError.carroceria !== ''}
-                          fullWidth
-                          required
-                          name={"primerApellido"}
-                          value={model.carroceria}
-                          onChange={handleInputChange}
-                          onBlur={handleOnBlur}
-                          label="Carroceria" variant="outlined"
-                          helperText={modelError.carroceria}
-                          style={textFieldStyle}
-                      />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={3}>
                       <TextField
                           error={modelError.cilindraje !== ''}
                           fullWidth
@@ -164,7 +184,7 @@ export default function ModelForm() {
                           style={textFieldStyle}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12} sm={3}>
                       <TextField
                           error={modelError.potencia !== ''}
                           fullWidth
@@ -180,6 +200,7 @@ export default function ModelForm() {
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
+                          select
                           error={modelError.combustible !== ''}
                           fullWidth
                           required
@@ -190,7 +211,12 @@ export default function ModelForm() {
                           label="Combustible" variant="outlined"
                           helperText={modelError.combustible}
                           style={textFieldStyle}
-                      />
+                      >
+                            <MenuItem value={"Gasolina"}>Gasolina</MenuItem>
+                            <MenuItem value={"Diesel"}>Diesel</MenuItem>
+                            <MenuItem value={"Electrico"}>Electrico</MenuItem>
+                            <MenuItem value={"Hibrido"}>Hibrido</MenuItem>
+                      </TextField>
                   </Grid>
                   <Grid item xs={12} sm={3}>
                       <TextField
@@ -206,7 +232,7 @@ export default function ModelForm() {
                           style={textFieldStyle}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={3}>
+                  <Grid item xs={12} sm={6}>
                       <TextField
                           error={modelError.precioBase !== ''}
                           fullWidth
@@ -218,6 +244,7 @@ export default function ModelForm() {
                           label="Precio Base" variant="outlined"
                           helperText={modelError.precioBase}
                           style={textFieldStyle}
+                          InputProps={inputProps}
                       />
                   </Grid>
               </Grid>
