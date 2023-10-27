@@ -24,10 +24,11 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-// import ModelForm from "../sections/@dashboard/model/ModelForm";
+import ModelForm from "../sections/@dashboard/model/ModelForm";
 // import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
 import ModelContext from "../hooks/model/ModelContext";
+
 
 
 
@@ -37,13 +38,16 @@ export default function ModelPage() {
 
     const {
         models,
+        bodyworks,
+        fuels,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
         getModels,
+        getBodyworks,
+        getFuels,
         handleOpenForm,
         handleOpenDelete,
-        handleCloseDelete,
         handleCloseSnackbar,
         filterName,
         page,
@@ -60,6 +64,14 @@ export default function ModelPage() {
         getModels();
     }, [models]);
 
+    // useEffect(() => {
+    //     getBodyworks();
+    // }, [bodyworks]);
+    //
+    // useEffect(() => {
+    //     getFuels();
+    // }, [fuels]);
+
     return (
         <>
             <Helmet>
@@ -75,6 +87,8 @@ export default function ModelPage() {
                         Modelo
                     </Button>
                 </Stack>
+
+                <ModelForm />
 
                 <Card>
                     <ListToolbar context={ModelContext} name={"modelo"}/>

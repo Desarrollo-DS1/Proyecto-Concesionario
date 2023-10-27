@@ -35,13 +35,20 @@ export default function EmployeePage() {
 
     const {
         employees,
+        bloodTypes,
+        epss,
+        arls,
+        positions,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
         getEmployees,
+        getBloodTypes,
+        getEpss,
+        getArls,
+        getPositions,
         handleOpenForm,
         handleOpenDelete,
-        handleCloseDelete,
         handleCloseSnackbar,
         filterName,
         page,
@@ -57,6 +64,22 @@ export default function EmployeePage() {
     useEffect(() => {
         getEmployees();
     }, [employees]);
+
+    // useEffect(() => {
+    //     getBloodTypes();
+    // }, [bloodTypes]);
+    //
+    // useEffect(() => {
+    //     getEpss();
+    // }, [epss]);
+    //
+    // useEffect(() => {
+    //     getArls();
+    // }, [arls]);
+    //
+    // useEffect(() => {
+    //     getPositions();
+    // }, [positions]);
 
     return (
         <>

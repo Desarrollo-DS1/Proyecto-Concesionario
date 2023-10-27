@@ -41,6 +41,34 @@ export function ModelState(props) {
         precioBase: "",
     }
 
+    const initialBodyworks = [
+        { id: '1', label: 'Sedan' },
+        { id: '2', label: 'Hatchback' },
+        { id: '3', label: 'Station Wagon' },
+        { id: '4', label: 'Pickup' },
+        { id: '5', label: 'SUV' },
+        { id: '6', label: 'Van' },
+        { id: '7', label: 'Convertible' },
+        { id: '8', label: 'Coupe' },
+        { id: '9', label: 'Roadster' },
+        { id: '10', label: 'Camion' },
+        { id: '11', label: 'Camioneta' },
+        { id: '12', label: 'Bus' },
+        { id: '13', label: 'Minivan' },
+        { id: '14', label: 'Microbus' },
+        { id: '15', label: 'Micro' },
+        { id: '16', label: 'Tracto Camion' },
+        { id: '17', label: 'Trailer' },]
+
+    const initialFuels = [
+        { id: '1', label: 'Gasolina' },
+        { id: '2', label: 'Diesel' },
+        { id: '3', label: 'Electrico' },
+        { id: '4', label: 'Hibrido' },
+        { id: '5', label: 'Gas' },
+        { id: '6', label: 'Gas Natural' },
+        { id: '7', label: 'Gas Licuado' },]
+
     const [model, setModel] = React.useState(emptyModel);
     const [models, setModels] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
@@ -48,12 +76,23 @@ export function ModelState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
+    const [bodyworks, setBodyworks] = useState(initialBodyworks);
+    const [fuels, setFuels] = useState(initialFuels);
 
     const getModels = () => {
-        setModels(MODELIST);
+        // Aqui se aplicaria el axios.get
+        setModels(models);
+    }
+    const getBodyworks = () => {
+        // Aqui se aplicaria el axios.get
+        setBodyworks(initialBodyworks);
+    }
+    const getFuels = () => {
+        // Aqui se aplicaria el axios.get
+        setFuels(initialFuels);
     }
     const getModel = (id) => {
-        const model = models.find(model => model.cedula === id);
+        const model = models.find(model => model.id === id);
         if(model)
         {
             setModel(model)
@@ -204,6 +243,8 @@ export function ModelState(props) {
                 TABLE_HEAD,
                 model,
                 models,
+                bodyworks,
+                fuels,
                 openForm,
                 edit,
                 openSnackbar,
@@ -211,6 +252,8 @@ export function ModelState(props) {
                 typeSnackbar,
                 openDelete,
                 getModels,
+                getBodyworks,
+                getFuels,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
