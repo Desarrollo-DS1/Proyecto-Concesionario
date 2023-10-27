@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {
     Box,
     Button,
     Divider,
-    Grid,
-    MenuItem, Snackbar,
+    Grid, InputAdornment,
+    MenuItem,
     Stack,
     TextField,
     Typography
@@ -14,42 +14,34 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import CustomerContext from "../../../hooks/customer/CustomerContext";
 
+const scrollBarStyle = {
+    scrollbarWidth: 'thin', // Para navegadores que no sean webkit
+    scrollbarColor: '#888 #f1f1f1', // Color del pulgar y del riel
+    WebkitOverflowScrolling: 'touch',
+    '&::-webkit-scrollbar': {
+        width: '10px',
+    },
+    '&::-webkit-scrollbar-thumb': {
+        background: '#888',
+        borderRadius: '12px',
+    },
+    '&::-webkit-scrollbar-thumb:hover': {
+        background: '#555',
+    },
+}
+
 export default function CustomerForm(props) {
 
-    const {customer, editCustomer, customerError, edit, validateCustomerOnSubmit, validateCustomerOnBlur, setOpenSnackbar, addCustomer, updateCustomer} = useContext(CustomerContext);
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        editCustomer({
-            ...customer,
-            [name]: value
-        });
-    };
-
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (!validateCustomerOnSubmit()) {
-            if(edit)
-            {
-                updateCustomer(customer);
-            }
-            else
-            {
-                addCustomer(customer);
-            }
-            setOpenSnackbar(true);
-            props.onClose();
-        }
-    };
-
-    const handleModalClose = () => {
-        props.onClose();
-    };
-
-    const handleOnBlur = (event) => {
-        const {name} = event.target;
-        validateCustomerOnBlur(customer, name);
-    }
+    const {
+        customer,
+        genders,
+        openForm,
+        handleInputChange,
+        handleOnBlur,
+        handleCloseForm,
+        handleSubmit,
+        customerError,
+        edit} = useContext(CustomerContext);
 
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -66,14 +58,16 @@ export default function CustomerForm(props) {
         boxShadow: 24,
         p: 4,
         borderRadius: 2,
+
+        ...(isSmallScreen ? {} : {scrollBarStyle}),
     };
 
     const textFieldStyle = { minHeight: "5rem" };
 
     return (
       <Modal
-          open={props.open}
-          onClose={handleModalClose}
+          open={openForm}
+          onClose={handleCloseForm}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
       >
@@ -99,7 +93,7 @@ export default function CustomerForm(props) {
                           value={customer.primerNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-error-helper-text" label="Primer Nombre" variant="outlined"
+                          label="Primer Nombre" variant="outlined"
                           helperText={customerError.primerNombre}
                           style={textFieldStyle}
                       />
@@ -112,7 +106,7 @@ export default function CustomerForm(props) {
                           value={customer.segundoNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Segundo Nombre" variant="outlined"
+                          label="Segundo Nombre" variant="outlined"
                           helperText={customerError.segundoNombre}
                           style={textFieldStyle}
                       />
@@ -126,7 +120,7 @@ export default function CustomerForm(props) {
                           value={customer.primerApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Primer Apellido" variant="outlined"
+                          label="Primer Apellido" variant="outlined"
                           helperText={customerError.primerApellido}
                           style={textFieldStyle}
                       />
@@ -139,7 +133,7 @@ export default function CustomerForm(props) {
                           value={customer.segundoApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Segundo Apellido" variant="outlined"
+                          label="Segundo Apellido" variant="outlined"
                           helperText={customerError.segundoApellido}
                           style={textFieldStyle}
                       />
@@ -154,7 +148,7 @@ export default function CustomerForm(props) {
                           value={customer.cedula}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Cedula" variant="outlined"
+                          label="Cedula" variant="outlined"
                           helperText={customerError.cedula}
                           style={textFieldStyle}
                           disabled={edit}
@@ -169,7 +163,7 @@ export default function CustomerForm(props) {
                           value={customer.telefono}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Telefono" variant="outlined"
+                          label="Telefono" variant="outlined"
                           helperText={customerError.telefono}
                           style={textFieldStyle}
                       />
@@ -183,7 +177,7 @@ export default function CustomerForm(props) {
                           value={customer.celular}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Celular" variant="outlined"
+                          label="Celular" variant="outlined"
                           helperText={customerError.celular}
                           style={textFieldStyle}
                       />
@@ -197,7 +191,7 @@ export default function CustomerForm(props) {
                           value={customer.ciudad}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Ciudad" variant="outlined"
+                          label="Ciudad" variant="outlined"
                           helperText={customerError.ciudad}
                           style={textFieldStyle}
                       />
@@ -211,7 +205,7 @@ export default function CustomerForm(props) {
                           value={customer.direccion}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Direccion" variant="outlined"
+                          label="Direccion" variant="outlined"
                           helperText={customerError.direccion}
                           style={textFieldStyle}
                       />
@@ -227,7 +221,7 @@ export default function CustomerForm(props) {
                           value={customer.fechaNacimiento}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Fecha de Nacimiento" variant="outlined"
+                          label="Fecha de Nacimiento" variant="outlined"
                           helperText={customerError.fechaNacimiento}
                           style={textFieldStyle}
                       />
@@ -242,13 +236,15 @@ export default function CustomerForm(props) {
                           value={customer.genero}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Genero" variant="outlined"
+                          label="Genero" variant="outlined"
                           helperText={customerError.genero}
                           style={textFieldStyle}
                       >
-                          <MenuItem  key="0" value="male" name={"genero"}>Masculino</MenuItem >
-                          <MenuItem  key="1" value="female" >Femenino</MenuItem >
-                          <MenuItem  key="2" value="Otro" >Otro</MenuItem >
+                          {genders.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                  {option.label}
+                              </MenuItem>
+                          ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -260,7 +256,7 @@ export default function CustomerForm(props) {
                           value={customer.correo}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Correo" variant="outlined"
+                          label="Correo" variant="outlined"
                           helperText={customerError.correo}
                           style={textFieldStyle}
                       />
@@ -274,7 +270,7 @@ export default function CustomerForm(props) {
                           value={customer.clave}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Contraseña" variant="outlined"
+                          label="Contraseña" variant="outlined"
                           helperText={customerError.clave}
                           style={textFieldStyle}
                       />
@@ -285,7 +281,7 @@ export default function CustomerForm(props) {
                   <Button variant="contained" type="submit">
                       {edit? "Editar" : "Agregar"}
                   </Button>
-                  <Button variant="contained" onClick={handleModalClose}>
+                  <Button variant="contained" onClick={handleCloseForm}>
                       Cancelar
                   </Button>
               </Stack>

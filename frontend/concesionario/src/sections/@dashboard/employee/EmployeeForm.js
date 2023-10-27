@@ -77,7 +77,7 @@ export default function EmployeeForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : '93%',
+        height: isSmallScreen ? '80%' : 'auto',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
@@ -119,7 +119,7 @@ export default function EmployeeForm() {
                           value={employee.primerNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-error-helper-text" label="Primer Nombre" variant="outlined"
+                          label="Primer Nombre" variant="outlined"
                           helperText={employeeError.primerNombre}
                           style={textFieldStyle}
                       />
@@ -132,7 +132,7 @@ export default function EmployeeForm() {
                           value={employee.segundoNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Segundo Nombre" variant="outlined"
+                          label="Segundo Nombre" variant="outlined"
                           helperText={employeeError.segundoNombre}
                           style={textFieldStyle}
                       />
@@ -146,7 +146,7 @@ export default function EmployeeForm() {
                           value={employee.primerApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Primer Apellido" variant="outlined"
+                          label="Primer Apellido" variant="outlined"
                           helperText={employeeError.primerApellido}
                           style={textFieldStyle}
                       />
@@ -159,7 +159,7 @@ export default function EmployeeForm() {
                           value={employee.segundoApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Segundo Apellido" variant="outlined"
+                          label="Segundo Apellido" variant="outlined"
                           helperText={employeeError.segundoApellido}
                           style={textFieldStyle}
                       />
@@ -173,7 +173,7 @@ export default function EmployeeForm() {
                           value={employee.cedula}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Cedula" variant="outlined"
+                          label="Cedula" variant="outlined"
                           helperText={employeeError.cedula}
                           style={textFieldStyle}
                           disabled={edit}
@@ -188,7 +188,7 @@ export default function EmployeeForm() {
                           value={employee.telefono}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Telefono" variant="outlined"
+                          label="Telefono" variant="outlined"
                           helperText={employeeError.telefono}
                           style={textFieldStyle}
                       />
@@ -202,7 +202,7 @@ export default function EmployeeForm() {
                           value={employee.celular}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Celular" variant="outlined"
+                          label="Celular" variant="outlined"
                           helperText={employeeError.celular}
                           style={textFieldStyle}
                       />
@@ -216,7 +216,7 @@ export default function EmployeeForm() {
                           value={employee.ciudad}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Ciudad" variant="outlined"
+                          label="Ciudad" variant="outlined"
                           helperText={employeeError.ciudad}
                           style={textFieldStyle}
                       />
@@ -230,7 +230,7 @@ export default function EmployeeForm() {
                           value={employee.direccion}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Direccion" variant="outlined"
+                          label="Direccion" variant="outlined"
                           helperText={employeeError.direccion}
                           style={textFieldStyle}
                       />
@@ -246,7 +246,7 @@ export default function EmployeeForm() {
                           value={employee.fechaNacimiento}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Fecha de Nacimiento" variant="outlined"
+                          label="Fecha de Nacimiento" variant="outlined"
                           helperText={employeeError.fechaNacimiento}
                           style={textFieldStyle}
                       />
@@ -261,7 +261,7 @@ export default function EmployeeForm() {
                           value={employee.genero}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Genero" variant="outlined"
+                          label="Genero" variant="outlined"
                           helperText={employeeError.genero}
                           style={textFieldStyle}
                       >
@@ -422,7 +422,7 @@ export default function EmployeeForm() {
                           value={employee.correo}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Correo" variant="outlined"
+                          label="Correo" variant="outlined"
                           helperText={employeeError.correo}
                           style={textFieldStyle}
                       />
@@ -436,7 +436,7 @@ export default function EmployeeForm() {
                           value={employee.clave}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          id="outlined-basic" label="Contraseña" variant="outlined"
+                          label="Contraseña" variant="outlined"
                           helperText={employeeError.clave}
                           style={textFieldStyle}
                       />

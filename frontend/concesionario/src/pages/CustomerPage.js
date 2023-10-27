@@ -91,17 +91,17 @@ export default function CustomerPage() {
           </Button>
         </Stack>
 
-        <CustomerForm open={openForm} onClose={handleCloseForm} onSuccess={handleOpenSnackbar}/>
+        <CustomerForm/>
 
-        <CustomerDelete open={openDelete} onClose={handleCloseDelete} />
+        <CustomerDelete/>
 
         <Card>
-          <ListToolbar context={CustomerContext} />
+          <ListToolbar context={CustomerContext} name={"cliente"} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
-                <ListHead context={CustomerContext} name={"cliente"} />
+                <ListHead context={CustomerContext} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
@@ -184,7 +184,7 @@ export default function CustomerPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={customers.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
