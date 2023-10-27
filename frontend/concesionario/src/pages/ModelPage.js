@@ -25,7 +25,7 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import ModelForm from "../sections/@dashboard/model/ModelForm";
-// import ModelDelete from "../sections/@dashboard/model/ModelDelete";
+import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
 import ModelContext from "../hooks/model/ModelContext";
 
@@ -89,6 +89,8 @@ export default function ModelPage() {
                 </Stack>
 
                 <ModelForm />
+
+                <ModelDelete />
 
                 <Card>
                     <ListToolbar context={ModelContext} name={"modelo"}/>
