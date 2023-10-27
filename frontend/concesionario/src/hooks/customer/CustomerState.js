@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import USERLIST from '../../_mock/user';
+import CUSTOMERLIST from '../../_mock/customer';
 import CustomerContext from './CustomerContext';
 import {checkCustomer} from "./CustomerValidation";
 import {applySortFilter, getComparator} from "./CustomerFilter";
@@ -53,7 +53,7 @@ export function CustomerState(props) {
     const [openDelete, setOpenDelete] = useState(false);
 
     const getCustomers = () => {
-        setCustomers(USERLIST);
+        setCustomers(CUSTOMERLIST);
     }
     const getCustomer = (cedula) => {
         const customer = customers.find(customer => customer.cedula === cedula);

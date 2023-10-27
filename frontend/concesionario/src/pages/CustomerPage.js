@@ -26,7 +26,7 @@ import Scrollbar from '../components/scrollbar';
 import CustomerListToolbar from "../sections/@dashboard/customer/CustomerListToolbar";
 import CustomerListHead from "../sections/@dashboard/customer/CustomerListHead";
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../_mock/customer';
 import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 import CustomerContext from "../hooks/customer/CustomerContext";

@@ -12,6 +12,8 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import {EmployeeState} from "./hooks/employee/EmployeeState";
 import EmployeePage from "./pages/EmployeePage";
+import {ModelState} from "./hooks/model/ModelState";
+import ModelPage from "./pages/ModelPage";
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +27,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'clientes', element: <CustomerState><CustomerPage /></CustomerState>},
         { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
+        { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
         { path: 'blog', element: <BlogPage /> },
       ],
     },

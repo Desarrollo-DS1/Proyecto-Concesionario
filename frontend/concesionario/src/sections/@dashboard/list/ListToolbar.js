@@ -33,13 +33,13 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function EmployeeListToolbar() {
+export default function ListToolbar(props) {
 
   const {
     filterName,
     handleFilterByName,
     selected,
-  }= useContext(EmployeeContext);
+  }= useContext(props.context);
 
   return (
     <StyledRoot
@@ -58,7 +58,7 @@ export default function EmployeeListToolbar() {
         <StyledSearch
           value={filterName}
           onChange={handleFilterByName}
-          placeholder="Buscar empleado..."
+          placeholder={`Buscar ${props.name}...`}
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
