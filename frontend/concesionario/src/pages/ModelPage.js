@@ -24,21 +24,23 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
-import EmployeeDelete from "../sections/@dashboard/employee/EmployeeDelete";
+// import ModelForm from "../sections/@dashboard/model/ModelForm";
+// import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
-import EmployeeContext from "../hooks/employee/EmployeeContext";
+import ModelContext from "../hooks/model/ModelContext";
+
+
 
 // ----------------------------------------------------------------------
 
-export default function EmployeePage() {
+export default function ModelPage() {
 
     const {
-        employees,
+        models,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
-        getEmployees,
+        getModels,
         handleOpenForm,
         handleOpenDelete,
         handleCloseDelete,
@@ -50,44 +52,39 @@ export default function EmployeePage() {
         handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        filteredEmployees,
+        filteredModels,
         emptyRows,
-        isNotFound} = useContext(EmployeeContext);
+        isNotFound} = useContext(ModelContext);
 
     useEffect(() => {
-        getEmployees();
-    }, [employees]);
+        getModels();
+    }, [models]);
 
     return (
         <>
             <Helmet>
-                <title>Empleados</title>
+                <title>Modelos</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        Empleados
+                        Modelos
                     </Typography>
                     <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-                        Empleado
+                        Modelo
                     </Button>
                 </Stack>
 
-                <EmployeeForm />
-
-                <EmployeeDelete />
-
                 <Card>
-                    <ListToolbar context={EmployeeContext} name={"empleado"}/>
+                    <ListToolbar context={ModelContext} name={"modelo"}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={EmployeeContext}/>
+                                <ListHead context={ModelContext} />
                                 <TableBody>
-                                    {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave, fechaIngreso, fechaRetiro, salario, tipoSangre, eps, arl, cargo} = row;
-                                        const nombre = `${primerNombre} ${primerApellido}`;
+                                    {filteredModels.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const { id, nombre, año, carroceria, cilindraje, potencia, combustible, numeroPasajeros, precioBase} = row;
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 
                                         return (
@@ -96,35 +93,29 @@ export default function EmployeePage() {
                                                     <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
                                                 </TableCell>
 
-                                                <TableCell align="left">{cedula}</TableCell>
-
                                                 <TableCell align="left">{nombre}</TableCell>
 
-                                                <TableCell align="left">{correo}</TableCell>
+                                                <TableCell align="left">{año}</TableCell>
 
-                                                <TableCell align="left">{telefono}</TableCell>
+                                                <TableCell align="left">{carroceria}</TableCell>
 
-                                                <TableCell align="left">{celular}</TableCell>
+                                                <TableCell align="left">{cilindraje}</TableCell>
 
-                                                <TableCell align="left">{direccion}</TableCell>
+                                                <TableCell align="left">{potencia}</TableCell>
 
-                                                <TableCell align="left">{ciudad}</TableCell>
+                                                <TableCell align="left">{combustible}</TableCell>
 
-                                                <TableCell align="left">{fechaIngreso}</TableCell>
+                                                <TableCell align="left">{numeroPasajeros}</TableCell>
 
-                                                <TableCell align="left">{fechaRetiro}</TableCell>
-
-                                                <TableCell align="left">{salario}</TableCell>
-
-                                                <TableCell align="left">{cargo}</TableCell>
+                                                <TableCell align="left">{precioBase}</TableCell>
 
                                                 <TableCell align="right">
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
+                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                                                             <EditIcon />
                                                         </IconButton>
 
-                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
+                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, id)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>
@@ -170,7 +161,7 @@ export default function EmployeePage() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={employees.length}
+                        count={models.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

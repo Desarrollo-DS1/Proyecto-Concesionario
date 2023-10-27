@@ -1,125 +1,99 @@
 import React, {useState} from "react";
-import EMPLOYEELIST from '../../_mock/employee';
-import EmployeeContext from './EmployeeContext';
-import {checkCustomer} from "./EmployeeValidation";
+import MODELIST from '../../_mock/model';
+import ModelContext from './ModelContext';
+import {checkCustomer} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 
 
-export function EmployeeState(props) {
+export function ModelState(props) {
 
     const TABLE_HEAD = [
-        { id: 'cedula', label: 'Cedula', alignRight: false },
-        { id: 'primerNombre', label: 'Nombre', alignRight: false },
-        { id: 'correo', label: 'Correo', alignRight: false },
-        { id: 'telefono', label: 'Telefono', alignRight: false },
-        { id: 'celular', label: 'Celular', alignRight: false },
-        { id: 'direccion', label: 'Direccion', alignRight: false },
-        { id: 'ciudad', label: 'Ciudad', alignRight: false },
-        { id: 'fechaIngreso', label: 'Fecha Ingreso', alignRight: false },
-        { id: 'fechaRetiro', label: 'Fecha Retiro', alignRight: false },
-        { id: 'salario', label: 'Salario', alignRight: false },
-        { id: 'cargo', label: 'Cargo', alignRight: false },
+        { id: 'nombre', label: 'Nombre', alignRight: false },
+        { id: 'año', label: 'Año', alignRight: false },
+        { id: 'carroceria', label: 'Carroceria', alignRight: false },
+        { id: 'cilindraje', label: 'Cilindraje', alignRight: false },
+        { id: 'potencia', label: 'Potencia', alignRight: false },
+        { id: 'combustible', label: 'Combustible', alignRight: false },
+        { id: 'numeroPasajeros', label: 'Numero Pasajeros', alignRight: false },
+        { id: 'precioBase', label: 'Precio Base', alignRight: false },
         { id: '' },
     ];
 
-    const emptyEmployee = {
-        primerNombre: "",
-        segundoNombre: "",
-        primerApellido: "",
-        segundoApellido: "",
-        cedula: "",
-        telefono: "",
-        celular: "",
-        ciudad: "",
-        direccion: "",
-        fechaNacimiento: "",
-        genero: "",
-        correo: "",
-        clave: "",
-        fechaIngreso: "",
-        fechaRetiro: "",
-        salario: "",
-        tipoSangre: "",
-        eps: "",
-        arl: "",
-        cargo: "",
+    const emptyModel = {
+        id: "",
+        nombre: "",
+        año: "",
+        carroceria: "",
+        cilindraje: "",
+        potencia: "",
+        combustible: "",
+        numeroPasajeros: "",
+        precioBase: "",
     }
     const emptyError = {
-        primerNombre: '',
-        segundoNombre: '',
-        primerApellido: '',
-        segundoApellido: '',
-        cedula: '',
-        telefono: '',
-        celular: '',
-        ciudad: '',
-        direccion: '',
-        fechaNacimiento: '',
-        genero: '',
-        correo: '',
-        clave: '',
-        fechaIngreso: "",
-        fechaRetiro: "",
-        salario: "",
-        tipoSangre: "",
-        eps: "",
-        arl: "",
-        cargo: "",
+        nombre: "",
+        año: "",
+        carroceria: "",
+        cilindraje: "",
+        potencia: "",
+        combustible: "",
+        numeroPasajeros: "",
+        precioBase: "",
     }
 
-    const [employee, setEmployee] = React.useState(emptyEmployee);
-    const [employees, setEmployees] = React.useState([]);
+    const [model, setModel] = React.useState(emptyModel);
+    const [models, setModels] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
-    const getEmployees = () => {
-        setEmployees(employees);
+    const getModels = () => {
+        setModels(MODELIST);
     }
-    const getEmployee = (cedula) => {
-        const employee = employees.find(employee => employee.cedula === cedula);
-        if(employee)
+    const getModel = (id) => {
+        const model = models.find(model => model.cedula === id);
+        if(model)
         {
-            setEmployee(employee)
+            setModel(model)
             setEdit(true)
         }
         else
         {
-            setEmployee(emptyEmployee)
+            setModel(emptyModel)
             setEdit(false)
         }
     }
-    const addEmployee = (employee) => {
-        setEmployees([...employees, employee])
+    const addModel = (model) => {
+        setModels([...models, model])
     }
-    const updateEmployee = (employee) => {
-        setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)))
+    const updateModel = (model) => {
+        setModels(models.map((item) => (item.id === model.id ? model : item)))
     }
-    const deleteEmployee = (employee) => {
-        setEmployees(employees.filter((item) => item.cedula !== employee.cedula))
+    const deleteModel = (model) => {
+        setModels(models.filter((item) => item.id !== model.id))
     }
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setEmployee({
-            ...employee,
+        setModel({
+            ...model,
             [name]: value
         });
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!validateEmployeeOnSubmit()) {
+        if (!validateModelOnSubmit()) {
             if(edit)
             {
-                updateEmployee(employee);
-                setMessageSnackbar('Empleado actualizado correctamente');
+                updateModel(model);
+                setMessageSnackbar('Modelo actualizado correctamente');
                 setTypeSnackbar('success');
             }
             else
             {
-                addEmployee(employee);
-                setMessageSnackbar('Empleado agregado correctamente');
+                addModel(model);
+                setMessageSnackbar('Modelo agregado correctamente');
                 setTypeSnackbar('success');
             }
             handleOpenSnackbar();
@@ -128,27 +102,26 @@ export function EmployeeState(props) {
     }
     const handleOnBlur = (event) => {
         const {name} = event.target;
-        validateEmployeeOnBlur(employee, name);
+        validateModelOnBlur(model, name);
     }
-
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteEmployee(employee);
-        setMessageSnackbar('Empleado eliminado correctamente');
+        deleteModel(model);
+        setMessageSnackbar('Modelo eliminado correctamente');
         setTypeSnackbar('success');
         handleOpenSnackbar();
         handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {
-        getEmployeeError();
-        getEmployee(cedula);
+        getModelError();
+        getModel(cedula);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
         setOpenForm(false);
     };
-    const handleOpenDelete = (event, cedula) => {
-        getEmployee(cedula);
+    const handleOpenDelete = (event, id) => {
+        getModel(id);
         setOpenDelete(true);
     }
     const handleCloseDelete = () => {
@@ -166,7 +139,7 @@ export function EmployeeState(props) {
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('cedula');
+    const [orderBy, setOrderBy] = useState('nombre');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [edit, setEdit] = React.useState(false);
@@ -203,41 +176,41 @@ export function EmployeeState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
-    const isNotFound = !filteredEmployees.length && !!filterName;
+    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - models.length) : 0;
+    const isNotFound = !filteredModels.length && !!filterName;
 
-    const [employeeError, setEmployeeError] = React.useState(emptyError);
+    const [modelError, setModelError] = React.useState(emptyError);
 
-    const getEmployeeError = () => {
-        setEmployeeError(emptyError)
+    const getModelError = () => {
+        setModelError(emptyError)
     }
 
-    const validateEmployeeOnSubmit = () => {
+    const validateModelOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(employeeError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(employee, name);
+        Object.keys(modelError).forEach((name) => {
+            updatedErrors[name] = checkCustomer(model, name);
         });
-        setEmployeeError(updatedErrors);
+        setModelError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
-    const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkCustomer(employee, name)});
+    const validateModelOnBlur = (model, name) => {
+        setModelError({...modelError, [name]: checkCustomer(model, name)});
     };
 
     return (
-        <EmployeeContext.Provider value={
+        <ModelContext.Provider value={
             {
                 TABLE_HEAD,
-                employee,
-                employees,
+                model,
+                models,
                 openForm,
                 edit,
                 openSnackbar,
                 messageSnackbar,
                 typeSnackbar,
                 openDelete,
-                getEmployees,
+                getModels,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
@@ -253,7 +226,7 @@ export function EmployeeState(props) {
                 page,
                 rowsPerPage,
                 selected,
-                filteredEmployees,
+                filteredModels,
                 emptyRows,
                 isNotFound,
                 handleRequestSort,
@@ -261,9 +234,9 @@ export function EmployeeState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                employeeError}}>
+                modelError}}>
             {props.children}
-        </EmployeeContext.Provider>
+        </ModelContext.Provider>
     )
 }
 

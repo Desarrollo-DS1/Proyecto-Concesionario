@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 // ----------------------------------------------------------------------
 
-const users = [...Array(50)].map((_, index) => ({
+const employees = [...Array(50)].map((_, index) => ({
     id: faker.datatype.uuid(),
     avatarUrl: `/assets/images/avatars/avatar_${index + 1}.jpg`,
     cedula: faker.datatype.number({min:1000000000,max:9999999999}).toString(),
@@ -10,7 +10,6 @@ const users = [...Array(50)].map((_, index) => ({
     segundoNombre: faker.name.firstName(),
     primerApellido: faker.name.lastName(),
     segundoApellido: faker.name.lastName(),
-    nombre: faker.name.fullName(),
     correo: faker.internet.email(),
     telefono: faker.datatype.number({min:1000000,max:9999999}).toString(),
     celular: faker.datatype.number({min:1000000000,max:9999999999}).toString(),
@@ -28,4 +27,4 @@ const users = [...Array(50)].map((_, index) => ({
     cargo: faker.name.jobTitle(),
 }));
 
-export default users;
+export default employees;

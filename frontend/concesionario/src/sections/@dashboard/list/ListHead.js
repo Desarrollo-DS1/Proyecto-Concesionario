@@ -18,24 +18,14 @@ const visuallyHidden = {
   clip: 'rect(0 0 0 0)',
 };
 
-EmployeeListHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
-  orderBy: PropTypes.string,
-  rowCount: PropTypes.number,
-  headLabel: PropTypes.array,
-  numSelected: PropTypes.number,
-  onRequestSort: PropTypes.func,
-  onSelectAllClick: PropTypes.func,
-};
-
-export default function EmployeeListHead() {
+export default function ListHead(props) {
 
   const {
     TABLE_HEAD,
     order,
     orderBy,
     handleRequestSort,
-  }= useContext(EmployeeContext);
+  }= useContext(props.context);
 
   const createSortHandler = (property) => (event) => {
     handleRequestSort(event, property);

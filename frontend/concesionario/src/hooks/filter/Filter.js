@@ -24,8 +24,15 @@ export function applySortFilter(array, comparator, query) {
         return a[1] - b[1];
     });
     if (query) {
-        return filter(array, (_user) => {
-            const nombre = (`${_user.primerNombre} ${  _user.primerApellido}`).toLowerCase();
+        return filter(array, (_item) => {
+            let nombre
+            if (_item.nombre === undefined){
+                nombre = `${_item.primerNombre}${" "}${_item.primerApellido}` .toLowerCase();
+            }
+            else
+            {
+                nombre = _item.nombre.toLowerCase();
+            }
             const queryLowercase = query.toLowerCase();
             return nombre.indexOf(queryLowercase) !== -1;});
     }
