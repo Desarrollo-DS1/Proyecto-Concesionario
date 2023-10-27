@@ -1,14 +1,9 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {
     Box,
     Button,
-    Divider,
-    Grid,
-    MenuItem,
-    Snackbar,
     Stack,
-    TextField,
     Typography,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -17,12 +12,7 @@ import CustomerContext from "../../../hooks/customer/CustomerContext";
 
 export default function CustomerDelete(props) {
 
-    const { openDelete, customer, deleteCustomer } = useContext(CustomerContext);
-
-    const handleDeleteCustomer = () => {
-        deleteCustomer(customer);
-        props.onClose();
-    }
+    const { customer, openDelete, handleCloseDelete, handleDelete } = useContext(CustomerContext);
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -48,7 +38,7 @@ export default function CustomerDelete(props) {
     return (
         <Modal
             open = {openDelete}
-            onClose={handleModalClose}
+            onClose={handleCloseDelete}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -59,13 +49,13 @@ export default function CustomerDelete(props) {
                     </Typography>
                 </Stack>
                 <Typography variant="body1" gutterBottom>
-                    ¿Está seguro de que desea eliminar este cliente?
+                    ¿Está seguro de que desea eliminar al empleado con número de cédula <strong>{customer.cedula}</strong>?
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
-                    <Button variant="contained" onClick={handleModalClose}>
+                    <Button variant="contained" onClick={handleCloseDelete}>
                         No
                     </Button>
-                    <Button variant="contained" color="error" onClick={handleDeleteCustomer}>
+                    <Button variant="contained" color="error" onClick={handleDelete}>
                         Sí
                     </Button>
                 </Stack>

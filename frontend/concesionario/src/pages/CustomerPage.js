@@ -23,13 +23,12 @@ import {Alert} from "@mui/lab";
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
-import CustomerListToolbar from "../sections/@dashboard/customer/CustomerListToolbar";
-import CustomerListHead from "../sections/@dashboard/customer/CustomerListHead";
-// mock
-import USERLIST from '../_mock/customer';
+import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
+// mock
 import CustomerContext from "../hooks/customer/CustomerContext";
+import EmployeeContext from "../hooks/employee/EmployeeContext";
 
 // ----------------------------------------------------------------------
 
@@ -49,107 +48,32 @@ const TABLE_HEAD = [
 export default function CustomerPage() {
 
   const {
+    customers,
+    openSnackbar,
+    messageSnackbar,
+    typeSnackbar,
     getCustomers,
-    getCustomer,
-    getCustomerError,
-    order,
-    orderBy,
-    setOrder,
-    setOrderBy,
-    selected,
-    setSelected,
-    page,
-    setPage,
-    rowsPerPage,
-    setRowsPerPage,
+    handleOpenForm,
+    handleOpenDelete,
+    handleCloseSnackbar,
     filterName,
-    setFilterName,
+    page,
+    rowsPerPage,
+    selected,
+    handleClick,
+    handleChangePage,
+    handleChangeRowsPerPage,
     filteredCustomers,
     emptyRows,
-    isNotFound,
-    openSnackbar,
-    setOpenSnackbar,
-    openForm,
-    setOpenForm,
-    edit,
-    customers,
-    setCustomers,
-    deleteCustomer,
-    openDelete,
-    setOpenDelete} = useContext(CustomerContext);
+    isNotFound} = useContext(CustomerContext);
 
   // useEffect(() => {
   //       getCustomers();
   //   }, []);
 
   useEffect(() => {
-    setCustomers(customers);
+    getCustomers();
   }, [customers]);
-
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenSnackbar(false);
-  }
-
-  const handleOpenSnackbar = () => {
-    setOpenSnackbar(true);
-  }
-
-  const handleOpenForm = (event, id) => {
-    getCustomerError();
-    getCustomer(id);
-    setOpenForm(true)
-  };
-
-  const handleCloseForm = () => {
-    setOpenForm(false);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
-  };
-
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-  }
-
-  const handleOpenDelete = (event, id) => {
-    getCustomer(id);
-    setOpenDelete(true);
-  }
 
   return (
     <>
@@ -167,24 +91,17 @@ export default function CustomerPage() {
           </Button>
         </Stack>
 
-        <CustomerForm open={openForm} onClose={handleCloseForm} onSuccess={handleOpenSnackbar}/>
+        <CustomerForm/>
 
-        <CustomerDelete open={openDelete} onClose={handleCloseDelete} />
+        <CustomerDelete/>
 
         <Card>
-          <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ListToolbar context={CustomerContext} name={"cliente"} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
-                <CustomerListHead
-                    order={order}
-                    orderBy={orderBy}
-                    headLabel={TABLE_HEAD}
-                    rowCount={USERLIST.length}
-                    numSelected={selected.length}
-                    onRequestSort={handleRequestSort}
-                />
+                <ListHead context={CustomerContext} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
@@ -267,7 +184,7 @@ export default function CustomerPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={customers.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -277,8 +194,8 @@ export default function CustomerPage() {
       </Box>
 
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-        <Alert onClose={handleCloseSnackbar} severity="success" sx={{ width: '100%' }}>
-          {edit? 'Cliente actualizado correctamente' : 'Cliente guardado correctamente'}
+        <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
+          {messageSnackbar}
         </Alert>
       </Snackbar>
 
