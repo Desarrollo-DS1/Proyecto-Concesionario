@@ -38,13 +38,16 @@ export default function ModelPage() {
 
     const {
         models,
+        bodyworks,
+        fuels,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
         getModels,
+        getBodyworks,
+        getFuels,
         handleOpenForm,
         handleOpenDelete,
-        handleCloseDelete,
         handleCloseSnackbar,
         filterName,
         page,
@@ -60,6 +63,14 @@ export default function ModelPage() {
     useEffect(() => {
         getModels();
     }, [models]);
+
+    useEffect(() => {
+        getBodyworks();
+    }, [bodyworks]);
+
+    useEffect(() => {
+        getFuels();
+    }, [fuels]);
 
     return (
         <>

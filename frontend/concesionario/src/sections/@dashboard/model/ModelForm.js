@@ -54,6 +54,8 @@ export default function ModelForm() {
 
     const {
         model,
+        bodyworks,
+        fuels,
         openForm,
         handleInputChange,
         handleOnBlur,
@@ -135,22 +137,11 @@ export default function ModelForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                            <MenuItem value={"Sedan"}>Sedan</MenuItem>
-                            <MenuItem value={"Hatchback"}>Hatchback</MenuItem>
-                            <MenuItem value={"Station Wagon"}>Station Wagon</MenuItem>
-                            <MenuItem value={"SUV"}>SUV</MenuItem>
-                            <MenuItem value={"Pickup"}>Pickup</MenuItem>
-                            <MenuItem value={"Van"}>Van</MenuItem>
-                            <MenuItem value={"Convertible"}>Convertible</MenuItem>
-                            <MenuItem value={"Coupe"}>Coupe</MenuItem>
-                            <MenuItem value={"Roadster"}>Roadster</MenuItem>
-                            <MenuItem value={"Deportivo"}>Deportivo</MenuItem>
-                            <MenuItem value={"Muscle Car"}>Muscle Car</MenuItem>
-                            <MenuItem value={"Todoterreno"}>Todoterreno</MenuItem>
-                            <MenuItem value={"Crossover"}>Crossover</MenuItem>
-                            <MenuItem value={"Furgon"}>Furgon</MenuItem>
-                            <MenuItem value={"Microbus"}>Microbus</MenuItem>
-                            <MenuItem value={"Minivan"}>Minivan</MenuItem>
+                            {bodyworks.map((option) => (
+                                <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
                         </TextField>
                   </Grid>
                   <Grid item xs={12} sm={2}>
@@ -212,10 +203,11 @@ export default function ModelForm() {
                           helperText={modelError.combustible}
                           style={textFieldStyle}
                       >
-                            <MenuItem value={"Gasolina"}>Gasolina</MenuItem>
-                            <MenuItem value={"Diesel"}>Diesel</MenuItem>
-                            <MenuItem value={"Electrico"}>Electrico</MenuItem>
-                            <MenuItem value={"Hibrido"}>Hibrido</MenuItem>
+                          {fuels.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                    {option.label}
+                              </MenuItem>
+                          ))}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={3}>
