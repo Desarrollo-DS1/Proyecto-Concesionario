@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Modal from "@mui/material/Modal";
 import {
     Box,
@@ -9,7 +9,6 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import EmployeeContext from "../../../hooks/employee/EmployeeContext";
-import employee from "../../../_mock/employee";
 
 export default function EmployeeDelete() {
 

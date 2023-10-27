@@ -103,13 +103,13 @@ export function CustomerState(props) {
             if(edit)
             {
                 updateCustomer(customer);
-                setMessageSnackbar('Empleado actualizado correctamente');
+                setMessageSnackbar('Cliente actualizado correctamente');
                 setTypeSnackbar('success');
             }
             else
             {
                 addCustomer(customer);
-                setMessageSnackbar('Empleado agregado correctamente');
+                setMessageSnackbar('Cliente agregado correctamente');
                 setTypeSnackbar('success');
             }
             handleOpenSnackbar();
@@ -124,7 +124,7 @@ export function CustomerState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteCustomer(customer);
-        setMessageSnackbar('Empleado eliminado correctamente');
+        setMessageSnackbar('Cliente eliminado correctamente');
         setTypeSnackbar('success');
         handleOpenSnackbar();
         handleCloseDelete();
