@@ -81,7 +81,7 @@ export function ModelState(props) {
 
     const getModels = () => {
         // Aqui se aplicaria el axios.get
-        setModels(models);
+        setModels(MODELIST);
     }
     const getBodyworks = () => {
         // Aqui se aplicaria el axios.get

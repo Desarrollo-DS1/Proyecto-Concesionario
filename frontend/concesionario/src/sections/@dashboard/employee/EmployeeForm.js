@@ -1,6 +1,7 @@
 import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {
+    Backdrop,
     Box,
     Button,
     Divider,
@@ -77,7 +78,7 @@ export default function EmployeeForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : 'auto',
+        height: isSmallScreen ? '80%' : '93%',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,

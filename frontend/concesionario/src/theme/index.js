@@ -4,12 +4,13 @@ import { useMemo } from 'react';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
 //
-import palette from './palette';
+import lightPalette from './lightPalette';
 import shadows from './shadows';
 import typography from './typography';
 import GlobalStyles from './globalStyles';
 import customShadows from './customShadows';
 import componentsOverride from './overrides';
+import darkPalette from "./darkPalette";
 
 // ----------------------------------------------------------------------
 
@@ -20,7 +21,7 @@ ThemeProvider.propTypes = {
 export default function ThemeProvider({ children }) {
   const themeOptions = useMemo(
     () => ({
-      palette,
+      palette: darkPalette,
       shape: { borderRadius: 6 },
       typography,
       shadows: shadows(),

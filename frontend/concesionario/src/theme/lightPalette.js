@@ -70,7 +70,7 @@ const ERROR = {
   contrastText: '#fff',
 };
 
-const palette = {
+const lightPalette = {
   common: { black: '#000', white: '#fff' },
   primary: PRIMARY,
   secondary: SECONDARY,
@@ -89,6 +89,7 @@ const palette = {
     paper: '#fff',
     default: GREY[100],
     neutral: GREY[200],
+    backdrop: GREY[800],
   },
   action: {
     active: GREY[600],
@@ -102,4 +103,4 @@ const palette = {
   },
 };
 
-export default palette;
+export default lightPalette;
