@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
@@ -45,6 +46,8 @@ export default function LanguagePopover() {
     setOpen(null);
   };
 
+  const { t, i18n } = useTranslation("lang");
+
   return (
     <>
       <IconButton
@@ -85,7 +88,7 @@ export default function LanguagePopover() {
           {LANGS.map((option) => (
             <MenuItem key={option.value} selected={option.value === i18n.language} onClick={() => handleLanguageChange(option.value, option.icon)}>
               <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
-              {option.label}
+              {t(`general.lenguajes.${option.value}`)}
             </MenuItem>
           ))}
         </Stack>

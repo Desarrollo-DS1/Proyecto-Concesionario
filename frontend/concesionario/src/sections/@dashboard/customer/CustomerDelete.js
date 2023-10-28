@@ -1,4 +1,5 @@
 import React, { useContext} from "react";
+import { useTranslation } from "react-i18next";
 import Modal from "@mui/material/Modal";
 import {
     Box,
@@ -17,6 +18,8 @@ export default function CustomerDelete(props) {
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
+    const { t, i18n } = useTranslation("lang");
+
     const modalStyle = {
         position: "absolute",
         top: "50%",
@@ -31,10 +34,6 @@ export default function CustomerDelete(props) {
         borderRadius: 2,
     };
 
-    const handleModalClose = () => {
-        props.onClose();
-    };
-
     return (
         <Modal
             open = {openDelete}
@@ -45,18 +44,19 @@ export default function CustomerDelete(props) {
             <Box sx={modalStyle}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        Eliminar Cliente
+                        {t('clientes.encabezado.eliminar')}
                     </Typography>
                 </Stack>
                 <Typography variant="body1" gutterBottom>
-                    ¿Está seguro de que desea eliminar al empleado con número de cédula <strong>{customer.cedula}</strong>?
+                    {t('clientes.mensaje.confirmacionEliminar', {cedula: customer.cedula})}
+
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button variant="contained" onClick={handleCloseDelete}>
-                        No
+                        {t('general.botones.no')}
                     </Button>
                     <Button variant="contained" color="error" onClick={handleDelete}>
-                        Sí
+                        {t('general.botones.si')}
                     </Button>
                 </Stack>
             </Box>

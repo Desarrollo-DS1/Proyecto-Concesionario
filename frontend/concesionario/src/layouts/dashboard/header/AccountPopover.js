@@ -10,15 +10,15 @@ import account from '../../../_mock/account';
 
 const MENU_OPTIONS = [
   {
-    label: 'Inicio',
+    label: 'inicio',
     icon: 'eva:home-fill',
   },
   {
-    label: 'Perfil',
+    label: 'perfil',
     icon: 'eva:person-fill',
   },
   {
-    label: 'Configuración',
+    label: 'configuracion',
     icon: 'eva:settings-2-fill',
   },
 ];
@@ -94,7 +94,7 @@ export default function AccountPopover() {
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
             <MenuItem key={option.label} onClick={handleClose}>
-              {t(option.label)}
+              {t(`general.perfil.${option.label}`)}
             </MenuItem>
           ))}
         </Stack>
@@ -102,7 +102,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         <MenuItem onClick={handleClose} sx={{ m: 1 }}>
-          {t('EliminarCliente')}
+          {t('general.perfil.cerrarSesion')}
         </MenuItem>
       </Popover>
     </>

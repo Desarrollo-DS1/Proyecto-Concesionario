@@ -8,15 +8,15 @@ import EmployeeContext from "../employee/EmployeeContext";
 export function CustomerState(props) {
 
     const TABLE_HEAD = [
-        { id: 'cedula', label: 'Cedula', alignRight: false },
-        { id: 'nombre', label: 'Nombre', alignRight: false },
-        { id: 'correo', label: 'Correo', alignRight: false },
-        { id: 'telefono', label: 'Telefono', alignRight: false },
-        { id: 'celular', label: 'Celular', alignRight: false },
-        { id: 'direccion', label: 'Direccion', alignRight: false },
-        { id: 'ciudad', label: 'Ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'FechaNacimiento', alignRight: false },
-        { id: 'genero', label: 'Genero', alignRight: false },
+        { id: 'cedula', label: 'cedula', alignRight: false },
+        { id: 'nombre', label: 'nombre', alignRight: false },
+        { id: 'correo', label: 'correo', alignRight: false },
+        { id: 'telefono', label: 'telefono', alignRight: false },
+        { id: 'celular', label: 'celular', alignRight: false },
+        { id: 'direccion', label: 'direccion', alignRight: false },
+        { id: 'ciudad', label: 'ciudad', alignRight: false },
+        { id: 'fechaNacimiento', label: 'fechaNacimiento', alignRight: false },
+        { id: 'genero', label: 'genero', alignRight: false },
         { id: '' },
     ];
 
@@ -103,13 +103,13 @@ export function CustomerState(props) {
             if(edit)
             {
                 updateCustomer(customer);
-                setMessageSnackbar('Cliente actualizado correctamente');
+                setMessageSnackbar('clientes.mensaje.editado');
                 setTypeSnackbar('success');
             }
             else
             {
                 addCustomer(customer);
-                setMessageSnackbar('Cliente agregado correctamente');
+                setMessageSnackbar('clientes.mensaje.agregado');
                 setTypeSnackbar('success');
             }
             handleOpenSnackbar();
@@ -124,7 +124,7 @@ export function CustomerState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteCustomer(customer);
-        setMessageSnackbar('Cliente eliminado correctamente');
+        setMessageSnackbar('clientes.mensaje.eliminado');
         setTypeSnackbar('success');
         handleOpenSnackbar();
         handleCloseDelete();

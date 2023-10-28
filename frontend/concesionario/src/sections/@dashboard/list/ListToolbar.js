@@ -61,7 +61,7 @@ export default function ListToolbar(props) {
         <StyledSearch
           value={filterName}
           onChange={handleFilterByName}
-          placeholder={t("Buscar", {nombre: props.name})}
+          placeholder={t("general.dataTable.buscar", {nombre: props.name})}
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />

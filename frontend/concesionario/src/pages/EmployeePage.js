@@ -106,7 +106,7 @@ export default function EmployeePage() {
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={EmployeeContext}/>
+                                <ListHead context={EmployeeContext} name={'empleados'}/>
                                 <TableBody>
                                     {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                         const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave, fechaIngreso, fechaRetiro, salario, tipoSangre, eps, arl, cargo} = row;

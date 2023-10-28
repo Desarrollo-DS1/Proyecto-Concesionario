@@ -64,16 +64,16 @@ export default function CustomerPage() {
   return (
     <>
       <Helmet>
-        <title>Clientes</title>
+        <title>{t('clientes.encabezado.tituloPlural')}</title>
       </Helmet>
 
       <Box sx={{margin: 2}}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h4" gutterBottom>
-            {t("Clientes")}
+            {t('clientes.encabezado.tituloPlural')}
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-            {t("Cliente")}
+            {t('clientes.encabezado.tituloSingular')}
           </Button>
         </Stack>
 
@@ -82,12 +82,12 @@ export default function CustomerPage() {
         <CustomerDelete/>
 
         <Card>
-          <ListToolbar context={CustomerContext} name={t("Cliente")} />
+          <ListToolbar context={CustomerContext} name={t('clientes.encabezado.tituloSingular')} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
-                <ListHead context={CustomerContext} />
+                <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
@@ -143,20 +143,20 @@ export default function CustomerPage() {
                 {isNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={10} sx={{ py: 3 }}>
                         <Paper
                           sx={{
                             textAlign: 'center',
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            No encontrado
+                            {t('general.dataTable.noEncontrado')}
                           </Typography>
 
                           <Typography variant="body2">
-                            No hay resultados para &nbsp;
+                            {t('general.dataTable.noResultados')} &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Compruebe si hay errores tipográficos o utilizar palabras completas.
+                            <br /> {t('general.dataTable.mensajeNoResultados')}
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -175,14 +175,14 @@ export default function CustomerPage() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
-            labelRowsPerPage={t("FilasPorPagina")}
+            labelRowsPerPage={t('general.dataTable.filasPorPagina')}
           />
         </Card>
       </Box>
 
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
-          {messageSnackbar}
+          {t(messageSnackbar)}
         </Alert>
       </Snackbar>
 

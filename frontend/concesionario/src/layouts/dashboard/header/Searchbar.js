@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useTranslation} from "react-i18next";
 // @mui
 import { styled } from '@mui/material/styles';
 import { Input, Slide, Button, IconButton, InputAdornment, ClickAwayListener } from '@mui/material';
@@ -43,6 +44,8 @@ export default function Searchbar() {
     setOpen(false);
   };
 
+  const {t, i18n} = useTranslation("lang");
+
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <div>
@@ -58,7 +61,7 @@ export default function Searchbar() {
               autoFocus
               fullWidth
               disableUnderline
-              placeholder="Buscar…"
+              placeholder={t('general.buscar')}
               startAdornment={
                 <InputAdornment position="start">
                   <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />
@@ -67,7 +70,7 @@ export default function Searchbar() {
               sx={{ mr: 1, fontWeight: 'fontWeightBold' }}
             />
             <Button variant="contained" onClick={handleClose}>
-              Buscar
+              {t('general.botones.buscar')}
             </Button>
           </StyledSearchbar>
         </Slide>
