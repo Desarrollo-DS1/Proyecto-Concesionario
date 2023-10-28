@@ -11,6 +11,7 @@ import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
+import ModeViewSwitch from "./ModeViewSwitch";
 
 // ----------------------------------------------------------------------
 
@@ -68,6 +69,7 @@ export default function Header({ onOpenNav }) {
             sm: 1,
           }}
         >
+            <ModeViewSwitch />
           <LanguagePopover />
           <NotificationsPopover />
           <AccountPopover />

@@ -1,11 +1,11 @@
 // @mui
 import { alpha } from '@mui/material/styles';
 //
-import palette from './palette';
+import lightPalette from './lightPalette';
 
 // ----------------------------------------------------------------------
 
-const color = palette.grey[500];
+const color = lightPalette.grey[500];
 
 export default function shadows() {
   const transparent1 = alpha(color, 0.2);
