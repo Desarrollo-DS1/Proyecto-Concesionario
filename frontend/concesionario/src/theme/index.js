@@ -3,7 +3,7 @@ import {createContext, useMemo, useState} from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
-import {ThemeContext} from "@emotion/react";
+import ThemeContext from "./ThemeContext";
 //
 import lightPalette from './lightPalette';
 import shadows from './shadows';
@@ -19,14 +19,11 @@ ThemeProvider.propTypes = {
   children: PropTypes.node,
 };
 
-const themeContext = createContext();
-
 export default function ThemeProvider({ children }) {
 
-    const [mode, setMode] = useState('light');
+    const [modeC, setMode] = useState('light');
 
     const toggleMode = () => {
-        console.log("toggleMode");
         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
     }
 
@@ -38,6 +35,7 @@ export default function ThemeProvider({ children }) {
             typography,
             shadows: shadows(),
             customShadows: customShadows(),
+            toggleMode: toggleMode(),
         }),
         []
     );
@@ -51,15 +49,16 @@ export default function ThemeProvider({ children }) {
       typography,
       shadows: shadows(),
       customShadows: customShadows(),
+      toggleMode: toggleMode(),
     }),
     []
   );
 
-  const theme = createTheme(mode === 'light' ? themeOptions : themeOptionsDark);
+  const theme = createTheme(modeC === 'light' ? themeOptions : themeOptionsDark);
   theme.components = componentsOverride(theme);
 
   return (
-      <ThemeContext.Provider value={{mode, toggleMode}}>
+      <ThemeContext.Provider value={{toggleMode, modeC}}>
           <StyledEngineProvider injectFirst>
               <MUIThemeProvider theme={theme}>
                   <CssBaseline />
