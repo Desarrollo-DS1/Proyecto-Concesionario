@@ -53,6 +53,7 @@ export default function ModeViewSwitch() {
     const {toggleMode, mode} = useTheme();
 
     return (
-        <MaterialUISwitch checked={mode === 'dark'} onChange={toggleMode}/>
+        <Switch checked={mode === 'dark'} onChange={toggleMode}/>
+        // <MaterialUISwitch checked={mode === 'dark'} onChange={toggleMode}/>
     );
 }
