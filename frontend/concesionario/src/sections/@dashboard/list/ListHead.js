@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import {useTranslation} from "react-i18next";
 import {useContext} from "react";
 import EmployeeContext from "../../../hooks/employee/EmployeeContext";
 
@@ -27,6 +28,8 @@ export default function ListHead(props) {
     handleRequestSort,
   }= useContext(props.context);
 
+  const { t, i18n } = useTranslation("lang");
+
   const createSortHandler = (property) => (event) => {
     handleRequestSort(event, property);
   };
@@ -49,7 +52,7 @@ export default function ListHead(props) {
               direction={orderBy === headCell.id ? order : 'asc'}
               onClick={createSortHandler(headCell.id)}
             >
-              {headCell.label}
+              {t(headCell.label)}
               {orderBy === headCell.id ? (
                 <Box sx={{ ...visuallyHidden }}>{order === 'desc' ? 'sorted descending' : 'sorted ascending'}</Box>
               ) : null}

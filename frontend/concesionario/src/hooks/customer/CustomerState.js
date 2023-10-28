@@ -15,7 +15,7 @@ export function CustomerState(props) {
         { id: 'celular', label: 'Celular', alignRight: false },
         { id: 'direccion', label: 'Direccion', alignRight: false },
         { id: 'ciudad', label: 'Ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'Fecha Nacimiento', alignRight: false },
+        { id: 'fechaNacimiento', label: 'FechaNacimiento', alignRight: false },
         { id: 'genero', label: 'Genero', alignRight: false },
         { id: '' },
     ];

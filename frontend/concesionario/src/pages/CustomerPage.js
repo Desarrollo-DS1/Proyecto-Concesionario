@@ -16,6 +16,8 @@ import {
   TableContainer,
   TablePagination, Box, Snackbar,
 } from '@mui/material';
+// translations
+import {useTranslation} from "react-i18next";
 // components
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,22 +30,8 @@ import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 // mock
 import CustomerContext from "../hooks/customer/CustomerContext";
-import EmployeeContext from "../hooks/employee/EmployeeContext";
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'cedula', label: 'Cedula', alignRight: false },
-  { id: 'nombre', label: 'Nombre', alignRight: false },
-  { id: 'correo', label: 'Correo', alignRight: false },
-  { id: 'telefono', label: 'Telefono', alignRight: false },
-  { id: 'celular', label: 'Celular', alignRight: false },
-  { id: 'direccion', label: 'Direccion', alignRight: false },
-  { id: 'ciudad', label: 'Ciudad', alignRight: false },
-  { id: 'fechaNacimiento', label: 'Fecha Nacimiento', alignRight: false },
-  { id: 'genero', label: 'Genero', alignRight: false },
-  { id: '' },
-];
 
 export default function CustomerPage() {
 
@@ -67,9 +55,7 @@ export default function CustomerPage() {
     emptyRows,
     isNotFound} = useContext(CustomerContext);
 
-  // useEffect(() => {
-  //       getCustomers();
-  //   }, []);
+  const { t, i18n } = useTranslation("lang");
 
   useEffect(() => {
     getCustomers();
@@ -84,10 +70,10 @@ export default function CustomerPage() {
       <Box sx={{margin: 2}}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h4" gutterBottom>
-            Clientes
+            {t("Clientes")}
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-            Cliente
+            {t("Cliente")}
           </Button>
         </Stack>
 
@@ -96,7 +82,7 @@ export default function CustomerPage() {
         <CustomerDelete/>
 
         <Card>
-          <ListToolbar context={CustomerContext} name={"cliente"} />
+          <ListToolbar context={CustomerContext} name={t("Cliente")} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
@@ -189,6 +175,7 @@ export default function CustomerPage() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={t("FilasPorPagina")}
           />
         </Card>
       </Box>

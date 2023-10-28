@@ -1,6 +1,7 @@
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import {useTranslation} from "react-i18next";
 // component
 import {useContext} from "react";
 import EmployeeContext from "../../../hooks/employee/EmployeeContext";
@@ -41,6 +42,8 @@ export default function ListToolbar(props) {
     selected,
   }= useContext(props.context);
 
+  const { t, i18n } = useTranslation("lang");
+
   return (
     <StyledRoot
       sx={{
@@ -58,7 +61,7 @@ export default function ListToolbar(props) {
         <StyledSearch
           value={filterName}
           onChange={handleFilterByName}
-          placeholder={`Buscar ${props.name}...`}
+          placeholder={t("Buscar", {nombre: props.name})}
           startAdornment={
             <InputAdornment position="start">
               <Iconify icon="eva:search-fill" sx={{ color: 'text.disabled', width: 20, height: 20 }} />

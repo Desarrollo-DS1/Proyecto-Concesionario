@@ -46,7 +46,7 @@ const navConfig = [
     icon: <PlumbingIcon/>,
   },
   {
-    title: 'Ordenes de trabajo',
+    title: 'OrdenesTrabajo',
     path: '/dashboard/ordenes-trabajo',
     icon: <HandymanIcon/>,
   },
