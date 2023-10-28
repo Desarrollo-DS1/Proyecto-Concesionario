@@ -1,7 +1,9 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, MenuItem, Stack, IconButton, Popover } from '@mui/material';
+import i18n from "../../../i18n";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +28,15 @@ const LANGS = [
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
+
+  const [icon, setIcon] = useState(LANGS[0].icon);
   const [open, setOpen] = useState(null);
+
+  const handleLanguageChange = (lang, icon) => {
+        i18n.changeLanguage(lang);
+        setIcon(icon);
+        handleClose();
+  }
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -35,6 +45,8 @@ export default function LanguagePopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const { t, i18n } = useTranslation("lang");
 
   return (
     <>
@@ -49,7 +61,7 @@ export default function LanguagePopover() {
           }),
         }}
       >
-        <img src={LANGS[0].icon} alt={LANGS[0].label} />
+        <img src={icon} alt={i18n.language} />
       </IconButton>
 
       <Popover
@@ -74,10 +86,9 @@ export default function LanguagePopover() {
       >
         <Stack spacing={0.75}>
           {LANGS.map((option) => (
-            <MenuItem key={option.value} selected={option.value === LANGS[0].value} onClick={() => handleClose()}>
+            <MenuItem key={option.value} selected={option.value === i18n.language} onClick={() => handleLanguageChange(option.value, option.icon)}>
               <Box component="img" alt={option.label} src={option.icon} sx={{ width: 28, mr: 2 }} />
-
-              {option.label}
+              {t(`general.lenguajes.${option.value}`)}
             </MenuItem>
           ))}
         </Stack>

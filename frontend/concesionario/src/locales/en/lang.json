@@ -1,0 +1,175 @@
+{
+  "general": {
+    "lenguajes": {
+      "es": "Spanish",
+      "en": "English",
+      "pt": "Portuguese"
+    },
+    "barraNavegacion": {
+      "dashBoard": "DashBoard",
+      "clientes": "Customers",
+      "empleados": "Employees",
+      "modelos": "Models",
+      "vehiculos": "Vehicles",
+      "repuestos": "Spare Parts",
+      "ordenesTrabajo": "Work Orders",
+      "ventas": "Sales",
+      "cotizaciones": "Quotes",
+      "sucursales": "Branches"
+    },
+    "botones": {
+      "editar": "Edit",
+      "agregar": "Add",
+      "cancelar": "Cancel",
+      "buscar": "Search",
+      "si": "Yes",
+      "no": "No"
+    },
+    "perfil": {
+      "inicio": "Home",
+      "perfil": "Profile",
+      "cerrarSesion": "Logout",
+      "configuracion": "Settings"
+    },
+    "dataTable": {
+      "buscar": "Search {{nombre}}...",
+      "noEncontrado": "No found",
+      "noResultados": "No results for",
+      "mensajeNoResultados": "Check for typos or use full words",
+      "filasPorPagina": "Rows Per Page"
+    },
+    "buscar": "Search..."
+  },
+
+  "clientes": {
+    "encabezado": {
+      "tituloPlural": "Customers",
+      "tituloSingular": "Customer",
+      "agregar": "Add Customer",
+      "eliminar": "Delete Customer",
+      "editar": "Edit Customer"
+    },
+
+    "mensaje": {
+      "agregado": "Customer added successfully",
+      "editado": "Customer edited successfully",
+      "eliminado": "Customer deleted successfully",
+      "errorAgregar": "Error adding customer",
+      "errorEditar": "Error editing customer",
+      "errorEliminar": "Error deleting customer",
+      "confirmacionEliminar": "Are you sure you want to delete the cédula client {{cedula}}?"
+    },
+
+    "label": {
+      "cedula": "ID",
+      "nombre": "Name",
+      "correo": "Email",
+      "telefono": "Phone",
+      "celular": "Cellphone",
+      "direccion": "Address",
+      "ciudad": "City",
+      "fechaNacimiento": "Born Date",
+      "genero": "Gender",
+      "primerNombre": "First Name",
+      "segundoNombre": "Second Name",
+      "primerApellido": "First LastName",
+      "segundoApellido": "Second LastName",
+      "contraseña": "Password",
+      "undefined" : ""
+    }
+  },
+
+  "empleados": {
+    "encabezado": {
+      "tituloPlural": "Employees",
+      "tituloSingular": "Employee",
+      "agregar": "Add employee",
+      "eliminar": "Delete employee",
+      "editar": "Edit employee"
+    },
+
+    "mensaje": {
+      "agregado": "Employee added successfully",
+      "editado": "Employee edited successfully",
+      "eliminado": "Employee deleted successfully",
+      "error": "Error adding employee",
+      "errorEditar": "Error editing employee",
+      "errorEliminar": "Error deleting employee",
+      "confirmacionEliminar": "Are you sure you want to delete the employee from cédula {{cedula}}?"
+    },
+
+    "label": {
+      "cedula": "ID",
+      "nombre": "Name",
+      "correo": "Email",
+      "telefono": "Phone",
+      "celular": "Cellphone",
+      "direccion": "Address",
+      "ciudad": "City",
+      "fechaNacimiento": "Born Date",
+      "genero": "Gender",
+      "primerNombre": "First Name",
+      "segundoNombre": "Second Name",
+      "primerApellido": "First LastName",
+      "segundoApellido": "Second LastName",
+      "contraseña": "Password",
+      "fechaIngreso": "Entry Date",
+      "fechaRetiro": "Retirement Date",
+      "salario": "Salary",
+      "cargo": "Position",
+      "tipoSangre": "Blood Type",
+      "undefined" : ""
+    }
+  },
+
+  "modelos": {
+    "encabezado": {
+      "tituloPlural": "Models",
+      "tituloSingular": "Model",
+      "agregar": "Add model",
+      "eliminar": "Delete model",
+      "editar": "Edit model"
+    },
+
+    "mensaje": {
+      "agregado": "Model added successfully",
+      "editado": "Model edited successfully",
+      "eliminado": "Model deleted successfully",
+      "error": "Error adding model",
+      "errorEditar": "Error editing model",
+      "errorEliminar": "Error deleting model",
+      "confirmacionEliminar": "Are you sure you want to delete the model {{model}}?"
+    },
+
+    "label": {
+      "nombre": "Model",
+      "año": "Year",
+      "carroceria": "Body",
+      "cilindraje": "Cylinder",
+      "potencia": "Power",
+      "combustible": "Fuel",
+      "capacidad": "Capacity",
+      "precioBase": "Base Price",
+      "undefined" : ""
+    }
+  },
+
+  "errores": {
+    "requerido": "Required field",
+    "numerico": "Only numbers are allowed",
+    "alfabetico": "Only letters are allowed",
+    "longitudMaxMin": "Max: {{maximo}} characters, Min: {{minimo}} characters",
+    "longitudMax": "Max: {{maximo}} characters",
+    "longitudMin": "Min: {{minimo}} characters",
+    "longitudExacta": "Must have {{exacto}} characters",
+    "correo": "Enter a valid email",
+    "fecha": "Enter a valid date",
+    "contraseña": {
+      "numerico": "Must have at least one number",
+      "minuscula": "Must have at least one lowercase",
+      "mayuscula": "Must have at least one uppercase",
+      "especial": "Must have at least one special character",
+      "espacio": "Must not have spaces"
+    }
+  }
+}

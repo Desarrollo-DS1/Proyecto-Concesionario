@@ -97,7 +97,7 @@ export default function ModelPage() {
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={ModelContext} />
+                                <ListHead context={ModelContext} name={'modelos'}/>
                                 <TableBody>
                                     {filteredModels.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                         const { id, nombre, año, carroceria, cilindraje, potencia, combustible, numeroPasajeros, precioBase} = row;

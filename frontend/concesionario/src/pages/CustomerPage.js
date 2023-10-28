@@ -16,6 +16,8 @@ import {
   TableContainer,
   TablePagination, Box, Snackbar,
 } from '@mui/material';
+// translations
+import {useTranslation} from "react-i18next";
 // components
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -28,22 +30,8 @@ import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 // mock
 import CustomerContext from "../hooks/customer/CustomerContext";
-import EmployeeContext from "../hooks/employee/EmployeeContext";
 
 // ----------------------------------------------------------------------
-
-const TABLE_HEAD = [
-  { id: 'cedula', label: 'Cedula', alignRight: false },
-  { id: 'nombre', label: 'Nombre', alignRight: false },
-  { id: 'correo', label: 'Correo', alignRight: false },
-  { id: 'telefono', label: 'Telefono', alignRight: false },
-  { id: 'celular', label: 'Celular', alignRight: false },
-  { id: 'direccion', label: 'Direccion', alignRight: false },
-  { id: 'ciudad', label: 'Ciudad', alignRight: false },
-  { id: 'fechaNacimiento', label: 'Fecha Nacimiento', alignRight: false },
-  { id: 'genero', label: 'Genero', alignRight: false },
-  { id: '' },
-];
 
 export default function CustomerPage() {
 
@@ -67,9 +55,7 @@ export default function CustomerPage() {
     emptyRows,
     isNotFound} = useContext(CustomerContext);
 
-  // useEffect(() => {
-  //       getCustomers();
-  //   }, []);
+  const { t, i18n } = useTranslation("lang");
 
   useEffect(() => {
     getCustomers();
@@ -78,16 +64,16 @@ export default function CustomerPage() {
   return (
     <>
       <Helmet>
-        <title>Clientes</title>
+        <title>{t('clientes.encabezado.tituloPlural')}</title>
       </Helmet>
 
       <Box sx={{margin: 2}}>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
           <Typography variant="h4" gutterBottom>
-            Clientes
+            {t('clientes.encabezado.tituloPlural')}
           </Typography>
           <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-            Cliente
+            {t('clientes.encabezado.tituloSingular')}
           </Button>
         </Stack>
 
@@ -96,12 +82,12 @@ export default function CustomerPage() {
         <CustomerDelete/>
 
         <Card>
-          <ListToolbar context={CustomerContext} name={"cliente"} />
+          <ListToolbar context={CustomerContext} name={t('clientes.encabezado.tituloSingular')} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
               <Table>
-                <ListHead context={CustomerContext} />
+                <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
@@ -157,20 +143,20 @@ export default function CustomerPage() {
                 {isNotFound && (
                   <TableBody>
                     <TableRow>
-                      <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                      <TableCell align="center" colSpan={10} sx={{ py: 3 }}>
                         <Paper
                           sx={{
                             textAlign: 'center',
                           }}
                         >
                           <Typography variant="h6" paragraph>
-                            No encontrado
+                            {t('general.dataTable.noEncontrado')}
                           </Typography>
 
                           <Typography variant="body2">
-                            No hay resultados para &nbsp;
+                            {t('general.dataTable.noResultados')} &nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Compruebe si hay errores tipográficos o utilizar palabras completas.
+                            <br /> {t('general.dataTable.mensajeNoResultados')}
                           </Typography>
                         </Paper>
                       </TableCell>
@@ -189,13 +175,14 @@ export default function CustomerPage() {
             page={page}
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage={t('general.dataTable.filasPorPagina')}
           />
         </Card>
       </Box>
 
       <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
         <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
-          {messageSnackbar}
+          {t(messageSnackbar)}
         </Alert>
       </Snackbar>
 

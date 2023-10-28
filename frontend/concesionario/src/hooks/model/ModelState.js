@@ -8,14 +8,14 @@ import {applySortFilter, getComparator} from "../filter/Filter";
 export function ModelState(props) {
 
     const TABLE_HEAD = [
-        { id: 'nombre', label: 'Nombre', alignRight: false },
-        { id: 'año', label: 'Año', alignRight: false },
-        { id: 'carroceria', label: 'Carroceria', alignRight: false },
-        { id: 'cilindraje', label: 'Cilindraje', alignRight: false },
-        { id: 'potencia', label: 'Potencia', alignRight: false },
-        { id: 'combustible', label: 'Combustible', alignRight: false },
-        { id: 'numeroPasajeros', label: 'Numero Pasajeros', alignRight: false },
-        { id: 'precioBase', label: 'Precio Base', alignRight: false },
+        { id: 'nombre', label: 'nombre', alignRight: false },
+        { id: 'año', label: 'año', alignRight: false },
+        { id: 'carroceria', label: 'carroceria', alignRight: false },
+        { id: 'cilindraje', label: 'cilindraje', alignRight: false },
+        { id: 'potencia', label: 'potencia', alignRight: false },
+        { id: 'combustible', label: 'combustible', alignRight: false },
+        { id: 'numeroPasajeros', label: 'capacidad', alignRight: false },
+        { id: 'precioBase', label: 'precioBase', alignRight: false },
         { id: '' },
     ];
 

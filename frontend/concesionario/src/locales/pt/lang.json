@@ -1,0 +1,165 @@
+{
+  "general": {
+    "lenguajes": {
+      "es": "Espanhol",
+      "en": "Inglês",
+      "pt": "Português"
+    },
+    "barraNavegacion": {
+      "dashBoard": "Painel",
+      "clientes": "Clientes",
+      "empleados": "Funcionários",
+      "modelos": "Modelos",
+      "vehiculos": "Veículos",
+      "repuestos": "Peças de Reposição",
+      "ordenesTrabajo": "Ordens de Trabalho",
+      "ventas": "Vendas",
+      "cotizaciones": "Cotações",
+      "sucursales": "Filiais"
+    },
+    "botones": {
+      "editar": "Editar",
+      "agregar": "Adicionar",
+      "cancelar": "Cancelar",
+      "buscar": "Buscar",
+      "si": "Sim",
+      "no": "Não"
+    },
+    "perfil": {
+      "inicio": "Início",
+      "perfil": "Perfil",
+      "cerrarSesion": "Sair",
+      "configuracion": "Configuração"
+    },
+    "dataTable": {
+      "buscar": "Buscar {{nombre}}...",
+      "noEncontrado": "Não Encontrado",
+      "noResultados": "Não há resultados para",
+      "mensajeNoResultados": "Verifique erros de digitação ou use palavras completas",
+      "filasPorPagina": "Linhas por Página"
+    },
+    "buscar": "Buscar..."
+  },
+  "clientes": {
+    "encabezado": {
+      "tituloPlural": "Clientes",
+      "tituloSingular": "Cliente",
+      "agregar": "Adicionar Cliente",
+      "eliminar": "Eliminar Cliente",
+      "editar": "Editar Cliente"
+    },
+    "mensaje": {
+      "agregado": "Cliente adicionado com sucesso",
+      "editado": "Cliente editado com sucesso",
+      "eliminado": "Cliente eliminado com sucesso",
+      "error": "Erro ao adicionar cliente",
+      "errorEditar": "Erro ao editar cliente",
+      "errorEliminar": "Erro ao excluir cliente",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o cliente com o número de identificação {{cedula}}?"
+    },
+    "label": {
+      "cedula": "Cédula",
+      "nombre": "Nome",
+      "correo": "E-mail",
+      "telefono": "Telefone",
+      "celular": "Celular",
+      "direccion": "Endereço",
+      "ciudad": "Cidade",
+      "fechaNacimiento": "Data de Nascimento",
+      "genero": "Gênero",
+      "primerNombre": "Primeiro Nome",
+      "segundoNombre": "Segundo Nome",
+      "primerApellido": "Sobrenome",
+      "segundoApellido": "Segundo Sobrenome",
+      "contraseña": "Senha",
+      "undefined": ""
+    }
+  },
+  "empleados": {
+    "encabezado": {
+      "tituloPlural": "Funcionários",
+      "tituloSingular": "Funcionário",
+      "agregar": "Adicionar funcionário",
+      "eliminar": "Excluir funcionário",
+      "editar": "Editar funcionário"
+    },
+    "mensaje": {
+      "agregado": "Funcionário adicionado com sucesso",
+      "editado": "Funcionário editado com sucesso",
+      "eliminado": "Funcionário excluído com sucesso",
+      "error": "Erro ao adicionar funcionário",
+      "errorEditar": "Erro ao editar funcionário",
+      "errorEliminar": "Erro ao excluir funcionário",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o funcionário com o número de identificação {{cedula}}?"
+    },
+    "label": {
+      "cedula": "Cédula",
+      "nombre": "Nome",
+      "correo": "E-mail",
+      "telefono": "Telefone",
+      "celular": "Celular",
+      "direccion": "Endereço",
+      "ciudad": "Cidade",
+      "fechaNacimiento": "Data de Nascimento",
+      "genero": "Gênero",
+      "primerNombre": "Primeiro Nome",
+      "segundoNombre": "Segundo Nome",
+      "primerApellido": "Primeiro Sobrenome",
+      "segundoApellido": "Segundo Sobrenome",
+      "contraseña": "Senha",
+      "fechaIngreso": "Data de Entrada",
+      "fechaRetiro": "Data de Saída",
+      "salario": "Salário",
+      "cargo": "Cargo",
+      "tipoSangre": "Tipo Sanguíneo",
+      "undefined": ""
+    }
+  },
+  "modelos": {
+    "encabezado": {
+      "tituloPlural": "Modelos",
+      "tituloSingular": "Modelo",
+      "agregar": "Adicionar modelo",
+      "eliminar": "Excluir modelo",
+      "editar": "Editar modelo"
+    },
+    "mensaje": {
+      "agregado": "Modelo adicionado com sucesso",
+      "editado": "Modelo editado com sucesso",
+      "eliminado": "Modelo excluído com sucesso",
+      "error": "Erro ao adicionar modelo",
+      "errorEditar": "Erro ao editar modelo",
+      "errorEliminar": "Erro ao excluir modelo",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o modelo {{modelo}}?"
+    },
+    "label": {
+      "nombre": "Modelo",
+      "año": "Ano",
+      "carroceria": "Carroceria",
+      "cilindraje": "Cilindragem",
+      "potencia": "Potência",
+      "combustible": "Combustível",
+      "capacidad": "Capacidade",
+      "precioBase": "Preço Base",
+      "undefined": ""
+    }
+  },
+  "errores": {
+    "requerido": "Este campo es requerido",
+    "numerico": "Solo se permiten numeros",
+    "alfabetico": "Solo se permiten letras",
+    "longitudMaxMin": "Max: {{maximo}} caracteres, Min: {{minimo}} caracteres",
+    "longitudMax": "Max: {{maximo}} caracteres",
+    "longitudMin": "Min: {{minimo}} caracteres",
+    "longitudExacta": "Debe tener {{exacto}} caracteres",
+    "correo": "Ingrese un correo valido",
+    "fecha": "Ingrese una fecha valida",
+    "contraseña": {
+      "numerico": "Debe tener al menos un numero",
+      "minuscula": "Debe tener al menos una minuscula",
+      "mayuscula": "Debe tener al menos una mayuscula",
+      "especial": "Debe tener al menos un caracter especial",
+      "espacio": "No se permiten espacios"
+    }
+  }
+}

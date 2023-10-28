@@ -8,17 +8,17 @@ import {applySortFilter, getComparator} from "../filter/Filter";
 export function EmployeeState(props) {
 
     const TABLE_HEAD = [
-        { id: 'cedula', label: 'Cedula', alignRight: false },
-        { id: 'primerNombre', label: 'Nombre', alignRight: false },
-        { id: 'correo', label: 'Correo', alignRight: false },
-        { id: 'telefono', label: 'Telefono', alignRight: false },
-        { id: 'celular', label: 'Celular', alignRight: false },
-        { id: 'direccion', label: 'Direccion', alignRight: false },
-        { id: 'ciudad', label: 'Ciudad', alignRight: false },
-        { id: 'fechaIngreso', label: 'Fecha Ingreso', alignRight: false },
-        { id: 'fechaRetiro', label: 'Fecha Retiro', alignRight: false },
-        { id: 'salario', label: 'Salario', alignRight: false },
-        { id: 'cargo', label: 'Cargo', alignRight: false },
+        { id: 'cedula', label: 'cedula', alignRight: false },
+        { id: 'primerNombre', label: 'nombre', alignRight: false },
+        { id: 'correo', label: 'correo', alignRight: false },
+        { id: 'telefono', label: 'telefono', alignRight: false },
+        { id: 'celular', label: 'celular', alignRight: false },
+        { id: 'direccion', label: 'direccion', alignRight: false },
+        { id: 'ciudad', label: 'ciudad', alignRight: false },
+        { id: 'fechaIngreso', label: 'fechaIngreso', alignRight: false },
+        { id: 'fechaRetiro', label: 'fechaRetiro', alignRight: false },
+        { id: 'salario', label: 'salario', alignRight: false },
+        { id: 'cargo', label: 'cargo', alignRight: false },
         { id: '' },
     ];
 

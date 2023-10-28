@@ -1,4 +1,5 @@
 import React, {useContext} from "react";
+import {useTranslation} from "react-i18next";
 import Modal from "@mui/material/Modal";
 import {
     Box,
@@ -64,6 +65,8 @@ export default function CustomerForm(props) {
 
     const textFieldStyle = { minHeight: "5rem" };
 
+    const { t, i18n } = useTranslation("lang");
+
     return (
       <Modal
           open={openForm}
@@ -80,7 +83,7 @@ export default function CustomerForm(props) {
           >
               <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                   <Typography variant="h4" gutterBottom>
-                      {edit? "Editar Cliente" : "Agregar Cliente"}
+                      {t(`clientes.encabezado.${edit? "editar" : "agregar"}`)}
                   </Typography>
               </Stack>
               <Grid container spacing={3}>
@@ -93,8 +96,8 @@ export default function CustomerForm(props) {
                           value={customer.primerNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Primer Nombre" variant="outlined"
-                          helperText={customerError.primerNombre}
+                          label= {t("clientes.label.primerNombre")} variant="outlined"
+                          helperText={t(customerError.primerNombre,  {maximo: '50', minimo: '2'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -106,8 +109,8 @@ export default function CustomerForm(props) {
                           value={customer.segundoNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Segundo Nombre" variant="outlined"
-                          helperText={customerError.segundoNombre}
+                          label={t("clientes.label.segundoNombre")} variant="outlined"
+                          helperText={t(customerError.segundoNombre,  {maximo: '50', minimo: '2'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -120,8 +123,8 @@ export default function CustomerForm(props) {
                           value={customer.primerApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Primer Apellido" variant="outlined"
-                          helperText={customerError.primerApellido}
+                          label={t("clientes.label.primerApellido")} variant="outlined"
+                          helperText={t(customerError.primerApellido,  {maximo: '50', minimo: '2'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -133,14 +136,13 @@ export default function CustomerForm(props) {
                           value={customer.segundoApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Segundo Apellido" variant="outlined"
-                          helperText={customerError.segundoApellido}
+                          label={t("clientes.label.segundoApellido")} variant="outlined"
+                          helperText={t(customerError.segundoApellido,  {maximo: '50', minimo: '2'})}
                           style={textFieldStyle}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
-
                           error={customerError.cedula !== ''}
                           fullWidth
                           required
@@ -148,8 +150,8 @@ export default function CustomerForm(props) {
                           value={customer.cedula}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Cedula" variant="outlined"
-                          helperText={customerError.cedula}
+                          label={t("clientes.label.cedula")} variant="outlined"
+                          helperText={t(customerError.cedula,  {exacto: '10'})}
                           style={textFieldStyle}
                           disabled={edit}
                       />
@@ -163,8 +165,8 @@ export default function CustomerForm(props) {
                           value={customer.telefono}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Telefono" variant="outlined"
-                          helperText={customerError.telefono}
+                          label={t("clientes.label.telefono")} variant="outlined"
+                          helperText={t(customerError.telefono, {exacto: '7'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -177,8 +179,8 @@ export default function CustomerForm(props) {
                           value={customer.celular}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Celular" variant="outlined"
-                          helperText={customerError.celular}
+                          label={t("clientes.label.celular")} variant="outlined"
+                          helperText={t(customerError.celular, {exacto: '10'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -191,8 +193,8 @@ export default function CustomerForm(props) {
                           value={customer.ciudad}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Ciudad" variant="outlined"
-                          helperText={customerError.ciudad}
+                          label={t("clientes.label.ciudad")} variant="outlined"
+                          helperText={t(customerError.ciudad, {maximo: '50'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -205,8 +207,8 @@ export default function CustomerForm(props) {
                           value={customer.direccion}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Direccion" variant="outlined"
-                          helperText={customerError.direccion}
+                          label={t("clientes.label.direccion")} variant="outlined"
+                          helperText={t(customerError.direccion,  {maximo: '50', minimo: '5'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -221,8 +223,8 @@ export default function CustomerForm(props) {
                           value={customer.fechaNacimiento}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Fecha de Nacimiento" variant="outlined"
-                          helperText={customerError.fechaNacimiento}
+                          label={t("clientes.label.fechaNacimiento")} variant="outlined"
+                          helperText={t(customerError.fechaNacimiento)}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -236,8 +238,8 @@ export default function CustomerForm(props) {
                           value={customer.genero}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Genero" variant="outlined"
-                          helperText={customerError.genero}
+                          label={t("clientes.label.genero")} variant="outlined"
+                          helperText={t(customerError.genero)}
                           style={textFieldStyle}
                       >
                           {genders.map((option) => (
@@ -256,8 +258,8 @@ export default function CustomerForm(props) {
                           value={customer.correo}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Correo" variant="outlined"
-                          helperText={customerError.correo}
+                          label={t("clientes.label.correo")} variant="outlined"
+                          helperText={t(customerError.correo,  {maximo: '320', minimo: '6'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -270,8 +272,8 @@ export default function CustomerForm(props) {
                           value={customer.clave}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Contraseña" variant="outlined"
-                          helperText={customerError.clave}
+                          label={t("clientes.label.contraseña")} variant="outlined"
+                          helperText={t(customerError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -279,10 +281,10 @@ export default function CustomerForm(props) {
               <Divider sx={{ my: 2 }} />
               <Stack direction="row" alignItems="center" justifyContent="space-between" >
                   <Button variant="contained" type="submit">
-                      {edit? "Editar" : "Agregar"}
+                      {t(`general.botones.${edit? "editar" : "agregar"}`)}
                   </Button>
                   <Button variant="contained" onClick={handleCloseForm}>
-                      Cancelar
+                      {t("general.botones.cancelar")}
                   </Button>
               </Stack>
           </Box>

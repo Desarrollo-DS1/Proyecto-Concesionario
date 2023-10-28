@@ -16,52 +16,52 @@ const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ 
 
 const navConfig = [
   {
-    title: 'Dashboard',
+    title: 'dashBoard',
     path: '/dashboard/app',
     icon: icon('ic_analytics'),
   },
   {
-    title: 'Clientes',
+    title: 'clientes',
     path: '/dashboard/clientes',
     icon: <PersonIcon/>,
   },
   {
-    title: 'Empleados',
+    title: 'empleados',
     path: '/dashboard/empleados',
     icon: <BadgeIcon/>,
   },
   {
-    title: 'Modelos',
+    title: 'modelos',
     path: '/dashboard/modelos',
     icon: <CarRepairIcon/>,
   },
   {
-    title: 'Vehiculos',
+    title: 'vehiculos',
     path: '/dashboard/vehiculos',
     icon: <DirectionsCarIcon/>,
   },
   {
-    title: 'Repuestos',
+    title: 'repuestos',
     path: '/dashboard/respuestos',
     icon: <PlumbingIcon/>,
   },
   {
-    title: 'Ordenes de trabajo',
+    title: 'ordenesTrabajo',
     path: '/dashboard/ordenes-trabajo',
     icon: <HandymanIcon/>,
   },
   {
-    title: 'Ventas',
+    title: 'ventas',
     path: '/dashboard/ventas',
     icon: <SellIcon/>,
   },
   {
-    title: 'Cotizaciones',
+    title: 'cotizaciones',
     path: '/dashboard/cotizaciones',
     icon: <RequestQuoteIcon/>,
   },
   {
-    title: 'Sucursales',
+    title: 'sucursales',
     path: '/dashboard/sucursales',
     icon: <PlaceIcon/>
   },
