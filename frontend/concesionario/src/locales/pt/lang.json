@@ -1,87 +1,165 @@
 {
-  "Editar": "Editar",
-  "Agregar": "Adicionar",
-  "Cancelar": "Cancelar",
-  "Si": "Sim",
-  "No": "Não",
-  "Inicio": "Início",
-  "Perfil": "Perfil",
-  "CerrarSesion": "Sair",
-  "Cofiguracion": "Configurações",
-
-  "Clientes": "Clientes",
-  "Cliente": "Cliente",
-  "EditarCliente": "Editar cliente",
-  "AgregarCliente": "Adicionar cliente",
-  "EliminarCliente": "Excluir cliente",
-  "Buscar": "Pesquisar {{nombre}}...",
-  "Cedula": "Cédula",
-  "Nombre": "Nome",
-  "Correo": "E-mail",
-  "Telefono": "Telefone",
-  "Celular": "Celular",
-  "Direccion": "Endereço",
-  "Ciudad": "Cidade",
-  "FechaNacimiento": "Data de nascimento",
-  "Genero": "Gênero",
-  "FilasPorPagina": "Linhas por página",
-  "PrimerNombre": "Primeiro nome",
-  "SegundoNombre": "Segundo nome",
-  "PrimerApellido": "Primeiro sobrenome",
-  "SegundoApellido": "Segundo sobrenome",
-  "Contraseña": "Senha",
-  "ClienteAgregado": "Cliente adicionado com sucesso",
-  "ClienteEditado": "Cliente editado com sucesso",
-  "ClienteEliminado": "Cliente excluído com sucesso",
-  "ElimniarCliente?": "Tem certeza de que deseja excluir o cliente com ID {{cedula}}?",
-
-  "Empleados": "Empregados",
-  "Empleado": "Empregado",
-  "EditarEmpleado": "Editar empregado",
-  "AgregarEmpleado": "Adicionar empregado",
-  "EliminarEmpleado": "Excluir empregado",
-  "FechaIngreso": "Data de admissão",
-  "FechaRetiro": "Data de aposentadoria",
-  "Salario": "Salário",
-  "Cargo": "Posição",
-  "T. Sangre": "Tipo sanguíneo",
-  "EmpleadoAgregado": "Empregado adicionado com sucesso",
-  "EmpleadoEditado": "Empregado editado com sucesso",
-  "EmpleadoEliminado": "Empregado excluído com sucesso",
-  "EliminarEmpleado?": "Tem certeza de que deseja excluir o empregado com ID {{cedula}}?",
-
-  "Modelos": "Modelos",
-  "Modelo": "Modelo",
-  "EditarModelo": "Editar modelo",
-  "AgregarModelo": "Adicionar modelo",
-  "EliminarModelo": "Excluir modelo",
-  "Año": "Ano",
-  "Carroceria": "Carroceria",
-  "Cilindraje": "Cilindrada",
-  "Potencia": "Potência",
-  "Combustible": "Combustível",
-  "Capacidad": "Capacidade",
-  "PrecioBase": "Preço base",
-  "ModeloAgregado": "Modelo adicionado com sucesso",
-  "ModeloEditado": "Modelo editado com sucesso",
-  "ModeloEliminado": "Modelo excluído com sucesso",
-  "EliminarModelo?": "Tem certeza de que deseja excluir o modelo {{modelo}}?",
-
-  "Vehiculos": "Veículos",
-  "Vehiculo": "Veículo",
-
-  "Repuestos": "Peças de reposição",
-  "Repuesto": "Peça de reposição",
-
-  "OrdenesTrabajo": "Ordens de trabalho",
-  "OrdenTrabajo": "Ordem de trabalho",
-
-  "Ventas": "Vendas",
-  "Venta": "Venda",
-
-  "Cotizaciones": "Cotações",
-  "Cotizacion": "Cotação",
-
-  "Sucursales": "Filiais",
-  "Sucursal": "Filial"
+  "general": {
+    "lenguajes": {
+      "es": "Espanhol",
+      "en": "Inglês",
+      "pt": "Português"
+    },
+    "barraNavegacion": {
+      "dashBoard": "Painel",
+      "clientes": "Clientes",
+      "empleados": "Funcionários",
+      "modelos": "Modelos",
+      "vehiculos": "Veículos",
+      "repuestos": "Peças de Reposição",
+      "ordenesTrabajo": "Ordens de Trabalho",
+      "ventas": "Vendas",
+      "cotizaciones": "Cotações",
+      "sucursales": "Filiais"
+    },
+    "botones": {
+      "editar": "Editar",
+      "agregar": "Adicionar",
+      "cancelar": "Cancelar",
+      "buscar": "Buscar",
+      "si": "Sim",
+      "no": "Não"
+    },
+    "perfil": {
+      "inicio": "Início",
+      "perfil": "Perfil",
+      "cerrarSesion": "Sair",
+      "configuracion": "Configuração"
+    },
+    "dataTable": {
+      "buscar": "Buscar {{nombre}}...",
+      "noEncontrado": "Não Encontrado",
+      "noResultados": "Não há resultados para",
+      "mensajeNoResultados": "Verifique erros de digitação ou use palavras completas",
+      "filasPorPagina": "Linhas por Página"
+    },
+    "buscar": "Buscar..."
+  },
+  "clientes": {
+    "encabezado": {
+      "tituloPlural": "Clientes",
+      "tituloSingular": "Cliente",
+      "agregar": "Adicionar Cliente",
+      "eliminar": "Eliminar Cliente",
+      "editar": "Editar Cliente"
+    },
+    "mensaje": {
+      "agregado": "Cliente adicionado com sucesso",
+      "editado": "Cliente editado com sucesso",
+      "eliminado": "Cliente eliminado com sucesso",
+      "error": "Erro ao adicionar cliente",
+      "errorEditar": "Erro ao editar cliente",
+      "errorEliminar": "Erro ao excluir cliente",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o cliente com o número de identificação {{cedula}}?"
+    },
+    "label": {
+      "cedula": "Cédula",
+      "nombre": "Nome",
+      "correo": "E-mail",
+      "telefono": "Telefone",
+      "celular": "Celular",
+      "direccion": "Endereço",
+      "ciudad": "Cidade",
+      "fechaNacimiento": "Data de Nascimento",
+      "genero": "Gênero",
+      "primerNombre": "Primeiro Nome",
+      "segundoNombre": "Segundo Nome",
+      "primerApellido": "Sobrenome",
+      "segundoApellido": "Segundo Sobrenome",
+      "contraseña": "Senha",
+      "undefined": ""
+    }
+  },
+  "empleados": {
+    "encabezado": {
+      "tituloPlural": "Funcionários",
+      "tituloSingular": "Funcionário",
+      "agregar": "Adicionar funcionário",
+      "eliminar": "Excluir funcionário",
+      "editar": "Editar funcionário"
+    },
+    "mensaje": {
+      "agregado": "Funcionário adicionado com sucesso",
+      "editado": "Funcionário editado com sucesso",
+      "eliminado": "Funcionário excluído com sucesso",
+      "error": "Erro ao adicionar funcionário",
+      "errorEditar": "Erro ao editar funcionário",
+      "errorEliminar": "Erro ao excluir funcionário",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o funcionário com o número de identificação {{cedula}}?"
+    },
+    "label": {
+      "cedula": "Cédula",
+      "nombre": "Nome",
+      "correo": "E-mail",
+      "telefono": "Telefone",
+      "celular": "Celular",
+      "direccion": "Endereço",
+      "ciudad": "Cidade",
+      "fechaNacimiento": "Data de Nascimento",
+      "genero": "Gênero",
+      "primerNombre": "Primeiro Nome",
+      "segundoNombre": "Segundo Nome",
+      "primerApellido": "Primeiro Sobrenome",
+      "segundoApellido": "Segundo Sobrenome",
+      "contraseña": "Senha",
+      "fechaIngreso": "Data de Entrada",
+      "fechaRetiro": "Data de Saída",
+      "salario": "Salário",
+      "cargo": "Cargo",
+      "tipoSangre": "Tipo Sanguíneo",
+      "undefined": ""
+    }
+  },
+  "modelos": {
+    "encabezado": {
+      "tituloPlural": "Modelos",
+      "tituloSingular": "Modelo",
+      "agregar": "Adicionar modelo",
+      "eliminar": "Excluir modelo",
+      "editar": "Editar modelo"
+    },
+    "mensaje": {
+      "agregado": "Modelo adicionado com sucesso",
+      "editado": "Modelo editado com sucesso",
+      "eliminado": "Modelo excluído com sucesso",
+      "error": "Erro ao adicionar modelo",
+      "errorEditar": "Erro ao editar modelo",
+      "errorEliminar": "Erro ao excluir modelo",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o modelo {{modelo}}?"
+    },
+    "label": {
+      "nombre": "Modelo",
+      "año": "Ano",
+      "carroceria": "Carroceria",
+      "cilindraje": "Cilindragem",
+      "potencia": "Potência",
+      "combustible": "Combustível",
+      "capacidad": "Capacidade",
+      "precioBase": "Preço Base",
+      "undefined": ""
+    }
+  },
+  "errores": {
+    "requerido": "Este campo es requerido",
+    "numerico": "Solo se permiten numeros",
+    "alfabetico": "Solo se permiten letras",
+    "longitudMaxMin": "Max: {{maximo}} caracteres, Min: {{minimo}} caracteres",
+    "longitudMax": "Max: {{maximo}} caracteres",
+    "longitudMin": "Min: {{minimo}} caracteres",
+    "longitudExacta": "Debe tener {{exacto}} caracteres",
+    "correo": "Ingrese un correo valido",
+    "fecha": "Ingrese una fecha valida",
+    "contraseña": {
+      "numerico": "Debe tener al menos un numero",
+      "minuscula": "Debe tener al menos una minuscula",
+      "mayuscula": "Debe tener al menos una mayuscula",
+      "especial": "Debe tener al menos un caracter especial",
+      "espacio": "No se permiten espacios"
+    }
+  }
 }
