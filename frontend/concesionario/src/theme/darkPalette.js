@@ -1,5 +1,7 @@
 import {alpha} from "@mui/material/styles";
 
+const mode = 'dark';
+
 const GREY_DARK = {
     0: '#000000',         // Fondo más oscuro
     100: '#161C24',

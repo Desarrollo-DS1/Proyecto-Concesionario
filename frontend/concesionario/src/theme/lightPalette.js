@@ -2,6 +2,8 @@ import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
+const mode = 'light';
+
 // SETUP COLORS
 const GREY = {
   0: '#FFFFFF',
