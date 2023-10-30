@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
-import {checkCustomer} from "./ModelValidation";
+import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 
 
@@ -126,13 +126,13 @@ export function ModelState(props) {
             if(edit)
             {
                 updateModel(model);
-                setMessageSnackbar('Modelo actualizado correctamente');
+                setMessageSnackbar('modelos.mensaje.editado');
                 setTypeSnackbar('success');
             }
             else
             {
                 addModel(model);
-                setMessageSnackbar('Modelo agregado correctamente');
+                setMessageSnackbar('modelos.mensaje.agregado');
                 setTypeSnackbar('success');
             }
             handleOpenSnackbar();
@@ -146,7 +146,7 @@ export function ModelState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteModel(model);
-        setMessageSnackbar('Modelo eliminado correctamente');
+        setMessageSnackbar('modelos.mensaje.eliminado');
         setTypeSnackbar('success');
         handleOpenSnackbar();
         handleCloseDelete();
@@ -228,13 +228,13 @@ export function ModelState(props) {
     const validateModelOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(modelError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(model, name);
+            updatedErrors[name] = checkModel(model, name);
         });
         setModelError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateModelOnBlur = (model, name) => {
-        setModelError({...modelError, [name]: checkCustomer(model, name)});
+        setModelError({...modelError, [name]: checkModel(model, name)});
     };
 
     return (

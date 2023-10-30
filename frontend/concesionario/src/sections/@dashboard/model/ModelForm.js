@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
+import {useTranslation} from "react-i18next";
 import {
     Box,
     Button,
@@ -85,6 +86,8 @@ export default function ModelForm() {
 
     const textFieldStyle = { minHeight: "5rem" };
 
+    const { t, i18n } = useTranslation("lang");
+
     return (
       <Modal
           open={openForm}
@@ -101,7 +104,7 @@ export default function ModelForm() {
           >
               <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                   <Typography variant="h4" gutterBottom>
-                      {edit? "Editar Modelo" : "Agregar Modelo"}
+                      {t(`modelos.encabezado.${edit? "editar" : "agregar"}`)}
                   </Typography>
               </Stack>
 
@@ -115,8 +118,8 @@ export default function ModelForm() {
                           value={model.nombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Nombre" variant="outlined"
-                          helperText={modelError.nombre}
+                          label={t("modelos.label.nombre")} variant="outlined"
+                          helperText={t(modelError.nombre, {maximo: 50, minimo: 2})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -130,8 +133,8 @@ export default function ModelForm() {
                           value={model.carroceria}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Carroceria" variant="outlined"
-                          helperText={modelError.carroceria}
+                          label={t("modelos.label.carroceria")} variant="outlined"
+                          helperText={t(modelError.carroceria)}
                           style={textFieldStyle}
                           SelectProps={{
                               MenuProps: selectMenuProps
@@ -154,8 +157,8 @@ export default function ModelForm() {
                           value={model.año}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Año" variant="outlined"
-                          helperText={modelError.año}
+                          label={t("modelos.label.año")} variant="outlined"
+                          helperText={t(modelError.año, {exacta: 4})}
                           style={textFieldStyle}
                           inputProps={{
                               maxLength: 4,
@@ -170,8 +173,8 @@ export default function ModelForm() {
                           value={model.cilindraje}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Cilindraje" variant="outlined"
-                          helperText={modelError.cilindraje}
+                          label={t("modelos.label.cilindraje")} variant="outlined"
+                          helperText={t(modelError.cilindraje, {maximo: 4})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -184,8 +187,8 @@ export default function ModelForm() {
                           value={model.potencia}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Potencia" variant="outlined"
-                          helperText={modelError.potencia}
+                          label={t("modelos.label.potencia")} variant="outlined"
+                          helperText={t(modelError.cilindraje, {maximo: 3})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -199,8 +202,8 @@ export default function ModelForm() {
                           value={model.combustible}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Combustible" variant="outlined"
-                          helperText={modelError.combustible}
+                          label={t("modelos.label.combustible")} variant="outlined"
+                          helperText={t(modelError.combustible)}
                           style={textFieldStyle}
                       >
                           {fuels.map((option) => (
@@ -219,8 +222,8 @@ export default function ModelForm() {
                           value={model.numeroPasajeros}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Numero Pasajeros" variant="outlined"
-                          helperText={modelError.numeroPasajeros}
+                          label={t("modelos.label.capacidad")} variant="outlined"
+                          helperText={t(modelError.numeroPasajeros, {maximo: 1})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -233,8 +236,8 @@ export default function ModelForm() {
                           value={model.precioBase}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Precio Base" variant="outlined"
-                          helperText={modelError.precioBase}
+                          label={t("modelos.label.precioBase")} variant="outlined"
+                          helperText={t(modelError.precioBase)}
                           style={textFieldStyle}
                           InputProps={inputProps}
                       />
@@ -243,10 +246,10 @@ export default function ModelForm() {
               <Divider sx={{ my: 2 }} />
               <Stack direction="row" alignItems="center" justifyContent="space-between" >
                   <Button variant="contained" type="submit">
-                      {edit? "Editar" : "Agregar"}
+                      {t(`general.botones.${edit? "editar" : "agregar"}`)}
                   </Button>
                   <Button variant="contained" onClick={handleCloseForm}>
-                      Cancelar
+                      {t("general.botones.cancelar")}
                   </Button>
               </Stack>
           </Box>

@@ -1,261 +1,261 @@
-function checkEmail(employee){
-    if (employee.correo === null || employee.correo === '') {
-        return "El campo es requerido";
+function checkEmail(customer){
+    if (customer.correo === null || customer.correo === '') {
+        return "errores.requerido";
     }
-    if (employee.correo.length > 320 || employee.correo.length < 6)
+    if (customer.correo.length > 320 || customer.correo.length < 6)
     {
-        return "Max: 320 caracteres, Min: 6 caracteres";
+        return "errores.longitudMaxMin";
     }
-    if (!employee.correo.match(
+    if (!customer.correo.match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     ))
     {
-        return "Ingrese un correo valido";
+        return "errores.correo";
     }
 
     return "";
 }
 
-function checkCellphone(employee) {
-    if (employee.celular === null || employee.celular.trim() === '') {
-        return "El campo es requerido";
+function checkCellphone(customer) {
+    if (customer.celular === null || customer.celular.trim() === '') {
+        return "errores.requerido";
     }
-    if ((employee.celular).length !== 10)
+    if ((customer.celular).length !== 10)
     {
-        return "Debe tener 10 digitos";
+        return "errores.longitudExacta";
     }
-    if (!employee.celular.match(/^[0-9]+$/))
+    if (!customer.celular.match(/^[0-9]+$/))
     {
-        return "Solo se permiten numeros";
+        return "errores.numerico";
     }
     return "";
 }
 
-function checkPhone(employee) {
-    if (employee.telefono === null || employee.telefono.trim() === '') {
-        return "El campo es requerido";
+function checkPhone(customer) {
+    if (customer.telefono === null || customer.telefono.trim() === '') {
+        return "errores.requerido";
     }
-    if (!employee.telefono.match(/^[0-9]+$/))
+    if (!customer.telefono.match(/^[0-9]+$/))
     {
-        return "Solo se permiten numeros";
+        return "errores.numerico";
     }
-    if ((employee.telefono).length !== 7)
+    if ((customer.telefono).length !== 7)
     {
-        return "Debe tener 7 digitos";
+        return "errores.longitudExacta";
     }
 
     return "";
 }
 
-function checkPassword(employee) {
-    if (employee.clave === null || employee.clave.trim() === '') {
-        return "El campo es requerido"
+function checkPassword(customer) {
+    if (customer.clave === null || customer.clave.trim() === '') {
+        return "errores.requerido";
     }
-    if ((employee.clave).length > 50 || (employee.clave).length < 8)
+    if ((customer.clave).length > 50 || (customer.clave).length < 8)
     {
-        return "Max: 50 caracteres, Min: 8 caracteres"
+        return "errores.longitudMaxMin";
     }
-    if (!employee.clave.match(/(?=.*[a-z])/))
+    if (!customer.clave.match(/(?=.*[a-z])/))
     {
-        return "Debe tener al menos una letra minuscula"
+        return "errores.contraseña.minuscula";
     }
-    if (!employee.clave.match(/(?=.*[A-Z])/))
+    if (!customer.clave.match(/(?=.*[A-Z])/))
     {
-        return "Debe tener al menos una letra mayuscula"
+        return "errores.contraseña.mayuscula";
     }
-    if (!employee.clave.match(/(?=.*[0-9])/))
+    if (!customer.clave.match(/(?=.*[0-9])/))
     {
-        return "Debe tener al menos un numero"
+        return "errores.contraseña.numerico";
     }
-    if (employee.clave.match(/\s/))
+    if (customer.clave.match(/\s/))
     {
-        return "No se permiten espacios en blanco"
+        return "errores.contraseña.espacio";
+    }
+    if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
+    {
+        return "errores.contraseña.especial";
     }
     return "";
 }
 
-function checkCity(employee) {
-    if (employee.ciudad === null || employee.ciudad === '') {
-        return "El campo ciudad es requerido"
+function checkCity(customer) {
+    if (customer.ciudad === null || customer.ciudad === '') {
+        return "errores.requerido";
     }
-    if ((employee.ciudad).length > 50)
+    if ((customer.ciudad).length > 50)
     {
-        return "La ciudad no puede tener mas de 50 caracteres"
+        return "errores.longitudMax";
     }
     return "";
 }
 
-function checkAddress(employee) {
-    if (employee.direccion === null || employee.direccion === '') {
-        return "El campo es requerido";
+function checkAddress(customer) {
+    if (customer.direccion === null || customer.direccion === '') {
+        return "errores.requerido";
     }
-    if ((employee.direccion).length > 50 || (employee.direccion).length < 5)
+    if ((customer.direccion).length > 50 || (customer.direccion).length < 5)
     {
-        return "Max: 50 caracteres, Min: 5 caracteres";
+        return "errores.longitudMaxMin";
     }
     return "";
 }
 
-function checkFirstName(employee) {
-    if (employee.primerNombre === null || employee.primerNombre.trim() === '') {
-        return "El campo es requerido";
+function checkFirstName(customer) {
+    if (customer.primerNombre === null || customer.primerNombre.trim() === '') {
+        return "errores.requerido";
     }
-    if (employee.primerNombre.length > 50 || employee.primerNombre.length < 2)
+    if (customer.primerNombre.length > 50 || customer.primerNombre.length < 2)
     {
-        return "Max: 50 caracteres, Min: 2 caracteres";
+        return "errores.longitudMaxMin";
     }
-    if (!employee.primerNombre.match(/^[a-zA-Z]+$/))
+    if (!customer.primerNombre.match(/^[a-zA-Z]+$/))
     {
-        return "Solo se permiten letras";
+        return "errores.alfabetico";
     }
     return "";
 }
 
-function checkSecondName(employee) {
-    if (employee.segundoNombre.trim() !== '') {
-        if (employee.segundoNombre.length > 50 || employee.segundoNombre.length < 2)
+function checkSecondName(customer) {
+    if (customer.segundoNombre.trim() !== '') {
+        if (customer.segundoNombre.length > 50 || customer.segundoNombre.length < 2)
         {
-            return "Max: 50 caracteres, Min: 2 caracteres";
+            return "errores.longitudMaxMin";
         }
-        if (!employee.segundoNombre.match(/^[a-zA-Z]+$/))
+        if (!customer.segundoNombre.match(/^[a-zA-Z]+$/))
         {
-            return "Solo se permiten letras";
-        }
-    }
-    return "";
-}
-
-function checkFirstLastName(employee) {
-    if (employee.primerApellido === null || employee.primerApellido.trim() === '') {
-        return "El campo es requerido";
-    }
-    if (employee.primerApellido.length > 50 || employee.primerApellido.length < 2)
-    {
-        return "Max: 50 caracteres, Min: 2 caracteres";
-    }
-    if (!employee.primerApellido.match(/^[a-zA-Z]+$/))
-    {
-        return "Solo se permiten letras";
-    }
-    return "";
-}
-
-function checkSecondLastName(employee) {
-    if (employee.segundoApellido.trim() !== '') {
-        if (employee.segundoApellido.length > 50 || employee.segundoApellido.length < 2)
-        {
-            return "Max: 50 caracteres, Min: 2 caracteres";
-        }
-        if (!employee.segundoApellido.match(/^[a-zA-Z]+$/))
-        {
-            return "Solo se permiten letras";
+            return "errores.alfabetico";
         }
     }
     return "";
 }
 
-function checkBornDate(employee) {
+function checkFirstLastName(customer) {
+    if (customer.primerApellido === null || customer.primerApellido.trim() === '') {
+        return "errores.requerido";
+    }
+    if (customer.primerApellido.length > 50 || customer.primerApellido.length < 2)
+    {
+        return "errores.longitudMaxMin";
+    }
+    if (!customer.primerApellido.match(/^[a-zA-Z]+$/))
+    {
+        return "errores.alfabetico";
+    }
+    return "";
+}
 
-    if (employee.fechaNacimiento === null || employee.fechaNacimiento.trim() === '') {
-        return "El campo es requerido";
+function checkSecondLastName(customer) {
+    if (customer.segundoApellido.trim() !== '') {
+        if (customer.segundoApellido.length > 50 || customer.segundoApellido.length < 2)
+        {
+            return "errores.longitudMaxMin";
+        }
+        if (!customer.segundoApellido.match(/^[a-zA-Z]+$/))
+        {
+            return "errores.alfabetico";
+        }
+    }
+    return "";
+}
+
+function checkBornDate(customer) {
+
+    if (customer.fechaNacimiento === null || customer.fechaNacimiento.trim() === '') {
+        return "errores.requerido";
     }
     const fechaActual = new Date();
-    const fechaNac = new Date(employee.fechaNacimiento);
+    const fechaNac = new Date(customer.fechaNacimiento);
     if (fechaNac > fechaActual)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     if (fechaNac.getFullYear() < 1900)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     if ((fechaActual.getFullYear() - fechaNac.getFullYear()) < 18)
     {
-        return "Edad minima 18 años";
+        return "errores.fecha";
     }
     return "";
 }
 
-function checkCedula(employee) {
+function checkCedula(customer) {
 
-    if (employee.cedula === null || toString(employee.cedula).trim() === '') {
-        return "El campo es requerido";
+    if (customer.cedula === null || toString(customer.cedula).trim() === '') {
+        return "errores.requerido";
     }
-    if (!employee.cedula.match(/^[0-9]+$/))
+    if (!customer.cedula.match(/^[0-9]+$/))
     {
-        return "Solo se permiten numeros";
+        return "errores.numerico";
     }
-    if (employee.cedula.length !== 10)
+    if (customer.cedula.length !== 10)
     {
-        return "Debe tener 10 digitos";
+        return "errores.longitudExacta";
     }
 
     return "";
 }
 
-function checkGender(employee) {
-    if (employee.genero === null || employee.genero === '') {
-        return "El campo es requerido";
+function checkGender(customer) {
+    if (customer.genero === null || customer.genero === '') {
+        return "errores.requerido";
     }
     return "";
 }
 
 function checkSalary(employee) {
     if (employee.salario === null || employee.salario.trim() === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     if (!employee.salario.match(/^[0-9]+$/))
     {
-        return "Solo se permiten numeros";
-    }
-    if (employee.salario < 0)
-    {
-        return "El salario no puede ser negativo";
+        return "errores.numerico";
     }
     return "";
 }
 
 function checkBloodType(employee) {
     if (employee.tipoSangre === null || employee.tipoSangre === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     return "";
 }
 
 function checkEps(employee) {
     if (employee.eps === null || employee.eps.trim() === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     return "";
 }
 
 function checkArl(employee) {
     if (employee.arl === null || employee.arl.trim() === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     return "";
 }
 
 function checkPosition(employee) {
     if (employee.cargo === null || employee.cargo.trim() === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     return "";
 }
 
 function checkAdmissionDate(employee) {
     if (employee.fechaIngreso === null || employee.fechaIngreso.trim() === '') {
-        return "El campo es requerido";
+        return "errores.requerido";
     }
     const fechaActual = new Date();
     const fechaIngreso = new Date(employee.fechaIngreso);
     if (fechaIngreso > fechaActual)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     if (fechaIngreso.getFullYear() < 1900)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     return "";
 }
@@ -268,16 +268,16 @@ function checkRetirementDate(employee) {
     const fechaRetiro = new Date(employee.fechaRetiro);
     if (fechaRetiro > fechaActual)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     if (fechaRetiro.getFullYear() < 1900)
     {
-        return "Seleccione una fecha valida";
+        return "errores.fecha";
     }
     return "";
 }
 
-export function checkCustomer(employee, name) {
+export function checkEmployee(employee, name) {
     if (name === 'correo') {
         return checkEmail(employee);
     }

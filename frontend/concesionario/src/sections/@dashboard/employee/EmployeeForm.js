@@ -1,5 +1,6 @@
 import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
+import {useTranslation} from "react-i18next";
 import {
     Backdrop,
     Box,
@@ -90,6 +91,8 @@ export default function EmployeeForm() {
 
     const textFieldStyle = { minHeight: "5rem" };
 
+    const { t, i18n } = useTranslation("lang");
+
     return (
       <Modal
           open={openForm}
@@ -106,7 +109,7 @@ export default function EmployeeForm() {
           >
               <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                   <Typography variant="h4" gutterBottom>
-                      {edit? "Editar Empleado" : "Agregar Empleado"}
+                      {t(`empleados.encabezado.${edit? "editar" : "agregar"}`)}
                   </Typography>
               </Stack>
 
@@ -120,8 +123,8 @@ export default function EmployeeForm() {
                           value={employee.primerNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Primer Nombre" variant="outlined"
-                          helperText={employeeError.primerNombre}
+                          label={t("empleados.label.primerNombre")} variant="outlined"
+                          helperText={t(employeeError.primerNombre, {maximo: 50, minimo: 2})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -133,8 +136,8 @@ export default function EmployeeForm() {
                           value={employee.segundoNombre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Segundo Nombre" variant="outlined"
-                          helperText={employeeError.segundoNombre}
+                          label={t("empleados.label.segundoNombre")} variant="outlined"
+                          helperText={t(employeeError.segundoNombre, {maximo: 50, minimo: 2})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -147,8 +150,8 @@ export default function EmployeeForm() {
                           value={employee.primerApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Primer Apellido" variant="outlined"
-                          helperText={employeeError.primerApellido}
+                          label={t("empleados.label.primerApellido")} variant="outlined"
+                          helperText={t(employeeError.primerApellido, {maximo: 50, minimo: 2})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -160,8 +163,8 @@ export default function EmployeeForm() {
                           value={employee.segundoApellido}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Segundo Apellido" variant="outlined"
-                          helperText={employeeError.segundoApellido}
+                          label={t("empleados.label.segundoApellido")} variant="outlined"
+                          helperText={t(employeeError.segundoApellido, {maximo: 50, minimo: 2})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -174,8 +177,8 @@ export default function EmployeeForm() {
                           value={employee.cedula}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Cedula" variant="outlined"
-                          helperText={employeeError.cedula}
+                          label={t("empleados.label.cedula")} variant="outlined"
+                          helperText={t(employeeError.cedula, {exacto: 10})}
                           style={textFieldStyle}
                           disabled={edit}
                       />
@@ -189,8 +192,8 @@ export default function EmployeeForm() {
                           value={employee.telefono}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Telefono" variant="outlined"
-                          helperText={employeeError.telefono}
+                          label={t("empleados.label.telefono")} variant="outlined"
+                          helperText={t(employeeError.telefono, {exacto: 7})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -203,8 +206,8 @@ export default function EmployeeForm() {
                           value={employee.celular}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Celular" variant="outlined"
-                          helperText={employeeError.celular}
+                          label={t("empleados.label.celular")} variant="outlined"
+                          helperText={t(employeeError.celular, {exacto: 10})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -217,8 +220,8 @@ export default function EmployeeForm() {
                           value={employee.ciudad}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Ciudad" variant="outlined"
-                          helperText={employeeError.ciudad}
+                          label={t("empleados.label.ciudad")} variant="outlined"
+                          helperText={t(employeeError.ciudad, {maximo: 50})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -231,8 +234,8 @@ export default function EmployeeForm() {
                           value={employee.direccion}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Direccion" variant="outlined"
-                          helperText={employeeError.direccion}
+                          label={t("empleados.label.direccion")} variant="outlined"
+                          helperText={t(employeeError.direccion,  {maximo: '50', minimo: '5'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -247,8 +250,8 @@ export default function EmployeeForm() {
                           value={employee.fechaNacimiento}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Fecha de Nacimiento" variant="outlined"
-                          helperText={employeeError.fechaNacimiento}
+                          label={t("empleados.label.fechaNacimiento")} variant="outlined"
+                          helperText={t(employeeError.fechaNacimiento)}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -262,8 +265,8 @@ export default function EmployeeForm() {
                           value={employee.genero}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Genero" variant="outlined"
-                          helperText={employeeError.genero}
+                          label={t("empleados.label.genero")} variant="outlined"
+                          helperText={t(employeeError.genero)}
                           style={textFieldStyle}
                       >
                           {genders.map((option) => (
@@ -284,8 +287,8 @@ export default function EmployeeForm() {
                           value={employee.fechaIngreso}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Fecha de Ingreso" variant="outlined"
-                          helperText={employeeError.fechaIngreso}
+                          label={t("empleados.label.fechaIngreso")} variant="outlined"
+                          helperText={t(employeeError.fechaIngreso)}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -299,8 +302,8 @@ export default function EmployeeForm() {
                           value={employee.fechaRetiro}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Fecha de Retiro" variant="outlined"
-                          helperText={employeeError.fechaRetiro}
+                          label={t("empleados.label.fechaRetiro")} variant="outlined"
+                          helperText={t(employeeError.fechaRetiro)}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -314,8 +317,8 @@ export default function EmployeeForm() {
                           value={employee.tipoSangre}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="T. Sangre" variant="outlined"
-                          helperText={employeeError.tipoSangre}
+                          label={t("empleados.label.tipoSangre")} variant="outlined"
+                          helperText={t(employeeError.tipoSangre)}
                           style={textFieldStyle}
                           SelectProps={{
                               MenuProps: selectMenuProps
@@ -336,8 +339,8 @@ export default function EmployeeForm() {
                           value={employee.salario}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Salario" variant="outlined"
-                          helperText={employeeError.salario}
+                          label={t("empleados.label.salario")} variant="outlined"
+                          helperText={t(employeeError.salario)}
                           style={textFieldStyle}
                           InputProps={inputProps}
                       />
@@ -353,7 +356,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label="EPS" variant="outlined"
-                          helperText={employeeError.eps}
+                          helperText={t(employeeError.eps)}
                           style={textFieldStyle}
                           SelectProps={{
                               MenuProps: selectMenuProps
@@ -377,7 +380,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label="ARL" variant="outlined"
-                          helperText={employeeError.arl}
+                          helperText={t(employeeError.arl)}
                           style={textFieldStyle}
                           SelectProps={{
                               MenuProps: selectMenuProps
@@ -400,8 +403,8 @@ export default function EmployeeForm() {
                           value={employee.cargo}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Cargo" variant="outlined"
-                          helperText={employeeError.cargo}
+                          label={t("empleados.label.cargo")} variant="outlined"
+                          helperText={t(employeeError.cargo)}
                           style={textFieldStyle}
                           SelectProps={{
                               MenuProps: selectMenuProps
@@ -423,8 +426,8 @@ export default function EmployeeForm() {
                           value={employee.correo}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Correo" variant="outlined"
-                          helperText={employeeError.correo}
+                          label={t("empleados.label.correo")} variant="outlined"
+                          helperText={t(employeeError.correo,  {maximo: '320', minimo: '6'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -437,8 +440,8 @@ export default function EmployeeForm() {
                           value={employee.clave}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label="Contraseña" variant="outlined"
-                          helperText={employeeError.clave}
+                          label={t("empleados.label.contraseña")} variant="outlined"
+                          helperText={t(employeeError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -446,10 +449,10 @@ export default function EmployeeForm() {
               <Divider sx={{ my: 2 }} />
               <Stack direction="row" alignItems="center" justifyContent="space-between" >
                   <Button variant="contained" type="submit">
-                      {edit? "Editar" : "Agregar"}
+                      {t(`general.botones.${edit? "editar" : "agregar"}`)}
                   </Button>
                   <Button variant="contained" onClick={handleCloseForm}>
-                      Cancelar
+                      {t("general.botones.cancelar")}
                   </Button>
               </Stack>
           </Box>

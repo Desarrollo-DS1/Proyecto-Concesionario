@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
-import {checkCustomer} from "./EmployeeValidation";
+import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 
 
@@ -165,13 +165,13 @@ export function EmployeeState(props) {
             if(edit)
             {
                 updateEmployee(employee);
-                setMessageSnackbar('Empleado actualizado correctamente');
+                setMessageSnackbar('empleados.mensaje.editado');
                 setTypeSnackbar('success');
             }
             else
             {
                 addEmployee(employee);
-                setMessageSnackbar('Empleado agregado correctamente');
+                setMessageSnackbar('empleados.mensaje.agregado');
                 setTypeSnackbar('success');
             }
             handleOpenSnackbar();
@@ -186,7 +186,7 @@ export function EmployeeState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteEmployee(employee);
-        setMessageSnackbar('Empleado eliminado correctamente');
+        setMessageSnackbar('empleados.mensaje.eliminado');
         setTypeSnackbar('success');
         handleOpenSnackbar();
         handleCloseDelete();
@@ -268,13 +268,13 @@ export function EmployeeState(props) {
     const validateEmployeeOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(employeeError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(employee, name);
+            updatedErrors[name] = checkEmployee(employee, name);
         });
         setEmployeeError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkCustomer(employee, name)});
+        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name)});
     };
 
     return (
