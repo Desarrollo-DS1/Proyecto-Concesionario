@@ -1,9 +1,11 @@
+// prop-types
 import PropTypes from 'prop-types';
 // @mui
-import { Box, Checkbox, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+import { Box, TableRow, TableCell, TableHead, TableSortLabel } from '@mui/material';
+// translations
 import {useTranslation} from "react-i18next";
+// context
 import {useContext} from "react";
-import EmployeeContext from "../../../hooks/employee/EmployeeContext";
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +21,11 @@ const visuallyHidden = {
   clip: 'rect(0 0 0 0)',
 };
 
+ListHead.propTypes = {
+  context: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired
+};
+
 export default function ListHead(props) {
 
   const {
@@ -28,7 +35,7 @@ export default function ListHead(props) {
     handleRequestSort,
   }= useContext(props.context);
 
-  const { t, i18n } = useTranslation("lang");
+  const { t } = useTranslation("lang");
 
   const createSortHandler = (property) => (event) => {
     handleRequestSort(event, property);

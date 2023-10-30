@@ -2,7 +2,6 @@ import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {useTranslation} from "react-i18next";
 import {
-    Backdrop,
     Box,
     Button,
     Divider,
@@ -91,7 +90,7 @@ export default function EmployeeForm() {
 
     const textFieldStyle = { minHeight: "5rem" };
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
       <Modal

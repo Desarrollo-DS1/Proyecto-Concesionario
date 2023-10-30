@@ -44,7 +44,7 @@ export default function Searchbar() {
     setOpen(false);
   };
 
-  const {t, i18n} = useTranslation("lang");
+  const {t} = useTranslation("lang");
 
   return (
     <ClickAwayListener onClickAway={handleClose}>

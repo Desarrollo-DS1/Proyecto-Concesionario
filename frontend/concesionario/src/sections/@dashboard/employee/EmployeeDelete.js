@@ -32,7 +32,7 @@ export default function EmployeeDelete() {
         borderRadius: 2,
     };
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
         <Modal

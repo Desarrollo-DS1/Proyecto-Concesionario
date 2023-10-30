@@ -27,7 +27,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
-  const { t, i18n } = useTranslation("lang");
+  const { t } = useTranslation("lang");
 
   const [open, setOpen] = useState(null);
 

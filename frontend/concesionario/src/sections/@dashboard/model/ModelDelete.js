@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Modal from "@mui/material/Modal";
 import { useTranslation } from "react-i18next";
 import {
@@ -32,7 +32,7 @@ export default function ModelDelete() {
         borderRadius: 2,
     };
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
         <Modal

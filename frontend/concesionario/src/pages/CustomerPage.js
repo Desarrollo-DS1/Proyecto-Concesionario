@@ -55,11 +55,11 @@ export default function CustomerPage() {
     emptyRows,
     isNotFound} = useContext(CustomerContext);
 
-  const { t, i18n } = useTranslation("lang");
+  const { t } = useTranslation("lang");
 
   useEffect(() => {
     getCustomers();
-  }, [customers]);
+  }, [customers, getCustomers]);
 
   return (
     <>
@@ -90,7 +90,7 @@ export default function CustomerPage() {
                 <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave} = row;
+                    const { id, cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
 

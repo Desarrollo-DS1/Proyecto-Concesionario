@@ -1,9 +1,13 @@
+import propTypes from "prop-types";
 import React, {useState} from "react";
 import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 
+ModelState.propTypes = {
+    children: propTypes.node,
+}
 
 export function ModelState(props) {
 

@@ -1,10 +1,13 @@
+// prop-types
+import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+// translations
 import {useTranslation} from "react-i18next";
-// component
+// context
 import {useContext} from "react";
-import EmployeeContext from "../../../hooks/employee/EmployeeContext";
+// component
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
@@ -34,6 +37,11 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+ListToolbar.propTypes = {
+  context: PropTypes.object.isRequired,
+  name: PropTypes.string.isRequired
+};
+
 export default function ListToolbar(props) {
 
   const {
@@ -42,7 +50,7 @@ export default function ListToolbar(props) {
     selected,
   }= useContext(props.context);
 
-  const { t, i18n } = useTranslation("lang");
+  const { t } = useTranslation("lang");
 
   return (
     <StyledRoot

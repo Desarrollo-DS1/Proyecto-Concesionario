@@ -22,8 +22,8 @@ const employees = [...Array(50)].map((_, index) => ({
     fechaRetiro: faker.date.past().toISOString().split('T')[0],
     salario: faker.datatype.number({min:1000000,max:9999999}).toString(),
     tipoSangre: "O+",
-    eps: faker.company.companyName(),
-    arl: faker.company.companyName(),
+    eps: faker.company.name(),
+    arl: faker.company.name(),
     cargo: faker.name.jobTitle(),
 }));
 

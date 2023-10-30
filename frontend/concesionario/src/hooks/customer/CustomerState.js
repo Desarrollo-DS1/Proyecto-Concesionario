@@ -1,9 +1,13 @@
+import propTypes from "prop-types";
 import React, {useState} from "react";
 import CUSTOMERLIST from '../../_mock/customer';
 import CustomerContext from './CustomerContext';
 import {checkCustomer} from "./CustomerValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import EmployeeContext from "../employee/EmployeeContext";
+
+CustomerState.propTypes = {
+    children: propTypes.node,
+}
 
 export function CustomerState(props) {
 
