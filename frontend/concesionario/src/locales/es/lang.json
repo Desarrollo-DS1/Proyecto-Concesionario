@@ -171,5 +171,11 @@
         "especial": "Debe tener al menos un caracter especial",
         "espacio": "No se permiten espacios"
     }
+  },
+  "404": {
+    "titulo": "404 Pagina no encontrada",
+    "subtitulo": "Lo sentimos, pagina no encontrada!",
+    "mensaje": "Lo sentimos, no pudimos encontrar la página que estás buscando. ¿Quizás has escrito mal la URL? Asegúrese de revisar su ortografía.",
+    "boton": "Volver Al Inicio"
   }
 }

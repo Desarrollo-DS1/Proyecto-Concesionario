@@ -1,13 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { styled } from '@mui/material/styles';
+import {styled, useTheme} from '@mui/material/styles';
 import { Button, Typography, Container, Box } from '@mui/material';
+import {useTranslation} from "react-i18next";
 
 // ----------------------------------------------------------------------
 
 const StyledContent = styled('div')(({ theme }) => ({
-  maxWidth: 480,
+  maxWidth: 600,
   margin: 'auto',
   minHeight: '100vh',
   display: 'flex',
@@ -19,31 +20,33 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Page404() {
+
+  const theme = useTheme();
+
+  const {t} = useTranslation("lang");
+
   return (
     <>
       <Helmet>
-        <title> 404 Page Not Found | Minimal UI </title>
+        <title>{t('404.titulo')}</title>
       </Helmet>
 
       <Container>
         <StyledContent sx={{ textAlign: 'center', alignItems: 'center' }}>
           <Typography variant="h3" paragraph>
-            Sorry, page not found!
+            {t('404.subtitulo')}
           </Typography>
 
           <Typography sx={{ color: 'text.secondary' }}>
-            Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your
-            spelling.
+            {t('404.mensaje')}
           </Typography>
 
-          <Box
-            component="img"
-            src="/assets/illustrations/illustration_404.svg"
-            sx={{ height: 260, mx: 'auto', my: { xs: 5, sm: 10 } }}
-          />
+          <Typography mt={8} mb={8}  fontSize={"10rem"} color={theme.palette.primary.main} fontFamily={"Arial"} fontWeight={"bold"} >
+            4O4
+          </Typography>
 
           <Button to="/" size="large" variant="contained" component={RouterLink}>
-            Go to Home
+            {t('404.boton')}
           </Button>
         </StyledContent>
       </Container>

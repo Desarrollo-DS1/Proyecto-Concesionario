@@ -2,13 +2,13 @@ import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
+import LoadLayout from "./layouts/load/LoadLayout";
 //
 import BlogPage from './pages/BlogPage';
 import CustomerPage from './pages/CustomerPage';
 import {CustomerState} from './hooks/customer/CustomerState';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import {EmployeeState} from "./hooks/employee/EmployeeState";
 import EmployeePage from "./pages/EmployeePage";
@@ -35,10 +35,15 @@ export default function Router() {
       path: 'login',
       element: <LoginPage />,
     },
+    {element: <LoadLayout />,
+    children: [
+        { element: <Navigate to="/dashboard" />, index: true },
+        { path: 'load', element: <LoadLayout /> },
+      ],
+    },
     {
       element: <SimpleLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
         { path: '404', element: <Page404 /> },
         { path: '*', element: <Navigate to="/404" /> },
       ],
