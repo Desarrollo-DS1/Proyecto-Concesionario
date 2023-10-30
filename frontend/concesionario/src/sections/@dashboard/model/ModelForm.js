@@ -86,7 +86,7 @@ export default function ModelForm() {
 
     const textFieldStyle = { minHeight: "5rem" };
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
       <Modal

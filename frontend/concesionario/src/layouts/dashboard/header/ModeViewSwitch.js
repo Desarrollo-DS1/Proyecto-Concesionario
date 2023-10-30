@@ -1,5 +1,5 @@
 import {Switch} from "@mui/material";
-import {styled, useTheme} from "@mui/material/styles";
+import {styled} from "@mui/material/styles";
 import {useContext} from "react";
 import ThemeContext from "../../../theme/ThemeContext";
 
@@ -52,7 +52,7 @@ const ViewSwitch = styled(Switch)(({ theme }) => ({
     },
 }));
 
-export default function ModeViewSwitch(theme) {
+export default function ModeViewSwitch() {
 
     const {modeC, toggleMode} = useContext(ThemeContext);
 

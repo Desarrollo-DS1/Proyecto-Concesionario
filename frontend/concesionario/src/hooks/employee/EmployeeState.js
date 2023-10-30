@@ -1,9 +1,13 @@
+import propTypes from "prop-types";
 import React, {useState} from "react";
 import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 
+EmployeeState.propTypes = {
+    children: propTypes.node,
+}
 
 export function EmployeeState(props) {
 

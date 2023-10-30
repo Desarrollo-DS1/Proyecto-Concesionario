@@ -11,14 +11,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import CustomerContext from "../../../hooks/customer/CustomerContext";
 
-export default function CustomerDelete(props) {
+export default function CustomerDelete() {
 
     const { customer, openDelete, handleCloseDelete, handleDelete } = useContext(CustomerContext);
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     const modalStyle = {
         position: "absolute",

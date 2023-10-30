@@ -36,18 +36,10 @@ export default function EmployeePage() {
 
     const {
         employees,
-        bloodTypes,
-        epss,
-        arls,
-        positions,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
         getEmployees,
-        getBloodTypes,
-        getEpss,
-        getArls,
-        getPositions,
         handleOpenForm,
         handleOpenDelete,
         handleCloseSnackbar,
@@ -64,7 +56,7 @@ export default function EmployeePage() {
 
     useEffect(() => {
         getEmployees();
-    }, [employees]);
+    }, [employees, getEmployees]);
 
     // useEffect(() => {
     //     getBloodTypes();
@@ -82,7 +74,7 @@ export default function EmployeePage() {
     //     getPositions();
     // }, [positions]);
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
         <>
@@ -112,7 +104,7 @@ export default function EmployeePage() {
                                 <ListHead context={EmployeeContext} name={'empleados'}/>
                                 <TableBody>
                                     {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, cedula, primerNombre, segundoNombre, primerApellido, segundoApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero, clave, fechaIngreso, fechaRetiro, salario, tipoSangre, eps, arl, cargo} = row;
+                                        const { id, cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
                                         const nombre = `${primerNombre} ${primerApellido}`;
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 

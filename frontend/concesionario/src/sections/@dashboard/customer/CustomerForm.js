@@ -5,7 +5,7 @@ import {
     Box,
     Button,
     Divider,
-    Grid, InputAdornment,
+    Grid,
     MenuItem,
     Stack,
     TextField,
@@ -31,7 +31,7 @@ const scrollBarStyle = {
     },
 }
 
-export default function CustomerForm(props) {
+export default function CustomerForm() {
 
     const {
         customer,
@@ -65,7 +65,7 @@ export default function CustomerForm(props) {
 
     const textFieldStyle = { minHeight: "5rem" };
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
       <Modal

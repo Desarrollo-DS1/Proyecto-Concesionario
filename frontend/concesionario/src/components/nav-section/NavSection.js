@@ -34,7 +34,7 @@ NavItem.propTypes = {
 function NavItem({ item }) {
   const { title, path, icon, info } = item;
 
-  const { t, i18n } = useTranslation("lang");
+  const { t } = useTranslation("lang");
 
   return (
     <StyledNavItem

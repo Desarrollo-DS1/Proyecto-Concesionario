@@ -39,14 +39,10 @@ export default function ModelPage() {
 
     const {
         models,
-        bodyworks,
-        fuels,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
         getModels,
-        getBodyworks,
-        getFuels,
         handleOpenForm,
         handleOpenDelete,
         handleCloseSnackbar,
@@ -63,7 +59,7 @@ export default function ModelPage() {
 
     useEffect(() => {
         getModels();
-    }, [models]);
+    }, [models, getModels]);
 
     // useEffect(() => {
     //     getBodyworks();
@@ -73,7 +69,7 @@ export default function ModelPage() {
     //     getFuels();
     // }, [fuels]);
 
-    const { t, i18n } = useTranslation("lang");
+    const { t } = useTranslation("lang");
 
     return (
         <>

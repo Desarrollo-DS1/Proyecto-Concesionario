@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {createContext, useMemo, useState} from 'react';
+import {useMemo, useState} from 'react';
 // @mui
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider as MUIThemeProvider, createTheme, StyledEngineProvider } from '@mui/material/styles';
@@ -34,8 +34,7 @@ export default function ThemeProvider({ children }) {
             shape: { borderRadius: 6 },
             typography,
             shadows: shadows(),
-            customShadows: customShadows(),
-            toggleMode: toggleMode(),
+            customShadows: customShadows()
         }),
         []
     );
@@ -48,8 +47,7 @@ export default function ThemeProvider({ children }) {
       shape: { borderRadius: 6 },
       typography,
       shadows: shadows(),
-      customShadows: customShadows(),
-      toggleMode: toggleMode(),
+      customShadows: customShadows()
     }),
     []
   );
