@@ -161,7 +161,7 @@ export default function EmployeePage() {
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={7} />
+                                            <TableCell colSpan={12} />
                                         </TableRow>
                                     )}
                                 </TableBody>

@@ -1,5 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import React, {useContext, useEffect} from 'react';
+import {useTranslation} from "react-i18next";
 // @mui
 import {
     Card,
@@ -72,19 +73,21 @@ export default function ModelPage() {
     //     getFuels();
     // }, [fuels]);
 
+    const { t, i18n } = useTranslation("lang");
+
     return (
         <>
             <Helmet>
-                <title>Modelos</title>
+                <title>{t('modelos.encabezado.tituloPlural')}</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        Modelos
+                        {t('modelos.encabezado.tituloPlural')}
                     </Typography>
                     <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-                        Modelo
+                        {t('modelos.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
 
@@ -93,7 +96,7 @@ export default function ModelPage() {
                 <ModelDelete />
 
                 <Card>
-                    <ListToolbar context={ModelContext} name={"modelo"}/>
+                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
@@ -142,7 +145,7 @@ export default function ModelPage() {
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={7} />
+                                            <TableCell colSpan={9} />
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -150,20 +153,20 @@ export default function ModelPage() {
                                 {isNotFound && (
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell align="center" colSpan={7} sx={{ py: 3 }}>
+                                            <TableCell align="center" colSpan={9} sx={{ py: 3 }}>
                                                 <Paper
                                                     sx={{
                                                         textAlign: 'center',
                                                     }}
                                                 >
                                                     <Typography variant="h6" paragraph>
-                                                        No encontrado
+                                                        {t('general.dataTable.noEncontrado')}
                                                     </Typography>
 
                                                     <Typography variant="body2">
-                                                        No hay resultados para &nbsp;
+                                                        {t('general.dataTable.noResultados')} &nbsp;
                                                         <strong>&quot;{filterName}&quot;</strong>.
-                                                        <br /> Compruebe si hay errores tipográficos o utilizar palabras completas.
+                                                        <br /> {t('general.dataTable.mensajeNoResultados')}
                                                     </Typography>
                                                 </Paper>
                                             </TableCell>
@@ -182,14 +185,14 @@ export default function ModelPage() {
                         page={page}
                         onPageChange={handleChangePage}
                         onRowsPerPageChange={handleChangeRowsPerPage}
-                        labelRowsPerPage = "Filas por página"
+                        labelRowsPerPage = {t('general.dataTable.filasPorPagina')}
                     />
                 </Card>
             </Box>
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
                 <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
-                    {messageSnackbar}
+                    {t(messageSnackbar)}
                 </Alert>
             </Snackbar>
         </>

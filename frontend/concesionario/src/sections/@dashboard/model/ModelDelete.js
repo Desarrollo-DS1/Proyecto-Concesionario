@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
+import { useTranslation } from "react-i18next";
 import {
     Box,
     Button,
@@ -31,6 +32,8 @@ export default function ModelDelete() {
         borderRadius: 2,
     };
 
+    const { t, i18n } = useTranslation("lang");
+
     return (
         <Modal
             open={openDelete}
@@ -41,18 +44,18 @@ export default function ModelDelete() {
             <Box sx={modalStyle}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        Eliminar Modelo
+                        {t('modelos.encabezado.eliminar')}
                     </Typography>
                 </Stack>
                 <Typography variant="body1" gutterBottom>
-                    ¿Está seguro de que desea eliminar el modelo con nombre de <strong>{model.nombre}</strong>?
+                    {t('modelos.mensaje.confirmacionEliminar', {modelo: model.nombre})}
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button variant="contained" onClick={handleCloseDelete}>
-                        No
+                        {t('general.botones.si')}
                     </Button>
                     <Button variant="contained" color="error" onClick={handleDelete}>
-                        Sí
+                        {t('general.botones.no')}
                     </Button>
                 </Stack>
             </Box>

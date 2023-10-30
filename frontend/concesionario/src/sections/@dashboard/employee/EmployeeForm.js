@@ -449,10 +449,10 @@ export default function EmployeeForm() {
               <Divider sx={{ my: 2 }} />
               <Stack direction="row" alignItems="center" justifyContent="space-between" >
                   <Button variant="contained" type="submit">
-                      {edit? "Editar" : "Agregar"}
+                      {t(`general.botones.${edit? "editar" : "agregar"}`)}
                   </Button>
                   <Button variant="contained" onClick={handleCloseForm}>
-                      Cancelar
+                      {t("general.botones.cancelar")}
                   </Button>
               </Stack>
           </Box>

@@ -135,7 +135,7 @@ export default function CustomerPage() {
                   })}
                   {emptyRows > 0 && (
                     <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={7} />
+                      <TableCell colSpan={10} />
                     </TableRow>
                   )}
                 </TableBody>
