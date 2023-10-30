@@ -111,7 +111,7 @@
       "fechaRetiro": "Data de Saída",
       "salario": "Salário",
       "cargo": "Cargo",
-      "tipoSangre": "Tipo Sanguíneo",
+      "tipoSangre": "T. Sanguíneo",
       "undefined": ""
     }
   },
@@ -145,21 +145,21 @@
     }
   },
   "errores": {
-    "requerido": "Este campo es requerido",
-    "numerico": "Solo se permiten numeros",
-    "alfabetico": "Solo se permiten letras",
-    "longitudMaxMin": "Max: {{maximo}} caracteres, Min: {{minimo}} caracteres",
-    "longitudMax": "Max: {{maximo}} caracteres",
-    "longitudMin": "Min: {{minimo}} caracteres",
-    "longitudExacta": "Debe tener {{exacto}} caracteres",
-    "correo": "Ingrese un correo valido",
-    "fecha": "Ingrese una fecha valida",
+    "requerido": "Este campo é obrigatório",
+    "numerico": "Apenas números são permitidos",
+    "alfabetico": "Apenas letras são permitidas",
+    "longitudMaxMin": "Máximo: {{maximo}} caracteres, Mínimo: {{minimo}} caracteres",
+    "longitudMax": "Máximo: {{maximo}} caracteres",
+    "longitudMin": "Mínimo: {{minimo}} caracteres",
+    "longitudExacta": "Deve ter {{exacto}} caracteres",
+    "correo": "Insira um endereço de e-mail válido",
+    "fecha": "Insira uma data válida",
     "contraseña": {
-      "numerico": "Debe tener al menos un numero",
-      "minuscula": "Debe tener al menos una minuscula",
-      "mayuscula": "Debe tener al menos una mayuscula",
-      "especial": "Debe tener al menos un caracter especial",
-      "espacio": "No se permiten espacios"
+      "numerico": "Deve conter pelo menos um número",
+      "minuscula": "Deve conter pelo menos uma letra minúscula",
+      "mayuscula": "Deve conter pelo menos uma letra maiúscula",
+      "especial": "Deve conter pelo menos um caractere especial",
+      "espacio": "Espaços não são permitidos"
     }
   }
 }
