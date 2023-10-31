@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'concesionarioapp'
 ]
 
+AUTH_USER_MODEL = 'concesionarioapp.Usuario'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
