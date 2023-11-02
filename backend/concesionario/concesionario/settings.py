@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-_p#hr!lkr5a2=*eqc0dtet63*&4*=!ierukxkbo6y29dra%(ge'
+SECRET_KEY = 'django-insecure-_p#hr!lkr5a2=eqc0dtet63&4*=!ierukxkbo6y29dra%(ge'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
+    'concesionarioapp',
 ]
 
 MIDDLEWARE = [
@@ -47,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'concesionario.urls'
@@ -75,6 +78,7 @@ WSGI_APPLICATION = 'concesionario.wsgi.application'
 
 DATABASES = {
     'default': {
+        ## Cada uno ponga su base de datos aqui
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
@@ -121,3 +125,18 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+# Permitir métodos y encabezados específicos si es necesario
+CORS_ALLOW_METHODS = [
+    'GET',
+]
+CORS_ALLOW_HEADERS = [
+    'Content-Type',
+]
+
+# Configurar si quieres permitir credenciales (cookies, autenticación) en las solicitudes
+CORS_ALLOW_CREDENTIALS = True

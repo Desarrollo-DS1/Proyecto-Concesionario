@@ -1,4 +1,5 @@
 import propTypes from "prop-types";
+import axios from 'axios';
 import React, {useState} from "react";
 import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
@@ -82,9 +83,19 @@ export function ModelState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [bodyworks, setBodyworks] = useState(initialBodyworks);
     const [fuels, setFuels] = useState(initialFuels);
-
+    
+    async function fetchData() {
+        try {
+            const response = await axios.get('http://localhost:8000/concesionarioapp/api/data/'); // La URL debe ser la URL de tu API de Django
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    }
     const getModels = () => {
         // Aqui se aplicaria el axios.get
+        // console.log(this.state.detail);
+        fetchData();
         setModels(MODELIST);
     }
     const getBodyworks = () => {
@@ -286,6 +297,3 @@ export function ModelState(props) {
         </ModelContext.Provider>
     )
 }
-
-
-
