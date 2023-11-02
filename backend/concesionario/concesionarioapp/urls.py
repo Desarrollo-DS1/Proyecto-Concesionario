@@ -16,9 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from concesionarioapp import views
+from . import views
 
 urlpatterns = [
-    path('concesionarioapp/api/data/', views.get_data, name='get_data'),
-    path('admin/', admin.site.urls),
+    path('api/data/', views.get_data, name='get_data'),
 ]
