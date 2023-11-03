@@ -59,7 +59,7 @@ export default function ModelPage() {
 
     useEffect(() => {
         getModels();
-    }, [models, getModels]);
+    }, []);
 
     // useEffect(() => {
     //     getBodyworks();
