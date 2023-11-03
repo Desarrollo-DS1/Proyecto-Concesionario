@@ -1,10 +1,11 @@
 import propTypes from "prop-types";
-import axios from 'axios';
 import React, {useState} from "react";
-import MODELIST from '../../_mock/model';
+// import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
+import {getAllModelos} from "../../api/Modelo.api";
+// import { get } from "lodash";
 
 ModelState.propTypes = {
     children: propTypes.node,
@@ -84,20 +85,21 @@ export function ModelState(props) {
     const [bodyworks, setBodyworks] = useState(initialBodyworks);
     const [fuels, setFuels] = useState(initialFuels);
     
-    async function fetchData() {
-        try {
-            const response = await axios.get('http://localhost:8000/concesionarioapp/api/data/'); // La URL debe ser la URL de tu API de Django
-            console.log(response.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        }
-    }
     const getModels = () => {
-        // Aqui se aplicaria el axios.get
-        // console.log(this.state.detail);
+        // Función para traer los modelos de la base de datos
+        async function fetchData() {
+            try {
+                const response = await getAllModelos();
+                // console.log(response);
+                setModels(response.data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        }
+
         fetchData();
-        setModels(MODELIST);
     }
+
     const getBodyworks = () => {
         // Aqui se aplicaria el axios.get
         setBodyworks(initialBodyworks);
