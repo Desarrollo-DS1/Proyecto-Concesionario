@@ -8,20 +8,37 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 
 class ClienteSerializer(serializers.ModelSerializer):
-    cedula = serializers.CharField(source='usuario.cedula', read_only=True)
-    primerNombre = serializers.CharField(source='usuario.primer_nombre', read_only=True)
-    primerApellido = serializers.CharField(source='usuario.primer_apellido', read_only=True)
-    correo = serializers.EmailField(source='usuario.email', read_only=True)
-    telefono = serializers.CharField(source='usuario.telefono', read_only=True)
-    celular = serializers.CharField(source='usuario.celular', read_only=True)
-    direccion = serializers.CharField(source='usuario.direccion', read_only=True)
-    ciudad = serializers.CharField(source='usuario.ciudad', read_only=True)
-    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', read_only=True)
-    genero = serializers.CharField(source='usuario.genero', read_only=True)
+    cedula = serializers.CharField(source='usuario.cedula')
+    clave = serializers.CharField(source='usuario.password')
+    correo = serializers.EmailField(source='usuario.email')
+    primerNombre = serializers.CharField(source='usuario.primer_nombre')
+    segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False)
+    primerApellido = serializers.CharField(source='usuario.primer_apellido')
+    segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False)
+    telefono = serializers.CharField(source='usuario.telefono', required=False)
+    celular = serializers.CharField(source='usuario.celular', required=False)
+    direccion = serializers.CharField(source='usuario.direccion', required=False)
+    ciudad = serializers.CharField(source='usuario.ciudad', required=False)
+    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False)
+    genero = serializers.CharField(source='usuario.genero', required=False)
                         
     class Meta:
         model = Cliente
-        fields = 'cedula', 'primerNombre', 'primerApellido', 'correo', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
+        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
+
+    def create(self, validated_data):
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+        usuario_data = validated_data.pop('usuario')
+        print(usuario_data)
+        usuario_data['genero'] = 'M'
+        print(usuario_data)
+        usuario = Usuario.objects.create(**usuario_data)
+        usuario.set_password(usuario_data['password'])
+        usuario.save()
+        cliente = Cliente.objects.create(usuario=usuario)
+        return cliente    
+    
+
 
 
 class EmpleadoSerializer(serializers.ModelSerializer):
