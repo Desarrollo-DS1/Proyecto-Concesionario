@@ -12,14 +12,14 @@ class ClienteSerializer(serializers.ModelSerializer):
     clave = serializers.CharField(source='usuario.password')
     correo = serializers.EmailField(source='usuario.email')
     primerNombre = serializers.CharField(source='usuario.primer_nombre')
-    segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False)
+    segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
     primerApellido = serializers.CharField(source='usuario.primer_apellido')
-    segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False)
+    segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False, allow_blank=True)
     telefono = serializers.CharField(source='usuario.telefono', required=False)
     celular = serializers.CharField(source='usuario.celular', required=False)
     direccion = serializers.CharField(source='usuario.direccion', required=False)
     ciudad = serializers.CharField(source='usuario.ciudad', required=False)
-    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False)
+    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False, allow_null=True)
     genero = serializers.CharField(source='usuario.genero', required=False)
                         
     class Meta:
@@ -27,18 +27,33 @@ class ClienteSerializer(serializers.ModelSerializer):
         fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
 
     def create(self, validated_data):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        usuario_data = validated_data.pop('usuario')
-        print(usuario_data)
-        usuario_data['genero'] = 'M'
-        print(usuario_data)
-        usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(usuario_data['password'])
-        usuario.save()
-        cliente = Cliente.objects.create(usuario=usuario)
-        return cliente    
+        usuario_data = validated_data.pop('usuario', None)
+
+        if usuario_data is not None:
+            usuario = Usuario.objects.create(**usuario_data)
+            usuario.set_password(usuario_data['password'])
+            usuario.save()
+            cliente = Cliente.objects.create(usuario=usuario)
+            return cliente
+
+        else:
+            raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
     
 
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario', None)
+
+        if usuario_data is not None:
+            Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
+
+            if 'password' in usuario_data:
+                instance.usuario.set_password(usuario_data['password'])
+                instance.usuario.save()
+
+            return instance
+
+        else:
+            raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
 
 
 class EmpleadoSerializer(serializers.ModelSerializer):

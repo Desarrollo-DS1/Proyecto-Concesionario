@@ -85,6 +85,7 @@ export function CustomerState(props) {
 
             loadCustomers();
     }
+
     const getCustomer = (cedula) => {
         const customer = customers.find(customer => customer.cedula === cedula);
         if(customer)
@@ -98,13 +99,11 @@ export function CustomerState(props) {
             setEdit(false)
         }
     }
+
     const addCustomer = (customer) => {
         async function postCustomer() {
             try{
-                console.log(customer);
-                console.log("Hola");
                 const response = await createCliente(customer);
-                console.log(response.data);
                 setCustomers([...customers, response.data]);
 
             } catch (error) {
@@ -114,9 +113,22 @@ export function CustomerState(props) {
 
         postCustomer();
     }
+
     const updateCustomer = (customer) => {
-        setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+        async function putCustomer() {
+            try{
+                const response = await updateCliente(customer.cedula, customer);
+                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+            
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        }
+        
+        putCustomer();
     }
+
+    
     const deleteCustomer = (customer) => {
         setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
     }
