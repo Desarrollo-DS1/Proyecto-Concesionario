@@ -243,7 +243,7 @@ export default function CustomerForm() {
                           style={textFieldStyle}
                       >
                           {genders.map((option) => (
-                              <MenuItem key={option.id} value={option.label}>
+                              <MenuItem key={option.id} value={option.label}> // 
                                   {option.label}
                               </MenuItem>
                           ))}

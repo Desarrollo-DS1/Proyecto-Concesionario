@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'concesionarioapp',
 ]
 
+AUTH_USER_MODEL = 'concesionarioapp.Usuario'
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -140,14 +142,5 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
 }
 
-
-# # Permitir métodos y encabezados específicos si es necesario
-# CORS_ALLOW_METHODS = [
-#     'GET',
-# ]
-# CORS_ALLOW_HEADERS = [
-#     'Content-Type',
-# ]
-
-# # Configurar si quieres permitir credenciales (cookies, autenticación) en las solicitudes
-# CORS_ALLOW_CREDENTIALS = True
+# Configurar si quieres permitir credenciales (cookies, autenticación) en las solicitudes
+CORS_ALLOW_CREDENTIALS = True

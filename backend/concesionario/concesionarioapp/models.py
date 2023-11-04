@@ -1,6 +1,152 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from datetime import datetime, timedelta, date
+from .managers import AdministradorUsuarios
+
+
+class Usuario(AbstractBaseUser, PermissionsMixin):
+	cedula = models.CharField('Cédula', max_length=15, primary_key=True, unique=True)
+	email = models.EmailField('Correo Electrónico', unique=True)
+	primer_nombre = models.CharField('Primer Nombre', max_length=30)
+	segundo_nombre = models.CharField('Segundo Nombre', max_length=30, blank=True, null=True)
+	primer_apellido = models.CharField('Primer Apellido', max_length=30)
+	segundo_apellido = models.CharField('Segundo Apellido', max_length=30, blank=True, null=True)
+	telefono = models.CharField('Teléfono', max_length=10, blank=True, null=True)
+	celular = models.CharField('Celular', max_length=10, blank=True, null=True)
+	direccion = models.CharField('Dirección', max_length=100, blank=True, null=True)
+	ciudad = models.CharField('Ciudad', max_length=30, blank=True, null=True)
+	fecha_nacimiento = models.DateField('Fecha de Nacimiento', blank=True, null=True)
+	genero = models.CharField('Género', max_length=1, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')), blank=True, null=True)
+	is_active = models.BooleanField('Usuario activo', default=True)
+	is_staff = models.BooleanField('Usuario parte del staff', default=False)
+	is_superuser = models.BooleanField('Usuario es superusuario', default=False)
+
+	objects = AdministradorUsuarios()
+
+	USERNAME_FIELD = 'cedula'
+	EMAIL_FIELD = 'email'
+	REQUIRED_FIELDS = ['email', 'primer_nombre', 'primer_apellido']
+
+	class Meta:
+		verbose_name = 'Usuario'
+		verbose_name_plural = 'Usuarios'
+		ordering = ['primer_apellido', 'primer_nombre']
+
+	def __str__(self):
+		return 'Usuario: ' + self.cedula + ' - ' + self.primer_nombre + ' ' + self.primer_apellido
+	
+	def edad(self):
+		if self.fecha_nacimiento:
+			edad = date.today().year - self.fecha_nacimiento.year
+			return edad
+		else:
+			return None
+
+
+class Cliente(models.Model):
+	usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+
+	class Meta:
+		verbose_name = 'Cliente'
+		verbose_name_plural = 'Clientes'
+		ordering = ['usuario__primer_apellido', 'usuario__primer_nombre']
+	
+	def __str__(self):
+		return 'Cliente: ' + self.usuario.cedula + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido
+	
+	def cedula(self):
+		return self.usuario.cedula
+
+	def email(self):
+		return self.usuario.email
+	
+	def primer_nombre(self):
+		return self.usuario.primer_nombre
+	
+	def primer_apellido(self):
+		return self.usuario.primer_apellido
+	
+	def celular(self):
+		return self.usuario.celular
+	
+	def direccion(self):
+		return self.usuario.direccion
+	
+	def ciudad(self):
+		return self.usuario.ciudad
+	
+	def edad(self):
+		return self.usuario.edad()
+	
+	def genero(self):
+		return self.usuario.genero
+	
+
+class Empleado(models.Model):
+	usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE, primary_key=True)
+	fecha_ingreso = models.DateField('Fecha de Ingreso', blank=True, null=True)
+	fecha_retiro = models.DateField('Fecha de Retiro', blank=True, null=True)
+	salario_base = models.DecimalField('Salario', max_digits=10, decimal_places=2, blank=True, null=True)
+	tipo_sangre = models.CharField('Tipo de Sangre', max_length=3, blank=True, null=True)
+	eps = models.CharField('EPS', max_length=30, blank=True, null=True)
+	arl = models.CharField('ARL', max_length=30, blank=True, null=True)
+	cargo = models.CharField('Cargo', max_length=1, choices=(('A', 'Administrador'), ('V', 'Vendedor'), ('J', 'Jefe de taller')))
+	sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT, blank=True, null=True)
+
+	class Meta:
+		verbose_name = 'Empleado'
+		verbose_name_plural = 'Empleados'
+		ordering = ['usuario__primer_apellido', 'usuario__primer_nombre']
+	
+	def __str__(self):
+		return 'Empleado: ' + self.usuario.cedula + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido + ' Cargo: ' + self.cargo
+	
+	def cedula(self):
+		return self.usuario.cedula
+
+	def email(self):
+		return self.usuario.email
+	
+	def primer_nombre(self):
+		return self.usuario.primer_nombre
+	
+	def primer_apellido(self):
+		return self.usuario.primer_apellido
+	
+	def celular(self):
+		return self.usuario.celular
+	
+	def direccion(self):
+		return self.usuario.direccion
+	
+	def ciudad(self):
+		return self.usuario.ciudad
+	
+	def edad(self):
+		return self.usuario.edad()
+	
+	def genero(self):
+		return self.usuario.genero
+	
+	def nombre_sucursal(self):
+		return self.sucursal.nombre_sucursal
+
+
+class Sucursal(models.Model):
+	id_sucursal = models.AutoField('ID de la Sucursal', primary_key=True)
+	nombre_sucursal = models.CharField('Nombre de la Sucursal', max_length=30, unique=True)
+	direccion_sucursal = models.CharField('Dirección de la Sucursal', max_length=100, blank=True, null=True)
+	ciudad_sucursal = models.CharField('Ciudad de la Sucursal', max_length=30, blank=True, null=True)
+	telefono_sucursal = models.CharField('Teléfono de la Sucursal', max_length=10, blank=True, null=True)
+
+	class Meta:
+		verbose_name = 'Sucursal'
+		verbose_name_plural = 'Sucursales'
+		ordering = ['nombre_sucursal']
+	
+	def __str__(self):
+		return 'Sucursal: ' + self.id_sucursal + ' ' + self.nombre_sucursal
+	
 
 class Modelo(models.Model):
 	id = models.AutoField('ID del Modelo', primary_key=True)
