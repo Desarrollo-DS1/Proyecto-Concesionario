@@ -128,7 +128,7 @@ export function CustomerState(props) {
         putCustomer();
     }
 
-    
+
     const deleteCustomer = (customer) => {
         setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
     }
@@ -139,6 +139,7 @@ export function CustomerState(props) {
             [name]: value
         });
     }
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateCustomerOnSubmit()) {
