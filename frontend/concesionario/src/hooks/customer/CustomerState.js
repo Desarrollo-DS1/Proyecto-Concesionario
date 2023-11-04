@@ -59,7 +59,9 @@ export function CustomerState(props) {
 
     const initialGenders = [
         { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },]
+        { id: '2', label: 'Femenino' },
+        { id: '3', label: 'Otro' }
+    ]
 
     const [customer, setCustomer] = React.useState(CustomerEmployee);
     const [customers, setCustomers] = React.useState([]);
@@ -74,7 +76,6 @@ export function CustomerState(props) {
             async function loadCustomers() {
                 try{
                     const response = await getAllClientes();
-                    console.log(response.data);
                     setCustomers(response.data);
 
                 } catch (error) {
@@ -98,7 +99,20 @@ export function CustomerState(props) {
         }
     }
     const addCustomer = (customer) => {
-        setCustomers([...customers, customer])
+        async function postCustomer() {
+            try{
+                console.log(customer);
+                console.log("Hola");
+                const response = await createCliente(customer);
+                console.log(response.data);
+                setCustomers([...customers, response.data]);
+
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        }
+
+        postCustomer();
     }
     const updateCustomer = (customer) => {
         setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
