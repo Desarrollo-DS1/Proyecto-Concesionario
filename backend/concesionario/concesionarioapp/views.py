@@ -1,13 +1,23 @@
-from django.http import JsonResponse
 from rest_framework import viewsets
-from .serializer import ModeloSerializer
-from .models import Modelo
+from .serializer import *
+from .models import *
 
-"""
-def get_data(request):
-    data_list = ["Hola"]
-    return JsonResponse(data_list, safe=False)
-"""
+
+class UsuarioView(viewsets.ModelViewSet):
+    serializer_class = UsuarioSerializer
+    queryset = Usuario.objects.all()
+
+class ClienteView(viewsets.ModelViewSet):
+    serializer_class = ClienteSerializer
+    queryset = Cliente.objects.all()
+
+class VendedorView(viewsets.ModelViewSet):
+    serializer_class = EmpleadoSerializer
+    queryset = Empleado.objects.all()
+
+
 class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
+
+

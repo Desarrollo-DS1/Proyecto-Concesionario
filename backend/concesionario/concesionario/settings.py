@@ -39,8 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'rest_framework',
+    'coreapi',
     'concesionarioapp',
 ]
+
+AUTH_USER_MODEL = 'concesionarioapp.Usuario'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,9 +85,9 @@ WSGI_APPLICATION = 'concesionario.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'BdConcesionario',
+        'NAME': 'concesionario',
         'USER': 'postgres',
-        'PASSWORD': '1234',
+        'PASSWORD': 'password',
         'HOST': 'localhost',
         'PORT': '5432',
         }
@@ -135,13 +138,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
 
-# Permitir métodos y encabezados específicos si es necesario
-CORS_ALLOW_METHODS = [
-    'GET',
-]
-CORS_ALLOW_HEADERS = [
-    'Content-Type',
-]
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema',
+}
 
 # Configurar si quieres permitir credenciales (cookies, autenticación) en las solicitudes
 CORS_ALLOW_CREDENTIALS = True
