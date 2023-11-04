@@ -4,6 +4,8 @@ import CUSTOMERLIST from '../../_mock/customer';
 import CustomerContext from './CustomerContext';
 import {checkCustomer} from "./CustomerValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
+import {getAllClientes, getCliente, createCliente, updateCliente, deleteCliente} from "../../api/Cliente.api";
+
 
 CustomerState.propTypes = {
     children: propTypes.node,
@@ -69,8 +71,18 @@ export function CustomerState(props) {
     const [genders, setGenders] = useState(initialGenders);
 
     const getCustomers = () => {
-        // Aqui se aplicaria el axios.get
-        setCustomers(customers);
+            async function loadCustomers() {
+                try{
+                    const response = await getAllClientes();
+                    console.log(response.data);
+                    setCustomers(response.data);
+
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+
+            loadCustomers();
     }
     const getCustomer = (cedula) => {
         const customer = customers.find(customer => customer.cedula === cedula);
