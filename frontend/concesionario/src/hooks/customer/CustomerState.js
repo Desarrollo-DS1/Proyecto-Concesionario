@@ -59,7 +59,9 @@ export function CustomerState(props) {
 
     const initialGenders = [
         { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },]
+        { id: '2', label: 'Femenino' },
+        { id: '3', label: 'Otro' }
+    ]
 
     const [customer, setCustomer] = React.useState(CustomerEmployee);
     const [customers, setCustomers] = React.useState([]);
@@ -74,7 +76,6 @@ export function CustomerState(props) {
             async function loadCustomers() {
                 try{
                     const response = await getAllClientes();
-                    console.log(response.data);
                     setCustomers(response.data);
 
                 } catch (error) {
@@ -84,6 +85,7 @@ export function CustomerState(props) {
 
             loadCustomers();
     }
+
     const getCustomer = (cedula) => {
         const customer = customers.find(customer => customer.cedula === cedula);
         if(customer)
@@ -97,12 +99,36 @@ export function CustomerState(props) {
             setEdit(false)
         }
     }
+
     const addCustomer = (customer) => {
-        setCustomers([...customers, customer])
+        async function postCustomer() {
+            try{
+                const response = await createCliente(customer);
+                setCustomers([...customers, response.data]);
+
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        }
+
+        postCustomer();
     }
+
     const updateCustomer = (customer) => {
-        setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+        async function putCustomer() {
+            try{
+                const response = await updateCliente(customer.cedula, customer);
+                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+            
+            } catch (error) {
+                console.error('Error posting data:', error);
+            }
+        }
+        
+        putCustomer();
     }
+
+
     const deleteCustomer = (customer) => {
         setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
     }
@@ -113,6 +139,7 @@ export function CustomerState(props) {
             [name]: value
         });
     }
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateCustomerOnSubmit()) {

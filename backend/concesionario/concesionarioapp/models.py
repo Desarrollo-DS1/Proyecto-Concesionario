@@ -16,7 +16,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 	direccion = models.CharField('Dirección', max_length=100, blank=True, null=True)
 	ciudad = models.CharField('Ciudad', max_length=30, blank=True, null=True)
 	fecha_nacimiento = models.DateField('Fecha de Nacimiento', blank=True, null=True)
-	genero = models.CharField('Género', max_length=1, choices=(('M', 'Masculino'), ('F', 'Femenino'), ('O', 'Otro')), blank=True, null=True)
+	genero = models.CharField('Género', choices=(('Masculino', 'Masculino'), ('Femenino', 'Femenino'), ('Otro', 'Otro')), blank=True, null=True)
 	is_active = models.BooleanField('Usuario activo', default=True)
 	is_staff = models.BooleanField('Usuario parte del staff', default=False)
 	is_superuser = models.BooleanField('Usuario es superusuario', default=False)

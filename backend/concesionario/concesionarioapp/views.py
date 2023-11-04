@@ -7,6 +7,12 @@ class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     queryset = Usuario.objects.all()
 
+    # if Usuario.objects.all():
+    #     for usuario in Usuario.objects.all():
+    #         usuario.set_password(usuario.password)
+    #         usuario.save()
+
+
 class ClienteView(viewsets.ModelViewSet):
     serializer_class = ClienteSerializer
     queryset = Cliente.objects.all()
