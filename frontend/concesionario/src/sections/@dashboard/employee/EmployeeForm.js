@@ -24,7 +24,7 @@ const selectMenuProps = {
         vertical: "top",
         horizontal: "left"
     },
-    getContentAnchorEl: null,
+    getcontentanchorel: null,
     PaperProps: {
         style: {
             maxHeight: 125 // Establece la altura máxima del menú

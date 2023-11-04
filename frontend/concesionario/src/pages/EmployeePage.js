@@ -56,7 +56,7 @@ export default function EmployeePage() {
 
     useEffect(() => {
         getEmployees();
-    }, [employees, getEmployees]);
+    }, []);
 
     // useEffect(() => {
     //     getBloodTypes();
