@@ -19,16 +19,26 @@ class ClienteView(viewsets.ModelViewSet):
         if cliente.usuario.is_superuser:
             return Response({'detail': 'No se puede eliminar un usuario administrador'}, status=status.HTTP_400_BAD_REQUEST)
         else:
-            print(cliente.usuario.is_superuser)
             cliente.usuario.delete()
         
         self.perform_destroy(cliente)
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 
-class VendedorView(viewsets.ModelViewSet):
+class EmpleadoView(viewsets.ModelViewSet):
     serializer_class = EmpleadoSerializer
     queryset = Empleado.objects.all()
+
+    def destroy(self, request, *args, **kwargs):
+        empleado = self.get_object()
+
+        if empleado.usuario.is_superuser:
+            return Response({'detail': 'No se puede eliminar un usuario administrador'}, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            empleado.usuario.delete()
+        
+        self.perform_destroy(empleado)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 class ModelView(viewsets.ModelViewSet):

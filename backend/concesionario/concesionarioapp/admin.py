@@ -8,7 +8,6 @@ from .models import *
 class UsuarioAdmin(admin.ModelAdmin):
 	atributos_a_mostrar = ('cedula', 'primer_nombre', 'primer_apellido', 'email', 'celular', 'direccion', 'ciudad', 'edad', 'genero')
 	list_display = atributos_a_mostrar
-	search_fields = atributos_a_mostrar
 	list_filter = ('ciudad', 'genero',)
 	
 
@@ -28,7 +27,6 @@ class EmpleadoAdmin(admin.ModelAdmin):
 class SucursalAdmin(admin.ModelAdmin):
 	atributos_a_mostrar = ('id_sucursal', 'nombre_sucursal', 'direccion_sucursal', 'ciudad_sucursal', 'telefono_sucursal')
 	list_display = atributos_a_mostrar
-	search_fields = atributos_a_mostrar
 	list_filter = ('ciudad_sucursal',)
 
 
@@ -36,7 +34,6 @@ class SucursalAdmin(admin.ModelAdmin):
 class ModeloAdmin(admin.ModelAdmin):
 	atributos_a_mostrar = ('id', 'nombre', 'año', 'carroceria', 'combustible', 'numeroPasajeros', 'precioBase')
 	list_display = atributos_a_mostrar
-	search_fields = atributos_a_mostrar
 	list_filter = ('carroceria', 'combustible', 'numeroPasajeros',)
 
 

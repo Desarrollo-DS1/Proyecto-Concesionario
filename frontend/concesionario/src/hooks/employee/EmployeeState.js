@@ -131,7 +131,7 @@ export function EmployeeState(props) {
                 setEmployees(response.data);
 
             } catch (error) {
-                console.log("rror fetching data", error);
+                console.log("Error fetching data", error);
             }
         }
 
@@ -191,7 +191,7 @@ export function EmployeeState(props) {
         async function putEmployee() {
             try{
                 const response = await updateEmpleado(employee.cedula, employee);
-                setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)))
+                setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)));
             
             } catch (error) {
                 console.log("Error updating data", error);
@@ -202,7 +202,17 @@ export function EmployeeState(props) {
     }
 
     const deleteEmployee = (employee) => {
-        setEmployees(employees.filter((item) => item.cedula !== employee.cedula))
+        async function removeEmployee() {
+            try{
+                const response = await deleteEmpleado(employee.cedula);
+                setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
+
+            } catch (error) {
+                console.log("Error deleting data", error);
+            }
+        }
+
+        removeEmployee();
     }
 
     const handleInputChange = (event) => {

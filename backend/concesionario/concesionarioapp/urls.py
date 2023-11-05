@@ -7,7 +7,7 @@ from . import views
 router = routers.DefaultRouter()
 router.register(r'Usuario', views.UsuarioView, 'Usuario')
 router.register(r'Cliente', views.ClienteView, 'Cliente')
-router.register(r'Empleado', views.VendedorView, 'Empleado')
+router.register(r'Empleado', views.EmpleadoView, 'Empleado')
 router.register(r'Modelo', views.ModelView, 'Modelo')
 
 
