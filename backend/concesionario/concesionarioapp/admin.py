@@ -21,7 +21,7 @@ class ClienteAdmin(admin.ModelAdmin):
 
 @admin.register(Empleado)
 class EmpleadoAdmin(admin.ModelAdmin):
-	atributos_a_mostrar = ('cedula', 'primer_nombre', 'primer_apellido', 'email', 'celular', 'direccion', 'ciudad', 'edad', 'genero', 'fecha_ingreso', 'salario_base', 'tipo_sangre', 'cargo', 'sucursal')
+	atributos_a_mostrar = ('cedula', 'primer_nombre', 'primer_apellido', 'cargo', 'email', 'celular', 'direccion', 'ciudad', 'edad', 'genero', 'fecha_ingreso', 'salario_base', 'tipo_sangre', 'cargo', 'sucursal')
 	list_display = atributos_a_mostrar
 	search_fields = atributos_a_mostrar
 	

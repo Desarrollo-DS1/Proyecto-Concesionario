@@ -30,7 +30,37 @@ VALUES
 ('281234567', 'password28', 'cliente28@gmail.com', 'Laura', 'Sofia', 'Martinez', '', '6023456708', '3101234567', 'Avenida 5 # 7 - 18', 'Tulua', '1986-04-27', 'Femenino', TRUE, FALSE, FALSE),
 ('291234567', 'password29', 'cliente29@gmail.com', 'Manuel', 'Alejandro', 'Gomez', 'Rodriguez', '6022304567', '3102345678', 'Carrera 10 # 12 - 25', 'La Victoria', '1991-08-04', 'Masculino', TRUE, FALSE, FALSE),
 ('301234567', 'password30', 'cliente30@gmail.com', 'Diana', 'Isabel', 'Lopez', 'Perez', '6023456708', '3103456789', 'Calle 8 # 10 - 21', 'Yotoco', '1984-12-12', 'Femenino', TRUE, FALSE, FALSE),
-('311234567', 'password31', 'cliente31@gmail.com', 'Pedro', 'Fernando', 'Hernandez', '', '6024567809', '3104567890', 'Avenida 2 # 4 - 11', 'Dagua', '1992-02-20', 'Masculino', TRUE, FALSE, FALSE)
+('311234567', 'password31', 'cliente31@gmail.com', 'Pedro', 'Fernando', 'Hernandez', '', '6024567809', '3104567890', 'Avenida 2 # 4 - 11', 'Dagua', '1992-02-20', 'Masculino', TRUE, FALSE, FALSE),
+('321234567', 'password32', 'empleado1@concesionario.co', 'Juan', 'Carlos', 'Gomez', 'Perez', '6024567810', '3104567891', 'Avenida 2 # 4 - 12', 'Cali', '1985-05-16', 'Masculino', TRUE, TRUE, FALSE),
+('331234567', 'password33', 'empleado2@concesionario.co', 'Maria', '', 'Lopez', 'Rodriguez', '6025670891', '3105678902', 'Calle 3 # 5 - 15', 'Palmira', '1990-03-21', 'Femenino', TRUE, TRUE, FALSE),
+('341234567', 'password34', 'empleado3@concesionario.co', 'Luis', 'Fernando', 'Hernandez', '', '6026789002', '3106789013', 'Carrera 14 # 16 - 34', 'Jamundi', '1988-08-11', 'Masculino', TRUE, TRUE, FALSE),
+('351234567', 'password35', 'empleado4@concesionario.co', 'Sofia', 'Isabel', 'Torres', 'Gomez', '6027890013', '3107890124', 'Calle 5 # 8 - 20', 'Cali', '1995-11-26', 'Femenino', TRUE, TRUE, FALSE),
+('361234567', 'password36', 'empleado5@concesionario.co', 'Carlos', 'Alberto', 'Ramirez', 'Lopez', '6028900124', '3108901235', 'Avenida 7 # 9 - 21', 'Palmira', '1987-07-06', 'Masculino', TRUE, TRUE, FALSE),
+('371234567', 'password37', 'empleado6@concesionario.co', 'Ana', 'Maria', 'Garcia', 'Perez', '6029012345', '3109012346', 'Carrera 5 # 7 - 19', 'Jamundi', '1993-01-31', 'Femenino', TRUE, TRUE, FALSE),
+('381234567', 'password38', 'empleado7@concesionario.co', 'Diego', 'Alejandro', 'Perez', '', '6023405679', '3101234568', 'Calle 9 # 11 - 25', 'Palmira', '1991-06-29', 'Masculino', TRUE, TRUE, FALSE),
+('391234567', 'password39', 'empleado8@concesionario.co', 'Luis', '', 'Gutierrez', 'Gomez', '6022304568', '3102345679', 'Carrera 10 # 12 - 26', 'Buga', '1980-03-16', 'Masculino', TRUE, TRUE, FALSE),
+('401234567', 'password40', 'empleado9@concesionario.co', 'Diana', 'Marcela', 'Lopez', 'Rodriguez', '6020345679', '3103456790', 'Calle 8 # 9 - 17', 'Palmira', '1975-07-11', 'Femenino', TRUE, TRUE, FALSE),
+('411234567', 'password41', 'empleado10@concesionario.co', 'Pedro', 'Alejandro', 'Hernandez', '', '6024567090', '3104567891', 'Avenida 6 # 7 - 20', 'Cali', '1996-12-01', 'Masculino', TRUE, TRUE, FALSE),
+('421234567', 'password42', 'empleado11@concesionario.co', 'Ana', 'Isabel', 'Torres', 'Gomez', '6025678901', '3105678902', 'Carrera 11 # 12 - 28', 'Jamundi', '1992-02-16', 'Femenino', TRUE, TRUE, FALSE),
+('431234567', 'password43', 'empleado12@concesionario.co', 'Carlos', 'Fernando', 'Ramirez', 'Lopez', '6020678902', '3106789013', 'Calle 4 # 6 - 16', 'Cali', '1983-05-26', 'Masculino', TRUE, TRUE, FALSE),
+('441234567', 'password44', 'empleado13@concesionario.co', 'Isabella', 'Sofia', 'Garcia', 'Perez', '6027890013', '3107890124', 'Calle 8 # 10 - 22', 'Palmira', '1987-09-09', 'Femenino', TRUE, TRUE, FALSE),
+('451234567', 'password45', 'empleado14@concesionario.co', 'Diego', 'Antonio', 'Gutierrez', 'Gomez', '6028900124', '3108901235', 'Carrera 9 # 11 - 25', 'Cali', '1978-01-04', 'Masculino', TRUE, TRUE, FALSE),
+('461234567', 'password46', 'empleado15@concesionario.co', 'Sofia', '', 'Fernandez', 'Lopez', '6029012345', '3109012346', 'Avenida 5 # 7 - 19', 'Jamundi', '1990-04-23', 'Femenino', TRUE, TRUE, FALSE),
+('471234567', 'password47', 'empleado16@concesionario.co', 'Juan', 'Carlos', 'Martinez', '', '6023456791', '3101234568', 'Carrera 7 # 9 - 22', 'Palmira', '1985-08-15', 'Masculino', TRUE, TRUE, FALSE),
+('481234567', 'password48', 'empleado17@concesionario.co', 'Maria', 'Isabel', 'Gomez', 'Perez', '6022345070', '3102345681', 'Calle 11 # 12 - 27', 'Cali', '1993-12-30', 'Femenino', TRUE, TRUE, FALSE),
+('491234567', 'password49', 'empleado18@concesionario.co', 'Luis', 'Fernando', 'Lopez', 'Rodriguez', '6020345681', '3103456792', 'Carrera 8 # 10 - 24', 'Cali', '1982-07-19', 'Masculino', TRUE, TRUE, FALSE),
+('501234567', 'password50', 'empleado19@concesionario.co', 'Sofia', 'Alejandra', 'Hernandez', '', '6024567092', '3104567893', 'Calle 12 # 14 - 30', 'Palmira', '1997-04-06', 'Femenino', TRUE, TRUE, FALSE),
+('511234567', 'password51', 'empleado20@concesionario.co', 'Carlos', 'Alberto', 'Ramirez', 'Gomez', '6025670903', '3105678904', 'Avenida 7 # 9 - 22', 'Jamundi', '1980-09-11', 'Masculino', TRUE, TRUE, FALSE),
+('521234567', 'password52', 'empleado21@concesionario.co', 'Ana', 'Sofia', 'Garcia', 'Lopez', '6026789014', '3106789015', 'Carrera 5 # 7 - 20', 'Cali', '1989-02-02', 'Femenino', TRUE, TRUE, FALSE),
+('531234567', 'password53', 'empleado22@concesionario.co', 'Diego', 'Antonio', 'Perez', 'Perez', '6027809015', '3107890126', 'Calle 13 # 15 - 33', 'Jamundi', '1995-06-04', 'Masculino', TRUE, TRUE, FALSE),
+('541234567', 'password54', 'empleado23@concesionario.co', 'Luis', 'Fernando', 'Gutierrez', 'Gomez', '6028090126', '3108901237', 'Carrera 9 # 11 - 26', 'Palmira', '1987-03-21', 'Masculino', TRUE, TRUE, FALSE),
+('551234567', 'password55', 'empleado24@concesionario.co', 'Camila', 'Maria', 'Fernandez', 'Lopez', '6029010237', '3109012348', 'Calle 14 # 16 - 34', 'Cali', '1996-11-11', 'Femenino', TRUE, TRUE, FALSE),
+('561234567', 'password56', 'empleado25@concesionario.co', 'Laura', 'Sofia', 'Martinez', '', '6023456709', '3101234569', 'Avenida 5 # 7 - 20', 'Tulua', '1986-04-28', 'Femenino', TRUE, TRUE, FALSE),
+('571234567', 'password57', 'empleado26@concesionario.co', 'Manuel', 'Alejandro', 'Gomez', 'Rodriguez', '6022304568', '3102345679', 'Carrera 10 # 12 - 26', 'La Victoria', '1991-08-05', 'Masculino', TRUE, TRUE, FALSE),
+('581234567', 'password58', 'empleado27@concesionario.co', 'Diana', 'Isabel', 'Lopez', 'Perez', '6023456710', '3103456791', 'Calle 8 # 10 - 22', 'Yotoco', '1984-12-13', 'Femenino', TRUE, TRUE, FALSE),
+('591234567', 'password59', 'empleado28@concesionario.co', 'Pedro', 'Fernando', 'Hernandez', '', '6024567101', '3104567902', 'Avenida 2 # 4 - 12', 'Dagua', '1992-02-21', 'Masculino', TRUE, TRUE, FALSE),
+('601234567', 'password60', 'empleado29@concesionario.co', 'Natalia', '', 'Lopez', '', '6025670912', '3105678903', 'Calle 4 # 6 - 17', 'Cali', '1983-05-27', 'Femenino', TRUE, TRUE, FALSE),
+('611234567', 'password61', 'empleado30@concesionario.co', 'Daniel', '', 'Llano', '', '6026789023', '3106789014', 'Carrera 14 # 16 - 35', 'Palmira', '1989-09-10', 'Masculino', TRUE, TRUE, FALSE)
 ON CONFLICT (cedula) DO NOTHING;
 
 
@@ -68,5 +98,54 @@ VALUES
 ('301234567'),
 ('311234567')
 ON CONFLICT (usuario_id) DO NOTHING;
+
+
+INSERT INTO concesionarioapp_sucursal (id_sucursal, nombre_sucursal, direccion_sucursal, ciudad_sucursal, telefono_sucursal)
+VALUES
+(1, 'Sucursal Sur', 'Cra. 4 # 12-34', 'Cali', '6021234567'),
+(2, 'Sucursal Norte', 'Av. 5 # 45-67', 'Cali', '6022345678'),
+(3, 'Sucursal Oriente', 'Cra. 6 # 78-90', 'Cali', '6023456789'),
+(4, 'Sucursal Occidente', 'Av. 7 # 23-45', 'Cali', '6024567890'),
+(5, 'Sucursal Centro', 'Cra. 8 # 56-78', 'Cali', '6025678901')
+ON CONFLICT (nombre_sucursal) DO NOTHING;
+
+
+INSERT INTO concesionarioapp_empleado (usuario_id, sucursal_id, cargo, fecha_ingreso, fecha_retiro, salario_base, tipo_sangre, eps, arl) 
+VALUES
+('321234567', '1', 'Vendedor', '2010-02-10', NULL, '2500000', 'O+', 'Comfenalco', 'Colmena'),
+('331234567', '1', 'Vendedor', '2012-10-5', NULL, '2300000', 'A-', 'Sanitas', 'Sura'),
+('341234567', '1', 'Vendedor', '2011-03-15', NULL, '2600000', 'B+', 'Cafesalud', 'Colmena'),
+('351234567', '1', 'Vendedor', '2013-12-02', NULL, '2300000', 'A-', 'Sanitas', 'Sura'),
+('361234567', '2', 'Vendedor', '2015-08-20', NULL, '2700000', 'AB+', 'Nueva EPS', 'Colmena'),
+('371234567', '2', 'Vendedor', '2017-11-09', NULL, '2400000', 'O+', 'Sura', 'Colmena'),
+('381234567', '2', 'Vendedor', '2010-06-25', NULL, '2500000', 'B-', 'Sanitas', 'Sura'),
+('391234567', '2', 'Vendedor', '2012-04-11', NULL, '2600000', 'A+', 'Cafam', 'Colmena'),
+('401234567', '3', 'Vendedor', '2014-09-30', NULL, '2700000', 'AB-', 'Coomeva', 'Sura'),
+('411234567', '3', 'Vendedor', '2016-10-18', NULL, '2800000', 'O-', 'Nueva EPS', 'Colmena'),
+('421234567', '3', 'Vendedor', '2011-08-05', NULL, '2900000', 'A-', 'Sura', 'Colmena'),
+('431234567', '3', 'Vendedor', '2013-06-17', NULL, '3000000', 'B+', 'Cafam', 'Sura'),
+('441234567', '4', 'Vendedor', '2015-01-24', NULL, '3100000', 'AB+', 'Sanitas', 'Colmena'),
+('451234567', '4', 'Vendedor', '2017-04-13', NULL, '3200000', 'O+', 'EPS Sura', 'Sura'),
+('461234567', '4', 'Vendedor', '2010-12-29', NULL, '3300000', 'B-', 'Cafesalud', 'Colmena'),
+('471234567', '4', 'Vendedor', '2012-09-08', NULL, '3400000', 'A+', 'Nueva EPS', 'Sura'),
+('481234567', '5', 'Vendedor', '2014-07-16', NULL, '3500000', 'AB-', 'Sura', 'Colmena'),
+('491234567', '5', 'Vendedor', '2016-06-02', NULL, '3600000', 'O+', 'Sanitas', 'Sura'),
+('501234567', '5', 'Vendedor', '2011-05-14', NULL, '3700000', 'AB+', 'Cafam', 'Sura'),
+('511234567', '5', 'Jefe de Taller', '2008-07-02', NULL, '4100000', 'AB-', 'Sura', 'Colmena'),
+('521234567', '1', 'Jefe de Taller', '2012-03-19', NULL, '4200000', 'O+', 'Nueva EPS', 'Sura'),
+('531234567', '1', 'Jefe de Taller', '2014-08-07', NULL, '4300000', 'A+', 'Sanitas', 'Sura'),
+('541234567', '2', 'Jefe de Taller', '2016-09-16', NULL, '2400000', 'B+', 'Cafesalud', 'Colmena'),
+('551234567', '2', 'Jefe de Taller', '2011-06-21', NULL, '4500000', 'O-', 'Cafam', 'Colmena'),
+('561234567', '3', 'Jefe de Taller', '2013-04-13', NULL, '4600000', 'AB+', 'Cafam', 'Sura'),
+('571234567', '3', 'Jefe de Taller', '2015-01-29', NULL, '3700000', 'B+', 'Sanitas', 'Colmena'),
+('581234567', '4', 'Jefe de Taller', '2017-04-16', NULL, '3800000', 'O+', 'Coomeva', 'Sura'),
+('591234567', '4', 'Jefe de Taller', '2006-01-04', NULL, '5000000', 'O-', 'Nueva EPS', 'Colmena'),
+('601234567', '5', 'Jefe de Taller', '2008-09-12', NULL, '4900000', 'A+', 'Sura', 'Sura'),
+('611234567', '5', 'Jefe de Taller', '2010-06-27', NULL, '3900000', 'B-', 'Sanitas', 'Colmena')
+ON CONFLICT (usuario_id) DO NOTHING;
+
+
+
+
 
 

@@ -33,7 +33,7 @@ class Usuario(AbstractBaseUser, PermissionsMixin):
 		ordering = ['primer_apellido', 'primer_nombre']
 
 	def __str__(self):
-		return 'Usuario: ' + self.cedula + ' - ' + self.primer_nombre + ' ' + self.primer_apellido
+		return 'Usuario: ' + str(self.cedula) + ' - ' + self.primer_nombre + ' ' + self.primer_apellido
 	
 	def edad(self):
 		if self.fecha_nacimiento:
@@ -52,7 +52,7 @@ class Cliente(models.Model):
 		ordering = ['usuario__primer_apellido', 'usuario__primer_nombre']
 	
 	def __str__(self):
-		return 'Cliente: ' + self.usuario.cedula + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido
+		return 'Cliente: ' + str(self.usuario.cedula) + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido
 	
 	def cedula(self):
 		return self.usuario.cedula
@@ -90,7 +90,7 @@ class Empleado(models.Model):
 	tipo_sangre = models.CharField('Tipo de Sangre', max_length=3, blank=True, null=True)
 	eps = models.CharField('EPS', max_length=30, blank=True, null=True)
 	arl = models.CharField('ARL', max_length=30, blank=True, null=True)
-	cargo = models.CharField('Cargo', max_length=1, choices=(('A', 'Administrador'), ('V', 'Vendedor'), ('J', 'Jefe de taller')))
+	cargo = models.CharField('Cargo', choices=(('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Jefe de Taller', 'Jefe de taller')))
 	sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT, blank=True, null=True)
 
 	class Meta:
@@ -99,7 +99,7 @@ class Empleado(models.Model):
 		ordering = ['usuario__primer_apellido', 'usuario__primer_nombre']
 	
 	def __str__(self):
-		return 'Empleado: ' + self.usuario.cedula + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido + ' Cargo: ' + self.cargo
+		return 'Empleado: ' + str(self.usuario.cedula) + ' - ' + self.usuario.primer_nombre + ' ' + self.usuario.primer_apellido + ' Cargo: ' + self.cargo
 	
 	def cedula(self):
 		return self.usuario.cedula
@@ -145,7 +145,7 @@ class Sucursal(models.Model):
 		ordering = ['nombre_sucursal']
 	
 	def __str__(self):
-		return 'Sucursal: ' + self.id_sucursal + ' ' + self.nombre_sucursal
+		return 'Sucursal: ' + str(self.id_sucursal) + ' ' + self.nombre_sucursal
 	
 
 class Modelo(models.Model):
