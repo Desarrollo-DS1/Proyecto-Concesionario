@@ -189,7 +189,7 @@ function checkCedula(customer) {
     {
         return "errores.numerico";
     }
-    if (customer.cedula.length !== 10)
+    if (customer.cedula.length !== 8 && customer.cedula.length !== 9 && customer.cedula.length !== 10)
     {
         return "errores.longitudExacta";
     }
@@ -205,13 +205,13 @@ function checkGender(customer) {
 }
 
 function checkSalary(employee) {
-    if (employee.salario === null || employee.salario.trim() === '') {
+    if (employee.salario === null){ // || employee.salario.trim() === '') {
         return "errores.requerido";
     }
-    if (!employee.salario.match(/^[0-9]+$/))
-    {
-        return "errores.numerico";
-    }
+    // if (!employee.salario.match(/^[0-9]+$/))
+    // {
+    //     return "errores.numerico";
+    // }
     return "";
 }
 

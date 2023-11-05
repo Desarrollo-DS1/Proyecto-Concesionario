@@ -94,7 +94,8 @@ export function EmployeeState(props) {
         { id: '8', label: 'Aliansalud' },
         { id: '9', label: 'Cafesalud' },
         { id: '10', label: 'Famisanar' },
-        {id: '11', label: 'Cafam'}]
+        {id: '11', label: 'Cafam'},
+        {id: '12', label: 'Comfenalco'}]
 
     const initialArls = [
         { id: '1', label: 'Sura' },
@@ -187,7 +188,17 @@ export function EmployeeState(props) {
     }
 
     const updateEmployee = (employee) => {
-        setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)))
+        async function putEmployee() {
+            try{
+                const response = await updateEmpleado(employee.cedula, employee);
+                setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)))
+            
+            } catch (error) {
+                console.log("Error updating data", error);
+            }
+        }
+        
+        putEmployee();
     }
 
     const deleteEmployee = (employee) => {

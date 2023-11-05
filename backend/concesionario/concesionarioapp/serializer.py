@@ -86,6 +86,18 @@ class EmpleadoSerializer(serializers.ModelSerializer):
         return empleado
 
 
+    def update(self, instance, validated_data):
+        usuario_data = validated_data.pop('usuario')
+
+        Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
+        if 'password' in usuario_data:
+            instance.usuario.set_password(usuario_data['password'])
+            instance.usuario.save()
+
+        Empleado.objects.filter(usuario_id=instance.usuario_id).update(**validated_data)
+        return instance
+
+
 
 class ModeloSerializer(serializers.ModelSerializer):
     combustible = serializers.SerializerMethodField()
