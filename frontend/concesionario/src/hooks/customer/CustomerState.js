@@ -60,8 +60,7 @@ export function CustomerState(props) {
     const initialGenders = [
         { id: '1', label: 'Masculino' },
         { id: '2', label: 'Femenino' },
-        { id: '3', label: 'Otro' }
-    ]
+        { id: '3', label: 'Otro' }]
 
     const [customer, setCustomer] = React.useState(CustomerEmployee);
     const [customers, setCustomers] = React.useState([]);

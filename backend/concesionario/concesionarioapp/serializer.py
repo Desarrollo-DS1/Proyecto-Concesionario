@@ -35,7 +35,6 @@ class ClienteSerializer(serializers.ModelSerializer):
             usuario.save()
             cliente = Cliente.objects.create(usuario=usuario)
             return cliente
-
         else:
             raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
     
@@ -45,21 +44,40 @@ class ClienteSerializer(serializers.ModelSerializer):
 
         if usuario_data is not None:
             Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
-
             if 'password' in usuario_data:
                 instance.usuario.set_password(usuario_data['password'])
                 instance.usuario.save()
-
             return instance
-
         else:
             raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
 
 
 class EmpleadoSerializer(serializers.ModelSerializer):
+    cedula = serializers.CharField(source='usuario.cedula')
+    clave = serializers.CharField(source='usuario.password')
+    correo = serializers.EmailField(source='usuario.email')
+    primerNombre = serializers.CharField(source='usuario.primer_nombre')
+    segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
+    primerApellido = serializers.CharField(source='usuario.primer_apellido')
+    segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False, allow_blank=True)
+    telefono = serializers.CharField(source='usuario.telefono', required=False)
+    celular = serializers.CharField(source='usuario.celular', required=False)
+    direccion = serializers.CharField(source='usuario.direccion', required=False)
+    ciudad = serializers.CharField(source='usuario.ciudad', required=False)
+    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False, allow_null=True)
+    genero = serializers.CharField(source='usuario.genero', required=False)
+    fechaIngreso = serializers.DateField(source='fecha_ingreso', required=False, allow_null=True)
+    fechaRetiro = serializers.DateField(source='fecha_retiro', required=False, allow_null=True)
+    salario = serializers.IntegerField(source='salario_base', required=False)
+    tipoSangre = serializers.CharField(source='tipo_sangre', required=False)
+    eps = serializers.CharField(required=False)
+    arl = serializers.CharField(required=False)
+    cargo = serializers.CharField(required=False)
+
     class Meta:
         model = Empleado
-        fields = '__all__'
+        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero', 'fechaIngreso', 'fechaRetiro', 'salario', 'tipoSangre', 'eps', 'arl', 'cargo'
+
 
 
 class ModeloSerializer(serializers.ModelSerializer):
