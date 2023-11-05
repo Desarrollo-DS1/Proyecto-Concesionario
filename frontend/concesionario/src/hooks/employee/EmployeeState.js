@@ -4,6 +4,8 @@ import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
+import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
+
 
 EmployeeState.propTypes = {
     children: propTypes.node,
@@ -91,15 +93,23 @@ export function EmployeeState(props) {
         { id: '7', label: 'Medimas' },
         { id: '8', label: 'Aliansalud' },
         { id: '9', label: 'Cafesalud' },
-        { id: '10', label: 'Famisanar' },]
+        { id: '10', label: 'Famisanar' },
+        {id: '11', label: 'Cafam'},
+        {id: '12', label: 'Comfenalco'}]
+
+    const initialArls = [
+        { id: '1', label: 'Sura' },
+        { id: '2', label: 'Colmena'}]
 
     const initialPositions = [
         { id: '1', label: 'Vendedor' },
-        { id: '2', label: 'Jefe de Taller' },]
+        { id: '2', label: 'Jefe de Taller' },
+        {id: '3', label: 'Gerente'}]
 
     const initialGenders = [
         { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },]
+        { id: '2', label: 'Femenino' },
+        { id: '3', label: 'Otro' }]
 
     const [employee, setEmployee] = React.useState(emptyEmployee);
     const [employees, setEmployees] = React.useState([]);
@@ -110,30 +120,44 @@ export function EmployeeState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [bloodTypes, setBloodTypes] = useState(initialBloodTypes);
     const [epss, setEpss] = useState(initialEpss);
-    const [arls, setArls] = useState(initialEpss);
+    const [arls, setArls] = useState(initialArls);
     const [positions, setPositions] = useState(initialPositions);
     const [genders, setGenders] = useState(initialGenders);
 
     const getEmployees = () => {
-        // Aqui se aplicaria el axios.get
-        setEmployees(employees);
+        async function loadEmployees() {
+            try{
+                const response = await getAllEmpleados();
+                setEmployees(response.data);
+
+            } catch (error) {
+                console.log("Error fetching data", error);
+            }
+        }
+
+        loadEmployees();        
     }
+
     const getBloodTypes = () => {
         // Aqui se aplicaria el axios.get
         setBloodTypes(initialBloodTypes);
     }
+
     const getEpss = () => {
         // Aqui se aplicaria el axios.get
         setEpss(initialEpss);
     }
+
     const getArls = () => {
         // Aqui se aplicaria el axios.get
         setArls(initialEpss);
     }
+
     const getPositions = () => {
         // Aqui se aplicaria el axios.get
         setPositions(initialPositions);
     }
+
     const getEmployee = (cedula) => {
         const employee = employees.find(employee => employee.cedula === cedula);
         if(employee)
@@ -147,15 +171,50 @@ export function EmployeeState(props) {
             setEdit(false)
         }
     }
+
     const addEmployee = (employee) => {
-        setEmployees([...employees, employee])
+        async function postEmployee() {
+            try{
+                console.log(employee);
+                const response = await createEmpleado(employee);
+                setEmployees([...employees, response.data]);
+            
+            } catch (error) {
+                console.log("Error posting data", error);
+            }
+        }
+        
+        postEmployee();
     }
+
     const updateEmployee = (employee) => {
-        setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)))
+        async function putEmployee() {
+            try{
+                const response = await updateEmpleado(employee.cedula, employee);
+                setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)));
+            
+            } catch (error) {
+                console.log("Error updating data", error);
+            }
+        }
+        
+        putEmployee();
     }
+
     const deleteEmployee = (employee) => {
-        setEmployees(employees.filter((item) => item.cedula !== employee.cedula))
+        async function removeEmployee() {
+            try{
+                const response = await deleteEmpleado(employee.cedula);
+                setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
+
+            } catch (error) {
+                console.log("Error deleting data", error);
+            }
+        }
+
+        removeEmployee();
     }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setEmployee({

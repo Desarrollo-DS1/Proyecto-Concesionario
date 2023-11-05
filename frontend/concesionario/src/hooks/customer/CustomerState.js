@@ -60,8 +60,7 @@ export function CustomerState(props) {
     const initialGenders = [
         { id: '1', label: 'Masculino' },
         { id: '2', label: 'Femenino' },
-        { id: '3', label: 'Otro' }
-    ]
+        { id: '3', label: 'Otro' }]
 
     const [customer, setCustomer] = React.useState(CustomerEmployee);
     const [customers, setCustomers] = React.useState([]);
@@ -121,7 +120,7 @@ export function CustomerState(props) {
                 (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
             
             } catch (error) {
-                console.error('Error posting data:', error);
+                console.error('Error puting data:', error);
             }
         }
         
@@ -130,8 +129,20 @@ export function CustomerState(props) {
 
 
     const deleteCustomer = (customer) => {
-        setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+        async function removeCustomer() {
+            try{
+                const response = await deleteCliente(customer.cedula);
+                setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+            
+            } catch (error) {
+                console.error('Error deleting data:', error);
+            }
+        }
+        
+        removeCustomer();
     }
+
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setCustomer({
