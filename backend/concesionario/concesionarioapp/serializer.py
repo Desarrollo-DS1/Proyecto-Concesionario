@@ -27,29 +27,25 @@ class ClienteSerializer(serializers.ModelSerializer):
         fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
 
     def create(self, validated_data):
-        usuario_data = validated_data.pop('usuario', None)
+        usuario_data = validated_data.pop('usuario')
 
-        if usuario_data is not None:
-            usuario = Usuario.objects.create(**usuario_data)
-            usuario.set_password(usuario_data['password'])
-            usuario.save()
-            cliente = Cliente.objects.create(usuario=usuario)
-            return cliente
-        else:
-            raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
+        usuario = Usuario.objects.create(**usuario_data)
+        usuario.set_password(usuario_data['password'])
+        usuario.save()
+        
+        cliente = Cliente.objects.create(usuario=usuario)
+        return cliente
     
 
     def update(self, instance, validated_data):
-        usuario_data = validated_data.pop('usuario', None)
+        usuario_data = validated_data.pop('usuario')
 
-        if usuario_data is not None:
-            Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
-            if 'password' in usuario_data:
-                instance.usuario.set_password(usuario_data['password'])
-                instance.usuario.save()
-            return instance
-        else:
-            raise serializers.ValidationError('No se ha enviado la información del usuario desde el cliente')
+        Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
+        if 'password' in usuario_data:
+            instance.usuario.set_password(usuario_data['password'])
+            instance.usuario.save()
+
+        return instance
 
 
 class EmpleadoSerializer(serializers.ModelSerializer):
@@ -77,6 +73,17 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Empleado
         fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero', 'fechaIngreso', 'fechaRetiro', 'salario', 'tipoSangre', 'eps', 'arl', 'cargo'
+    
+    def create(self, validated_data):
+        usuario_data = validated_data.pop('usuario')
+
+        usuario = Usuario.objects.create(**usuario_data)
+        usuario.set_password(usuario_data['password'])
+        usuario.is_staff = True
+        usuario.save()
+
+        empleado = Empleado.objects.create(usuario=usuario, **validated_data)
+        return empleado
 
 
 

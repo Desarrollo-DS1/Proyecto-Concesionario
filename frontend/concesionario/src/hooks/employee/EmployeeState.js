@@ -172,7 +172,18 @@ export function EmployeeState(props) {
     }
 
     const addEmployee = (employee) => {
-        setEmployees([...employees, employee])
+        async function postEmployee() {
+            try{
+                console.log(employee);
+                const response = await createEmpleado(employee);
+                setEmployees([...employees, response.data]);
+            
+            } catch (error) {
+                console.log("Error posting data", error);
+            }
+        }
+        
+        postEmployee();
     }
 
     const updateEmployee = (employee) => {
