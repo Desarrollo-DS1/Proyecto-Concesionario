@@ -125,6 +125,7 @@ export function CustomerState(props) {
         }
         
         putCustomer();
+        getCustomers();
     }
 
 

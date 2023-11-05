@@ -145,7 +145,152 @@ VALUES
 ON CONFLICT (usuario_id) DO NOTHING;
 
 
+INSERT INTO concesionarioapp_modelo (id_modelo, nombre_modelo, anho, carroceria, cilindraje, potencia, combustible, numero_pasajeros, precio_base)
+VALUES
+(1, 'Chevrolet Spark', 2019, 'Sedan', 1000, 75, 'Gasolina', 5, 25000000),
+(2, 'Chevrolet Sonic', 2018, 'Sedan', 1500, 100, 'Gasolina', 5, 30000000),
+(3, 'Chevrolet Malibu', 2018, 'Sedan', 2000, 160, 'Gasolina', 5, 45000000),
+(4, 'Chevrolet Camaro', 2019, 'Convertible', 3800, 455, 'Gasolina', 4, 120000000),
+(5, 'Chevrolet Equinox', 2019, 'SUV', 1600, 170, 'Gasolina', 5, 70000000),
+(6, 'Chevrolet Blazer', 2020, 'SUV', 2200, 230, 'Gasolina', 5, 85000000),
+(7, 'Chevrolet Traverse', 2020, 'SUV', 3100, 310, 'Gasolina', 7, 100000000),
+(8, 'Chevrolet Suburban', 2021, 'SUV', 5300, 355, 'Gasolina', 8, 140000000),
+(9, 'Chevrolet Trax', 2021, 'SUV', 1400, 155, 'Gasolina', 5, 65000000),
+(10, 'Chevrolet Colorado', 2018, 'Pickup', 2500, 200, 'Gasolina', 5, 90000000),
+(11, 'Chevrolet Silverado', 2019, 'Pickup', 3600, 355, 'Gasolina', 6, 110000000),
+(12, 'Chevrolet Express', 2018, 'Van', 4900, 341, 'Gasolina', 15, 160000000),
+(13, 'Chevrolet Bolt', 2019, 'Station Wagon', 1500, 149, 'Híbrido', 5, 90000000),
+(14, 'Chevrolet Bolt', 2020, 'Station Wagon', 1500, 200, 'Eléctrico', 5, 95000000),
+(15, 'Chevrolet Camioneta 1', 2019, 'Camioneta', 2500, 175, 'Gasolina', 7, 80000000),
+(16, 'Chevrolet Camioneta 2', 2018, 'Camioneta', 2600, 190, 'Gasolina', 7, 85000000),
+(17, 'Chevrolet SUV 1', 2020, 'SUV', 1800, 160, 'Gasolina', 5, 75000000),
+(18, 'Chevrolet SUV 2', 2022, 'SUV', 1700, 150, 'Gasolina', 5, 78000000),
+(19, 'Chevrolet Pickup 1', 2021, 'Pickup', 2200, 190, 'Gasolina', 5, 85000000),
+(20, 'Chevrolet Pickup 2', 2023, 'Pickup', 2300, 200, 'Gasolina', 5, 90000000),
+(21, 'Chevrolet Captiva', 2022, 'SUV', 1800, 160, 'Gasolina', 5, 85000000),
+(22, 'Chevrolet Captiva Sport', 2022, 'SUV', 2000, 180, 'Gasolina', 5, 90000000),
+(23, 'Chevrolet Trailblazer', 2021, 'SUV', 1700, 160, 'Gasolina', 5, 82000000),
+(24, 'Chevrolet Tahoe', 2020, 'SUV', 5300, 355, 'Gasolina', 8, 135000000),
+(25, 'Chevrolet Suburban 2', 2022, 'SUV', 5300, 355, 'Gasolina', 8, 150000000)
+ON CONFLICT (id_modelo) DO NOTHING;
 
 
+INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentanje_incremento_por_color)
+VALUES
+(1, 'Blanco', 0.1),
+(2, 'Negro', 0.08),
+(3, 'Rojo', 0.06),
+(4, 'Azul', 0.05),
+(5, 'Plata', 0.04),
+(6, 'Gris', 0.03),
+(7, 'Verde', 0.02),
+(8, 'Amarillo', 0.01);
 
 
+INSERT INTO concesionarioapp_vehiculo (vin, modelo_vehiculo_id, color_vehiculo_id, sucursal_vehiculo_id, disponible_para_venta)
+VALUES
+('1GCCS19W128314729', 1, 1, 1, TRUE),
+('3GCUKSEC3HG509801', 2, 2, 1, TRUE),
+('1GCGTBEN1L1234567', 3, 3, 1, TRUE),
+('3GCUKREC7JG509804', 4, 4, 1, TRUE),
+('1GNSKCE03BR123456', 5, 5, 1, TRUE),
+('1GCCS19W128314730', 1, 6, 2, TRUE),
+('3GCUKSEC3HG509802', 2, 7, 2, TRUE),
+('1GCGTBEN1L1234568', 3, 8, 2, TRUE),
+('3GCUKREC7JG509805', 4, 1, 2, TRUE),
+('1GNSKCE03BR123457', 5, 2, 2, TRUE),
+('1GCCS19W128314731', 6, 3, 3, TRUE),
+('3GCUKSEC3HG509803', 7, 4, 3, TRUE),
+('1GCGTBEN1L1234569', 8, 5, 3, TRUE),
+('3GCUKREC7JG509806', 9, 6, 3, TRUE),
+('1GNSKCE03BR123458', 10, 7, 3, TRUE),
+('1GCCS19W128314732', 1, 8, 4, TRUE),
+('3GCUKSEC3HG509804', 2, 1, 4, TRUE),
+('1GCGTBEN1L1234570', 3, 2, 4, TRUE),
+('3GCUKREC7JG509807', 4, 3, 4, TRUE),
+('1GNSKCE03BR123459', 5, 4, 4, TRUE),
+('1GCCS19W128314733', 6, 5, 5, TRUE),
+('3GCUKSEC3HG509805', 7, 6, 5, TRUE),
+('1GCGTBEN1L1234571', 8, 7, 5, TRUE),
+('3GCUKREC7JG509808', 9, 8, 5, TRUE),
+('1GNSKCE03BR123460', 10, 1, 5, TRUE),
+('1GNCMDED0L1378092', 11, 1, 1, TRUE),
+('3GNGKGED9KG123456', 12, 2, 1, TRUE),
+('1GCCWDED1M1123456', 13, 3, 1, TRUE),
+('3GNMNGED4KG123457', 14, 4, 1, TRUE),
+('1GCSWDED7K1301234', 15, 5, 1, TRUE),
+('1GNCMDED0L1378093', 11, 6, 2, TRUE),
+('3GNGKGED9KG123457', 12, 7, 2, TRUE),
+('1GCCWDED1M1123457', 13, 8, 2, TRUE),
+('3GNMNGED4KG123458', 14, 1, 2, TRUE),
+('1GCSWDED7K1301235', 15, 2, 2, TRUE),
+('1GNCMDED0L1378094', 16, 3, 3, TRUE),
+('3GNGKGED9KG123458', 17, 4, 3, TRUE),
+('1GCCWDED1M1123458', 18, 5, 3, TRUE),
+('3GNMNGED4KG123459', 19, 6, 3, TRUE),
+('1GCSWDED7K1301236', 20, 7, 3, TRUE),
+('1GNCMDED0L1378095', 11, 8, 4, TRUE),
+('3GNGKGED9KG123459', 12, 1, 4, TRUE),
+('1GCCWDED1M1123459', 13, 2, 4, TRUE),
+('3GNMNGED4KG123460', 14, 3, 4, TRUE),
+('1GCSWDED7K1301237', 15, 4, 4, TRUE),
+('1GNCMDED0L1378096', 16, 5, 5, TRUE),
+('3GNGKGED9KG123460', 17, 6, 5, TRUE),
+('1GCCWDED1M1123460', 18, 7, 5, TRUE),
+('3GNMNGED4KG123461', 19, 8, 5, TRUE),
+('1GCSWDED7K1301238', 20, 1, 5, TRUE)
+ON CONFLICT (vin) DO NOTHING;
+
+
+INSERT INTO concesionarioapp_extra (id_extra, nombre_extra, descripcion_extra)
+VALUES
+(1, 'Kit de Carretera', 'Incluye gato, llave de cruz, triángulos de seguridad, linterna y otros elementos útiles para emergencias en carretera.'),
+(2, 'SOAT Primer Año', 'Seguro Obligatorio de Accidentes de Tránsito para el primer año del vehículo, cubriendo daños a terceros.'),
+(3, 'Extintor', 'Extintor de incendios de 5 libras con carga completa y listo para usar en caso de emergencia.'),
+(4, 'Manijas de Lujo', 'Juego de manijas de puertas cromadas para darle un toque de elegancia al vehículo.'),
+(5, 'Tapetes Personalizados', 'Conjunto de tapetes de alta calidad con el logo de la marca del vehículo.'),
+(6, 'Película de Protección Solar', 'Película de protección solar para las ventanas del vehículo que reduce el calor y protege del sol.'),
+(7, 'Bluetooth Hands-Free', 'Sistema Bluetooth para llamadas telefónicas manos libres y reproducción de música en el vehículo.');
+
+
+INSERT INTO concesionarioapp_venta (id_venta, vendedor_id, cliente_id, fecha_venta)
+VALUES
+(1, 321234567, 11234567, '2023-09-05'),
+(2, 331234567, 21234567, '2023-09-12'), 
+(3, 361234567, 31234567, '2023-09-18'), 
+(4, 371234567, 41234567, '2023-09-25'), 
+(5, 401234567, 51234567, '2023-10-03'), 
+(6, 411234567, 61234567, '2023-10-10'), 
+(7, 441234567, 71234567, '2023-10-16'), 
+(8, 451234567, 81234567, '2023-10-23'), 
+(9, 501234567, 91234567, '2023-10-30'), 
+(10, 511234567, 101234567, '2023-10-07')
+ON CONFLICT (id_venta) DO NOTHING;
+
+
+INSERT INTO concesionarioapp_venta_vehiculo (id_venta_vehiculo, venta_id, vehiculo_id, extra_id, porcentaje_descuento, cantidad)
+VALUES
+(1, 1, '1GCCS19W128314729', 1, 0.1, 1),
+(2, 1, '3GCUKSEC3HG509801', 2, 0.08, 1),
+(3, 2, '1GCGTBEN1L1234567', 3, 0.06, 1),
+(4, 3, '1GCCS19W128314730', 4, 0.05, 1),
+(5, 4, '3GCUKSEC3HG509802', 5, 0.04, 1),
+(6, 5, '3GCUKSEC3HG509803', 6, 0.03, 1),
+(7, 6, '1GCCS19W128314731', 7, 0.02, 1),
+(8, 7, '1GCCS19W128314732', 1, 0.01, 1),
+(9, 8, '3GNMNGED4KG123460', 1, 0.1, 1),
+(10, 9, '1GNCMDED0L1378096', 2, 0.08, 1),
+(11, 10, '3GNGKGED9KG123460', 3, 0.06, 1)
+ON CONFLICT (id_venta_vehiculo) DO NOTHING;
+
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCGTBEN1L1234567';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314730';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509802';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509803';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314731';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314732';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNMNGED4KG123460';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GNCMDED0L1378096';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNGKGED9KG123460';
