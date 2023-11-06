@@ -190,6 +190,7 @@ export function CustomerState(props) {
         setOpenForm(true)
     };
     const handleCloseForm = () => {
+        setShowPassword(false);
         setOpenForm(false);
     };
     const handleOpenDelete = (event, cedula) => {

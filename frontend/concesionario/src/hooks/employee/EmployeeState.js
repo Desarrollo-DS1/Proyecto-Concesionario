@@ -261,6 +261,7 @@ export function EmployeeState(props) {
         setOpenForm(true)
     };
     const handleCloseForm = () => {
+        setShowPassword(false);
         setOpenForm(false);
     };
     const handleOpenDelete = (event, cedula) => {
