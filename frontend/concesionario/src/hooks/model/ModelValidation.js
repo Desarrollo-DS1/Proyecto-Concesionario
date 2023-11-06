@@ -73,7 +73,7 @@ function checkPotencia(model) {
 }
 
 function checkCombustible(model) {
-    if (model.combustible === null || model.combustible.trim() === '') {
+    if (model.combustible === null) {
         return "errores.requerido";
     }
     return "";

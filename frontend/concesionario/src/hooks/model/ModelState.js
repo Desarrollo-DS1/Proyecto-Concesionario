@@ -3,9 +3,8 @@ import React, {useState} from "react";
 // import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
-import {applySortFilter, getComparator} from "../filter/Filter";
-import {getAllModelos} from "../../api/Modelo.api";
-// import { get } from "lodash";
+import {applySortFilter, getComparator} from "../filter/Filter"; 
+import {getAllModelos, createModelo} from "../../api/Modelo.api";
 
 ModelState.propTypes = {
     children: propTypes.node,
@@ -108,6 +107,7 @@ export function ModelState(props) {
         // Aqui se aplicaria el axios.get
         setFuels(initialFuels);
     }
+
     const getModel = (id) => {
         const model = models.find(model => model.id === id);
         if(model)
@@ -121,9 +121,22 @@ export function ModelState(props) {
             setEdit(false)
         }
     }
+
     const addModel = (model) => {
-        setModels([...models, model])
+        async function postModel() {
+            try {
+                console.log(model)
+                const response = await createModelo(model); // Pasa el modelo a la función
+                console.log(response);
+                setModels([...models, response.data]);
+            } catch (error) {
+                console.error('Error creating model:', error);
+            }
+        }
+    
+        postModel(model);
     }
+
     const updateModel = (model) => {
         setModels(models.map((item) => (item.id === model.id ? model : item)))
     }
