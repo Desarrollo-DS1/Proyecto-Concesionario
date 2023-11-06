@@ -57,7 +57,7 @@ export default function CustomerForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : 'auto',
+        height: isSmallScreen ? '80%' : '74%',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
@@ -280,6 +280,9 @@ export default function CustomerForm() {
                           label={t("clientes.label.contraseña")} variant="outlined"
                           helperText={t(customerError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
+                          onCopy={(e) => {
+                              e.preventDefault();
+                          }}
                           InputProps={{
                               endAdornment: (
                                   <InputAdornment position="end">

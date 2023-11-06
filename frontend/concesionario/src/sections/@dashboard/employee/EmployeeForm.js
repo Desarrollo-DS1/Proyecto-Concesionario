@@ -11,11 +11,11 @@ import {
     TextField,
     Typography
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import EmployeeContext from "../../../hooks/employee/EmployeeContext";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const selectMenuProps = {
     anchorOrigin: {
@@ -447,6 +447,9 @@ export default function EmployeeForm() {
                           label={t("empleados.label.contraseña")} variant="outlined"
                           helperText={t(employeeError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
+                          onCopy={(e) => {
+                              e.preventDefault();
+                          }}
                           InputProps={{
                               endAdornment: (
                                   <InputAdornment position="end">
