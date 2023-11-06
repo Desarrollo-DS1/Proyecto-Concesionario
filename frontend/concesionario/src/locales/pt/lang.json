@@ -167,5 +167,14 @@
     "subtitulo": "Desculpe, página não encontrada!",
     "mensaje": "Desculpe, não conseguimos encontrar a página que você está procurando. Talvez você tenha digitado a URL incorretamente? Por favor, verifique a ortografia e tente novamente.",
     "boton": "Voltar Ao Início"
+  },
+
+  "login": {
+    "titulo": "Iniciar Sessão",
+    "correo": "E-mail",
+    "contraseña": "Senha",
+    "olvido": "Esqueceu sua senha?",
+    "boton": "Iniciar Sessão",
+    "mensaje": "E-mail ou senha incorretos"
   }
 }

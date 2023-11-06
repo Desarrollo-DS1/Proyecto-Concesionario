@@ -177,5 +177,14 @@
     "subtitulo": "Sorry, page not found!",
     "mensaje": "Sorry, we couldn’t find the page you’re looking for. Perhaps you’ve mistyped the URL? Be sure to check your spelling.",
     "boton": "Go to Home"
+  },
+
+  "login": {
+    "titulo": "Login",
+    "correo": "Email",
+    "contraseña": "Password",
+    "olvido": "Forgot your password?",
+    "boton": "Login",
+    "mensaje": "Email or password incorrect"
   }
 }

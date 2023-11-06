@@ -177,5 +177,14 @@
     "subtitulo": "Lo sentimos, pagina no encontrada!",
     "mensaje": "Lo sentimos, no pudimos encontrar la página que estás buscando. ¿Quizás has escrito mal la URL? Asegúrese de revisar su ortografía.",
     "boton": "Volver Al Inicio"
+  },
+
+  "login": {
+    "titulo": "Iniciar Sesión",
+    "correo": "Correo",
+    "contraseña": "Contraseña",
+    "olvido": "¿Olvidaste tu contraseña?",
+    "boton": "Iniciar Sesión",
+    "mensaje": "Email o contraseña incorrectos"
   }
 }

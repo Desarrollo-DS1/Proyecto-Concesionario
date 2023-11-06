@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import ModeViewSwitch from "../../../layouts/dashboard/header/ModeViewSwitch";
 
 // ----------------------------------------------------------------------
 
@@ -13,6 +15,8 @@ export default function LoginForm() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const { t } = useTranslation("lang");
+
   const handleClick = () => {
     navigate('/dashboard', { replace: true });
   };
@@ -20,11 +24,11 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+        <TextField name="email" label={t('login.correo')} />
 
         <TextField
           name="password"
-          label="Password"
+          label={t('login.contraseña')}
           type={showPassword ? 'text' : 'password'}
           InputProps={{
             endAdornment: (
@@ -39,14 +43,14 @@ export default function LoginForm() {
       </Stack>
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-        <Checkbox name="remember" label="Remember me" />
+        <ModeViewSwitch />
         <Link variant="subtitle2" underline="hover">
-          Forgot password?
+            {t('login.olvido')}
         </Link>
       </Stack>
 
       <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClick}>
-        Login
+          {t('login.boton')}
       </LoadingButton>
     </>
   );
