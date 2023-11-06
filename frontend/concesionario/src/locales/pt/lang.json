@@ -175,6 +175,7 @@
     "contraseña": "Senha",
     "olvido": "Esqueceu sua senha?",
     "boton": "Iniciar Sessão",
-    "error": "E-mail ou senha incorretos"
+    "error": "E-mail ou senha incorretos",
+    "captcha": "Por favor, aceite o captcha"
   }
 }
