@@ -104,9 +104,15 @@ export function CustomerState(props) {
             try{
                 const response = await createCliente(customer);
                 setCustomers([...customers, response.data]);
+                setMessageSnackbar('clientes.mensaje.agregado');
+                setTypeSnackbar('success');
+                handleCloseForm();
 
             } catch (error) {
                 console.error('Error posting data:', error);
+                setMessageSnackbar('clientes.mensaje.error');
+                setTypeSnackbar('error');
+                setCustomerError({...customerError, cedula: 'cedula ya existe'})
             }
         }
 
@@ -158,17 +164,12 @@ export function CustomerState(props) {
             if(edit)
             {
                 updateCustomer(customer);
-                setMessageSnackbar('clientes.mensaje.editado');
-                setTypeSnackbar('success');
             }
             else
             {
                 addCustomer(customer);
-                setMessageSnackbar('clientes.mensaje.agregado');
-                setTypeSnackbar('success');
             }
             handleOpenSnackbar();
-            handleCloseForm();
         }
     }
     const handleOnBlur = (event) => {

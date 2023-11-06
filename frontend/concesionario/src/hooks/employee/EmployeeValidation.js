@@ -205,13 +205,14 @@ function checkGender(customer) {
 }
 
 function checkSalary(employee) {
-    if (employee.salario === null){ // || employee.salario.trim() === '') {
+    const strSalario = employee.salario.toString();
+    if (employee.salario === null || strSalario.trim() === '') {
         return "errores.requerido";
     }
-    // if (!employee.salario.match(/^[0-9]+$/))
-    // {
-    //     return "errores.numerico";
-    // }
+    if (!strSalario.match(/^[0-9]+$/))
+    {
+        return "errores.numerico";
+    }
     return "";
 }
 

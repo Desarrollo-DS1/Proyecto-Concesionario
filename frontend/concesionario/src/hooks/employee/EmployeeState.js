@@ -138,26 +138,6 @@ export function EmployeeState(props) {
         loadEmployees();        
     }
 
-    const getBloodTypes = () => {
-        // Aqui se aplicaria el axios.get
-        setBloodTypes(initialBloodTypes);
-    }
-
-    const getEpss = () => {
-        // Aqui se aplicaria el axios.get
-        setEpss(initialEpss);
-    }
-
-    const getArls = () => {
-        // Aqui se aplicaria el axios.get
-        setArls(initialEpss);
-    }
-
-    const getPositions = () => {
-        // Aqui se aplicaria el axios.get
-        setPositions(initialPositions);
-    }
-
     const getEmployee = (cedula) => {
         const employee = employees.find(employee => employee.cedula === cedula);
         if(employee)
@@ -359,10 +339,6 @@ export function EmployeeState(props) {
                 typeSnackbar,
                 openDelete,
                 getEmployees,
-                getBloodTypes,
-                getEpss,
-                getArls,
-                getPositions,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
