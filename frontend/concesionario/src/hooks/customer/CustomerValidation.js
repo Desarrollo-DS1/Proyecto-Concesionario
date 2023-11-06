@@ -106,6 +106,7 @@ function checkPasswordEdit(customer) {
             return "errores.contraseña.especial";
         }
     }
+
     return "";
 }
 
