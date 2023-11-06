@@ -57,7 +57,7 @@ export default function CustomerForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : 'auto',
+        height: isSmallScreen ? '80%' : '74%',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
