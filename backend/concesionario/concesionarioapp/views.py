@@ -46,3 +46,18 @@ class ModelView(viewsets.ModelViewSet):
     queryset = Modelo.objects.all()
 
 
+class VehiculoView(viewsets.ModelViewSet):
+    serializer_class = VehiculoSerializer
+    queryset = Vehiculo.objects.all()
+
+
+class VentaView(viewsets.ModelViewSet):
+    serializer_class = VentaSerializer
+    queryset = Venta.objects.all()
+
+
+class VentaVehiculoView(viewsets.ModelViewSet):
+    serializer_class = VentaVehiculoSerializer
+    queryset = Venta_Vehiculo.objects.all()
+
+

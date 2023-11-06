@@ -199,6 +199,7 @@ export function EmployeeState(props) {
         }
         
         putEmployee();
+        getEmployees();
     }
 
     const deleteEmployee = (employee) => {

@@ -149,20 +149,161 @@ class Sucursal(models.Model):
 	
 
 class Modelo(models.Model):
-	id = models.AutoField('ID del Modelo', primary_key=True)
-	nombre = models.CharField('Nombre del Modelo', max_length=30, unique=True)
-	año = models.IntegerField('Año del Modelo', blank=True, null=True)
-	carroceria = models.IntegerField('Carrocería', max_length=30, choices=((1, 'Sedan'), (2, 'Hatchback'), (3, 'Station Wagon'), (4, 'Pickup'), (5, 'SUV'), (6, 'Van'), (7, 'Convertible'), (8, 'Coupe'), (9, 'Roadster'), (10, 'Camion'), (11, 'Camioneta'), (12, 'Bus'), (13, 'Minivan'), (14, 'Microbus'), (15, 'Micro'), (16, 'Tracto Camion'), (17, 'Trailer')),blank=True, null=True)
+	id_modelo = models.AutoField('ID del Modelo', primary_key=True)
+	nombre_modelo = models.CharField('Nombre del Modelo', max_length=30)
+	anho = models.IntegerField('Año del Modelo', blank=True, null=True)
+	carroceria = models.CharField('Carrocería', max_length=30, choices=(('Sedan', 'Sedan'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'), ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Camion', 'Camion'), ('Camioneta', 'Camioneta')),blank=True, null=True)
 	cilindraje = models.IntegerField('Cilindraje', blank=True, null=True)
 	potencia = models.IntegerField('Potencia', blank=True, null=True)
-	combustible = models.IntegerField('Combustible', max_length=2, choices=((1, 'Gasolina'), (2, 'Diesel'), (3, 'Electrico'), (4, 'Hibrido'), (5, 'Gas'), (6, 'Gas Natural'), (7, 'Gas Licuado')), blank=True, null=True)
-	numeroPasajeros = models.IntegerField('Número de Pasajeros', blank=True, null=True)
-	precioBase = models.DecimalField('Precio Base', max_digits=10, decimal_places=2, blank=True, null=True)
+	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Eléctrico', 'Eléctrico'), ('Híbrido', 'Híbrido'), ('Gas Natural', 'Gas Natural')), blank=True, null=True)
+	numero_pasajeros = models.IntegerField('Número de Pasajeros', blank=True, null=True)
+	precio_base = models.DecimalField('Precio Base', max_digits=14, decimal_places=2, blank=True, null=True)
 
 	class Meta:
 		verbose_name = 'Modelo'
 		verbose_name_plural = 'Modelos'
-		ordering = ['nombre']
+		ordering = ['id_modelo']
 	
 	def __str__(self):
-		return 'Modelo: ' + str(self.id) + ' ' + self.nombre + ' ' + str(self.año) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(self.combustible) + ' Pasajeros: ' + str(self.numeroPasajeros) + ' Precio: ' + str(self.precioBase)
+		return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
+
+
+class Color(models.Model):
+	id_color = models.AutoField('ID del Color', primary_key=True)
+	nombre_color = models.CharField('Nombre del Color', max_length=30, unique=True)
+	porcentanje_incremento_por_color = models.DecimalField('Porcentaje de Incremento por Color', max_digits=4, decimal_places=2)
+
+	class Meta:
+		verbose_name = 'Color'
+		verbose_name_plural = 'Colores'
+		ordering = ['nombre_color']
+	
+	def __str__(self):
+		return 'Color: ' + str(self.id_color) + ' ' + self.nombre_color
+
+
+class Vehiculo(models.Model):
+	vin = models.CharField('VIN', max_length=17, primary_key=True, unique=True)
+	modelo_vehiculo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+	color_vehiculo = models.ForeignKey('Color', on_delete=models.PROTECT)
+	sucursal_vehiculo = models.ForeignKey('Sucursal', on_delete=models.PROTECT)
+	disponible_para_venta = models.BooleanField('Disponible para Venta', default=True)
+
+	class Meta:
+		verbose_name = 'Vehículo'
+		verbose_name_plural = 'Vehículos'
+		ordering = ['vin']
+
+	def __str__(self):
+		return 'Vehículo: ' + str(self.vin) + ' ' + self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color + ' en ' + self.sucursal_vehiculo.nombre_sucursal + (' disponible para venta.' if self.disponible_para_venta else ' ( ya vendido.)')
+
+	def nombre_modelo(self):
+		return self.modelo_vehiculo.nombre_modelo
+	
+	def anho_modelo(self):
+		return self.modelo_vehiculo.anho
+	
+	def carroceria(self):
+		return self.modelo_vehiculo.carroceria
+	
+	def combustible(self):
+		return self.modelo_vehiculo.combustible
+	
+	def numero_pasajeros(self):
+		return self.modelo_vehiculo.numero_pasajeros
+	
+	def nombre_color(self):
+		return self.color_vehiculo.nombre_color
+	
+	def sucursal(self):
+		return self.sucursal_vehiculo.nombre_sucursal
+	
+	def precio(self):
+		return self.modelo_vehiculo.precio_base * (1 + (self.color_vehiculo.porcentanje_incremento_por_color))
+	
+
+class Extra(models.Model):
+	id_extra = models.AutoField('ID del Extra', primary_key=True)
+	nombre_extra = models.CharField('Nombre del Extra', max_length=30, unique=True)
+	descripcion_extra = models.CharField('Descripción del Extra', max_length=300, blank=True, null=True)
+
+	class Meta:
+		verbose_name = 'Extra'
+		verbose_name_plural = 'Extras'
+		ordering = ['nombre_extra']
+	
+	def __str__(self):
+		return 'Extra: ' + str(self.id_extra) + ' ' + self.nombre_extra
+
+
+class Venta(models.Model):
+	id_venta = models.AutoField('ID de la Venta', primary_key=True)
+	vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
+	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
+	fecha_venta = models.DateField('Fecha de Creación', auto_now_add=True)
+
+	class Meta:
+		verbose_name = 'Venta'
+		verbose_name_plural = 'Ventas'
+		ordering = ['id_venta']
+
+	def __str__(self):
+		return 'Venta: ' + str(self.id_venta) + ' Cliente: ' + self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido + ' Vendedor: ' + self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido + ' Fecha: ' + str(self.fecha_venta)
+	
+	def nombre_vendedor(self):
+		return self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido
+	
+	def nombre_cliente(self):
+		return self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido
+	
+	def lista_vehiculos(self):
+		return ', '.join([str(venta_vehiculo.vehiculo) for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self)])
+	
+	def precio_total(self):
+		precio_total = 0
+
+		for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self):
+			precio_total += venta_vehiculo.precio()
+
+		return precio_total
+
+
+class Venta_Vehiculo(models.Model):
+	id_venta_vehiculo = models.AutoField('ID de la Venta del Vehiculo', primary_key=True)
+	venta = models.ForeignKey('Venta', on_delete=models.CASCADE)
+	vehiculo = models.OneToOneField('Vehiculo', on_delete=models.PROTECT)
+	extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
+	porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=4, decimal_places=2)
+
+	class Meta:
+		verbose_name = 'Vehículo en la Venta'
+		verbose_name_plural = 'Vehículos en la Venta'
+		ordering = ['id_venta_vehiculo']
+	
+	def __str__(self):
+		return 'Venta del Vehículo: ' + self.vehiculo + ' en Venta: ' + str(self.venta.id_venta) + ' Extra: ' + self.extra.nombre_extra + ' Cantidad: ' + str(self.cantidad)
+
+	def nombre_modelo(self):
+		return self.vehiculo.nombre_modelo
+	
+	def anho_modelo(self):
+		return str(self.vehiculo.anho_modelo)
+	
+	def carroceria(self):
+		return self.vehiculo.carroceria
+	
+	def combustible(self):
+		return self.vehiculo.combustible
+	
+	def numero_pasajeros(self):
+		return self.vehiculo.numero_pasajeros
+	
+	def nombre_color(self):
+		return self.vehiculo.nombre_color
+	
+	def precio(self):
+		return (self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento)))
+	
+	def precio_str(self):		
+		return str(self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento)))
+	
