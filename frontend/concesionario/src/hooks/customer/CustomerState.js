@@ -209,6 +209,12 @@ export function CustomerState(props) {
         setOpenSnackbar(true);
     }
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('cedula');
@@ -261,13 +267,13 @@ export function CustomerState(props) {
     const validateCustomerOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(customerError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(customer, name);
+            updatedErrors[name] = checkCustomer(customer, name, edit);
         });
         setCustomerError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateCustomerOnBlur = (customer, name) => {
-        setCustomerError({...customerError, [name]: checkCustomer(customer, name)});
+        setCustomerError({...customerError, [name]: checkCustomer(customer, name, edit)});
     };
 
     return (
@@ -307,7 +313,9 @@ export function CustomerState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                customerError}}>
+                customerError,
+                showPassword,
+                handleTogglePassword}}>
             {props.children}
         </CustomerContext.Provider>
     )

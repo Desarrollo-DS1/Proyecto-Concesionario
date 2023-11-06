@@ -280,6 +280,12 @@ export function EmployeeState(props) {
         setOpenSnackbar(true);
     }
 
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
+
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
     const [orderBy, setOrderBy] = useState('cedula');
@@ -386,7 +392,9 @@ export function EmployeeState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                employeeError}}>
+                employeeError,
+                showPassword,
+                handleTogglePassword}}>
             {props.children}
         </EmployeeContext.Provider>
     )

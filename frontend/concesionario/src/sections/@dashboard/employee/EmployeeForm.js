@@ -5,7 +5,7 @@ import {
     Box,
     Button,
     Divider,
-    Grid, InputAdornment,
+    Grid, IconButton, InputAdornment,
     MenuItem,
     Stack,
     TextField,
@@ -14,6 +14,8 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import EmployeeContext from "../../../hooks/employee/EmployeeContext";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const selectMenuProps = {
     anchorOrigin: {
@@ -67,7 +69,9 @@ export default function EmployeeForm() {
         handleCloseForm,
         handleSubmit,
         employeeError,
-        edit} = useContext(EmployeeContext);
+        edit,
+        showPassword,
+        handleTogglePassword} = useContext(EmployeeContext);
 
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -432,6 +436,7 @@ export default function EmployeeForm() {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          type={showPassword ? 'text' : 'password'}
                           error={employeeError.clave !== ''}
                           fullWidth
                           required
@@ -442,6 +447,15 @@ export default function EmployeeForm() {
                           label={t("empleados.label.contraseña")} variant="outlined"
                           helperText={t(employeeError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
+                          InputProps={{
+                              endAdornment: (
+                                  <InputAdornment position="end">
+                                      <IconButton onClick={handleTogglePassword} edge="end">
+                                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                      </IconButton>
+                                  </InputAdornment>
+                              ),
+                          }}
                       />
                   </Grid>
               </Grid>
