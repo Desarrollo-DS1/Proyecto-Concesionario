@@ -185,6 +185,7 @@
     "contraseña": "Password",
     "olvido": "Forgot your password?",
     "boton": "Login",
-    "error": "Email or password incorrect"
+    "error": "Email or password incorrect",
+    "captcha": "Please accept the captcha"
   }
 }
