@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db import transaction
 from .models import *
 
 class UsuarioSerializer(serializers.ModelSerializer):
@@ -29,6 +30,12 @@ class ClienteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
 
+        if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
+            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
+        
+        if Usuario.objects.filter(email=usuario_data['email']).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+        
         usuario = Usuario.objects.create(**usuario_data)
         usuario.set_password(usuario_data['password'])
         usuario.save()
@@ -77,6 +84,12 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
 
+        if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
+            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
+        
+        if Usuario.objects.filter(email=usuario_data['email']).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+
         usuario = Usuario.objects.create(**usuario_data)
         usuario.set_password(usuario_data['password'])
         usuario.is_staff = True
@@ -98,7 +111,6 @@ class EmpleadoSerializer(serializers.ModelSerializer):
         return instance
 
 
-
 class ModeloSerializer(serializers.ModelSerializer):
     combustible = serializers.SerializerMethodField()
     carroceria = serializers.SerializerMethodField()
@@ -113,3 +125,67 @@ class ModeloSerializer(serializers.ModelSerializer):
     def get_carroceria(self, obj):
         #return (obj.carroceria, obj.get_carroceria_display())
         return obj.get_carroceria_display()
+
+
+class VehiculoSerializer(serializers.ModelSerializer):
+    vin = serializers.CharField()
+    modeloVehiculo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
+    colorVehiculo = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
+    sucursalVehiculo = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
+    disponibleVenta = serializers.BooleanField(source='disponible_para_venta')
+    
+    class Meta:
+        model = Vehiculo
+        fields = 'vin', 'modeloVehiculo', 'colorVehiculo', 'sucursalVehiculo', 'disponibleVenta'
+
+    def create(self, validated_data):
+        if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
+            raise serializers.ValidationError({'vin': 'Ya existe un vehiculo con este vin'})
+        
+        vehiculo = Vehiculo.objects.create(**validated_data)
+        return vehiculo
+
+
+class VentaVehiculoSerializer(serializers.ModelSerializer):
+    vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
+
+    class Meta:
+        model = Venta_Vehiculo
+        fields = 'vehiculo', 'extra', 'porcentajeDescuento'
+
+    
+
+class VentaSerializer(serializers.ModelSerializer):
+    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
+    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    fechaVenta = serializers.DateField(source='fecha_venta')
+    ventaVehiculo = VentaVehiculoSerializer(many=True, source='venta_vehiculo_set')
+
+    class Meta:
+        model = Venta
+        fields = 'cliente', 'vendedor', 'fechaVenta', 'ventaVehiculo'
+
+    @transaction.atomic
+    def create(self, validated_data):
+        venta_vehiculo_data = validated_data.pop('venta_vehiculo_set')
+        venta = Venta.objects.create(**validated_data)
+
+        for venta_vehiculo in venta_vehiculo_data:
+            try:
+                if not venta_vehiculo['vehiculo'].disponible_para_venta:
+                    raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
+                
+                if not venta.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
+                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, venta.vendedor.usuario.cedula, venta.vendedor.sucursal)})
+                
+                Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
+                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            
+            except Exception as e:
+                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+        
+        return venta
+
+        

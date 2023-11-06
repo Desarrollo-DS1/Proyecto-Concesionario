@@ -241,7 +241,6 @@ class Venta(models.Model):
 	vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
 	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
 	fecha_venta = models.DateField('Fecha de Creación', auto_now_add=True)
-	vehiculos = models.ManyToManyField('Vehiculo', through='Venta_Vehiculo')
 
 	class Meta:
 		verbose_name = 'Venta'
@@ -275,7 +274,6 @@ class Venta_Vehiculo(models.Model):
 	vehiculo = models.OneToOneField('Vehiculo', on_delete=models.PROTECT)
 	extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
 	porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=4, decimal_places=2)
-	cantidad = models.IntegerField('Cantidad', default=1)
 
 	class Meta:
 		verbose_name = 'Vehículo en la Venta'
@@ -304,8 +302,8 @@ class Venta_Vehiculo(models.Model):
 		return self.vehiculo.nombre_color
 	
 	def precio(self):
-		return self.cantidad * (self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento)))
+		return (self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento)))
 	
 	def precio_str(self):		
-		return str(self.cantidad * (self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento))))
+		return str(self.vehiculo.modelo_vehiculo.precio_base * (1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (1 - (self.porcentaje_descuento)))
 	

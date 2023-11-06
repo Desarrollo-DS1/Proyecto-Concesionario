@@ -109,6 +109,8 @@ VALUES
 (5, 'Sucursal Centro', 'Cra. 8 # 56-78', 'Cali', '6025678901')
 ON CONFLICT (nombre_sucursal) DO NOTHING;
 
+SELECT setval('concesionarioapp_sucursal_id_sucursal_seq', (SELECT MAX(id_sucursal) FROM concesionarioapp_sucursal));
+
 
 INSERT INTO concesionarioapp_empleado (usuario_id, sucursal_id, cargo, fecha_ingreso, fecha_retiro, salario_base, tipo_sangre, eps, arl) 
 VALUES
@@ -174,6 +176,8 @@ VALUES
 (25, 'Chevrolet Suburban 2', 2022, 'SUV', 5300, 355, 'Gasolina', 8, 150000000)
 ON CONFLICT (id_modelo) DO NOTHING;
 
+SELECT setval('concesionarioapp_modelo_id_modelo_seq', (SELECT MAX(id_modelo) FROM concesionarioapp_modelo));
+
 
 INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentanje_incremento_por_color)
 VALUES
@@ -184,7 +188,10 @@ VALUES
 (5, 'Plata', 0.04),
 (6, 'Gris', 0.03),
 (7, 'Verde', 0.02),
-(8, 'Amarillo', 0.01);
+(8, 'Amarillo', 0.01)
+ON CONFLICT (id_color) DO NOTHING;
+
+SELECT setval('concesionarioapp_color_id_color_seq', (SELECT MAX(id_color) FROM concesionarioapp_color));
 
 
 INSERT INTO concesionarioapp_vehiculo (vin, modelo_vehiculo_id, color_vehiculo_id, sucursal_vehiculo_id, disponible_para_venta)
@@ -250,7 +257,10 @@ VALUES
 (4, 'Manijas de Lujo', 'Juego de manijas de puertas cromadas para darle un toque de elegancia al vehículo.'),
 (5, 'Tapetes Personalizados', 'Conjunto de tapetes de alta calidad con el logo de la marca del vehículo.'),
 (6, 'Película de Protección Solar', 'Película de protección solar para las ventanas del vehículo que reduce el calor y protege del sol.'),
-(7, 'Bluetooth Hands-Free', 'Sistema Bluetooth para llamadas telefónicas manos libres y reproducción de música en el vehículo.');
+(7, 'Bluetooth Hands-Free', 'Sistema Bluetooth para llamadas telefónicas manos libres y reproducción de música en el vehículo.')
+ON CONFLICT (id_extra) DO NOTHING;
+
+SELECT setval('concesionarioapp_extra_id_extra_seq', (SELECT MAX(id_extra) FROM concesionarioapp_extra));
 
 
 INSERT INTO concesionarioapp_venta (id_venta, vendedor_id, cliente_id, fecha_venta)
@@ -267,21 +277,25 @@ VALUES
 (10, 511234567, 101234567, '2023-10-07')
 ON CONFLICT (id_venta) DO NOTHING;
 
+SELECT setval('concesionarioapp_venta_id_venta_seq', (SELECT MAX(id_venta) FROM concesionarioapp_venta));
 
-INSERT INTO concesionarioapp_venta_vehiculo (id_venta_vehiculo, venta_id, vehiculo_id, extra_id, porcentaje_descuento, cantidad)
+
+INSERT INTO concesionarioapp_venta_vehiculo (id_venta_vehiculo, venta_id, vehiculo_id, extra_id, porcentaje_descuento)
 VALUES
-(1, 1, '1GCCS19W128314729', 1, 0.1, 1),
-(2, 1, '3GCUKSEC3HG509801', 2, 0.08, 1),
-(3, 2, '1GCGTBEN1L1234567', 3, 0.06, 1),
-(4, 3, '1GCCS19W128314730', 4, 0.05, 1),
-(5, 4, '3GCUKSEC3HG509802', 5, 0.04, 1),
-(6, 5, '3GCUKSEC3HG509803', 6, 0.03, 1),
-(7, 6, '1GCCS19W128314731', 7, 0.02, 1),
-(8, 7, '1GCCS19W128314732', 1, 0.01, 1),
-(9, 8, '3GNMNGED4KG123460', 1, 0.1, 1),
-(10, 9, '1GNCMDED0L1378096', 2, 0.08, 1),
-(11, 10, '3GNGKGED9KG123460', 3, 0.06, 1)
+(1, 1, '1GCCS19W128314729', 1, 0.1),
+(2, 1, '3GCUKSEC3HG509801', 2, 0.08),
+(3, 2, '1GCGTBEN1L1234567', 3, 0.06),
+(4, 3, '1GCCS19W128314730', 4, 0.05),
+(5, 4, '3GCUKSEC3HG509802', 5, 0.04),
+(6, 5, '3GCUKSEC3HG509803', 6, 0.03),
+(7, 6, '1GCCS19W128314731', 7, 0.02),
+(8, 7, '1GCCS19W128314732', 1, 0.01),
+(9, 8, '3GNMNGED4KG123460', 1, 0.1),
+(10, 9, '1GNCMDED0L1378096', 2, 0.08),
+(11, 10, '3GNGKGED9KG123460', 3, 0.06)
 ON CONFLICT (id_venta_vehiculo) DO NOTHING;
+
+SELECT setval('concesionarioapp_venta_vehiculo_id_venta_vehiculo_seq', (SELECT MAX(id_venta_vehiculo) FROM concesionarioapp_venta_vehiculo));
 
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';
