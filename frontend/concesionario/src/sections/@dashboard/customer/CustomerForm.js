@@ -280,6 +280,9 @@ export default function CustomerForm() {
                           label={t("clientes.label.contraseña")} variant="outlined"
                           helperText={t(customerError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
+                          onCopy={(e) => {
+                              e.preventDefault();
+                          }}
                           InputProps={{
                               endAdornment: (
                                   <InputAdornment position="end">
