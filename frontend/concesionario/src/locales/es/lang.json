@@ -185,6 +185,6 @@
     "contraseña": "Contraseña",
     "olvido": "¿Olvidaste tu contraseña?",
     "boton": "Iniciar Sesión",
-    "mensaje": "Email o contraseña incorrectos"
+    "error": "Email o contraseña incorrectos"
   }
 }

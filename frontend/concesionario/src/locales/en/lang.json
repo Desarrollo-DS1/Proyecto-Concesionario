@@ -185,6 +185,6 @@
     "contraseña": "Password",
     "olvido": "Forgot your password?",
     "boton": "Login",
-    "mensaje": "Email or password incorrect"
+    "error": "Email or password incorrect"
   }
 }
