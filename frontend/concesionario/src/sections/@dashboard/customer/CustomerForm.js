@@ -5,12 +5,14 @@ import {
     Box,
     Button,
     Divider,
-    Grid,
+    Grid, IconButton, InputAdornment,
     MenuItem,
     Stack,
     TextField,
     Typography
 } from "@mui/material";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import CustomerContext from "../../../hooks/customer/CustomerContext";
@@ -42,7 +44,9 @@ export default function CustomerForm() {
         handleCloseForm,
         handleSubmit,
         customerError,
-        edit} = useContext(CustomerContext);
+        edit,
+        showPassword,
+        handleTogglePassword} = useContext(CustomerContext);
 
     const theme = useTheme()
     const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -53,7 +57,7 @@ export default function CustomerForm() {
         left: '50%',
         transform: 'translate(-50%, -50%)',
         width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : 'auto',
+        height: isSmallScreen ? '80%' : '74%',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
@@ -265,6 +269,7 @@ export default function CustomerForm() {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          type={showPassword ? 'text' : 'password'}
                           error={customerError.clave !== ''}
                           fullWidth
                           required
@@ -275,6 +280,18 @@ export default function CustomerForm() {
                           label={t("clientes.label.contraseña")} variant="outlined"
                           helperText={t(customerError.clave,  {maximo: '50', minimo: '8'})}
                           style={textFieldStyle}
+                          onCopy={(e) => {
+                              e.preventDefault();
+                          }}
+                          InputProps={{
+                              endAdornment: (
+                                  <InputAdornment position="end">
+                                      <IconButton onClick={handleTogglePassword} edge="end">
+                                          {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                                      </IconButton>
+                                  </InputAdornment>
+                              ),
+                          }}
                       />
                   </Grid>
               </Grid>

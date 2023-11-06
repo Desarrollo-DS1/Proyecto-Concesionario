@@ -261,6 +261,7 @@ export function EmployeeState(props) {
         setOpenForm(true)
     };
     const handleCloseForm = () => {
+        setShowPassword(false);
         setOpenForm(false);
     };
     const handleOpenDelete = (event, cedula) => {
@@ -279,6 +280,12 @@ export function EmployeeState(props) {
     const handleOpenSnackbar = () => {
         setOpenSnackbar(true);
     }
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
@@ -386,7 +393,9 @@ export function EmployeeState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                employeeError}}>
+                employeeError,
+                showPassword,
+                handleTogglePassword}}>
             {props.children}
         </EmployeeContext.Provider>
     )
