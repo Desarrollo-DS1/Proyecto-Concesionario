@@ -1,5 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.exceptions import MethodNotAllowed
 from .serializer import *
 from .models import *
 
@@ -51,13 +52,18 @@ class VehiculoView(viewsets.ModelViewSet):
     queryset = Vehiculo.objects.all()
 
 
+class VentaVehiculoView(viewsets.ModelViewSet):
+    serializer_class = VentaVehiculoSerializer
+    queryset = Venta_Vehiculo.objects.all()
+
+
 class VentaView(viewsets.ModelViewSet):
     serializer_class = VentaSerializer
     queryset = Venta.objects.all()
 
+    def destroy(self, request, *args, **kwargs):
+        return MethodNotAllowed('DELETE', detail='No se puede eliminar una venta')
 
-class VentaVehiculoView(viewsets.ModelViewSet):
-    serializer_class = VentaVehiculoSerializer
-    queryset = Venta_Vehiculo.objects.all()
+
 
 

@@ -188,4 +188,32 @@ class VentaSerializer(serializers.ModelSerializer):
         
         return venta
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        venta_vehiculo_data = validated_data.pop('venta_vehiculo_set')
+        
+        for venta_vehiculo_anterior in instance.venta_vehiculo_set.all():
+            Vehiculo.objects.filter(vin=venta_vehiculo_anterior.vehiculo.vin).update(disponible_para_venta=True)
+
+            venta_vehiculo_anterior.delete()
+        
+        Venta.objects.filter(id_venta=instance.id_venta).update(**validated_data)
+
+        for venta_vehiculo in venta_vehiculo_data:
+            try:
+                if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
+                    raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
+                
+                if not instance.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
+                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, instance.vendedor.usuario.cedula, instance.vendedor.sucursal)})
+                
+                Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
+                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            
+            except Exception as e:
+                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+        
+        return instance
+        
+
         
