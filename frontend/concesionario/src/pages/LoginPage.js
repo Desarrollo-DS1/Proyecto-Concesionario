@@ -94,7 +94,7 @@ export default function LoginPage() {
               }}
           >
             <Box sx={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: '100%', mb: 3}}>
-              <Logo />
+              <Logo disabledLink/>
             </Box>
 
             <Stack direction="row" spacing={2}>
