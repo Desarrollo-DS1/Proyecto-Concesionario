@@ -20,6 +20,10 @@ import ModelPage from "./pages/ModelPage";
 export default function Router() {
   const routes = useRoutes([
     {
+      path: '/login',
+      element: <LoginPage />,
+    },
+    {
       path: '/dashboard',
       element: <DashboardLayout />,
       children: [
@@ -31,13 +35,9 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
       ],
     },
-    {
-      path: 'login',
-      element: <LoginPage />,
-    },
     {element: <LoadLayout />,
     children: [
-        { element: <Navigate to="/dashboard" />, index: true },
+        { element: <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },
       ],
     },
