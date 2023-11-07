@@ -39,9 +39,9 @@ function checkPhone(customer) {
     {
         return "errores.numerico";
     }
-    if ((customer.telefono).length !== 7)
+    if ((customer.telefono).length < 7 || (customer.telefono).length > 10)
     {
-        return "errores.longitudExacta";
+        return "errores.longitudMaxMin";
     }
 
     return "";
@@ -221,9 +221,9 @@ function checkCedula(customer) {
     {
         return "errores.numerico";
     }
-    if (customer.cedula.length !== 8 && customer.cedula.length !== 9 && customer.cedula.length !== 10)
+    if (customer.cedula.length > 10 || customer.cedula.length < 8)
     {
-        return "errores.longitudExacta";
+        return "errores.longitudMaxMin";
     }
 
     return "";

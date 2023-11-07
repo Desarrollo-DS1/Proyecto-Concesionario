@@ -1,5 +1,6 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
+import { get } from "lodash";
 import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
@@ -131,7 +132,8 @@ export function EmployeeState(props) {
                 setEmployees(response.data);
 
             } catch (error) {
-                console.log("Error fetching data", error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('empleados.mensaje.errorListando');
             }
         }
 
@@ -155,12 +157,31 @@ export function EmployeeState(props) {
     const addEmployee = (employee) => {
         async function postEmployee() {
             try{
-                console.log(employee);
                 const response = await createEmpleado(employee);
                 setEmployees([...employees, response.data]);
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.agregado');
+
+                handleCloseForm();
             
             } catch (error) {
-                console.log("Error posting data", error);
+                const errors = error.response.data;
+
+                if(errors.cedula){
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorCedula');
+                    setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
+
+                } else if (errors.correo) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorCorreo');
+                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.error');
+                }
             }
         }
         
@@ -172,14 +193,29 @@ export function EmployeeState(props) {
             try{
                 const response = await updateEmpleado(employee.cedula, employee);
                 setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)));
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.editado');
+
+                handleCloseForm();
+                getEmployees();
             
             } catch (error) {
-                console.log("Error updating data", error);
+                const errors = error.response.data;
+
+                if(errors.email) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorEmail');
+                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.error');
+                }
             }
         }
         
         putEmployee();
-        getEmployees();
     }
 
     const deleteEmployee = (employee) => {
@@ -188,8 +224,23 @@ export function EmployeeState(props) {
                 const response = await deleteEmpleado(employee.cedula);
                 setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
 
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.eliminado');
+
+                handleCloseDelete();
+                getEmployees();
+
             } catch (error) {
-                console.log("Error deleting data", error);
+                const errors = error.response.data;
+
+                if(errors.protected) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar(errors.protected);
+
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorEliminar');
+                }
             }
         }
 
@@ -209,17 +260,13 @@ export function EmployeeState(props) {
             if(edit)
             {
                 updateEmployee(employee);
-                setMessageSnackbar('empleados.mensaje.editado');
-                setTypeSnackbar('success');
             }
             else
             {
                 addEmployee(employee);
-                setMessageSnackbar('empleados.mensaje.agregado');
-                setTypeSnackbar('success');
             }
+            getEmployees();
             handleOpenSnackbar();
-            handleCloseForm();
         }
     }
     const handleOnBlur = (event) => {
@@ -230,8 +277,7 @@ export function EmployeeState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteEmployee(employee);
-        setMessageSnackbar('empleados.mensaje.eliminado');
-        setTypeSnackbar('success');
+
         handleOpenSnackbar();
         handleCloseDelete();
     }

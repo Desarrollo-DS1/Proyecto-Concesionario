@@ -10,7 +10,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class ClienteSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
-    clave = serializers.CharField(source='usuario.password')
+    clave = serializers.CharField(source='usuario.password', write_only=True)
     correo = serializers.EmailField(source='usuario.email')
     primerNombre = serializers.CharField(source='usuario.primer_nombre')
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
@@ -47,6 +47,9 @@ class ClienteSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop('usuario')
 
+        if 'email' in usuario_data and Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+
         Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
         if 'password' in usuario_data:
             instance.usuario.set_password(usuario_data['password'])
@@ -57,7 +60,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
 class EmpleadoSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
-    clave = serializers.CharField(source='usuario.password')
+    clave = serializers.CharField(source='usuario.password', write_only=True)
     correo = serializers.EmailField(source='usuario.email')
     primerNombre = serializers.CharField(source='usuario.primer_nombre')
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
@@ -101,6 +104,9 @@ class EmpleadoSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop('usuario')
+
+        if 'email' in usuario_data and Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
 
         Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
         if 'password' in usuario_data:
