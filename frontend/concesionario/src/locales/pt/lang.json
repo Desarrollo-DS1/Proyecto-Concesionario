@@ -112,6 +112,7 @@
       "salario": "Salário",
       "cargo": "Cargo",
       "tipoSangre": "T. Sanguíneo",
+      "sucursal": "Filial",
       "undefined": ""
     }
   },

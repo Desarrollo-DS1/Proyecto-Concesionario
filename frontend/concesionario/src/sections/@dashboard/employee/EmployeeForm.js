@@ -63,6 +63,7 @@ export default function EmployeeForm() {
         arls,
         positions,
         genders,
+        branches,
         openForm,
         handleInputChange,
         handleOnBlur,
@@ -348,7 +349,7 @@ export default function EmployeeForm() {
                           InputProps={inputProps}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={2}>
                       <TextField
                           error={employeeError.eps !== ''}
                           select
@@ -372,7 +373,7 @@ export default function EmployeeForm() {
                             ))}
                       </TextField>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={2}>
                       <TextField
                           error={employeeError.arl !== ''}
                           select
@@ -392,6 +393,30 @@ export default function EmployeeForm() {
                           {arls.map((option) => (
                               <MenuItem key={option.id} value={option.label}>
                                     {option.label}
+                              </MenuItem>
+                          ))}
+                      </TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                      <TextField
+                          error={employeeError.sucursal !== ''}
+                          select
+                          fullWidth
+                          required
+                          name={"sucursal"}
+                          value={employee.sucursal}
+                          onChange={handleInputChange}
+                          onBlur={handleOnBlur}
+                          label={t("empleados.label.sucursal")} variant="outlined"
+                          helperText={t(employeeError.sucursal)}
+                          style={textFieldStyle}
+                          SelectProps={{
+                              MenuProps: selectMenuProps
+                          }}
+                      >
+                          {branches.map((option) => (
+                              <MenuItem key={option.id} value={option.label}>
+                                  {option.label}
                               </MenuItem>
                           ))}
                       </TextField>
