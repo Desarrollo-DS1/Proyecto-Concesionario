@@ -141,16 +141,25 @@ export function EmployeeState(props) {
     }
 
     const getEmployee = (cedula) => {
-        const employee = employees.find(employee => employee.cedula === cedula);
-        if(employee)
-        {
-            setEmployee(employee)
-            setEdit(true)
+        async function loadEmployee() {
+            try{
+                const response = await getEmpleado(cedula);
+                const employeeDataWithClave = { ...response.data, clave: '' };
+                setEmployee(employeeDataWithClave);
+
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('empleados.mensaje.errorCargando');
+            }
         }
-        else
-        {
-            setEmployee(emptyEmployee)
-            setEdit(false)
+
+        if (cedula === null) {
+            setEmployee(emptyEmployee);
+            setEdit(false);
+
+        } else {
+            loadEmployee();
+            setEdit(true);
         }
     }
 
@@ -202,7 +211,6 @@ export function EmployeeState(props) {
             
             } catch (error) {
                 const errors = error.response.data;
-                console.log(errors);
 
                 if(errors.email) {
                     setTypeSnackbar('error');
@@ -366,13 +374,13 @@ export function EmployeeState(props) {
     const validateEmployeeOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(employeeError).forEach((name) => {
-            updatedErrors[name] = checkEmployee(employee, name);
+            updatedErrors[name] = checkEmployee(employee, name, edit);
         });
         setEmployeeError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name)});
+        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name, edit)});
     };
 
     return (

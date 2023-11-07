@@ -82,6 +82,7 @@ export function CustomerState(props) {
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorListando');
+                handleOpenSnackbar();
             }
         }
 
@@ -94,19 +95,19 @@ export function CustomerState(props) {
                 const response = await getCliente(cedula);
                 const customerDataWithClave = { ...response.data, clave: '' };
                 setCustomer(customerDataWithClave);
+
             } catch (error) {
                 setTypeSnackbar('error');
-                setMessageSnackbar('clientes.mensaje.errorListando');
+                setMessageSnackbar('clientes.mensaje.errorCargando');
+                handleOpenSnackbar();
             }
         }
 
-        if (cedula === null)
-        {
+        if (cedula === null){
             setCustomer(emptyCustomer);
             setEdit(false);
-        }
-        else
-        {
+
+        } else{
             loadCustomer();
             setEdit(true);
         }
@@ -120,6 +121,7 @@ export function CustomerState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('clientes.mensaje.agregado');
+                handleOpenSnackbar();
                 
                 handleCloseForm();
 
@@ -130,16 +132,19 @@ export function CustomerState(props) {
                 {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.errorCedula');
-                    setCustomerError({...customerError, cedula: 'Cedula ya existe'})
+                    handleOpenSnackbar();
+                    setCustomerError({...customerError, cedula: 'Cedula ya existe'});
                 
                 } else if(errors.email) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.errorEmail');
-                    setCustomerError({...customerError, correo: 'Correo ya existe'})
+                    handleOpenSnackbar();
+                    setCustomerError({...customerError, correo: 'Correo ya existe'});
                 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.error');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -155,6 +160,7 @@ export function CustomerState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('clientes.mensaje.editado');
+                handleOpenSnackbar();
 
                 handleCloseForm();
                 getCustomers();
@@ -165,11 +171,13 @@ export function CustomerState(props) {
                 if (errors.email) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.errorEmail');
-                    setCustomerError({...customerError, correo: 'Correo ya existe'})
+                    handleOpenSnackbar();
+                    setCustomerError({...customerError, correo: 'Correo ya existe'});
                 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.errorEditar');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -186,8 +194,8 @@ export function CustomerState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('clientes.mensaje.eliminado');
+                handleOpenSnackbar();
 
-                handleCloseDelete();
                 getCustomers();
             
             } catch (error) {
@@ -196,10 +204,12 @@ export function CustomerState(props) {
                 if (errors.protected) {
                     setTypeSnackbar('error');
                     setMessageSnackbar(errors.protected);
+                    handleOpenSnackbar();
 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('clientes.mensaje.errorEliminar');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -228,7 +238,6 @@ export function CustomerState(props) {
                 addCustomer(customer);
             }
             getCustomers();
-            handleOpenSnackbar();
         }
     }
     const handleOnBlur = (event) => {
@@ -240,7 +249,6 @@ export function CustomerState(props) {
         event.preventDefault();
         deleteCustomer(customer);
 
-        handleOpenSnackbar();
         handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {

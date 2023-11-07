@@ -92,10 +92,11 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     eps = serializers.CharField(required=False)
     arl = serializers.CharField(required=False)
     cargo = serializers.CharField(required=False)
+    sucursal = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), required=False, allow_null=True)
 
     class Meta:
         model = Empleado
-        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero', 'fechaIngreso', 'fechaRetiro', 'salario', 'tipoSangre', 'eps', 'arl', 'cargo'
+        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero', 'fechaIngreso', 'fechaRetiro', 'salario', 'tipoSangre', 'eps', 'arl', 'cargo', 'sucursal'
     
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')

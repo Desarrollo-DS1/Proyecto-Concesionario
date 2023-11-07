@@ -79,7 +79,6 @@ function checkPasswordAdd(customer) {
 }
 
 function checkPasswordEdit(customer) {
-
     if (customer.clave !== null && customer.clave.trim() !== '') {
         if ((customer.clave).length > 50 || (customer.clave).length < 8)
         {

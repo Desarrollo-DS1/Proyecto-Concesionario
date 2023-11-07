@@ -60,7 +60,8 @@
         "confirmacionEliminar": "¿Estas seguro que deseas eliminar al cliente de cédula {{cedula}}?",
         "errorCedula": "Error al agregar cliente, la cedula ya existe",
         "errorEmail": "Error al agregar cliente, el correo ya existe",
-        "errorListando": "Error al listar clientes"
+        "errorListando": "Error al listar clientes",
+        "errorCargando": "Error al cargar cliente"
     },
 
     "label": {
@@ -101,7 +102,8 @@
         "confirmacionEliminar": "¿Estas seguro que deseas eliminar al empleado de cédula {{cedula}}?",
         "errorCedula": "Error al agregar empleado, la cedula ya existe",
         "errorEmail": "Error al agregar empleado, el correo ya existe",
-        "errorListando": "Error al listar empleados"
+        "errorListando": "Error al listar empleados",
+        "errorCargando": "Error al cargar empleado"
     },
 
     "label": {
