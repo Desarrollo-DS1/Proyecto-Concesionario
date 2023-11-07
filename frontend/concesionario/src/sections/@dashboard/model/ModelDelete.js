@@ -52,10 +52,10 @@ export default function ModelDelete() {
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button variant="contained" onClick={handleCloseDelete}>
-                        {t('general.botones.si')}
+                        {t('general.botones.no')}
                     </Button>
                     <Button variant="contained" color="error" onClick={handleDelete}>
-                        {t('general.botones.no')}
+                        {t('general.botones.si')}
                     </Button>
                 </Stack>
             </Box>

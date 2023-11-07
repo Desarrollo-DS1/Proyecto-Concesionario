@@ -170,6 +170,7 @@ class ModeloSerializer(serializers.ModelSerializer):
         
         if(attrs['potencia'] < 0 or attrs['potencia'] > 999):
             raise serializers.ValidationError("La potencia debe estar entre 0 y 999")
+        
 
         return super().validate(attrs)
     
@@ -178,7 +179,6 @@ class ModeloSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Ya existe un modelo con ese nombre")
           
         return Modelo.objects.create(**validated_data)
-
 
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
