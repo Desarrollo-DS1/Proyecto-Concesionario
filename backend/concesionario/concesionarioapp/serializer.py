@@ -6,9 +6,9 @@ class ModeloSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Modelo
-        fields = 'nombre', 'año', 'numeroPasajeros', 'precioBase', 'cilindraje', 'potencia', 'combustible', 'carroceria'
+        fields = 'id', 'nombre', 'año', 'numeroPasajeros', 'precioBase', 'cilindraje', 'potencia', 'combustible', 'carroceria'
     
-    # id = serializers.IntegerField(source='id_modelo')
+    id = serializers.IntegerField(source='id_modelo', read_only=True)
     nombre = serializers.CharField(source='nombre_modelo')
     año = serializers.IntegerField(source='anho')
     numeroPasajeros = serializers.IntegerField(source='numero_pasajeros')
