@@ -134,6 +134,7 @@ export function EmployeeState(props) {
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorListando');
+                handleOpenSnackbar();
             }
         }
 
@@ -150,6 +151,7 @@ export function EmployeeState(props) {
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCargando');
+                handleOpenSnackbar();
             }
         }
 
@@ -171,6 +173,7 @@ export function EmployeeState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.agregado');
+                handleOpenSnackbar();
 
                 handleCloseForm();
             
@@ -181,15 +184,18 @@ export function EmployeeState(props) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorCedula');
                     setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
+                    handleOpenSnackbar();
 
                 } else if (errors.email) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorEmail');
                     setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                    handleOpenSnackbar();
 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.error');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -205,6 +211,7 @@ export function EmployeeState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.editado');
+                handleOpenSnackbar();
 
                 handleCloseForm();
                 getEmployees();
@@ -215,11 +222,13 @@ export function EmployeeState(props) {
                 if(errors.email) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorEmail');
+                    handleOpenSnackbar();
                     setEmployeeError({...employeeError, correo: 'Correo ya existe'});
                 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.error');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -235,8 +244,8 @@ export function EmployeeState(props) {
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.eliminado');
+                handleOpenSnackbar();
 
-                handleCloseDelete();
                 getEmployees();
 
             } catch (error) {
@@ -245,10 +254,12 @@ export function EmployeeState(props) {
                 if(errors.protected) {
                     setTypeSnackbar('error');
                     setMessageSnackbar(errors.protected);
+                    handleOpenSnackbar();
 
                 } else {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorEliminar');
+                    handleOpenSnackbar();
                 }
             }
         }
@@ -275,7 +286,6 @@ export function EmployeeState(props) {
                 addEmployee(employee);
             }
             getEmployees();
-            handleOpenSnackbar();
         }
     }
     const handleOnBlur = (event) => {
@@ -287,7 +297,6 @@ export function EmployeeState(props) {
         event.preventDefault();
         deleteEmployee(employee);
 
-        handleOpenSnackbar();
         handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {
