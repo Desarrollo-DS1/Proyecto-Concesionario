@@ -10,7 +10,7 @@ class UsuarioSerializer(serializers.ModelSerializer):
 
 class ClienteSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
-    clave = serializers.CharField(source='usuario.password', write_only=True)
+    clave = serializers.CharField(source='usuario.password', write_only=True, required=False, allow_blank=True)
     correo = serializers.EmailField(source='usuario.email')
     primerNombre = serializers.CharField(source='usuario.primer_nombre')
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
@@ -29,6 +29,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
+        password = usuario_data.pop('password')
 
         if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
             raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
@@ -36,8 +37,11 @@ class ClienteSerializer(serializers.ModelSerializer):
         if Usuario.objects.filter(email=usuario_data['email']).exists():
             raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
         
+        if not password:
+            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
+        
         usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(usuario_data['password'])
+        usuario.set_password(password)
         usuario.save()
         
         cliente = Cliente.objects.create(usuario=usuario)
@@ -46,21 +50,30 @@ class ClienteSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop('usuario')
+        password = usuario_data.pop('password')
 
-        if 'email' in usuario_data and Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
+        if Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
             raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
-
+        
         Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
-        if 'password' in usuario_data:
-            instance.usuario.set_password(usuario_data['password'])
+
+        if password:
+            instance.usuario.set_password(password)
             instance.usuario.save()
 
         return instance
 
 
+class CustomDateField(serializers.DateField):
+    def to_internal_value(self, data):
+        if data == '':
+            return None
+        return super().to_internal_value(data)
+
+
 class EmpleadoSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
-    clave = serializers.CharField(source='usuario.password', write_only=True)
+    clave = serializers.CharField(source='usuario.password', write_only=True, required=False, allow_blank=True)
     correo = serializers.EmailField(source='usuario.email')
     primerNombre = serializers.CharField(source='usuario.primer_nombre')
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
@@ -73,7 +86,7 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False, allow_null=True)
     genero = serializers.CharField(source='usuario.genero', required=False)
     fechaIngreso = serializers.DateField(source='fecha_ingreso', required=False, allow_null=True)
-    fechaRetiro = serializers.DateField(source='fecha_retiro', required=False, allow_null=True)
+    fechaRetiro = CustomDateField(source='fecha_retiro', required=False, allow_null=True)
     salario = serializers.IntegerField(source='salario_base', required=False)
     tipoSangre = serializers.CharField(source='tipo_sangre', required=False)
     eps = serializers.CharField(required=False)
@@ -86,15 +99,19 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
+        password = usuario_data.pop('password')
 
         if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
             raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
         
         if Usuario.objects.filter(email=usuario_data['email']).exists():
             raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+        
+        if not password:
+            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
 
         usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(usuario_data['password'])
+        usuario.set_password(password)
         usuario.is_staff = True
         usuario.save()
 
@@ -104,13 +121,15 @@ class EmpleadoSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         usuario_data = validated_data.pop('usuario')
+        password = usuario_data.pop('password')
 
-        if 'email' in usuario_data and Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
+        if Usuario.objects.filter(email=usuario_data['email']).exclude(cedula=instance.usuario_id).exists():
             raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
 
         Usuario.objects.filter(cedula=instance.usuario_id).update(**usuario_data)
-        if 'password' in usuario_data:
-            instance.usuario.set_password(usuario_data['password'])
+
+        if password:
+            instance.usuario.set_password(password)
             instance.usuario.save()
 
         Empleado.objects.filter(usuario_id=instance.usuario_id).update(**validated_data)

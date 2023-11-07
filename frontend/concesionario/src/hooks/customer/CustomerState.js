@@ -28,7 +28,7 @@ export function CustomerState(props) {
         { id: '' },
     ];
 
-    const CustomerEmployee = {
+    const emptyCustomer = {
         primerNombre: "",
         segundoNombre: "",
         primerApellido: "",
@@ -64,7 +64,7 @@ export function CustomerState(props) {
         { id: '2', label: 'Femenino' },
         { id: '3', label: 'Otro' }]
 
-    const [customer, setCustomer] = React.useState(CustomerEmployee);
+    const [customer, setCustomer] = React.useState(emptyCustomer);
     const [customers, setCustomers] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
@@ -92,27 +92,24 @@ export function CustomerState(props) {
         async function loadCustomer() {
             try{
                 const response = await getCliente(cedula);
-                setCustomer(response.data);
-            
+                const customerDataWithClave = { ...response.data, clave: '' };
+                setCustomer(customerDataWithClave);
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorListando');
             }
         }
 
-        loadCustomer();
-        // const customer = getCliente(cedula)
-        // console.log(customer)
-        // if(customer)
-        // {
-        //     setCustomer(customer)
-        //     setEdit(true)
-        // }
-        // else
-        // {
-        //     setCustomer(CustomerEmployee)
-        //     setEdit(false)
-        // }
+        if (cedula === null)
+        {
+            setCustomer(emptyCustomer);
+            setEdit(false);
+        }
+        else
+        {
+            loadCustomer();
+            setEdit(true);
+        }
     }
 
     const addCustomer = (customer) => {

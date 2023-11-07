@@ -173,9 +173,9 @@ export function EmployeeState(props) {
                     setMessageSnackbar('empleados.mensaje.errorCedula');
                     setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
 
-                } else if (errors.correo) {
+                } else if (errors.email) {
                     setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.errorCorreo');
+                    setMessageSnackbar('empleados.mensaje.errorEmail');
                     setEmployeeError({...employeeError, correo: 'Correo ya existe'});
 
                 } else {
@@ -202,6 +202,7 @@ export function EmployeeState(props) {
             
             } catch (error) {
                 const errors = error.response.data;
+                console.log(errors);
 
                 if(errors.email) {
                     setTypeSnackbar('error');
