@@ -118,6 +118,7 @@
       "salario": "Salary",
       "cargo": "Position",
       "tipoSangre": "Blood T.",
+      "sucursal": "Branch",
       "undefined" : ""
     }
   },

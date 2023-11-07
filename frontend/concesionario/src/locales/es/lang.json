@@ -126,6 +126,7 @@
       "salario": "Salario",
       "cargo": "Cargo",
       "tipoSangre": "T. Sangre",
+      "sucursal": "Sucursal",
       "undefined" : ""
       }
     },

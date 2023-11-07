@@ -50,6 +50,7 @@ export function EmployeeState(props) {
         eps: "",
         arl: "",
         cargo: "",
+        sucursal: "",
     }
     const emptyError = {
         primerNombre: '',
@@ -72,6 +73,7 @@ export function EmployeeState(props) {
         eps: "",
         arl: "",
         cargo: "",
+        sucursal: "",
     }
 
     const initialBloodTypes = [
@@ -124,6 +126,24 @@ export function EmployeeState(props) {
     const [arls, setArls] = useState(initialArls);
     const [positions, setPositions] = useState(initialPositions);
     const [genders, setGenders] = useState(initialGenders);
+    const [branches, setBranches] = useState([]);
+
+
+    const getBranches = () => {
+        // async function loadBranches() {
+        //     try{
+        //         const response = await getAllSucursales();
+        //         setBranches(response.data);
+        //
+        //     } catch (error) {
+        //         setTypeSnackbar('error');
+        //         setMessageSnackbar('sucursales.mensaje.errorListando');
+        //         handleOpenSnackbar();
+        //     }
+        // }
+        //
+        // loadBranches();
+    }
 
     const getEmployees = () => {
         async function loadEmployees() {
@@ -403,6 +423,7 @@ export function EmployeeState(props) {
                 positions,
                 bloodTypes,
                 genders,
+                branches,
                 openForm,
                 edit,
                 openSnackbar,
@@ -410,6 +431,7 @@ export function EmployeeState(props) {
                 typeSnackbar,
                 openDelete,
                 getEmployees,
+                getBranches,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
