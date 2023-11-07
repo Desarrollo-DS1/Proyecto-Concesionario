@@ -155,7 +155,7 @@ export default function CustomerForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("clientes.label.cedula")} variant="outlined"
-                          helperText={t(customerError.cedula,  {exacto: '10'})}
+                          helperText={t(customerError.cedula,  {minimo: '8', maximo: '10'})}
                           style={textFieldStyle}
                           disabled={edit}
                       />
@@ -170,7 +170,7 @@ export default function CustomerForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("clientes.label.telefono")} variant="outlined"
-                          helperText={t(customerError.telefono, {exacto: '7'})}
+                          helperText={t(customerError.telefono, {minimo: '7', maximo: '10'})}
                           style={textFieldStyle}
                       />
                   </Grid>

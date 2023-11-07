@@ -87,7 +87,7 @@ export default function EmployeePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('empleados.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                         {t('empleados.encabezado.tituloSingular')}
                     </Button>
                 </Stack>

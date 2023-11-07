@@ -1,5 +1,6 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
+import { get } from "lodash";
 import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
@@ -131,7 +132,9 @@ export function EmployeeState(props) {
                 setEmployees(response.data);
 
             } catch (error) {
-                console.log("Error fetching data", error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('empleados.mensaje.errorListando');
+                handleOpenSnackbar();
             }
         }
 
@@ -139,28 +142,61 @@ export function EmployeeState(props) {
     }
 
     const getEmployee = (cedula) => {
-        const employee = employees.find(employee => employee.cedula === cedula);
-        if(employee)
-        {
-            setEmployee(employee)
-            setEdit(true)
+        async function loadEmployee() {
+            try{
+                const response = await getEmpleado(cedula);
+                const employeeDataWithClave = { ...response.data, clave: '' };
+                setEmployee(employeeDataWithClave);
+
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('empleados.mensaje.errorCargando');
+                handleOpenSnackbar();
+            }
         }
-        else
-        {
-            setEmployee(emptyEmployee)
-            setEdit(false)
+
+        if (cedula === null) {
+            setEmployee(emptyEmployee);
+            setEdit(false);
+
+        } else {
+            loadEmployee();
+            setEdit(true);
         }
     }
 
     const addEmployee = (employee) => {
         async function postEmployee() {
             try{
-                console.log(employee);
                 const response = await createEmpleado(employee);
                 setEmployees([...employees, response.data]);
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.agregado');
+                handleOpenSnackbar();
+
+                handleCloseForm();
             
             } catch (error) {
-                console.log("Error posting data", error);
+                const errors = error.response.data;
+
+                if(errors.cedula){
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorCedula');
+                    setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
+                    handleOpenSnackbar();
+
+                } else if (errors.email) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorEmail');
+                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                    handleOpenSnackbar();
+
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.error');
+                    handleOpenSnackbar();
+                }
             }
         }
         
@@ -172,14 +208,32 @@ export function EmployeeState(props) {
             try{
                 const response = await updateEmpleado(employee.cedula, employee);
                 setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)));
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.editado');
+                handleOpenSnackbar();
+
+                handleCloseForm();
+                getEmployees();
             
             } catch (error) {
-                console.log("Error updating data", error);
+                const errors = error.response.data;
+
+                if(errors.email) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorEmail');
+                    handleOpenSnackbar();
+                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.error');
+                    handleOpenSnackbar();
+                }
             }
         }
         
         putEmployee();
-        getEmployees();
     }
 
     const deleteEmployee = (employee) => {
@@ -188,8 +242,25 @@ export function EmployeeState(props) {
                 const response = await deleteEmpleado(employee.cedula);
                 setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
 
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.eliminado');
+                handleOpenSnackbar();
+
+                getEmployees();
+
             } catch (error) {
-                console.log("Error deleting data", error);
+                const errors = error.response.data;
+
+                if(errors.protected) {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar(errors.protected);
+                    handleOpenSnackbar();
+
+                } else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('empleados.mensaje.errorEliminar');
+                    handleOpenSnackbar();
+                }
             }
         }
 
@@ -209,17 +280,12 @@ export function EmployeeState(props) {
             if(edit)
             {
                 updateEmployee(employee);
-                setMessageSnackbar('empleados.mensaje.editado');
-                setTypeSnackbar('success');
             }
             else
             {
                 addEmployee(employee);
-                setMessageSnackbar('empleados.mensaje.agregado');
-                setTypeSnackbar('success');
             }
-            handleOpenSnackbar();
-            handleCloseForm();
+            getEmployees();
         }
     }
     const handleOnBlur = (event) => {
@@ -230,9 +296,7 @@ export function EmployeeState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteEmployee(employee);
-        setMessageSnackbar('empleados.mensaje.eliminado');
-        setTypeSnackbar('success');
-        handleOpenSnackbar();
+
         handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {
@@ -319,13 +383,13 @@ export function EmployeeState(props) {
     const validateEmployeeOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(employeeError).forEach((name) => {
-            updatedErrors[name] = checkEmployee(employee, name);
+            updatedErrors[name] = checkEmployee(employee, name, edit);
         });
         setEmployeeError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name)});
+        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name, edit)});
     };
 
     return (
