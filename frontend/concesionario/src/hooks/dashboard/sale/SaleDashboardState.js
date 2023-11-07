@@ -24,6 +24,35 @@ const initialSalesModel = [
     { label: 'Cruze', value: 15 },
 ];
 
+const initialMonths = [
+    { label: 'Enero', value: 1 },
+    { label: 'Febrero', value: 2 },
+    { label: 'Marzo', value: 3 },
+    { label: 'Abril', value: 4 },
+    { label: 'Mayo', value: 5 },
+    { label: 'Junio', value: 6 },
+    { label: 'Julio', value: 7 },
+    { label: 'Agosto', value: 8 },
+    { label: 'Septiembre', value: 9 },
+    { label: 'Octubre', value: 10 },
+    { label: 'Noviembre', value: 11 },
+    { label: 'Diciembre', value: 12 },
+];
+
+function generateYears() {
+    const currentYear = new Date().getFullYear();
+    const startYear = 1950;
+    const years = [];
+
+    for (let year = startYear; year <= currentYear; year += year) {
+        years.push({ id: `year-${year}`, year: year.toString() });
+    }
+
+    return years;
+}
+
+const initialYears = generateYears();
+
 
 
 export function SaleDashboardState(props) {
@@ -32,6 +61,11 @@ export function SaleDashboardState(props) {
     const [year, setYear] = useState(0);
     const [model, setModel] = useState(0);
     const [branch, setBranch] = useState(0);
+
+    const [months, setMonths] = useState(initialMonths);
+    const [years, setYears] = useState(initialYears);
+    const [models, setModels] = useState([]);
+    const [branches, setBranches] = useState([]);
 
     const [SalesMonthly, setSalesMonthly] = useState([]);
     const [SalesModel, setSalesModel] = useState([]);
@@ -48,12 +82,24 @@ export function SaleDashboardState(props) {
         setSalesModel(initialSalesModel);
     }
 
+    const getModels = async () => {
+        // const response = await getModels();
+        // setModels(response);
+    }
+
+    const getBranches = async () => {
+        // const response = await getBranches();
+        // setBranches(response);
+    }
+
     return (
         <SaleDashboardContext.Provider value={
             {SalesMonthly,
             getSalesMonthly,
             SalesModel,
-            getSalesModel}}>
+            getSalesModel,
+            months,
+            years}}>
             {props.children}
         </SaleDashboardContext.Provider>
     )

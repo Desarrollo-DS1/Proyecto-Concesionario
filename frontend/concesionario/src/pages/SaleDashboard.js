@@ -3,7 +3,8 @@ import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
-import {Grid, Container, Typography, Stack, TextField, MenuItem, Card} from '@mui/material';
+import {Grid, Container, Typography, Stack, TextField, MenuItem, Card, Button} from '@mui/material';
+import FilterAltIcon from '@mui/icons-material/FilterAlt';
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -24,13 +25,33 @@ import SaleDashboardContext from "../hooks/dashboard/sale/SaleDashboardContext";
 
 // ----------------------------------------------------------------------
 
+const selectMenuProps = {
+    anchorOrigin: {
+        vertical: "bottom",
+        horizontal: "left"
+    },
+    transformOrigin: {
+        vertical: "top",
+        horizontal: "left"
+    },
+    getcontentanchorel: null,
+    PaperProps: {
+        style: {
+            maxHeight: 125 // Establece la altura máxima del menú
+        }
+    }
+};
+
+
 export default function DashboardAppPage() {
     const theme = useTheme();
 
     const {SalesMonthly,
         getSalesMonthly,
         SalesModel,
-        getSalesModel} = useContext(SaleDashboardContext);
+        getSalesModel,
+        months,
+        years} = useContext(SaleDashboardContext);
 
     useEffect(() => {
         getSalesMonthly();
@@ -54,11 +75,11 @@ export default function DashboardAppPage() {
                                     name={"año"}
                                     label={"Año"} variant="outlined"
                                 >
-                                    {/* {genders.map((option) => ( */}
-                                    {/*    <MenuItem key={option.id} value={option.label}> */}
-                                    {/*        {option.label} */}
-                                    {/*    </MenuItem> */}
-                                    {/* ))} */}
+                                     {/* {months.map((option) => ( */}
+                                     {/*   <MenuItem key={option.value} value={option.value}> */}
+                                     {/*       {option.label} */}
+                                     {/*   </MenuItem> */}
+                                     {/* ))} */}
                                 </TextField>
 
                                 <TextField
@@ -66,12 +87,16 @@ export default function DashboardAppPage() {
                                     fullWidth
                                     name={"mes"}
                                     label={"Mes"} variant="outlined"
+
+                                    SelectProps={{
+                                        MenuProps: selectMenuProps
+                                    }}
                                 >
-                                    {/* {genders.map((option) => ( */}
-                                    {/*    <MenuItem key={option.id} value={option.label}> */}
-                                    {/*        {option.label} */}
-                                    {/*    </MenuItem> */}
-                                    {/* ))} */}
+                                     {months.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                     ))}
                                 </TextField>
 
                                 <TextField
@@ -99,6 +124,10 @@ export default function DashboardAppPage() {
                                     {/*    </MenuItem> */}
                                     {/* ))} */}
                                 </TextField>
+
+                                <Button variant="contained" startIcon={<FilterAltIcon/>} sx={{width: "30%"}}>
+                                    Filtrar
+                                </Button>
                             </Stack>
                         </Card>
                     </Grid>
