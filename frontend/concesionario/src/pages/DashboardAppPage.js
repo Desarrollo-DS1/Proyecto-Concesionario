@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {useTranslation} from "react-i18next";
 import { Helmet } from 'react-helmet-async';
 import { faker } from '@faker-js/faker';
 // @mui
@@ -10,13 +11,12 @@ import {Grid, Container, Typography, Box, Tab, Tabs} from '@mui/material';
 import SaleDashboard from "./SaleDashboard";
 import {SaleDashboardState} from "../hooks/dashboard/sale/SaleDashboardState";
 
-
-
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
     const theme = useTheme();
     const [tabIndex, setTabIndex] = useState(0);
+    const { t } = useTranslation("lang");
 
     const handleTabChange = (event, newValue) => {
         setTabIndex(newValue);
@@ -24,14 +24,10 @@ export default function DashboardAppPage() {
 
     return (
         <>
-            <Helmet>
-                <title> Dashboard | Minimal UI </title>
-            </Helmet>
-
             <Container maxWidth="xl">
                 <Tabs value={tabIndex} onChange={handleTabChange}>
-                    <Tab icon={<SellIcon />} label="Ventas" iconPosition="start"/>
-                    <Tab icon={<RequestQuoteIcon />} label="Cotizaciones" iconPosition="start"/>
+                    <Tab icon={<SellIcon />} label={t("general.barraNavegacion.ventas")} iconPosition="start"/>
+                    <Tab icon={<RequestQuoteIcon />} label={t('general.barraNavegacion.cotizaciones')} iconPosition="start"/>
                 </Tabs>
 
                 <Box mt={5} >

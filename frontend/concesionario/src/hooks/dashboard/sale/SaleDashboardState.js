@@ -1,19 +1,14 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
+import {format} from "date-fns";
 import SaleDashboardContext from './SaleDashboardContext';
+
 
 SaleDashboardState.propTypes = {
     children: propTypes.node,
 }
 
-const initialSalesMonthly = [
-    {
-        name: 'Ventas',
-        type: 'column',
-        fill: 'solid',
-        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-    }
-];
+const initialSalesMonthly = [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70];
 
 const initialSalesModel = [
     { label: 'Onix RS', value: 45 },
@@ -24,51 +19,23 @@ const initialSalesModel = [
     { label: 'Cruze', value: 15 },
 ];
 
-const initialMonths = [
-    { label: 'Enero', value: 1 },
-    { label: 'Febrero', value: 2 },
-    { label: 'Marzo', value: 3 },
-    { label: 'Abril', value: 4 },
-    { label: 'Mayo', value: 5 },
-    { label: 'Junio', value: 6 },
-    { label: 'Julio', value: 7 },
-    { label: 'Agosto', value: 8 },
-    { label: 'Septiembre', value: 9 },
-    { label: 'Octubre', value: 10 },
-    { label: 'Noviembre', value: 11 },
-    { label: 'Diciembre', value: 12 },
-];
-
-function generateYears() {
-    const currentYear = new Date().getFullYear();
-    const startYear = 1950;
-    const years = [];
-
-    for (let year = startYear; year <= currentYear; year += year) {
-        years.push({ id: `year-${year}`, year: year.toString() });
-    }
-
-    return years;
-}
-
-const initialYears = generateYears();
-
-
-
 export function SaleDashboardState(props) {
 
-    const [month, setMonth] = useState(0);
-    const [year, setYear] = useState(0);
+    const [month, setMonth] = useState(new Date());
+    const [year, setYear] = useState(new Date());
     const [model, setModel] = useState(0);
     const [branch, setBranch] = useState(0);
 
-    const [months, setMonths] = useState(initialMonths);
-    const [years, setYears] = useState(initialYears);
     const [models, setModels] = useState([]);
     const [branches, setBranches] = useState([]);
 
     const [SalesMonthly, setSalesMonthly] = useState([]);
     const [SalesModel, setSalesModel] = useState([]);
+
+    const [totalAnualSales, setTotalAnualSales] = useState(0);
+    const [totalMonthlySales, setTotalMonthlySales] = useState(0);
+    const [numberOfSalesAnual, setNumberOfSalesAnual] = useState(0);
+    const [numberOfSalesMonthly, setNumberOfSalesMonthly] = useState(0);
 
     const getSalesMonthly = async () => {
         // const response = await getSalesMonthly();
@@ -92,14 +59,32 @@ export function SaleDashboardState(props) {
         // setBranches(response);
     }
 
+    const handleMonthChange = (value) => {
+        setMonth(value);
+    }
+
+    const handleYearChange = (value) => {
+        setYear(value);
+    }
+
+    const handleFilter = () => {
+        // const response = await getSalesMonthly();
+        // setSalesMonthly(response);
+        console.log(format(month, 'MM'));
+        console.log(format(year, 'yyyy'));
+    }
+
     return (
         <SaleDashboardContext.Provider value={
             {SalesMonthly,
             getSalesMonthly,
             SalesModel,
             getSalesModel,
-            months,
-            years}}>
+            month,
+            handleMonthChange,
+            year,
+            handleYearChange,
+            handleFilter}}>
             {props.children}
         </SaleDashboardContext.Provider>
     )

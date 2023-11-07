@@ -6,7 +6,7 @@
       "pt": "Portuguese"
     },
     "barraNavegacion": {
-      "dashBoard": "DashBoard",
+      "dashBoard": "Dashboard",
       "clientes": "Customers",
       "empleados": "Employees",
       "modelos": "Models",
@@ -187,5 +187,20 @@
     "boton": "Login",
     "error": "Email or password incorrect",
     "captcha": "Please accept the captcha"
+  },
+  "dashBoardVenta": {
+    "titulo": "Sales Panel",
+    "ventas": "Sales",
+    "año": "Year",
+    "mes": "Month",
+    "modelo": "Model",
+    "sucursal": "Branch",
+    "filtro": "Filter",
+    "totalVentasAnuales": "Total Annual Sales",
+    "totalVentasMensuales": "Total Monthly Sales",
+    "numeroVentasAnuales": "Number Annual Sales",
+    "numeroVentasMensuales": "Number Monthly Sales",
+    "ventasMensuales": "Monthly Sales",
+    "ventasPorModelo": "Sales by Model"
   }
 }

@@ -4,7 +4,6 @@ import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 import LoadLayout from "./layouts/load/LoadLayout";
 //
-import BlogPage from './pages/BlogPage';
 import CustomerPage from './pages/CustomerPage';
 import {CustomerState} from './hooks/customer/CustomerState';
 import LoginPage from './pages/LoginPage';
@@ -31,8 +30,7 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'clientes', element: <CustomerState><CustomerPage /></CustomerState>},
         { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
-        { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
-        { path: 'blog', element: <BlogPage /> },
+        { path: 'modelos', element: <ModelState><ModelPage /></ModelState> }
       ],
     },
     {element: <LoadLayout />,

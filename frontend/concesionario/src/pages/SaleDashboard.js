@@ -1,10 +1,16 @@
 import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
+import {es, enUS, pt} from "date-fns/locale";
+import {useTranslation} from "react-i18next";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
 import {Grid, Container, Typography, Stack, TextField, MenuItem, Card, Button} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import SellIcon from '@mui/icons-material/Sell';
+import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
+import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
+
 // components
 import Iconify from '../components/iconify';
 // sections
@@ -22,6 +28,7 @@ import {
 
 import AppMonthlySales from '../sections/@dashboard/app/AppMonthlySales';
 import SaleDashboardContext from "../hooks/dashboard/sale/SaleDashboardContext";
+
 
 // ----------------------------------------------------------------------
 
@@ -42,16 +49,34 @@ const selectMenuProps = {
     }
 };
 
+const chooseLanguage = (lang) => {
+    switch (lang) {
+        case "es":
+            return es;
+        case "en":
+            return enUS;
+        case "pt":
+            return pt;
+        default:
+            return "Español";
+    }
+}
 
 export default function DashboardAppPage() {
     const theme = useTheme();
+
+    const { t, i18n } = useTranslation("lang");
+
 
     const {SalesMonthly,
         getSalesMonthly,
         SalesModel,
         getSalesModel,
-        months,
-        years} = useContext(SaleDashboardContext);
+        month,
+        handleMonthChange,
+        year,
+        handleYearChange,
+        handleFilter} = useContext(SaleDashboardContext);
 
     useEffect(() => {
         getSalesMonthly();
@@ -61,49 +86,36 @@ export default function DashboardAppPage() {
     return (
         <>
             <Helmet>
-                <title> Dashboard Ventas </title>
+                <title> {t('dashBoardVenta.titulo')} </title>
             </Helmet>
 
                 <Grid container spacing={3}>
-
                     <Grid item xs={12} sm={12} md={12}>
                         <Card >
                             <Stack direction="row" spacing={2} margin={3}>
-                                <TextField
-                                    select
-                                    fullWidth
-                                    name={"año"}
-                                    label={"Año"} variant="outlined"
-                                >
-                                     {/* {months.map((option) => ( */}
-                                     {/*   <MenuItem key={option.value} value={option.value}> */}
-                                     {/*       {option.label} */}
-                                     {/*   </MenuItem> */}
-                                     {/* ))} */}
-                                </TextField>
 
-                                <TextField
-                                    select
-                                    fullWidth
-                                    name={"mes"}
-                                    label={"Mes"} variant="outlined"
+                                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                    <DatePicker views={["year"]}
+                                                label={t('dashBoardVenta.año')}
+                                                value={year}
+                                                onChange={(newValue) => handleYearChange(newValue)}
+                                                animateYearScrolling
+                                                slotProps={{ textField: { fullWidth: true } }}/>
+                                </LocalizationProvider>
 
-                                    SelectProps={{
-                                        MenuProps: selectMenuProps
-                                    }}
-                                >
-                                     {months.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                     ))}
-                                </TextField>
+                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={chooseLanguage(i18n.language)}>
+                                    <DatePicker views={["month"]}
+                                                label={t('dashBoardVenta.mes')}
+                                                value={month}
+                                                onChange={(newValue) => handleMonthChange(newValue)}
+                                                slotProps={{ textField: { fullWidth: true } }}/>
+                                </LocalizationProvider>
 
                                 <TextField
                                     select
                                     fullWidth
                                     name={"model"}
-                                    label={"Modelo"} variant="outlined"
+                                    label={t('dashBoardVenta.modelo')} variant="outlined"
                                 >
                                     {/* {genders.map((option) => ( */}
                                     {/*    <MenuItem key={option.id} value={option.label}> */}
@@ -116,7 +128,7 @@ export default function DashboardAppPage() {
                                     select
                                     fullWidth
                                     name={"model"}
-                                    label={"Sucursal"} variant="outlined"
+                                    label={t('dashBoardVenta.sucursal')} variant="outlined"
                                 >
                                     {/* {genders.map((option) => ( */}
                                     {/*    <MenuItem key={option.id} value={option.label}> */}
@@ -125,32 +137,32 @@ export default function DashboardAppPage() {
                                     {/* ))} */}
                                 </TextField>
 
-                                <Button variant="contained" startIcon={<FilterAltIcon/>} sx={{width: "30%"}}>
-                                    Filtrar
+                                <Button variant="contained" startIcon={<FilterAltIcon/>} sx={{width: "30%"}} onClick={handleFilter}>
+                                    {t('dashBoardVenta.filtro')}
                                 </Button>
                             </Stack>
                         </Card>
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Total Ventas Anuales" total={714000} icon={'ant-design:android-filled'} />
+                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasAnuales')} total={714000} icon={<AttachMoneyIcon width={24} height={24}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Total Ventas Mensuales" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasMensuales')} total={1352831} icon={<AttachMoneyIcon width={24} height={24}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Numero Ventas Anuales" total={1723315} color="warning" icon={'ant-design:windows-filled'} />
+                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasAnuales')} total={1723315} icon={<SellIcon width={24} height={24}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title="Numero Ventas Mensuales" total={234} color="error" icon={'ant-design:bug-filled'} />
+                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasMensuales')} total={234} icon={<SellIcon width={24} height={24}/>} />
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={8}>
                         <AppMonthlySales
-                            title="Ventas Mensuales"
+                            title={t('dashBoardVenta.ventasMensuales')}
                             subheader=""
                             chartLabels={[
                                 'Ene',
@@ -166,13 +178,18 @@ export default function DashboardAppPage() {
                                 'Nov',
                                 'Dic',
                             ]}
-                            chartData={SalesMonthly}
+                            chartData={[{
+                                name: 'Ventas',
+                                type: 'column',
+                                fill: 'solid',
+                                data: SalesMonthly,
+                            }]}
                         />
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={4}>
                         <AppCurrentVisits
-                            title="Current Visits"
+                            title={t('dashBoardVenta.ventas')}
                             chartData={SalesModel}
                             chartColors={[
                                 theme.palette.primary.main,
