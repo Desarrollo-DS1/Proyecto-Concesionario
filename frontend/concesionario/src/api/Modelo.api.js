@@ -7,3 +7,5 @@ const modeloApi = axios.create({
 export const getAllModelos = () => modeloApi.get('/')
 
 export const createModelo = (modelo) => modeloApi.post('/', modelo)
+
+export const deleteModelo = (id) => modeloApi.delete(`/${id}`)
