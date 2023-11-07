@@ -30,9 +30,6 @@ import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
 import ModelContext from "../hooks/model/ModelContext";
 
-
-
-
 // ----------------------------------------------------------------------
 
 export default function ModelPage() {
@@ -60,14 +57,6 @@ export default function ModelPage() {
     useEffect(() => {
         getModels();
     }, []);
-
-    // useEffect(() => {
-    //     getBodyworks();
-    // }, [bodyworks]);
-    //
-    // useEffect(() => {
-    //     getFuels();
-    // }, [fuels]);
 
     const { t } = useTranslation("lang");
 

@@ -6,7 +6,7 @@
       "pt": "Portugues"
     },
     "barraNavegacion": {
-      "dashBoard": "DashBoard",
+      "dashBoard": "Panel",
       "clientes": "Clientes",
       "empleados": "Empleados",
       "modelos": "Modelos",
@@ -195,5 +195,21 @@
     "boton": "Iniciar Sesión",
     "error": "Email o contraseña incorrectos",
     "captcha": "Por favor acepte el captcha"
+  },
+
+  "dashBoardVenta": {
+    "titulo": "Panel Ventas",
+    "ventas": "Ventas",
+    "año": "Año",
+    "mes": "Mes",
+    "modelo": "Modelo",
+    "sucursal": "Sucursal",
+    "filtro": "Filtrar",
+    "totalVentasAnuales": "Total Ventas Anuales",
+    "totalVentasMensuales": "Total Ventas Mensuales",
+    "numeroVentasAnuales": "Numero Ventas Anuales",
+    "numeroVentasMensuales": "Numero Ventas Mensuales",
+    "ventasMensuales": "Ventas Mensuales",
+    "ventasPorModelo": "Ventas por Modelo"
   }
 }

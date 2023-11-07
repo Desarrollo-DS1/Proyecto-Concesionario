@@ -45,7 +45,7 @@ export default function Page404() {
             4O4
           </Typography>
 
-          <Button to="/" size="large" variant="contained" component={RouterLink}>
+          <Button to="/dashboard" size="large" variant="contained" component={RouterLink}>
             {t('404.boton')}
           </Button>
         </StyledContent>

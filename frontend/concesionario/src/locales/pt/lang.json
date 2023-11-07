@@ -177,5 +177,20 @@
     "boton": "Iniciar Sessão",
     "error": "E-mail ou senha incorretos",
     "captcha": "Por favor, aceite o captcha"
+  },
+  "dashBoardVenta": {
+    "titulo": "Painel de Vendas",
+    "ventas": "Vendas",
+    "año": "Ano",
+    "mes": "Mês",
+    "modelo": "Modelo",
+    "sucursal": "Filial",
+    "filtro": "Filtrar",
+    "totalVentasAnuales": "Total Vendas Anuais",
+    "totalVentasMensuales": "Total Vendas Mensais",
+    "numeroVentasAnuales": "Número Vendas Anuais",
+    "numeroVentasMensuales": "Número Vendas Mensais",
+    "ventasMensuales": "Vendas Mensais",
+    "ventasPorModelo": "Vendas por Modelo"
   }
 }
