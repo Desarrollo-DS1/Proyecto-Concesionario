@@ -6,11 +6,17 @@ class ModeloSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Modelo
-        fields = '__all__'
+        fields = 'nombre', 'año', 'numeroPasajeros', 'precioBase', 'cilindraje', 'potencia', 'combustible', 'carroceria'
     
-    año = serializers.IntegerField(source='anho_modelo')
+    # id = serializers.IntegerField(source='id_modelo')
+    nombre = serializers.CharField(source='nombre_modelo')
+    año = serializers.IntegerField(source='anho')
     numeroPasajeros = serializers.IntegerField(source='numero_pasajeros')
     precioBase = serializers.DecimalField(source='precio_base', max_digits=12, decimal_places=2)
+    cilindraje = serializers.IntegerField()
+    potencia = serializers.IntegerField()
+    combustible = serializers.CharField()
+    carroceria = serializers.CharField()
 
     def validate(self, attrs):
         if(attrs['numero_pasajeros'] < 1):
@@ -20,7 +26,7 @@ class ModeloSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("El precio base no puede ser negativo")	
         
         anho_maximo = now().year + 1
-        if(attrs['anho_modelo'] < 1900 or attrs['anho_modelo'] > anho_maximo):
+        if(attrs['anho'] < 1900 or attrs['anho'] > anho_maximo):
             raise serializers.ValidationError("El año del modelo debe estar entre 1900 y el actual")
         
         if(attrs['cilindraje'] < 0 or attrs['cilindraje'] > 10000):
@@ -33,9 +39,10 @@ class ModeloSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         
-        if(Modelo.objects.filter(nombre = validated_data['nombre']).exists()):
+        if(Modelo.objects.filter(nombre_modelo = validated_data['nombre_modelo']).exists()):
             raise serializers.ValidationError("Ya existe un modelo con ese nombre")
         
         
         return Modelo.objects.create(**validated_data)
+
 
