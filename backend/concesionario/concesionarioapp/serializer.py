@@ -203,10 +203,11 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
+    venta_id = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'extra', 'porcentajeDescuento'
+        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id'
 
     
 
@@ -228,7 +229,7 @@ class VentaSerializer(serializers.ModelSerializer):
         for venta_vehiculo in venta_vehiculo_data:
             try:
                 if not venta_vehiculo['vehiculo'].disponible_para_venta:
-                    raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
+                    raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'].vin)})
                 
                 if not venta.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
                     raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, venta.vendedor.usuario.cedula, venta.vendedor.sucursal)})
