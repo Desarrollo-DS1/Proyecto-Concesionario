@@ -4,6 +4,8 @@ import CUSTOMERLIST from '../../_mock/customer';
 import CustomerContext from './CustomerContext';
 import {checkCustomer} from "./CustomerValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
+import {getAllClientes, getCliente, createCliente, updateCliente, deleteCliente} from "../../api/Cliente.api";
+
 
 CustomerState.propTypes = {
     children: propTypes.node,
@@ -57,7 +59,8 @@ export function CustomerState(props) {
 
     const initialGenders = [
         { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },]
+        { id: '2', label: 'Femenino' },
+        { id: '3', label: 'Otro' }]
 
     const [customer, setCustomer] = React.useState(CustomerEmployee);
     const [customers, setCustomers] = React.useState([]);
@@ -69,9 +72,19 @@ export function CustomerState(props) {
     const [genders, setGenders] = useState(initialGenders);
 
     const getCustomers = () => {
-        // Aqui se aplicaria el axios.get
-        setCustomers(customers);
+            async function loadCustomers() {
+                try{
+                    const response = await getAllClientes();
+                    setCustomers(response.data);
+
+                } catch (error) {
+                    console.error('Error fetching data:', error);
+                }
+            }
+
+            loadCustomers();
     }
+
     const getCustomer = (cedula) => {
         const customer = customers.find(customer => customer.cedula === cedula);
         if(customer)
@@ -85,15 +98,58 @@ export function CustomerState(props) {
             setEdit(false)
         }
     }
+
     const addCustomer = (customer) => {
-        setCustomers([...customers, customer])
+        async function postCustomer() {
+            try{
+                const response = await createCliente(customer);
+                setCustomers([...customers, response.data]);
+                setMessageSnackbar('clientes.mensaje.agregado');
+                setTypeSnackbar('success');
+                handleCloseForm();
+
+            } catch (error) {
+                console.error('Error posting data:', error);
+                setMessageSnackbar('clientes.mensaje.error');
+                setTypeSnackbar('error');
+                setCustomerError({...customerError, cedula: 'cedula ya existe'})
+            }
+        }
+
+        postCustomer();
     }
+
     const updateCustomer = (customer) => {
-        setCustomers(customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+        async function putCustomer() {
+            try{
+                const response = await updateCliente(customer.cedula, customer);
+                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+            
+            } catch (error) {
+                console.error('Error puting data:', error);
+            }
+        }
+        
+        putCustomer();
+        getCustomers();
     }
+
+
     const deleteCustomer = (customer) => {
-        setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+        async function removeCustomer() {
+            try{
+                const response = await deleteCliente(customer.cedula);
+                setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+            
+            } catch (error) {
+                console.error('Error deleting data:', error);
+            }
+        }
+        
+        removeCustomer();
     }
+
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setCustomer({
@@ -101,23 +157,19 @@ export function CustomerState(props) {
             [name]: value
         });
     }
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateCustomerOnSubmit()) {
             if(edit)
             {
                 updateCustomer(customer);
-                setMessageSnackbar('clientes.mensaje.editado');
-                setTypeSnackbar('success');
             }
             else
             {
                 addCustomer(customer);
-                setMessageSnackbar('clientes.mensaje.agregado');
-                setTypeSnackbar('success');
             }
             handleOpenSnackbar();
-            handleCloseForm();
         }
     }
     const handleOnBlur = (event) => {
@@ -139,6 +191,7 @@ export function CustomerState(props) {
         setOpenForm(true)
     };
     const handleCloseForm = () => {
+        setShowPassword(false);
         setOpenForm(false);
     };
     const handleOpenDelete = (event, cedula) => {
@@ -157,6 +210,12 @@ export function CustomerState(props) {
     const handleOpenSnackbar = () => {
         setOpenSnackbar(true);
     }
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const handleTogglePassword = () => {
+        setShowPassword(!showPassword);
+    };
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
@@ -210,13 +269,13 @@ export function CustomerState(props) {
     const validateCustomerOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(customerError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(customer, name);
+            updatedErrors[name] = checkCustomer(customer, name, edit);
         });
         setCustomerError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateCustomerOnBlur = (customer, name) => {
-        setCustomerError({...customerError, [name]: checkCustomer(customer, name)});
+        setCustomerError({...customerError, [name]: checkCustomer(customer, name, edit)});
     };
 
     return (
@@ -256,7 +315,9 @@ export function CustomerState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                customerError}}>
+                customerError,
+                showPassword,
+                handleTogglePassword}}>
             {props.children}
         </CustomerContext.Provider>
     )

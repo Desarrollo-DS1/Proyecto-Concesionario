@@ -28,7 +28,9 @@ const LANGS = [
 
 export default function LanguagePopover() {
 
-  const [icon, setIcon] = useState(LANGS[0].icon);
+  const { t, i18n } = useTranslation("lang");
+
+  const [icon, setIcon] = useState(LANGS.find(lang => lang.value === i18n.language)?.icon || LANGS[0].icon);
   const [open, setOpen] = useState(null);
 
   const handleLanguageChange = (lang, icon) => {
@@ -44,8 +46,6 @@ export default function LanguagePopover() {
   const handleClose = () => {
     setOpen(null);
   };
-
-  const { t, i18n } = useTranslation("lang");
 
   return (
     <>

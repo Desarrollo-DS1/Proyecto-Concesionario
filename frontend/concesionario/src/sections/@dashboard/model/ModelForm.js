@@ -23,7 +23,7 @@ const selectMenuProps = {
         vertical: "top",
         horizontal: "left"
     },
-    getContentAnchorEl: null,
+    getcontentanchorel: null,
     PaperProps: {
         style: {
             maxHeight: 125 // Establece la altura máxima del menú
@@ -205,6 +205,9 @@ export default function ModelForm() {
                           label={t("modelos.label.combustible")} variant="outlined"
                           helperText={t(modelError.combustible)}
                           style={textFieldStyle}
+                          SelectProps={{
+                              MenuProps: selectMenuProps
+                          }}
                       >
                           {fuels.map((option) => (
                               <MenuItem key={option.id} value={option.label}>

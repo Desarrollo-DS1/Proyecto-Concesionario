@@ -39,7 +39,7 @@ function checkPhone(customer) {
     {
         return "errores.numerico";
     }
-    if ((customer.telefono).length !== 7)
+    if ((customer.telefono).length !== 10 && (customer.telefono).length !== 7)
     {
         return "errores.longitudExacta";
     }
@@ -47,7 +47,7 @@ function checkPhone(customer) {
     return "";
 }
 
-function checkPassword(customer) {
+function checkPasswordAdd(customer) {
     if (customer.clave === null || customer.clave.trim() === '') {
         return "errores.requerido";
     }
@@ -75,6 +75,38 @@ function checkPassword(customer) {
     {
         return "errores.contraseña.especial";
     }
+    return "";
+}
+
+function checkPasswordEdit(customer) {
+
+    if (customer.clave !== null && customer.clave.trim() !== '') {
+        if ((customer.clave).length > 50 || (customer.clave).length < 8)
+        {
+            return "errores.longitudMaxMin";
+        }
+        if (!customer.clave.match(/(?=.*[a-z])/))
+        {
+            return "errores.contraseña.minuscula";
+        }
+        if (!customer.clave.match(/(?=.*[A-Z])/))
+        {
+            return "errores.contraseña.mayuscula";
+        }
+        if (!customer.clave.match(/(?=.*[0-9])/))
+        {
+            return "errores.contraseña.numerico";
+        }
+        if (customer.clave.match(/\s/))
+        {
+            return "errores.contraseña.espacio";
+        }
+        if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
+        {
+            return "errores.contraseña.especial";
+        }
+    }
+
     return "";
 }
 
@@ -189,7 +221,7 @@ function checkCedula(customer) {
     {
         return "errores.numerico";
     }
-    if (customer.cedula.length !== 10)
+    if (customer.cedula.length !== 8 && customer.cedula.length !== 9 && customer.cedula.length !== 10)
     {
         return "errores.longitudExacta";
     }
@@ -204,7 +236,7 @@ function checkGender(customer) {
     return "";
 }
 
-export function checkCustomer(customer, name) {
+export function checkCustomer(customer, name, edit) {
     if (name === 'correo') {
         return checkEmail(customer);
     }
@@ -214,8 +246,11 @@ export function checkCustomer(customer, name) {
     if (name === 'telefono') {
         return checkPhone(customer);
     }
-    if (name === 'clave') {
-        return checkPassword(customer);
+    if (name === 'clave' && edit) {
+        return checkPasswordEdit(customer);
+    }
+    if (name === 'clave' && !edit) {
+        return checkPasswordAdd(customer);
     }
     if (name === 'ciudad') {
         return checkCity(customer);

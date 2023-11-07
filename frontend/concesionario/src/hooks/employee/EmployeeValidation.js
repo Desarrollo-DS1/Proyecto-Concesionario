@@ -47,7 +47,7 @@ function checkPhone(customer) {
     return "";
 }
 
-function checkPassword(customer) {
+function checkPasswordAdd(customer) {
     if (customer.clave === null || customer.clave.trim() === '') {
         return "errores.requerido";
     }
@@ -75,6 +75,38 @@ function checkPassword(customer) {
     {
         return "errores.contraseña.especial";
     }
+    return "";
+}
+
+function checkPasswordEdit(customer) {
+
+    if (customer.clave !== null && customer.clave.trim() !== '') {
+        if ((customer.clave).length > 50 || (customer.clave).length < 8)
+        {
+            return "errores.longitudMaxMin";
+        }
+        if (!customer.clave.match(/(?=.*[a-z])/))
+        {
+            return "errores.contraseña.minuscula";
+        }
+        if (!customer.clave.match(/(?=.*[A-Z])/))
+        {
+            return "errores.contraseña.mayuscula";
+        }
+        if (!customer.clave.match(/(?=.*[0-9])/))
+        {
+            return "errores.contraseña.numerico";
+        }
+        if (customer.clave.match(/\s/))
+        {
+            return "errores.contraseña.espacio";
+        }
+        if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
+        {
+            return "errores.contraseña.especial";
+        }
+    }
+
     return "";
 }
 
@@ -189,7 +221,7 @@ function checkCedula(customer) {
     {
         return "errores.numerico";
     }
-    if (customer.cedula.length !== 10)
+    if (customer.cedula.length !== 8 && customer.cedula.length !== 9 && customer.cedula.length !== 10)
     {
         return "errores.longitudExacta";
     }
@@ -205,10 +237,11 @@ function checkGender(customer) {
 }
 
 function checkSalary(employee) {
-    if (employee.salario === null || employee.salario.trim() === '') {
+    const strSalario = employee.salario.toString();
+    if (employee.salario === null || strSalario.trim() === '') {
         return "errores.requerido";
     }
-    if (!employee.salario.match(/^[0-9]+$/))
+    if (!strSalario.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
@@ -277,7 +310,7 @@ function checkRetirementDate(employee) {
     return "";
 }
 
-export function checkEmployee(employee, name) {
+export function checkEmployee(employee, name, edit) {
     if (name === 'correo') {
         return checkEmail(employee);
     }
@@ -287,8 +320,11 @@ export function checkEmployee(employee, name) {
     if (name === 'telefono') {
         return checkPhone(employee);
     }
-    if (name === 'clave') {
-        return checkPassword(employee);
+    if (name === 'clave' && edit) {
+        return checkPasswordEdit(employee);
+    }
+    if (name === 'clave' && !edit) {
+        return checkPasswordAdd(employee);
     }
     if (name === 'ciudad') {
         return checkCity(employee);

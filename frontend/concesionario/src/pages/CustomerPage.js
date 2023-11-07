@@ -59,7 +59,7 @@ export default function CustomerPage() {
 
   useEffect(() => {
     getCustomers();
-  }, [customers, getCustomers]);
+  }, []);
 
   return (
     <>
@@ -90,12 +90,12 @@ export default function CustomerPage() {
                 <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero} = row;
+                    const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={cedula} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
                         </TableCell>
