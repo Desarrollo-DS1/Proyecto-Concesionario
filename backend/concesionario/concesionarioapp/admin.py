@@ -32,9 +32,11 @@ class SucursalAdmin(admin.ModelAdmin):
 
 @admin.register(Modelo)
 class ModeloAdmin(admin.ModelAdmin):
-	atributos_a_mostrar = ('id_modelo', 'nombre_modelo', 'anho', 'carroceria', 'combustible', 'numero_pasajeros', 'precio_base')
+	atributos_a_mostrar = ('id_modelo', 'nombre_modelo', 'anho', 'carroceria', 'combustible', 'numero_pasajeros', 'precio_base', 'potencia', 'cilindraje')
 	list_display = atributos_a_mostrar
-	
+	search_fields = atributos_a_mostrar
+	list_filter = ('carroceria', 'combustible', 'numero_pasajeros',)
+
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
