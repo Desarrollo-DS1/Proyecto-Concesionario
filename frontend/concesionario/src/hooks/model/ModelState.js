@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter"; 
-import {getAllModelos, createModelo} from "../../api/Modelo.api";
+import {getAllModelos, createModelo, deleteModelo} from "../../api/Modelo.api";
 
 ModelState.propTypes = {
     children: propTypes.node,
@@ -125,12 +125,29 @@ export function ModelState(props) {
     const addModel = (model) => {
         async function postModel() {
             try {
-                console.log(model)
+                // console.log(model)
                 const response = await createModelo(model); // Pasa el modelo a la función
-                console.log(response);
+                // console.log(response);
                 setModels([...models, response.data]);
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('modelos.mensaje.agregado');
+                handleOpenSnackbar();
             } catch (error) {
                 console.error('Error creating model:', error);
+                const errors = error.response.data;
+                if(errors.nombre)
+                {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('modelos.mensaje.error.nombre');
+                    handleOpenSnackbar();
+                    setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
+                }
+                else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('modelos.mensaje.error');
+                    handleOpenSnackbar();
+                }
             }
         }
     
@@ -141,7 +158,37 @@ export function ModelState(props) {
         setModels(models.map((item) => (item.id === model.id ? model : item)))
     }
     const deleteModel = (model) => {
-        setModels(models.filter((item) => item.id !== model.id))
+        // setModels(models.filter((item) => item.id !== model.id))
+        async function removeModel() {
+            try {
+                const response = await deleteModelo(model.id);
+                // console.log(response);
+                setModels(models.filter((item) => item.id !== model.id));
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('modelos.mensaje.eliminado');
+                handleOpenSnackbar();
+                
+                getModels();
+                
+            } catch (error) {
+                console.error('Error deleting model:', error);
+                const errors = error.response.data;
+
+                if(errors.protected)
+                {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar(errors.protected);
+                    handleOpenSnackbar();
+                }   
+                else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('modelos.mensaje.errorEliminar');
+                    handleOpenSnackbar();
+                }
+            }
+        }
+        removeModel();
     }
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -162,10 +209,11 @@ export function ModelState(props) {
             else
             {
                 addModel(model);
-                setMessageSnackbar('modelos.mensaje.agregado');
-                setTypeSnackbar('success');
+                // setMessageSnackbar('modelos.mensaje.agregado');
+                // setTypeSnackbar('success');
             }
-            handleOpenSnackbar();
+            // handleOpenSnackbar();
+            getModels();
             handleCloseForm();
         }
     }
@@ -176,9 +224,9 @@ export function ModelState(props) {
     const handleDelete = (event) => {
         event.preventDefault();
         deleteModel(model);
-        setMessageSnackbar('modelos.mensaje.eliminado');
-        setTypeSnackbar('success');
-        handleOpenSnackbar();
+        // setMessageSnackbar('modelos.mensaje.eliminado');
+        // setTypeSnackbar('success');
+        // handleOpenSnackbar();
         handleCloseDelete();
     }
     const handleOpenForm = (event, cedula) => {

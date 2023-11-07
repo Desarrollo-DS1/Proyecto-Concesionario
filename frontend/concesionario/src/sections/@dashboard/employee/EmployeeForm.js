@@ -181,7 +181,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.cedula")} variant="outlined"
-                          helperText={t(employeeError.cedula, {exacto: 10})}
+                          helperText={t(employeeError.cedula, {minimo: '8', maximo: '10'})}
                           style={textFieldStyle}
                           disabled={edit}
                       />
@@ -196,7 +196,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.telefono")} variant="outlined"
-                          helperText={t(employeeError.telefono, {exacto: 7})}
+                          helperText={t(employeeError.telefono, {minimo: '7', maximo: '10'})}
                           style={textFieldStyle}
                       />
                   </Grid>
