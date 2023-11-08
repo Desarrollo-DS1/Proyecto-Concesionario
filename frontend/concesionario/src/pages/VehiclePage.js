@@ -25,7 +25,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import ModelForm from "../sections/@dashboard/model/ModelForm";
+import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
 import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
 import VehicleContext from "../hooks/vehicle/VehicleContext";
@@ -71,10 +71,12 @@ export default function VehiclePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('vehiculos.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                         {t('vehiculos.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
+
+                <VehicleForm />
 
                 <Card>
                     <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')}/>
