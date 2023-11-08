@@ -6,7 +6,7 @@
       "pt": "Portuguese"
     },
     "barraNavegacion": {
-      "dashBoard": "DashBoard",
+      "dashBoard": "Dashboard",
       "clientes": "Customers",
       "empleados": "Employees",
       "modelos": "Models",
@@ -118,6 +118,7 @@
       "salario": "Salary",
       "cargo": "Position",
       "tipoSangre": "Blood T.",
+      "sucursal": "Branch",
       "undefined" : ""
     }
   },
@@ -153,7 +154,34 @@
       "undefined" : ""
     }
   },
-
+  "vehiculos": {
+    "encabezado": {
+      "tituloPlural": "Vehicles",
+      "tituloSingular": "Vehicle",
+      "agregar": "Add Vehicle",
+      "eliminar": "Delete Vehicle",
+      "editar": "Edit Vehicle"
+    },
+    "mensaje": {
+      "agregado": "Vehicle added successfully",
+      "editado": "Vehicle edited successfully",
+      "eliminado": "Vehicle deleted successfully",
+      "error": "Error adding vehicle",
+      "errorEditar": "Error editing vehicle",
+      "errorEliminar": "Error deleting vehicle",
+      "confirmacionEliminar": "Are you sure you want to delete the vehicle with VIN {{vin}}?",
+      "errorVin": "Error adding vehicle, VIN already exists",
+      "errorListando": "Error listing vehicles",
+      "errorCargando": "Error loading vehicle"
+    },
+    "label": {
+      "vin": "VIN",
+      "modelo": "Model",
+      "sucursal": "Branch",
+      "color": "Color",
+      "undefined" : ""
+    }
+  },
   "errores": {
     "requerido": "Required field",
     "numerico": "Only numbers are allowed",
@@ -164,6 +192,7 @@
     "longitudExacta": "Must have {{exacto}} characters",
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
+    "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",
@@ -187,5 +216,20 @@
     "boton": "Login",
     "error": "Email or password incorrect",
     "captcha": "Please accept the captcha"
+  },
+  "dashBoardVenta": {
+    "titulo": "Sales Panel",
+    "ventas": "Sales",
+    "año": "Year",
+    "mes": "Month",
+    "modelo": "Model",
+    "sucursal": "Branch",
+    "filtro": "Filter",
+    "totalVentasAnuales": "Total Annual Sales",
+    "totalVentasMensuales": "Total Monthly Sales",
+    "numeroVentasAnuales": "Number Annual Sales",
+    "numeroVentasMensuales": "Number Monthly Sales",
+    "ventasMensuales": "Monthly Sales",
+    "ventasPorModelo": "Sales by Model"
   }
 }

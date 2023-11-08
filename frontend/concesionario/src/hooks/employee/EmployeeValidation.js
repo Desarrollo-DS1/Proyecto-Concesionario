@@ -1,12 +1,12 @@
-function checkEmail(customer){
-    if (customer.correo === null || customer.correo === '') {
+function checkEmail(employee){
+    if (employee.correo === null || employee.correo === '') {
         return "errores.requerido";
     }
-    if (customer.correo.length > 320 || customer.correo.length < 6)
+    if (employee.correo.length > 320 || employee.correo.length < 6)
     {
         return "errores.longitudMaxMin";
     }
-    if (!customer.correo.match(
+    if (!employee.correo.match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     ))
     {
@@ -16,92 +16,91 @@ function checkEmail(customer){
     return "";
 }
 
-function checkCellphone(customer) {
-    if (customer.celular === null || customer.celular.trim() === '') {
+function checkCellphone(employee) {
+    if (employee.celular === null || employee.celular.trim() === '') {
         return "errores.requerido";
     }
-    if ((customer.celular).length !== 10)
+    if ((employee.celular).length !== 10)
     {
         return "errores.longitudExacta";
     }
-    if (!customer.celular.match(/^[0-9]+$/))
+    if (!employee.celular.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
     return "";
 }
 
-function checkPhone(customer) {
-    if (customer.telefono === null || customer.telefono.trim() === '') {
+function checkPhone(employee) {
+    if (employee.telefono === null || employee.telefono.trim() === '') {
         return "errores.requerido";
     }
-    if (!customer.telefono.match(/^[0-9]+$/))
+    if (!employee.telefono.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if ((customer.telefono).length !== 7)
-    {
-        return "errores.longitudExacta";
-    }
-
-    return "";
-}
-
-function checkPasswordAdd(customer) {
-    if (customer.clave === null || customer.clave.trim() === '') {
-        return "errores.requerido";
-    }
-    if ((customer.clave).length > 50 || (customer.clave).length < 8)
+    if ((employee.telefono).length < 7 || (employee.telefono).length > 10)
     {
         return "errores.longitudMaxMin";
     }
-    if (!customer.clave.match(/(?=.*[a-z])/))
+
+    return "";
+}
+
+function checkPasswordAdd(employee) {
+    if (employee.clave === null || employee.clave.trim() === '') {
+        return "errores.requerido";
+    }
+    if ((employee.clave).length > 50 || (employee.clave).length < 8)
+    {
+        return "errores.longitudMaxMin";
+    }
+    if (!employee.clave.match(/(?=.*[a-z])/))
     {
         return "errores.contraseña.minuscula";
     }
-    if (!customer.clave.match(/(?=.*[A-Z])/))
+    if (!employee.clave.match(/(?=.*[A-Z])/))
     {
         return "errores.contraseña.mayuscula";
     }
-    if (!customer.clave.match(/(?=.*[0-9])/))
+    if (!employee.clave.match(/(?=.*[0-9])/))
     {
         return "errores.contraseña.numerico";
     }
-    if (customer.clave.match(/\s/))
+    if (employee.clave.match(/\s/))
     {
         return "errores.contraseña.espacio";
     }
-    if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
+    if (!employee.clave.match(/(?=.*[!@#$%^&*])/))
     {
         return "errores.contraseña.especial";
     }
     return "";
 }
 
-function checkPasswordEdit(customer) {
-
-    if (customer.clave !== null && customer.clave.trim() !== '') {
-        if ((customer.clave).length > 50 || (customer.clave).length < 8)
+function checkPasswordEdit(employee) {
+    if (employee.clave !== null && employee.clave.trim() !== '') {
+        if ((employee.clave).length > 50 || (employee.clave).length < 8)
         {
             return "errores.longitudMaxMin";
         }
-        if (!customer.clave.match(/(?=.*[a-z])/))
+        if (!employee.clave.match(/(?=.*[a-z])/))
         {
             return "errores.contraseña.minuscula";
         }
-        if (!customer.clave.match(/(?=.*[A-Z])/))
+        if (!employee.clave.match(/(?=.*[A-Z])/))
         {
             return "errores.contraseña.mayuscula";
         }
-        if (!customer.clave.match(/(?=.*[0-9])/))
+        if (!employee.clave.match(/(?=.*[0-9])/))
         {
             return "errores.contraseña.numerico";
         }
-        if (customer.clave.match(/\s/))
+        if (employee.clave.match(/\s/))
         {
             return "errores.contraseña.espacio";
         }
-        if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
+        if (!employee.clave.match(/(?=.*[!@#$%^&*])/))
         {
             return "errores.contraseña.especial";
         }
@@ -110,50 +109,50 @@ function checkPasswordEdit(customer) {
     return "";
 }
 
-function checkCity(customer) {
-    if (customer.ciudad === null || customer.ciudad === '') {
+function checkCity(employee) {
+    if (employee.ciudad === null || employee.ciudad === '') {
         return "errores.requerido";
     }
-    if ((customer.ciudad).length > 50)
+    if ((employee.ciudad).length > 50)
     {
         return "errores.longitudMax";
     }
     return "";
 }
 
-function checkAddress(customer) {
-    if (customer.direccion === null || customer.direccion === '') {
+function checkAddress(employee) {
+    if (employee.direccion === null || employee.direccion === '') {
         return "errores.requerido";
     }
-    if ((customer.direccion).length > 50 || (customer.direccion).length < 5)
+    if ((employee.direccion).length > 50 || (employee.direccion).length < 5)
     {
         return "errores.longitudMaxMin";
     }
     return "";
 }
 
-function checkFirstName(customer) {
-    if (customer.primerNombre === null || customer.primerNombre.trim() === '') {
+function checkFirstName(employee) {
+    if (employee.primerNombre === null || employee.primerNombre.trim() === '') {
         return "errores.requerido";
     }
-    if (customer.primerNombre.length > 50 || customer.primerNombre.length < 2)
+    if (employee.primerNombre.length > 50 || employee.primerNombre.length < 2)
     {
         return "errores.longitudMaxMin";
     }
-    if (!customer.primerNombre.match(/^[a-zA-Z]+$/))
+    if (!employee.primerNombre.match(/^[a-zA-Z]+$/))
     {
         return "errores.alfabetico";
     }
     return "";
 }
 
-function checkSecondName(customer) {
-    if (customer.segundoNombre.trim() !== '') {
-        if (customer.segundoNombre.length > 50 || customer.segundoNombre.length < 2)
+function checkSecondName(employee) {
+    if (employee.segundoNombre.trim() !== '') {
+        if (employee.segundoNombre.length > 50 || employee.segundoNombre.length < 2)
         {
             return "errores.longitudMaxMin";
         }
-        if (!customer.segundoNombre.match(/^[a-zA-Z]+$/))
+        if (!employee.segundoNombre.match(/^[a-zA-Z]+$/))
         {
             return "errores.alfabetico";
         }
@@ -161,28 +160,28 @@ function checkSecondName(customer) {
     return "";
 }
 
-function checkFirstLastName(customer) {
-    if (customer.primerApellido === null || customer.primerApellido.trim() === '') {
+function checkFirstLastName(employee) {
+    if (employee.primerApellido === null || employee.primerApellido.trim() === '') {
         return "errores.requerido";
     }
-    if (customer.primerApellido.length > 50 || customer.primerApellido.length < 2)
+    if (employee.primerApellido.length > 50 || employee.primerApellido.length < 2)
     {
         return "errores.longitudMaxMin";
     }
-    if (!customer.primerApellido.match(/^[a-zA-Z]+$/))
+    if (!employee.primerApellido.match(/^[a-zA-Z]+$/))
     {
         return "errores.alfabetico";
     }
     return "";
 }
 
-function checkSecondLastName(customer) {
-    if (customer.segundoApellido.trim() !== '') {
-        if (customer.segundoApellido.length > 50 || customer.segundoApellido.length < 2)
+function checkSecondLastName(employee) {
+    if (employee.segundoApellido.trim() !== '') {
+        if (employee.segundoApellido.length > 50 || employee.segundoApellido.length < 2)
         {
             return "errores.longitudMaxMin";
         }
-        if (!customer.segundoApellido.match(/^[a-zA-Z]+$/))
+        if (!employee.segundoApellido.match(/^[a-zA-Z]+$/))
         {
             return "errores.alfabetico";
         }
@@ -190,13 +189,13 @@ function checkSecondLastName(customer) {
     return "";
 }
 
-function checkBornDate(customer) {
+function checkBornDate(employee) {
 
-    if (customer.fechaNacimiento === null || customer.fechaNacimiento.trim() === '') {
+    if (employee.fechaNacimiento === null || employee.fechaNacimiento.trim() === '') {
         return "errores.requerido";
     }
     const fechaActual = new Date();
-    const fechaNac = new Date(customer.fechaNacimiento);
+    const fechaNac = new Date(employee.fechaNacimiento);
     if (fechaNac > fechaActual)
     {
         return "errores.fecha";
@@ -212,25 +211,25 @@ function checkBornDate(customer) {
     return "";
 }
 
-function checkCedula(customer) {
+function checkCedula(employee) {
 
-    if (customer.cedula === null || toString(customer.cedula).trim() === '') {
+    if (employee.cedula === null || toString(employee.cedula).trim() === '') {
         return "errores.requerido";
     }
-    if (!customer.cedula.match(/^[0-9]+$/))
+    if (!employee.cedula.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (customer.cedula.length !== 8 && customer.cedula.length !== 9 && customer.cedula.length !== 10)
+    if (employee.cedula.length > 10 || employee.cedula.length < 8)
     {
-        return "errores.longitudExacta";
+        return "errores.longitudMaxMin";
     }
 
     return "";
 }
 
-function checkGender(customer) {
-    if (customer.genero === null || customer.genero === '') {
+function checkGender(employee) {
+    if (employee.genero === null || employee.genero === '') {
         return "errores.requerido";
     }
     return "";
@@ -310,6 +309,13 @@ function checkRetirementDate(employee) {
     return "";
 }
 
+function checkBranch(employee) {
+    if (employee.sucursal === null || employee.sucursal === '') {
+        return "errores.requerido";
+    }
+    return "";
+}
+
 export function checkEmployee(employee, name, edit) {
     if (name === 'correo') {
         return checkEmail(employee);
@@ -373,6 +379,9 @@ export function checkEmployee(employee, name, edit) {
     }
     if (name === 'fechaRetiro') {
         return checkRetirementDate(employee);
+    }
+    if (name === 'sucursal') {
+        return checkBranch(employee);
     }
 
     return "";

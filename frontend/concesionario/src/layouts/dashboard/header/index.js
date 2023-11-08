@@ -10,7 +10,6 @@ import Iconify from '../../../components/iconify';
 import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
-import NotificationsPopover from './NotificationsPopover';
 import ModeViewSwitch from "./ModeViewSwitch";
 
 // ----------------------------------------------------------------------
@@ -71,7 +70,6 @@ export default function Header({ onOpenNav }) {
         >
           <ModeViewSwitch />
           <LanguagePopover />
-          <NotificationsPopover />
           <AccountPopover />
         </Stack>
       </StyledToolbar>

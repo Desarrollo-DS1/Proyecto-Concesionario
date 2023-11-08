@@ -18,7 +18,7 @@ import {
     TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
-import {Alert} from "@mui/lab";
+import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Iconify from '../components/iconify';
@@ -87,7 +87,7 @@ export default function EmployeePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('empleados.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                         {t('empleados.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
@@ -109,7 +109,7 @@ export default function EmployeePage() {
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 
                                         return (
-                                            <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                                            <TableRow hover key={cedula} tabIndex={-1} role="checkbox" selected={selectedUser}>
                                                 <TableCell padding="checkbox">
                                                     <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
                                                 </TableCell>
@@ -136,7 +136,7 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">{cargo}</TableCell>
 
-                                                <TableCell align="right">
+                                                <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
                                                         <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                                                             <EditIcon />

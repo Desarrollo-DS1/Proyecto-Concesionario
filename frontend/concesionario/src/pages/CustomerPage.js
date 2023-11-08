@@ -21,7 +21,7 @@ import {useTranslation} from "react-i18next";
 // components
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Alert} from "@mui/lab";
+import Alert from '@mui/material/Alert';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -72,7 +72,7 @@ export default function CustomerPage() {
           <Typography variant="h4" gutterBottom>
             {t('clientes.encabezado.tituloPlural')}
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
             {t('clientes.encabezado.tituloSingular')}
           </Button>
         </Stack>
@@ -118,7 +118,7 @@ export default function CustomerPage() {
 
                         <TableCell align="left">{genero}</TableCell>
 
-                        <TableCell align="right">
+                        <TableCell align="center" width={"5%"}>
                           <div style={{ display: 'flex' }}>
                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />

@@ -17,14 +17,25 @@ class ClienteView(viewsets.ModelViewSet):
 
     def destroy(self, request, *args, **kwargs):
         cliente = self.get_object()
-
-        if cliente.usuario.is_superuser:
-            return Response({'detail': 'No se puede eliminar un usuario administrador'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            cliente.usuario.delete()
         
-        self.perform_destroy(cliente)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        try:
+            cliente.usuario.delete()
+            self.perform_destroy(cliente)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protected_objects = list(e.protected_objects)
+
+            if protected_objects:
+                first_protected_object = protected_objects[0]
+                table_name = first_protected_object._meta.verbose_name
+            else: 
+                table_name = ''
+
+            raise serializers.ValidationError({'protected': f'No se puede eliminar el cliente porque está referenciado en la tabla {table_name}.'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': str(e)})
     
 
 class EmpleadoView(viewsets.ModelViewSet):
@@ -34,13 +45,30 @@ class EmpleadoView(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         empleado = self.get_object()
 
-        if empleado.usuario.is_superuser:
-            return Response({'detail': 'No se puede eliminar un usuario administrador'}, status=status.HTTP_400_BAD_REQUEST)
-        else:
+
+        try:
             empleado.usuario.delete()
+            self.perform_destroy(empleado)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         
-        self.perform_destroy(empleado)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        except ProtectedError as e:
+            protected_objects = list(e.protected_objects)
+
+            if protected_objects:
+                first_protected_object = protected_objects[0]
+                table_name = first_protected_object._meta.verbose_name
+            else: 
+                table_name = ''
+
+            raise serializers.ValidationError({'protected': f'No se puede eliminar el empleado porque está referenciado en la tabla {table_name}.'})
+    
+        except Exception as e:
+            raise serializers.ValidationError({'error': str(e)})
+        
+
+class SucursalView(viewsets.ModelViewSet):
+    serializer_class = SucursalSerializer
+    queryset = Sucursal.objects.all()
 
 
 class ModelView(viewsets.ModelViewSet):

@@ -45,6 +45,8 @@
     "@mui/icons-material": "^5.14.12",
     "@mui/lab": "^5.0.0-alpha.103",
     "@mui/material": "^5.11.10",
+    "@mui/x-data-grid": "^6.18.0",
+    "@mui/x-date-pickers": "^6.18.0",
     "apexcharts": "^3.37.0",
     "axios": "^1.6.0",
     "change-case": "^4.1.2",

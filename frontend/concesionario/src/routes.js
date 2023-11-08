@@ -4,7 +4,6 @@ import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
 import LoadLayout from "./layouts/load/LoadLayout";
 //
-import BlogPage from './pages/BlogPage';
 import CustomerPage from './pages/CustomerPage';
 import {CustomerState} from './hooks/customer/CustomerState';
 import LoginPage from './pages/LoginPage';
@@ -14,6 +13,8 @@ import {EmployeeState} from "./hooks/employee/EmployeeState";
 import EmployeePage from "./pages/EmployeePage";
 import {ModelState} from "./hooks/model/ModelState";
 import ModelPage from "./pages/ModelPage";
+import {VehicleState} from "./hooks/vehicle/VehicleState";
+import VehiclePage from "./pages/VehiclePage";
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function Router() {
         { path: 'clientes', element: <CustomerState><CustomerPage /></CustomerState>},
         { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
         { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
-        { path: 'blog', element: <BlogPage /> },
+        { path: 'vehiculos', element: <VehicleState><VehiclePage /></VehicleState>}
       ],
     },
     {element: <LoadLayout />,

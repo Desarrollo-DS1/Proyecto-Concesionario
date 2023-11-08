@@ -25,21 +25,21 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import ModelForm from "../sections/@dashboard/model/ModelForm";
-import ModelDelete from "../sections/@dashboard/model/ModelDelete";
+import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
+import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
-import ModelContext from "../hooks/model/ModelContext";
+import VehicleContext from "../hooks/vehicle/VehicleContext";
 
 // ----------------------------------------------------------------------
 
-export default function ModelPage() {
+export default function VehiclePage() {
 
     const {
-        models,
+        vehicles,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
-        getModels,
+        getVehicles,
         handleOpenForm,
         handleOpenDelete,
         handleCloseSnackbar,
@@ -50,12 +50,12 @@ export default function ModelPage() {
         handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        filteredModels,
+        filteredVehicles,
         emptyRows,
-        isNotFound} = useContext(ModelContext);
+        isNotFound} = useContext(VehicleContext);
 
     useEffect(() => {
-        getModels();
+        // getVehicles();
     }, []);
 
     const { t } = useTranslation("lang");
@@ -63,63 +63,55 @@ export default function ModelPage() {
     return (
         <>
             <Helmet>
-                <title>{t('modelos.encabezado.tituloPlural')}</title>
+                <title>{t('vehiculos.encabezado.tituloPlural')}</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        {t('modelos.encabezado.tituloPlural')}
+                        {t('vehiculos.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
-                        {t('modelos.encabezado.tituloSingular')}
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                        {t('vehiculos.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
 
-                <ModelForm />
+                <VehicleForm />
 
-                <ModelDelete />
+                <VehicleDelete />
 
                 <Card>
-                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')}/>
+                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={ModelContext} name={'modelos'}/>
+                                <ListHead context={VehicleContext} name={'vehiculos'}/>
                                 <TableBody>
-                                    {filteredModels.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, nombre, año, carroceria, cilindraje, potencia, combustible, numeroPasajeros, precioBase} = row;
-                                        const selectedUser = selected.indexOf(nombre) !== -1;
+                                    {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const { vin, modelo, sucursal, color} = row;
+                                        const selectedVehicle = selected.indexOf(vin) !== -1;
 
                                         return (
-                                            <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                                            <TableRow hover key={vin} tabIndex={-1} role="checkbox" selected={selectedVehicle}>
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
+                                                    <Checkbox checked={selectedVehicle} onChanfge={(event) => handleClick(event, vin)} />
                                                 </TableCell>
 
-                                                <TableCell align="left">{nombre}</TableCell>
+                                                <TableCell align="left">{vin}</TableCell>
 
-                                                <TableCell align="left">{año}</TableCell>
+                                                <TableCell align="left">{modelo}</TableCell>
 
-                                                <TableCell align="left">{carroceria}</TableCell>
+                                                <TableCell align="left">{sucursal}</TableCell>
 
-                                                <TableCell align="left">{cilindraje}</TableCell>
-
-                                                <TableCell align="left">{potencia}</TableCell>
-
-                                                <TableCell align="left">{combustible}</TableCell>
-
-                                                <TableCell align="left">{numeroPasajeros}</TableCell>
-
-                                                <TableCell align="left">{precioBase}</TableCell>
+                                                <TableCell align="left">{color}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
                                                             <EditIcon />
                                                         </IconButton>
 
-                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, id)}>
+                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>
@@ -130,7 +122,7 @@ export default function ModelPage() {
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={9} />
+                                            <TableCell colSpan={5} />
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -138,7 +130,7 @@ export default function ModelPage() {
                                 {isNotFound && (
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell align="center" colSpan={9} sx={{ py: 3 }}>
+                                            <TableCell align="center" colSpan={5} sx={{ py: 3 }}>
                                                 <Paper
                                                     sx={{
                                                         textAlign: 'center',
@@ -165,7 +157,7 @@ export default function ModelPage() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={models.length}
+                        count={vehicles.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

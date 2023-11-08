@@ -63,6 +63,7 @@ export default function EmployeeForm() {
         arls,
         positions,
         genders,
+        branches,
         openForm,
         handleInputChange,
         handleOnBlur,
@@ -181,7 +182,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.cedula")} variant="outlined"
-                          helperText={t(employeeError.cedula, {exacto: 10})}
+                          helperText={t(employeeError.cedula, {minimo: '8', maximo: '10'})}
                           style={textFieldStyle}
                           disabled={edit}
                       />
@@ -196,7 +197,7 @@ export default function EmployeeForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.telefono")} variant="outlined"
-                          helperText={t(employeeError.telefono, {exacto: 7})}
+                          helperText={t(employeeError.telefono, {minimo: '7', maximo: '10'})}
                           style={textFieldStyle}
                       />
                   </Grid>
@@ -302,7 +303,7 @@ export default function EmployeeForm() {
                           fullWidth
                           type={"date"}
                           name={"fechaRetiro"}
-                          value={employee.fechaRetiro}
+                          value={employee.fechaRetiro !== null ? employee.fechaRetiro : ''}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.fechaRetiro")} variant="outlined"
@@ -348,7 +349,7 @@ export default function EmployeeForm() {
                           InputProps={inputProps}
                       />
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={2}>
                       <TextField
                           error={employeeError.eps !== ''}
                           select
@@ -372,7 +373,7 @@ export default function EmployeeForm() {
                             ))}
                       </TextField>
                   </Grid>
-                  <Grid item xs={12} sm={4}>
+                  <Grid item xs={12} sm={2}>
                       <TextField
                           error={employeeError.arl !== ''}
                           select
@@ -394,6 +395,33 @@ export default function EmployeeForm() {
                                     {option.label}
                               </MenuItem>
                           ))}
+                      </TextField>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                      <TextField
+                          error={employeeError.sucursal !== ''}
+                          select
+                          fullWidth
+                          required
+                          name={"sucursal"}
+                          value={employee.sucursal}
+                          onChange={handleInputChange}
+                          onBlur={handleOnBlur}
+                          label={t("empleados.label.sucursal")} variant="outlined"
+                          helperText={t(employeeError.sucursal)}
+                          style={textFieldStyle}
+                          SelectProps={{
+                              MenuProps: selectMenuProps
+                          }}
+                      >
+                          {branches.map((option) => {
+                            const { sucursal, nombreSucursal } = option;
+                            return ( 
+
+                              <MenuItem key={sucursal} value={sucursal}>
+                                  {nombreSucursal}
+                              </MenuItem>
+                          ); })}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={4}>

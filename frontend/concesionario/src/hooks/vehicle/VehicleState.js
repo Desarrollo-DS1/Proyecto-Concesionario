@@ -1,130 +1,48 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
-import EmployeeContext from './EmployeeContext';
-import {checkEmployee} from "./EmployeeValidation";
+import VehicleContext from './VehicleContext';
+import {checkVehicle} from "./VehicleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
 import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
 
 
-EmployeeState.propTypes = {
+VehicleState.propTypes = {
     children: propTypes.node,
 }
 
-export function EmployeeState(props) {
+export function VehicleState(props) {
 
     const TABLE_HEAD = [
-        { id: 'cedula', label: 'cedula', alignRight: false },
-        { id: 'primerNombre', label: 'nombre', alignRight: false },
-        { id: 'correo', label: 'correo', alignRight: false },
-        { id: 'telefono', label: 'telefono', alignRight: false },
-        { id: 'celular', label: 'celular', alignRight: false },
-        { id: 'direccion', label: 'direccion', alignRight: false },
-        { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaIngreso', label: 'fechaIngreso', alignRight: false },
-        { id: 'fechaRetiro', label: 'fechaRetiro', alignRight: false },
-        { id: 'salario', label: 'salario', alignRight: false },
-        { id: 'cargo', label: 'cargo', alignRight: false },
+        { id: 'vin', label: 'vin', alignRight: false },
+        { id: 'modelo', label: 'modelo', alignRight: false },
+        { id: 'sucursal', label: 'sucursal', alignRight: false },
+        { id: 'color', label: 'color', alignRight: false },
         { id: '' },
     ];
 
-    const emptyEmployee = {
-        primerNombre: "",
-        segundoNombre: "",
-        primerApellido: "",
-        segundoApellido: "",
-        cedula: "",
-        telefono: "",
-        celular: "",
-        ciudad: "",
-        direccion: "",
-        fechaNacimiento: "",
-        genero: "",
-        correo: "",
-        clave: "",
-        fechaIngreso: "",
-        fechaRetiro: "",
-        salario: "",
-        tipoSangre: "",
-        eps: "",
-        arl: "",
-        cargo: "",
+    const emptyVehicle = {
+        vin: "",
+        modelo: "",
         sucursal: "",
+        color: "",
     }
     const emptyError = {
-        primerNombre: '',
-        segundoNombre: '',
-        primerApellido: '',
-        segundoApellido: '',
-        cedula: '',
-        telefono: '',
-        celular: '',
-        ciudad: '',
-        direccion: '',
-        fechaNacimiento: '',
-        genero: '',
-        correo: '',
-        clave: '',
-        fechaIngreso: "",
-        fechaRetiro: "",
-        salario: "",
-        tipoSangre: "",
-        eps: "",
-        arl: "",
-        cargo: "",
+        vin: "",
+        modelo: "",
         sucursal: "",
+        color: "",
     }
 
-    const initialBloodTypes = [
-        { id: '1', label: 'A+' },
-        { id: '2', label: 'A-' },
-        { id: '3', label: 'B+' },
-        { id: '4', label: 'B-' },
-        { id: '5', label: 'AB+' },
-        { id: '6', label: 'AB-' },
-        { id: '7', label: 'O+' },
-        { id: '8', label: 'O-' },]
-
-    const initialEpss = [
-        { id: '1', label: 'Sura' },
-        { id: '2', label: 'Sanitas' },
-        { id: '3', label: 'Coomeva' },
-        { id: '4', label: 'Compensar' },
-        { id: '5', label: 'Salud Total' },
-        { id: '6', label: 'Nueva EPS' },
-        { id: '7', label: 'Medimas' },
-        { id: '8', label: 'Aliansalud' },
-        { id: '9', label: 'Cafesalud' },
-        { id: '10', label: 'Famisanar' },
-        {id: '11', label: 'Cafam'},
-        {id: '12', label: 'Comfenalco'}]
-
-    const initialArls = [
-        { id: '1', label: 'Sura' },
-        { id: '2', label: 'Colmena'}]
-
-    const initialPositions = [
-        { id: '1', label: 'Vendedor' },
-        { id: '2', label: 'Jefe de Taller' },
-        {id: '3', label: 'Gerente'}]
-
-    const initialGenders = [
-        { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },
-        { id: '3', label: 'Otro' }]
-
-    const [employee, setEmployee] = React.useState(emptyEmployee);
-    const [employees, setEmployees] = React.useState([]);
+    const [vehicle, setVehicle] = React.useState(emptyVehicle);
+    const [vehicles, setVehicles] = React.useState([{vin: "1", modelo: "Adui", sucursal: "Norte", color: "Rojo"}]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [bloodTypes, setBloodTypes] = useState(initialBloodTypes);
-    const [epss, setEpss] = useState(initialEpss);
-    const [arls, setArls] = useState(initialArls);
-    const [positions, setPositions] = useState(initialPositions);
-    const [genders, setGenders] = useState(initialGenders);
+    const [models, setModels] = useState([]);
+    const [colors, setColors] = useState([]);
     const [branches, setBranches] = useState([]);
 
 
@@ -144,11 +62,11 @@ export function EmployeeState(props) {
         loadBranches();
     }
 
-    const getEmployees = () => {
+    const getVehicles = () => {
         async function loadEmployees() {
             try{
                 const response = await getAllEmpleados();
-                setEmployees(response.data);
+                setVehicles(response.data);
 
             } catch (error) {
                 setTypeSnackbar('error');
@@ -160,12 +78,12 @@ export function EmployeeState(props) {
         loadEmployees();        
     }
 
-    const getEmployee = (cedula) => {
+    const getVehicle = (vin) => {
         async function loadEmployee() {
             try{
-                const response = await getEmpleado(cedula);
+                const response = await getEmpleado(vin);
                 const employeeDataWithClave = { ...response.data, clave: '' };
-                setEmployee(employeeDataWithClave);
+                setVehicle(employeeDataWithClave);
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCargando');
@@ -173,8 +91,8 @@ export function EmployeeState(props) {
             }
         }
 
-        if (cedula === null) {
-            setEmployee(emptyEmployee);
+        if (vin === null) {
+            setVehicle(emptyVehicle);
             setEdit(false);
 
         } else {
@@ -183,11 +101,11 @@ export function EmployeeState(props) {
         }
     }
 
-    const addEmployee = (employee) => {
+    const addVehicle = (vehicle) => {
         async function postEmployee() {
             try{
-                const response = await createEmpleado(employee);
-                setEmployees([...employees, response.data]);
+                const response = await createEmpleado(vehicle);
+                setVehicles([...vehicles, response.data]);
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.agregado');
@@ -201,13 +119,13 @@ export function EmployeeState(props) {
                 if(errors.cedula){
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorCedula');
-                    setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
+                    setVehicleError({...vehicleError, cedula: 'Cedula ya existe'});
                     handleOpenSnackbar();
 
                 } else if (errors.email) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorEmail');
-                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                    setVehicleError({...vehicleError, correo: 'Correo ya existe'});
                     handleOpenSnackbar();
 
                 } else {
@@ -221,18 +139,18 @@ export function EmployeeState(props) {
         postEmployee();
     }
 
-    const updateEmployee = (employee) => {
+    const updateVehicle = (vehicle) => {
         async function putEmployee() {
             try{
-                const response = await updateEmpleado(employee.cedula, employee);
-                setEmployees(employees.map((item) => (item.cedula === employee.cedula ? employee : item)));
+                const response = await updateEmpleado(vehicle.cedula, vehicle);
+                setVehicles(vehicles.map((item) => (item.cedula === vehicle.cedula ? vehicle : item)));
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.editado');
                 handleOpenSnackbar();
 
                 handleCloseForm();
-                getEmployees();
+                getVehicles();
             
             } catch (error) {
                 const errors = error.response.data;
@@ -241,7 +159,7 @@ export function EmployeeState(props) {
                     setTypeSnackbar('error');
                     setMessageSnackbar('empleados.mensaje.errorEmail');
                     handleOpenSnackbar();
-                    setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                    setVehicleError({...vehicleError, correo: 'Correo ya existe'});
                 
                 } else {
                     setTypeSnackbar('error');
@@ -254,17 +172,17 @@ export function EmployeeState(props) {
         putEmployee();
     }
 
-    const deleteEmployee = (employee) => {
+    const deleteVehicle = (vehicle) => {
         async function removeEmployee() {
             try{
-                const response = await deleteEmpleado(employee.cedula);
-                setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
+                const response = await deleteEmpleado(vehicle.cedula);
+                setVehicles(vehicles.filter((item) => item.cedula !== vehicle.cedula));
 
                 setTypeSnackbar('success');
                 setMessageSnackbar('empleados.mensaje.eliminado');
                 handleOpenSnackbar();
 
-                getEmployees();
+                getVehicles();
 
             } catch (error) {
                 const errors = error.response.data;
@@ -287,48 +205,47 @@ export function EmployeeState(props) {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setEmployee({
-            ...employee,
+        setVehicle({
+            ...vehicle,
             [name]: value
         });
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!validateEmployeeOnSubmit()) {
+        if (!validateVehicleOnSubmit()) {
             if(edit)
             {
-                updateEmployee(employee);
+                updateVehicle(vehicle);
             }
             else
             {
-                addEmployee(employee);
+                addVehicle(vehicle);
             }
-            getEmployees();
+            getVehicles();
         }
     }
     const handleOnBlur = (event) => {
         const {name} = event.target;
-        validateEmployeeOnBlur(employee, name);
+        validateVehicleOnBlur(vehicle, name);
     }
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteEmployee(employee);
+        deleteVehicle(vehicle);
 
         handleCloseDelete();
     }
-    const handleOpenForm = (event, cedula) => {
-        getEmployeeError();
+    const handleOpenForm = (event, vin) => {
+        getVehicleError();
         getBranches();
-        getEmployee(cedula);
+        getVehicle(vin);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
-        setShowPassword(false);
         setOpenForm(false);
     };
-    const handleOpenDelete = (event, cedula) => {
-        getEmployee(cedula);
+    const handleOpenDelete = (event, vin) => {
+        getVehicle(vin);
         setOpenDelete(true);
     }
     const handleCloseDelete = () => {
@@ -344,15 +261,9 @@ export function EmployeeState(props) {
         setOpenSnackbar(true);
     }
 
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleTogglePassword = () => {
-        setShowPassword(!showPassword);
-    };
-
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('cedula');
+    const [orderBy, setOrderBy] = useState('vin');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [edit, setEdit] = React.useState(false);
@@ -389,39 +300,36 @@ export function EmployeeState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
-    const isNotFound = !filteredEmployees.length && !!filterName;
+    const filteredVehicles = applySortFilter(vehicles, getComparator(order, orderBy), filterName);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vehicles.length) : 0;
+    const isNotFound = !filteredVehicles.length && !!filterName;
 
-    const [employeeError, setEmployeeError] = React.useState(emptyError);
+    const [vehicleError, setVehicleError] = React.useState(emptyError);
 
-    const getEmployeeError = () => {
-        setEmployeeError(emptyError)
+    const getVehicleError = () => {
+        setVehicleError(emptyError)
     }
 
-    const validateEmployeeOnSubmit = () => {
+    const validateVehicleOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(employeeError).forEach((name) => {
-            updatedErrors[name] = checkEmployee(employee, name, edit);
+        Object.keys(vehicleError).forEach((name) => {
+            updatedErrors[name] = checkVehicle(vehicle, name);
         });
-        setEmployeeError(updatedErrors);
+        setVehicleError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
-    const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name, edit)});
+    const validateVehicleOnBlur = (vehicle, name) => {
+        setVehicleError({...vehicleError, [name]: checkVehicle(vehicle, name)});
     };
 
     return (
-        <EmployeeContext.Provider value={
+        <VehicleContext.Provider value={
             {
                 TABLE_HEAD,
-                employee,
-                employees,
-                epss,
-                arls,
-                positions,
-                bloodTypes,
-                genders,
+                vehicle,
+                vehicles,
+                models,
+                colors,
                 branches,
                 openForm,
                 edit,
@@ -429,7 +337,7 @@ export function EmployeeState(props) {
                 messageSnackbar,
                 typeSnackbar,
                 openDelete,
-                getEmployees,
+                getVehicles,
                 getBranches,
                 handleInputChange,
                 handleSubmit,
@@ -446,7 +354,7 @@ export function EmployeeState(props) {
                 page,
                 rowsPerPage,
                 selected,
-                filteredEmployees,
+                filteredVehicles,
                 emptyRows,
                 isNotFound,
                 handleRequestSort,
@@ -454,11 +362,9 @@ export function EmployeeState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                employeeError,
-                showPassword,
-                handleTogglePassword}}>
+                vehicleError,}}>
             {props.children}
-        </EmployeeContext.Provider>
+        </VehicleContext.Provider>
     )
 }
 

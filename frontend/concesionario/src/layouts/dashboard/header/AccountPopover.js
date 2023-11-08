@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {Link as RouterLink} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 // @mui
 import { alpha } from '@mui/material/styles';
@@ -6,21 +7,20 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 // mocks_
 import account from '../../../_mock/account';
 
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
   {
     label: 'inicio',
     icon: 'eva:home-fill',
+    href: '/dashboard'
   },
   {
     label: 'perfil',
     icon: 'eva:person-fill',
-  },
-  {
-    label: 'configuracion',
-    icon: 'eva:settings-2-fill',
-  },
+    href: '/dashboard/perfil'
+  }
 ];
 
 // ----------------------------------------------------------------------
@@ -93,7 +93,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem key={option.label} onClick={handleClose} to={option.href} component={RouterLink}>
               {t(`general.perfil.${option.label}`)}
             </MenuItem>
           ))}
@@ -101,7 +101,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleClose} sx={{ m: 1 }} to="/login" component={RouterLink}>
           {t('general.perfil.cerrarSesion')}
         </MenuItem>
       </Popover>
