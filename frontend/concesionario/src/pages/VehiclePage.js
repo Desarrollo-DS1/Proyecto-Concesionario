@@ -55,7 +55,7 @@ export default function VehiclePage() {
         isNotFound} = useContext(VehicleContext);
 
     useEffect(() => {
-        // getVehicles();
+         getVehicles();
     }, []);
 
     const { t } = useTranslation("lang");
@@ -88,22 +88,22 @@ export default function VehiclePage() {
                                 <ListHead context={VehicleContext} name={'vehiculos'}/>
                                 <TableBody>
                                     {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { vin, modelo, sucursal, color} = row;
+                                        const { vin, nombreModelo, nombreSucursal, nombreColor} = row;
                                         const selectedVehicle = selected.indexOf(vin) !== -1;
 
                                         return (
                                             <TableRow hover key={vin} tabIndex={-1} role="checkbox" selected={selectedVehicle}>
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox checked={selectedVehicle} onChanfge={(event) => handleClick(event, vin)} />
+                                                    <Checkbox checked={selectedVehicle} onChange={(event) => handleClick(event, vin)} />
                                                 </TableCell>
 
                                                 <TableCell align="left">{vin}</TableCell>
 
-                                                <TableCell align="left">{modelo}</TableCell>
+                                                <TableCell align="left">{nombreModelo}</TableCell>
 
-                                                <TableCell align="left">{sucursal}</TableCell>
+                                                <TableCell align="left">{nombreSucursal}</TableCell>
 
-                                                <TableCell align="left">{color}</TableCell>
+                                                <TableCell align="left">{nombreColor}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>

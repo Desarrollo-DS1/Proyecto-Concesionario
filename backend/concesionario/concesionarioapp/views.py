@@ -80,6 +80,9 @@ class VehiculoView(viewsets.ModelViewSet):
     serializer_class = VehiculoSerializer
     queryset = Vehiculo.objects.all()
 
+class ColorView(viewsets.ModelViewSet):
+    serializer_class = ColorSerializer
+    queryset = Color.objects.all()
 
 class VentaVehiculoView(viewsets.ModelViewSet):
     serializer_class = VentaVehiculoSerializer

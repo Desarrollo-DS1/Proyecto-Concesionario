@@ -3,6 +3,9 @@ import React, {useState} from "react";
 import VehicleContext from './VehicleContext';
 import {checkVehicle} from "./VehicleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
+import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo} from "../../api/Vehiculo.api";
+import {getAllModelos} from "../../api/Modelo.api";
+import {getAllColors} from "../../api/Colors.api";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
 import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
 
@@ -35,7 +38,7 @@ export function VehicleState(props) {
     }
 
     const [vehicle, setVehicle] = React.useState(emptyVehicle);
-    const [vehicles, setVehicles] = React.useState([{vin: "1", modelo: "Adui", sucursal: "Norte", color: "Rojo"}]);
+    const [vehicles, setVehicles] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -62,10 +65,43 @@ export function VehicleState(props) {
         loadBranches();
     }
 
-    const getVehicles = () => {
-        async function loadEmployees() {
+    const getColors = () => {
+        async function loadColors() {
             try{
-                const response = await getAllEmpleados();
+                const response = await getAllColors();
+                setColors(response.data);
+        
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('colores.mensaje.errorListando');
+                handleOpenSnackbar();
+            }
+        }
+        
+        loadColors();
+    }
+
+    const getModels = () => {
+        async function loadModels() {
+            try{
+                const response = await getAllModelos();
+                setModels(response.data);
+        
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorListando');
+                handleOpenSnackbar();
+            }
+        }
+        
+        loadModels();
+    }
+
+
+    const getVehicles = () => {
+        async function loadVehicles() {
+            try{
+                const response = await getAllVehiculos();
                 setVehicles(response.data);
 
             } catch (error) {
@@ -75,18 +111,17 @@ export function VehicleState(props) {
             }
         }
 
-        loadEmployees();        
+        loadVehicles();        
     }
 
     const getVehicle = (vin) => {
-        async function loadEmployee() {
+        async function loadVehicles() {
             try{
-                const response = await getEmpleado(vin);
-                const employeeDataWithClave = { ...response.data, clave: '' };
-                setVehicle(employeeDataWithClave);
+                const response = await getVehiculo(vin);
+                setVehicle(response.data);
             } catch (error) {
                 setTypeSnackbar('error');
-                setMessageSnackbar('empleados.mensaje.errorCargando');
+                setMessageSnackbar('vehiculos.mensaje.errorCargando');
                 handleOpenSnackbar();
             }
         }
@@ -96,19 +131,19 @@ export function VehicleState(props) {
             setEdit(false);
 
         } else {
-            loadEmployee();
+            loadVehicles();
             setEdit(true);
         }
     }
 
     const addVehicle = (vehicle) => {
-        async function postEmployee() {
+        async function postVehicle() {
             try{
-                const response = await createEmpleado(vehicle);
+                const response = await createVehiculo(vehicle);
                 setVehicles([...vehicles, response.data]);
 
                 setTypeSnackbar('success');
-                setMessageSnackbar('empleados.mensaje.agregado');
+                setMessageSnackbar('vehiculos.mensaje.agregado');
                 handleOpenSnackbar();
 
                 handleCloseForm();
@@ -116,37 +151,32 @@ export function VehicleState(props) {
             } catch (error) {
                 const errors = error.response.data;
 
-                if(errors.cedula){
+                if(errors.vin){
                     setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.errorCedula');
-                    setVehicleError({...vehicleError, cedula: 'Cedula ya existe'});
-                    handleOpenSnackbar();
-
-                } else if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.errorEmail');
-                    setVehicleError({...vehicleError, correo: 'Correo ya existe'});
+                    setMessageSnackbar('vehiculos.mensaje.errorCedula');
+                    setVehicleError({...vehicleError, vin: 'Vin ya existe'});
                     handleOpenSnackbar();
 
                 } else {
                     setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.error');
+                    setMessageSnackbar('vehiculos.mensaje.error');
                     handleOpenSnackbar();
                 }
             }
         }
         
-        postEmployee();
+        postVehicle();
     }
 
     const updateVehicle = (vehicle) => {
-        async function putEmployee() {
+        async function putVehicle() {
             try{
-                const response = await updateEmpleado(vehicle.cedula, vehicle);
-                setVehicles(vehicles.map((item) => (item.cedula === vehicle.cedula ? vehicle : item)));
+                console.log(vehicle)
+                const response = await updateVehicle(vehicle.vin, vehicle);
+                setVehicles(vehicles.map((item) => (item.vin === vehicle.vin ? vehicle : item)));
 
                 setTypeSnackbar('success');
-                setMessageSnackbar('empleados.mensaje.editado');
+                setMessageSnackbar('vehiculos.mensaje.editado');
                 handleOpenSnackbar();
 
                 handleCloseForm();
@@ -154,22 +184,11 @@ export function VehicleState(props) {
             
             } catch (error) {
                 const errors = error.response.data;
-
-                if(errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setVehicleError({...vehicleError, correo: 'Correo ya existe'});
-                
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.error');
-                    handleOpenSnackbar();
-                }
+                console.log(errors);
             }
         }
         
-        putEmployee();
+        putVehicle();
     }
 
     const deleteVehicle = (vehicle) => {
@@ -238,6 +257,8 @@ export function VehicleState(props) {
     const handleOpenForm = (event, vin) => {
         getVehicleError();
         getBranches();
+        getColors();
+        getModels();
         getVehicle(vin);
         setOpenForm(true)
     };
