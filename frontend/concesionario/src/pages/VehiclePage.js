@@ -26,7 +26,7 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
-import ModelDelete from "../sections/@dashboard/model/ModelDelete";
+import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
 import VehicleContext from "../hooks/vehicle/VehicleContext";
 
@@ -77,6 +77,8 @@ export default function VehiclePage() {
                 </Stack>
 
                 <VehicleForm />
+
+                <VehicleDelete />
 
                 <Card>
                     <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')}/>
