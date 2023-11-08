@@ -179,7 +179,7 @@
       "errorCargando": "Error al cargar vehiculo"
     },
     "label": {
-      "vin": "Vin",
+      "vin": "VIN",
       "modelo": "Modelo",
       "sucursal": "Sucursal",
       "color": "Color",
