@@ -145,6 +145,34 @@
       "undefined": ""
     }
   },
+  "vehiculos": {
+    "encabezado": {
+      "tituloPlural": "Veículos",
+      "tituloSingular": "Veículo",
+      "agregar": "Adicionar Veículo",
+      "eliminar": "Excluir Veículo",
+      "editar": "Editar Veículo"
+    },
+    "mensaje": {
+      "agregado": "Veículo adicionado com sucesso",
+      "editado": "Veículo editado com sucesso",
+      "eliminado": "Veículo excluído com sucesso",
+      "error": "Erro ao adicionar veículo",
+      "errorEditar": "Erro ao editar veículo",
+      "errorEliminar": "Erro ao excluir veículo",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o veículo com VIN {{vin}}?",
+      "errorVin": "Erro ao adicionar veículo, VIN já existe",
+      "errorListando": "Erro ao listar veículos",
+      "errorCargando": "Erro ao carregar veículo"
+    },
+    "label": {
+      "vin": "VIN",
+      "modelo": "Modelo",
+      "sucursal": "Filial",
+      "color": "Cor",
+      "undefined" : ""
+    }
+  },
   "errores": {
     "requerido": "Este campo é obrigatório",
     "numerico": "Apenas números são permitidos",

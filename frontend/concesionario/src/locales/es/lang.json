@@ -40,7 +40,6 @@
     },
     "buscar": "Buscar..."
   },
-
   "clientes": {
     "encabezado": {
       "tituloPlural": "Clientes",
@@ -49,7 +48,6 @@
       "eliminar": "Eliminar Cliente",
       "editar": "Editar Cliente"
     },
-
     "mensaje": {
         "agregado": "Cliente agregado correctamente",
         "editado": "Cliente editado correctamente",
@@ -63,7 +61,6 @@
         "errorListando": "Error al listar clientes",
         "errorCargando": "Error al cargar cliente"
     },
-
     "label": {
       "cedula": "Cedula",
       "nombre": "Nombre",
@@ -82,7 +79,6 @@
       "undefined" : ""
       }
   },
-
   "empleados": {
     "encabezado": {
       "tituloPlural": "Empleados",
@@ -91,7 +87,6 @@
       "eliminar": "Eliminar empleado",
       "editar": "Editar empleado"
     },
-
     "mensaje": {
         "agregado": "Empleado agregado correctamente",
         "editado": "Empleado editado correctamente",
@@ -105,7 +100,6 @@
         "errorListando": "Error al listar empleados",
         "errorCargando": "Error al cargar empleado"
     },
-
     "label": {
       "cedula": "Cedula",
       "nombre": "Nombre",
@@ -130,13 +124,11 @@
       "undefined" : ""
       }
     },
-
     "sucursal": {
         "mensaje": {
             "errorListando": "Error al listar sucursales"
         }
     },
-
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
@@ -145,7 +137,6 @@
       "eliminar": "Eliminar modelo",
       "editar": "Editar modelo"
     },
-
     "mensaje": {
       "agregado": "Modelo agregado correctamente",
       "editado": "Modelo editado correctamente",
@@ -155,7 +146,6 @@
       "errorEliminar": "Error al eliminar modelo",
       "confirmacionEliminar": "¿Estas seguro que deseas eliminar el modelo {{modelo}}?"
     },
-
     "label": {
       "nombre": "Modelo",
       "año": "Año",
@@ -168,7 +158,34 @@
       "undefined" : ""
     }
   },
-
+  "vehiculos": {
+    "encabezado": {
+      "tituloPlural": "Vehiculos",
+      "tituloSingular": "Vehiculo",
+      "agregar": "Agregar Vehiculo",
+      "eliminar": "Eliminar Vehiculo",
+      "editar": "Editar Vehiculo"
+    },
+    "mensaje": {
+      "agregado": "Vehiculo agregado correctamente",
+      "editado": "Vehiculo editado correctamente",
+      "eliminado": "Vehiculo eliminado correctamente",
+      "error": "Error al agregar vehiculo",
+      "errorEditar": "Error al editar vehiculo",
+      "errorEliminar": "Error al eliminar vehiculo",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar el vehiculo de vin {{vin}}?",
+      "errorVin": "Error al agregar vehiculo, el vin ya existe",
+      "errorListando": "Error al listar vehiculos",
+      "errorCargando": "Error al cargar vehiculo"
+    },
+    "label": {
+      "vin": "Vin",
+      "modelo": "Modelo",
+      "sucursal": "Sucursal",
+      "color": "Color",
+      "undefined" : ""
+    }
+  },
   "errores": {
     "requerido": "Este campo es requerido",
     "numerico": "Solo se permiten numeros",

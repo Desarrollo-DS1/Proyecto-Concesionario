@@ -1,0 +1,173 @@
+import { Helmet } from 'react-helmet-async';
+import React, {useContext, useEffect} from 'react';
+import {useTranslation} from "react-i18next";
+// @mui
+import {
+    Card,
+    Table,
+    Stack,
+    Paper,
+    Button,
+    Checkbox,
+    TableRow,
+    TableBody,
+    TableCell,
+    Typography,
+    IconButton,
+    TableContainer,
+    TablePagination, Box, Snackbar,
+} from '@mui/material';
+// components
+import Alert from '@mui/material/Alert';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import Iconify from '../components/iconify';
+import Scrollbar from '../components/scrollbar';
+// sections
+import {ListHead, ListToolbar} from "../sections/@dashboard/list";
+import ModelForm from "../sections/@dashboard/model/ModelForm";
+import ModelDelete from "../sections/@dashboard/model/ModelDelete";
+// context
+import VehicleContext from "../hooks/vehicle/VehicleContext";
+
+// ----------------------------------------------------------------------
+
+export default function VehiclePage() {
+
+    const {
+        vehicles,
+        openSnackbar,
+        messageSnackbar,
+        typeSnackbar,
+        getVehicles,
+        handleOpenForm,
+        handleOpenDelete,
+        handleCloseSnackbar,
+        filterName,
+        page,
+        rowsPerPage,
+        selected,
+        handleClick,
+        handleChangePage,
+        handleChangeRowsPerPage,
+        filteredVehicles,
+        emptyRows,
+        isNotFound} = useContext(VehicleContext);
+
+    useEffect(() => {
+        // getVehicles();
+    }, []);
+
+    const { t } = useTranslation("lang");
+
+    return (
+        <>
+            <Helmet>
+                <title>{t('vehiculos.encabezado.tituloPlural')}</title>
+            </Helmet>
+
+            <Box sx={{margin: 2}}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+                    <Typography variant="h4" gutterBottom>
+                        {t('vehiculos.encabezado.tituloPlural')}
+                    </Typography>
+                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+                        {t('vehiculos.encabezado.tituloSingular')}
+                    </Button>
+                </Stack>
+
+                <Card>
+                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')}/>
+                    <Scrollbar>
+                        <TableContainer sx={{ minWidth: 1000 }}>
+                            <Table>
+                                <ListHead context={VehicleContext} name={'vehiculos'}/>
+                                <TableBody>
+                                    {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const { vin, modelo, sucursal, color} = row;
+                                        const selectedVehicle = selected.indexOf(vin) !== -1;
+
+                                        return (
+                                            <TableRow hover key={vin} tabIndex={-1} role="checkbox" selected={selectedVehicle}>
+                                                <TableCell padding="checkbox">
+                                                    <Checkbox checked={selectedVehicle} onChanfge={(event) => handleClick(event, vin)} />
+                                                </TableCell>
+
+                                                <TableCell align="left">{vin}</TableCell>
+
+                                                <TableCell align="left">{modelo}</TableCell>
+
+                                                <TableCell align="left">{sucursal}</TableCell>
+
+                                                <TableCell align="left">{color}</TableCell>
+
+                                                <TableCell align="right">
+                                                    <div style={{ display: 'flex' }}>
+                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
+                                                            <EditIcon />
+                                                        </IconButton>
+
+                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </div>
+                                                </TableCell>
+
+                                            </TableRow>
+                                        );
+                                    })}
+                                    {emptyRows > 0 && (
+                                        <TableRow style={{ height: 53 * emptyRows }}>
+                                            <TableCell colSpan={5} />
+                                        </TableRow>
+                                    )}
+                                </TableBody>
+
+                                {isNotFound && (
+                                    <TableBody>
+                                        <TableRow>
+                                            <TableCell align="center" colSpan={5} sx={{ py: 3 }}>
+                                                <Paper
+                                                    sx={{
+                                                        textAlign: 'center',
+                                                    }}
+                                                >
+                                                    <Typography variant="h6" paragraph>
+                                                        {t('general.dataTable.noEncontrado')}
+                                                    </Typography>
+
+                                                    <Typography variant="body2">
+                                                        {t('general.dataTable.noResultados')} &nbsp;
+                                                        <strong>&quot;{filterName}&quot;</strong>.
+                                                        <br /> {t('general.dataTable.mensajeNoResultados')}
+                                                    </Typography>
+                                                </Paper>
+                                            </TableCell>
+                                        </TableRow>
+                                    </TableBody>
+                                )}
+                            </Table>
+                        </TableContainer>
+                    </Scrollbar>
+
+                    <TablePagination
+                        rowsPerPageOptions={[5, 10, 25]}
+                        component="div"
+                        count={vehicles.length}
+                        rowsPerPage={rowsPerPage}
+                        page={page}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        labelRowsPerPage = {t('general.dataTable.filasPorPagina')}
+                    />
+                </Card>
+            </Box>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
+                    {t(messageSnackbar)}
+                </Alert>
+            </Snackbar>
+        </>
+    );
+}

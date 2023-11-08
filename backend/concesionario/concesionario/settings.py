@@ -83,14 +83,14 @@ WSGI_APPLICATION = 'concesionario.wsgi.application'
 
 
 DATABASES = {
-      'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': 'concesionario',
-            'USER': 'postgres',
-            'PASSWORD': 'password',
-            'HOST': 'localhost',
-            'PORT': '5432',
-        }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'BdConcesionario',
+        'USER': 'postgres',
+        'PASSWORD': '12345',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
 
 # Password validation
