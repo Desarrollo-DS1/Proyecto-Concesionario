@@ -1,11 +1,10 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
-import { get } from "lodash";
-import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
+import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
 
 
 EmployeeState.propTypes = {
@@ -130,19 +129,19 @@ export function EmployeeState(props) {
 
 
     const getBranches = () => {
-        // async function loadBranches() {
-        //     try{
-        //         const response = await getAllSucursales();
-        //         setBranches(response.data);
-        //
-        //     } catch (error) {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('sucursales.mensaje.errorListando');
-        //         handleOpenSnackbar();
-        //     }
-        // }
-        //
-        // loadBranches();
+        async function loadBranches() {
+            try{
+                const response = await getAllSucursales();
+                setBranches(response.data);
+        
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('sucursales.mensaje.errorListando');
+                handleOpenSnackbar();
+            }
+        }
+        
+        loadBranches();
     }
 
     const getEmployees = () => {
@@ -167,7 +166,6 @@ export function EmployeeState(props) {
                 const response = await getEmpleado(cedula);
                 const employeeDataWithClave = { ...response.data, clave: '' };
                 setEmployee(employeeDataWithClave);
-
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCargando');
@@ -321,6 +319,7 @@ export function EmployeeState(props) {
     }
     const handleOpenForm = (event, cedula) => {
         getEmployeeError();
+        getBranches();
         getEmployee(cedula);
         setOpenForm(true)
     };

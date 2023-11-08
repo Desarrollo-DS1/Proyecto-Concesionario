@@ -4,7 +4,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 // @mui
 import {Link, Stack, IconButton, InputAdornment, TextField, Snackbar, Box} from '@mui/material';
-import {Alert, LoadingButton} from '@mui/lab';
+import Alert from '@mui/material/Alert';
+import {LoadingButton} from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
 import ModeViewSwitch from "../../../layouts/dashboard/header/ModeViewSwitch";

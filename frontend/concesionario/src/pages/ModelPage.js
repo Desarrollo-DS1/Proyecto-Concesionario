@@ -18,7 +18,7 @@ import {
     TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
-import {Alert} from "@mui/lab";
+import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Iconify from '../components/iconify';

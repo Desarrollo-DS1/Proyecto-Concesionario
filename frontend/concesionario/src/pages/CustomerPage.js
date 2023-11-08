@@ -21,7 +21,7 @@ import {useTranslation} from "react-i18next";
 // components
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Alert} from "@mui/lab";
+import Alert from '@mui/material/Alert';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
