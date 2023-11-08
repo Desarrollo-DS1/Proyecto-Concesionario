@@ -6,6 +6,7 @@ import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
+import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
 
 
 EmployeeState.propTypes = {
@@ -130,19 +131,20 @@ export function EmployeeState(props) {
 
 
     const getBranches = () => {
-        // async function loadBranches() {
-        //     try{
-        //         const response = await getAllSucursales();
-        //         setBranches(response.data);
-        //
-        //     } catch (error) {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('sucursales.mensaje.errorListando');
-        //         handleOpenSnackbar();
-        //     }
-        // }
-        //
-        // loadBranches();
+        async function loadBranches() {
+            try{
+                const response = await getAllSucursales();
+                console.log(response.data);
+                setBranches(response.data);
+        
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('sucursales.mensaje.errorListando');
+                handleOpenSnackbar();
+            }
+        }
+        
+        loadBranches();
     }
 
     const getEmployees = () => {
@@ -167,6 +169,7 @@ export function EmployeeState(props) {
                 const response = await getEmpleado(cedula);
                 const employeeDataWithClave = { ...response.data, clave: '' };
                 setEmployee(employeeDataWithClave);
+                console.log(employeeDataWithClave);
 
             } catch (error) {
                 setTypeSnackbar('error');
@@ -321,6 +324,7 @@ export function EmployeeState(props) {
     }
     const handleOpenForm = (event, cedula) => {
         getEmployeeError();
+        getBranches();
         getEmployee(cedula);
         setOpenForm(true)
     };

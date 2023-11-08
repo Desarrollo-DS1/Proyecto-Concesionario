@@ -137,6 +137,20 @@ class EmpleadoSerializer(serializers.ModelSerializer):
 
         Empleado.objects.filter(usuario_id=instance.usuario_id).update(**validated_data)
         return instance
+    
+
+class SucursalSerializer(serializers.ModelSerializer):
+    sucursal = serializers.IntegerField(source='id_sucursal', read_only=True)
+    nombreSucursal = serializers.CharField(source='nombre_sucursal')
+    direccionSucursal = serializers.CharField(source='direccion_sucursal', write_only=True)
+    ciudadSucursal = serializers.CharField(source='ciudad_sucursal', write_only=True)
+    telefonoSucursal = serializers.CharField(source='telefono_sucursal', write_only=True)
+
+    class Meta:
+        model = Sucursal
+        fields = 'sucursal', 'nombreSucursal', 'direccionSucursal', 'ciudadSucursal', 'telefonoSucursal'
+
+
 
 class ModeloSerializer(serializers.ModelSerializer):
 

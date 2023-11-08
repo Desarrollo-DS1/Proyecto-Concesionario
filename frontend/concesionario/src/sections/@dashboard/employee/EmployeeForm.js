@@ -414,11 +414,15 @@ export default function EmployeeForm() {
                               MenuProps: selectMenuProps
                           }}
                       >
-                          {branches.map((option) => (
-                              <MenuItem key={option.id} value={option.label}>
-                                  {option.label}
+                          {branches.map((option) => {
+                            const { idSucursal, nombreSucursal } = option;
+                            console.log(option);
+                            return ( 
+
+                              <MenuItem key={idSucursal} value={idSucursal}>
+                                  {nombreSucursal}
                               </MenuItem>
-                          ))}
+                          ); })}
                       </TextField>
                   </Grid>
                   <Grid item xs={12} sm={4}>

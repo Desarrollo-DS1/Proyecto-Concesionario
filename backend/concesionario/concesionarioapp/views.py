@@ -66,6 +66,11 @@ class EmpleadoView(viewsets.ModelViewSet):
             raise serializers.ValidationError({'error': str(e)})
         
 
+class SucursalView(viewsets.ModelViewSet):
+    serializer_class = SucursalSerializer
+    queryset = Sucursal.objects.all()
+
+
 class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()

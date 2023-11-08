@@ -131,6 +131,12 @@
       }
     },
 
+    "sucursal": {
+        "mensaje": {
+            "errorListando": "Error al listar sucursales"
+        }
+    },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
