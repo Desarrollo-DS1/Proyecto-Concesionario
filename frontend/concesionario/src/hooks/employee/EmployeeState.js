@@ -1,7 +1,5 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
-import { get } from "lodash";
-import EMPLOYEELIST from '../../_mock/employee';
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
@@ -134,7 +132,6 @@ export function EmployeeState(props) {
         async function loadBranches() {
             try{
                 const response = await getAllSucursales();
-                console.log(response.data);
                 setBranches(response.data);
         
             } catch (error) {
@@ -169,8 +166,6 @@ export function EmployeeState(props) {
                 const response = await getEmpleado(cedula);
                 const employeeDataWithClave = { ...response.data, clave: '' };
                 setEmployee(employeeDataWithClave);
-                console.log(employeeDataWithClave);
-
             } catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCargando');

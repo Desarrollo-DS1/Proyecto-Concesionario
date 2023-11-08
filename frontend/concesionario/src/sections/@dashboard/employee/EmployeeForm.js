@@ -303,7 +303,7 @@ export default function EmployeeForm() {
                           fullWidth
                           type={"date"}
                           name={"fechaRetiro"}
-                          value={employee.fechaRetiro}
+                          value={employee.fechaRetiro !== null ? employee.fechaRetiro : ''}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("empleados.label.fechaRetiro")} variant="outlined"
@@ -415,11 +415,10 @@ export default function EmployeeForm() {
                           }}
                       >
                           {branches.map((option) => {
-                            const { idSucursal, nombreSucursal } = option;
-                            console.log(option);
+                            const { sucursal, nombreSucursal } = option;
                             return ( 
 
-                              <MenuItem key={idSucursal} value={idSucursal}>
+                              <MenuItem key={sucursal} value={sucursal}>
                                   {nombreSucursal}
                               </MenuItem>
                           ); })}

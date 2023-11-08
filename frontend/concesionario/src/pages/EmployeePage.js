@@ -18,7 +18,7 @@ import {
     TablePagination, Box, Snackbar,
 } from '@mui/material';
 // components
-import {Alert} from "@mui/lab";
+import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Iconify from '../components/iconify';
@@ -109,7 +109,7 @@ export default function EmployeePage() {
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 
                                         return (
-                                            <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                                            <TableRow hover key={cedula} tabIndex={-1} role="checkbox" selected={selectedUser}>
                                                 <TableCell padding="checkbox">
                                                     <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
                                                 </TableCell>
