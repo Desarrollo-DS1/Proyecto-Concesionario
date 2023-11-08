@@ -4,8 +4,12 @@ const modeloApi = axios.create({
     baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Modelo/'
 })
 
-export const getAllModelos = () => modeloApi.get('/')
+export const getAllModelos = () => modeloApi.get('/');
 
-export const createModelo = (modelo) => modeloApi.post('/', modelo)
+export const getModelo = (id) => modeloApi.get(`/${id}/`);
 
-export const deleteModelo = (id) => modeloApi.delete(`/${id}`)
+export const createModelo = (modelo) => modeloApi.post('/', modelo);
+
+export const updateModelo = (id, modelo) => modeloApi.put(`/${id}/`, modelo);
+
+export const deleteModelo = (id) => modeloApi.delete(`/${id}`);

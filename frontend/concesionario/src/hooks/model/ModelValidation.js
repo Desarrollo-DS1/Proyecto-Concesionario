@@ -10,20 +10,21 @@ function checkNombre(model) {
 }
 
 function checkAño(model) {
-    if (model.año === null || model.año.trim() === '') {
+    const anhoString = model.año.toString();
+    if (anhoString === null || anhoString.trim() === '') {
         return "error.requerido";
     }
-    if (!model.año.match(/^[0-9]+$/))
+    if (!anhoString.match(/^[0-9]+$/))
     {
         return "error.numerico";
     }
-    if (model.año.length !== 4)
+    if (anhoString.length !== 4)
     {
         return "error.longitudExacta";
     }
 
     const fechaActual = new Date();
-    if (model.año > fechaActual.getFullYear())
+    if (model.año > fechaActual.getFullYear() + 1)
     {
         return "error.fecha";
     }
@@ -43,14 +44,15 @@ function checkCarroceria(model) {
 }
 
 function checkCilindraje(model) {
-    if (model.cilindraje === null || model.cilindraje.trim() === '') {
+    const cilindrajeString = model.cilindraje.toString();
+    if (cilindrajeString === null || cilindrajeString.trim() === '') {
         return "errores.requerido";
     }
-    if (!model.cilindraje.match(/^[0-9]+$/))
+    if (!cilindrajeString.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (model.cilindraje.length > 4)
+    if (cilindrajeString.length > 4)
     {
         return "errores.longitudMax";
     }
@@ -58,14 +60,15 @@ function checkCilindraje(model) {
 }
 
 function checkPotencia(model) {
-    if (model.potencia === null || model.potencia.trim() === '') {
+    const potenciaString = model.potencia.toString();
+    if (potenciaString === null || potenciaString.trim() === '') {
         return "errores.requerido";
     }
-    if (!model.potencia.match(/^[0-9]+$/))
+    if (!potenciaString.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (model.potencia.length > 3)
+    if (potenciaString.length > 3)
     {
         return "errores.longitudMax";
     }
@@ -80,14 +83,15 @@ function checkCombustible(model) {
 }
 
 function checkNumeroPasajeros(model) {
-    if (model.numeroPasajeros === null || model.numeroPasajeros.trim() === '') {
+    const pasajerosString = model.numeroPasajeros.toString();
+    if (pasajerosString === null || pasajerosString.trim() === '') {
         return "errores.requerido";
     }
-    if (!model.numeroPasajeros.match(/^[0-9]+$/))
+    if (!pasajerosString.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (model.numeroPasajeros.length > 1)
+    if (pasajerosString.length > 1)
     {
         return "errores.longitudMax";
     }
@@ -95,40 +99,41 @@ function checkNumeroPasajeros(model) {
 }
 
 function checkPrecioBase(model) {
-    if (model.precioBase === null || model.precioBase.trim() === '') {
+    const checkPrecioBase = model.precioBase.toString();
+    if (checkPrecioBase === null || checkPrecioBase.trim() === '') {
         return "errores.requerido";
     }
-    if (!model.precioBase.match(/^[0-9]+$/))
+    if (!checkPrecioBase.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
     return "";
 }
 
-export function checkModel(employee, name) {
+export function checkModel(model, name) {
     if (name === 'nombre') {
-        return checkNombre(employee);
+        return checkNombre(model);
     }
     if (name === 'año') {
-        return checkAño(employee);
+        return checkAño(model);
     }
     if (name === 'carroceria') {
-        return checkCarroceria(employee);
+        return checkCarroceria(model);
     }
     if (name === 'cilindraje') {
-        return checkCilindraje(employee);
+        return checkCilindraje(model);
     }
     if (name === 'potencia') {
-        return checkPotencia(employee);
+        return checkPotencia(model);
     }
     if (name === 'combustible') {
-        return checkCombustible(employee);
+        return checkCombustible(model);
     }
     if (name === 'numeroPasajeros') {
-        return checkNumeroPasajeros(employee);
+        return checkNumeroPasajeros(model);
     }
     if (name === 'precioBase') {
-        return checkPrecioBase(employee);
+        return checkPrecioBase(model);
     }
 
     return "";

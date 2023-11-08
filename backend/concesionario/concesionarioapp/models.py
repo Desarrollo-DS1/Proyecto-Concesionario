@@ -6,13 +6,13 @@ from .managers import AdministradorUsuarios
 class Modelo(models.Model):
 	id_modelo = models.AutoField('ID del Modelo', primary_key=True)
 	nombre_modelo = models.CharField('Nombre del Modelo', max_length=30, unique=True)
-	anho = models.IntegerField('Año del Modelo', blank=True, null=True)
+	anho = models.IntegerField('Año del Modelo')
 	carroceria = models.CharField('Carrocería', choices=(('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'), ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Roadster', 'Roadster'), ('Camion', 'Camion'), ('Camioneta', 'Camioneta'), ('Bus', 'Bus'), ('Minivan', 'Minivan'), ('Microbus', 'Microbus'), ('Micro', 'Micro'), ('Tracto Camion','Tracto Camion'), ('Trailer', 'Trailer')),blank=True, null=True)
-	cilindraje = models.IntegerField('Cilindraje', blank=True, null=True)
-	potencia = models.IntegerField('Potencia', blank=True, null=True)
-	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'), ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')), blank=True, null=True)
-	numero_pasajeros = models.IntegerField('Número de Pasajeros', blank=True, null=True)
-	precio_base = models.DecimalField('Precio Base', max_digits=12, decimal_places=2, blank=True, null=True)
+	cilindraje = models.IntegerField('Cilindraje')
+	potencia = models.IntegerField('Potencia')
+	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'), ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')))
+	numero_pasajeros = models.IntegerField('Número de Pasajeros')
+	precio_base = models.IntegerField('Precio Base')
   
 	class Meta:
 		verbose_name = 'Modelo'
@@ -175,7 +175,7 @@ class Modelo(models.Model):
 	potencia = models.IntegerField('Potencia', blank=True, null=True)
 	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'), ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')), blank=True, null=True)
 	numero_pasajeros = models.IntegerField('Número de Pasajeros', blank=True, null=True)
-	precio_base = models.DecimalField('Precio Base', max_digits=14, decimal_places=2, blank=True, null=True)
+	precio_base = models.IntegerField('Precio Base', blank=True, null=True)
 
 class Color(models.Model):
 	id_color = models.AutoField('ID del Color', primary_key=True)

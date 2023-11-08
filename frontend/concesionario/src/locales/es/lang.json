@@ -138,7 +138,10 @@
       "error": "Error al agregar modelo",
       "errorEditar": "Error al editar modelo",
       "errorEliminar": "Error al eliminar modelo",
-      "confirmacionEliminar": "¿Estas seguro que deseas eliminar el modelo {{modelo}}?"
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar el modelo {{modelo}}?",
+      "errorNombre": "Ya existe un modelo con ese nombre",
+      "errorCargando": "Error al cargar el modelo",
+      "errorListando": "Error al listar los modelos"
     },
 
     "label": {
