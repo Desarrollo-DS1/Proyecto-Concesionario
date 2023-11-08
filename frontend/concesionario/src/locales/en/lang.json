@@ -192,6 +192,7 @@
     "longitudExacta": "Must have {{exacto}} characters",
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
+    "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",

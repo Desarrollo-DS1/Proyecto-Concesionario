@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
 import VehicleContext from './VehicleContext';
-import {checkEmployee} from "./VehicleValidation";
+import {checkVehicle} from "./VehicleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
 import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
@@ -313,13 +313,13 @@ export function VehicleState(props) {
     const validateVehicleOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(vehicleError).forEach((name) => {
-            updatedErrors[name] = checkEmployee(vehicle, name, edit);
+            updatedErrors[name] = checkVehicle(vehicle, name);
         });
         setVehicleError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateVehicleOnBlur = (vehicle, name) => {
-        setVehicleError({...vehicleError, [name]: checkEmployee(vehicle, name, edit)});
+        setVehicleError({...vehicleError, [name]: checkVehicle(vehicle, name)});
     };
 
     return (

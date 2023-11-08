@@ -120,8 +120,9 @@ export default function VehicleForm() {
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
                           label={t("vehiculos.label.vin")} variant="outlined"
-                          helperText={t(vehicle.vin, {maximo: 50, minimo: 2})}
+                          helperText={t(vehicleError.vin, {maximo: 17, minimo: 5})}
                           style={textFieldStyle}
+                          inputProps={{style: {textTransform: 'uppercase'}}}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
