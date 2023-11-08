@@ -75,6 +75,27 @@ class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
 
+    def destroy(self, request, *args, **kwargs):
+        modelo = self.get_object()
+
+        try:
+            self.perform_destroy(modelo)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar el modelo porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
+
 
 class VehiculoView(viewsets.ModelViewSet):
     serializer_class = VehiculoSerializer

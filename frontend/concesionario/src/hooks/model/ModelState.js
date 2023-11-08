@@ -4,7 +4,7 @@ import React, {useState} from "react";
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter"; 
-import {getAllModelos, createModelo, deleteModelo} from "../../api/Modelo.api";
+import {getAllModelos, createModelo, deleteModelo, updateModelo, getModelo} from "../../api/Modelo.api";
 
 ModelState.propTypes = {
     children: propTypes.node,
@@ -89,16 +89,20 @@ export function ModelState(props) {
         async function fetchData() {
             try {
                 const response = await getAllModelos();
-                // console.log(response);
+                // console.log(response.data);
                 setModels(response.data);
             } catch (error) {
-                console.error('Error fetching data:', error);
+                // console.error('Error fetching data:', error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorListando');
+                handleOpenSnackbar();
             }
         }
 
         fetchData();
     }
 
+    /*
     const getBodyworks = () => {
         // Aqui se aplicaria el axios.get
         setBodyworks(initialBodyworks);
@@ -108,7 +112,34 @@ export function ModelState(props) {
         setFuels(initialFuels);
     }
 
+    */
+   
     const getModel = (id) => {
+        async function loadModel(){
+            try {
+                const response = await getModelo(id);
+                // console.log(response.data);
+                setModel(response.data);
+            
+            } catch (error) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorCargando');
+                handleOpenSnackbar();
+        }
+    }
+
+        if(id == null)
+        {
+            setModel(emptyModel);
+            setEdit(false);
+        }
+        else 
+        {
+            loadModel();
+            setEdit(true);
+        }
+
+        /*
         const model = models.find(model => model.id === id);
         if(model)
         {
@@ -120,7 +151,11 @@ export function ModelState(props) {
             setModel(emptyModel)
             setEdit(false)
         }
+        */
+
     }
+
+
 
     const addModel = (model) => {
         async function postModel() {
@@ -134,12 +169,11 @@ export function ModelState(props) {
                 setMessageSnackbar('modelos.mensaje.agregado');
                 handleOpenSnackbar();
             } catch (error) {
-                console.error('Error creating model:', error);
+                // console.error('Error creating model:', error);
                 const errors = error.response.data;
-                if(errors.nombre)
-                {
+                if(errors.nombre){
                     setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.error.nombre');
+                    setMessageSnackbar('modelos.mensaje.errorNombre');
                     handleOpenSnackbar();
                     setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
                 }
@@ -155,7 +189,36 @@ export function ModelState(props) {
     }
 
     const updateModel = (model) => {
-        setModels(models.map((item) => (item.id === model.id ? model : item)))
+        async function putModel() {
+            try{
+                const response = await updateModelo(model.id, model);
+                (models.map((item) => (item.id === model.id ? model : item)))
+
+                setTypeSnackbar('success');
+                setMessageSnackbar('modelos.mensaje.editado');
+                handleOpenSnackbar();
+
+                handleCloseForm();
+                getModels();
+            }catch (error) {
+                // console.error('Error updating model:', error);
+                // const errors = error.response.data;
+                const errors = error.response.data;
+
+                if(errors.nombre){
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('modelos.mensaje.errorNombre');
+                    handleOpenSnackbar();
+                    setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
+                }
+                else {
+                    setTypeSnackbar('error');
+                    setMessageSnackbar('modelos.mensaje.errorEditar');
+                    handleOpenSnackbar();
+                }
+        }
+    }
+        putModel();
     }
     const deleteModel = (model) => {
         // setModels(models.filter((item) => item.id !== model.id))
@@ -172,11 +235,10 @@ export function ModelState(props) {
                 getModels();
                 
             } catch (error) {
-                console.error('Error deleting model:', error);
+                // console.error('Error deleting model:', error);
                 const errors = error.response.data;
 
-                if(errors.protected)
-                {
+                if(errors.protected){
                     setTypeSnackbar('error');
                     setMessageSnackbar(errors.protected);
                     handleOpenSnackbar();
@@ -202,9 +264,10 @@ export function ModelState(props) {
         if (!validateModelOnSubmit()) {
             if(edit)
             {
+                // console.log('siuuuuuuuu')
                 updateModel(model);
-                setMessageSnackbar('modelos.mensaje.editado');
-                setTypeSnackbar('success');
+                // setMessageSnackbar('modelos.mensaje.editado');
+                // setTypeSnackbar('success');
             }
             else
             {
@@ -214,7 +277,7 @@ export function ModelState(props) {
             }
             // handleOpenSnackbar();
             getModels();
-            handleCloseForm();
+            // handleCloseForm();
         }
     }
     const handleOnBlur = (event) => {
@@ -330,8 +393,8 @@ export function ModelState(props) {
                 typeSnackbar,
                 openDelete,
                 getModels,
-                getBodyworks,
-                getFuels,
+                // getBodyworks,
+                // getFuels,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,

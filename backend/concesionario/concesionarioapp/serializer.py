@@ -162,7 +162,7 @@ class ModeloSerializer(serializers.ModelSerializer):
     nombre = serializers.CharField(source='nombre_modelo')
     año = serializers.IntegerField(source='anho')
     numeroPasajeros = serializers.IntegerField(source='numero_pasajeros')
-    precioBase = serializers.DecimalField(source='precio_base', max_digits=12, decimal_places=2)
+    precioBase = serializers.IntegerField(source='precio_base')
     cilindraje = serializers.IntegerField()
     potencia = serializers.IntegerField()
     combustible = serializers.CharField()
@@ -190,10 +190,18 @@ class ModeloSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         if(Modelo.objects.filter(nombre_modelo = validated_data['nombre_modelo']).exists()):
-            raise serializers.ValidationError("Ya existe un modelo con ese nombre")
+            raise serializers.ValidationError({'nombre': 'Ya existe un modelo con ese nombre'})
           
         return Modelo.objects.create(**validated_data)
-
+    
+    
+    def update(self, instance, validated_data):
+        if(Modelo.objects.filter(nombre_modelo = validated_data['nombre_modelo']).exists() and instance.nombre_modelo != validated_data['nombre_modelo']):
+            raise serializers.ValidationError({'nombre': 'Ya existe un modelo con ese nombre'})
+        
+        return super().update(instance, validated_data)
+    
+    
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
     modeloVehiculo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
