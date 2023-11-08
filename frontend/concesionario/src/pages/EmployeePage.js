@@ -136,7 +136,7 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">{cargo}</TableCell>
 
-                                                <TableCell align="right">
+                                                <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
                                                         <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                                                             <EditIcon />

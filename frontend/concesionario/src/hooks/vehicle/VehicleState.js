@@ -35,7 +35,7 @@ export function VehicleState(props) {
     }
 
     const [vehicle, setVehicle] = React.useState(emptyVehicle);
-    const [vehicles, setVehicles] = React.useState([]);
+    const [vehicles, setVehicles] = React.useState([{vin: "1", modelo: "Adui", sucursal: "Norte", color: "Rojo"}]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);

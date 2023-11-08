@@ -113,7 +113,7 @@ export default function ModelPage() {
 
                                                 <TableCell align="left">{precioBase}</TableCell>
 
-                                                <TableCell align="right">
+                                                <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
                                                         <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                                                             <EditIcon />
