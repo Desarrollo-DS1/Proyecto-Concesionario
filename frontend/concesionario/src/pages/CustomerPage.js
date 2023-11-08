@@ -118,7 +118,7 @@ export default function CustomerPage() {
 
                         <TableCell align="left">{genero}</TableCell>
 
-                        <TableCell align="right">
+                        <TableCell align="center" width={"5%"}>
                           <div style={{ display: 'flex' }}>
                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />
