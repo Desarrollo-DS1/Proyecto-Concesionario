@@ -397,7 +397,7 @@ export function EmployeeState(props) {
         handleCloseFilter();
     }
 
-    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName, filterField);
+    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName, filterField, 'usuarios');
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
     const isNotFound = !filteredEmployees.length && !!filterName;
 

@@ -91,7 +91,7 @@ export default function CustomerPage() {
                 <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero} = row;
+                    const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
 
