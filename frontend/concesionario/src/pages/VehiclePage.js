@@ -29,6 +29,7 @@ import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
 import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
 import VehicleContext from "../hooks/vehicle/VehicleContext";
+import Label from "../components/label";
 
 // ----------------------------------------------------------------------
 
@@ -88,7 +89,7 @@ export default function VehiclePage() {
                                 <ListHead context={VehicleContext} name={'vehiculos'}/>
                                 <TableBody>
                                     {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { vin, nombreModelo, nombreSucursal, nombreColor} = row;
+                                        const { vin, nombreModelo, nombreSucursal, nombreColor, disponibleVenta} = row;
                                         const selectedVehicle = selected.indexOf(vin) !== -1;
 
                                         return (
@@ -104,6 +105,8 @@ export default function VehiclePage() {
                                                 <TableCell align="left">{nombreSucursal}</TableCell>
 
                                                 <TableCell align="left">{nombreColor}</TableCell>
+
+                                                <TableCell align="left"><Label fullWidth color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>

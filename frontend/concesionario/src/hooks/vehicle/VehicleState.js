@@ -20,6 +20,7 @@ export function VehicleState(props) {
         { id: 'modelo', label: 'modelo', alignRight: false },
         { id: 'sucursal', label: 'sucursal', alignRight: false },
         { id: 'color', label: 'color', alignRight: false },
+        { id: 'disponible', label: 'disponible', alignRight: false },
         { id: '' },
     ];
 

@@ -179,7 +179,12 @@
       "modelo": "Model",
       "sucursal": "Branch",
       "color": "Color",
+      "disponible": "Available",
       "undefined" : ""
+    },
+    "disponible": {
+      "enStock": "Stock",
+      "vendido": "Sold"
     }
   },
   "errores": {

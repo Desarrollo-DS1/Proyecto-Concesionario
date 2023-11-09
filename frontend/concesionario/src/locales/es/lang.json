@@ -186,7 +186,12 @@
       "modelo": "Modelo",
       "sucursal": "Sucursal",
       "color": "Color",
+      "disponible": "Disponible",
       "undefined" : ""
+    },
+    "disponible": {
+      "enStock": "En Stock",
+      "vendido": "Vendido"
     }
   },
   "errores": {
