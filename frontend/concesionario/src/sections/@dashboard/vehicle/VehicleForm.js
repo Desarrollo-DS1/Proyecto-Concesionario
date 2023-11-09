@@ -138,6 +138,9 @@ export default function VehicleForm() {
                           label={t("vehiculos.label.modelo")} variant="outlined"
                           helperText={t(vehicleError.modelo)}
                           style={textFieldStyle}
+                          SelectProps={{
+                              MenuProps: selectMenuProps
+                          }}
                       >
                           {models.map((option) => {
                               const { id, nombre } = option;
@@ -210,7 +213,7 @@ export default function VehicleForm() {
                                                   border: '1px solid #E6E6E6'
                                               }}
                                           />
-                                          {colorNombre}
+                                          {t(`colores.${colorNombre}`)}
                                       </Stack>
                                   </MenuItem>
                               ); })}

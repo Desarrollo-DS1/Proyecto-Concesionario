@@ -126,7 +126,7 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">$ {salario}</TableCell>
 
-                                                <TableCell align="left">{cargo}</TableCell>
+                                                <TableCell align="left">{t(`cargos.${cargo}`)}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>

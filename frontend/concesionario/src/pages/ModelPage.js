@@ -101,13 +101,13 @@ export default function ModelPage() {
 
                                                 <TableCell align="left">{año}</TableCell>
 
-                                                <TableCell align="left">{carroceria}</TableCell>
+                                                <TableCell align="left">{t(`carrocerias.${carroceria}`)}</TableCell>
 
                                                 <TableCell align="left">{cilindraje}</TableCell>
 
                                                 <TableCell align="left">{potencia}</TableCell>
 
-                                                <TableCell align="left">{combustible}</TableCell>
+                                                <TableCell align="left">{t(`combustibles.${combustible}`)}</TableCell>
 
                                                 <TableCell align="left">{numeroPasajeros}</TableCell>
 

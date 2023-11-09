@@ -91,7 +91,7 @@ export default function ListToolbar(props) {
         </Tooltip>
       ) : (
           <Box sx={{display: "flex"}}>
-            <Tooltip title="Filter list">
+            <Tooltip title={t('general.botones.filtroLista')}>
               <IconButton onClick={(event) => handleOpenFilter(event)}>
                 <Iconify icon="ic:round-filter-list" />
               </IconButton>

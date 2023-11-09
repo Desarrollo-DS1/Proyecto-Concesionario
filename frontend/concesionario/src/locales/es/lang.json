@@ -30,7 +30,8 @@
       "cancelar": "Cancelar",
       "buscar": "Buscar",
       "si": "Si",
-      "no": "No"
+      "no": "No",
+      "filtroLista": "Filtro Lista"
     },
     "perfil": {
       "inicio": "Inicio",
@@ -255,5 +256,53 @@
     "numeroVentasMensuales": "Numero Ventas Mensuales",
     "ventasMensuales": "Ventas Mensuales",
     "ventasPorModelo": "Ventas por Modelo"
+  },
+  "colores": {
+    "Amarillo": "Amarillo",
+    "Azul": "Azul",
+    "Blanco": "Blanco",
+    "Gris": "Gris",
+    "Negro": "Negro",
+    "Plata": "Plata",
+    "Rojo": "Rojo",
+    "Verde": "Verde"
+  },
+  "combustibles": {
+    "Gasolina": "Gasolina",
+    "Diesel": "Diesel",
+    "Eléctrico": "Electrico",
+    "Híbrido": "Hibrido",
+    "Gas": "Gas",
+    "Gas Natural": "Gas Natural",
+    "Gas Licuado": "Gas Licuado"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Station Wagon",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Convertible",
+    "Coupe": "Coupe",
+    "Roadster": "Roadster",
+    "Camion": "Camión",
+    "Camioneta": "Camioneta",
+    "Bus": "Autobús",
+    "Minivan": "Minivan",
+    "Microbus": "Microbús",
+    "Micro": "Micro",
+    "Tracto Camion": "Tractocamión",
+    "Trailer": "Remolque"
+  },
+  "géneros": {
+    "Masculino": "Masculino",
+    "Femenino": "Femenino",
+    "Otro": "Otro"
+  },
+  "cargos": {
+    "Vendedor": "Vendedor",
+    "Jefe de Taller": "Jefe de Taller",
+    "Gerente": "Gerente"
   }
 }

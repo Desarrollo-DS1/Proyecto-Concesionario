@@ -121,7 +121,7 @@ export default function VehiclePage() {
                                                                 border: '1px solid #E6E6E6'
                                                             }}
                                                         />
-                                                        {nombreColor}
+                                                        {t(`colores.${nombreColor}`)}
                                                     </Stack>
                                                 </TableCell>
 
