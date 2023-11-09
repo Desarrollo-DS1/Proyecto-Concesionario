@@ -217,10 +217,8 @@ class VehiculoSerializer(serializers.ModelSerializer):
         return vehiculo
     
     def update(self, instance, validated_data):
-        print(validated_data)
-        vehiculo_data = validated_data.pop('vehiculo')
-
-        Vehiculo.objects.filter(vin=instance.vin).update(**vehiculo_data)
+        Vehiculo.objects.filter(vin=instance.vin).update(**validated_data)
+        return instance
         
 
 class ColorSerializer(serializers.ModelSerializer):

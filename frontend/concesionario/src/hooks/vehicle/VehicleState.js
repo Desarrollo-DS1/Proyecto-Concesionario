@@ -171,8 +171,7 @@ export function VehicleState(props) {
     const updateVehicle = (vehicle) => {
         async function putVehicle() {
             try{
-                console.log(vehicle)
-                const response = await updateVehicle(vehicle.vin, vehicle);
+                const response = await updateVehiculo(vehicle.vin, vehicle);
                 setVehicles(vehicles.map((item) => (item.vin === vehicle.vin ? vehicle : item)));
 
                 setTypeSnackbar('success');
@@ -184,7 +183,8 @@ export function VehicleState(props) {
             
             } catch (error) {
                 const errors = error.response.data;
-                console.log(errors);
+
+                
             }
         }
         
