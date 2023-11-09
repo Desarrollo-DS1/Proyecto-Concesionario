@@ -308,3 +308,29 @@ class VentaSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
         
         return instance
+
+class CotizacionSerializer():
+    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
+    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
+    fechaCreacion = serializers.DateField()
+    porcentajeDescuento = serializers.DecimalField(max_digits=5, decimal_places=4)  
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
+    modelos = models.ManyToManyField(Modelo, through='Cotizacion_Modelo', related_name='modelos')
+
+    class Meta:
+        model = Cotizacion
+        fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
+    
+
+class CotizacionModeloSerializer():
+    idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
+    cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
+    modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
+    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    cantidad = serializers.IntegerField()
+
+    class Meta:
+        model = Cotizacion_Modelo
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'

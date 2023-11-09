@@ -138,6 +138,10 @@ class VentaView(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         return MethodNotAllowed('DELETE', detail='No se puede eliminar una venta')
 
+class CotizacionModeloView(viewsets.ModelViewSet):
+    serializer_class = CotizacionModeloSerializer
+    queryset = Cotizacion_Modelo.objects.all()
 
-
-
+class CotizacionView(viewsets.ModelViewSet):
+    serializer_class = CotizacionSerializer
+    queryset = Cotizacion.objects.all()
