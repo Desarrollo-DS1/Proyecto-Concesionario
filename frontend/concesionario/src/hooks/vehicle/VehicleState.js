@@ -29,7 +29,6 @@ export function VehicleState(props) {
         {id: 'nombreModelo', label: 'modelo', type: 'text'},
         {id: 'nombreSucursal', label: 'sucursal', type: 'text'},
         {id: 'nombreColor', label: 'color', type: 'text'},
-        {id: 'disponible', label: 'disponible', type: 'boolean'},
     ];
 
     const emptyVehicle = {
