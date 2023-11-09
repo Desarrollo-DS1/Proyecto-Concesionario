@@ -4,26 +4,17 @@ import {useTranslation} from "react-i18next";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
-import {Grid, Container, Typography, Stack, TextField, MenuItem, Card, Button} from '@mui/material';
+import {Grid, Stack, TextField, Card, Button} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SellIcon from '@mui/icons-material/Sell';
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-
 // components
-import Iconify from '../components/iconify';
 // sections
 import {
-    AppTasks,
-    AppNewsUpdate,
-    AppOrderTimeline,
     AppCurrentVisits,
-    AppWebsiteVisits,
-    AppTrafficBySite,
-    AppWidgetSummary,
-    AppCurrentSubject,
-    AppConversionRates,
+    AppWidgetSummary
 } from '../sections/@dashboard/app';
 
 import AppMonthlySales from '../sections/@dashboard/app/AppMonthlySales';

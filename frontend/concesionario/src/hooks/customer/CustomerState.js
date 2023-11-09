@@ -1,7 +1,5 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
-import { set } from "lodash";
-// import CUSTOMERLIST from '../../_mock/customer';
 import CustomerContext from './CustomerContext';
 import {checkCustomer} from "./CustomerValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
@@ -71,26 +69,32 @@ export function CustomerState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [genders, setGenders] = useState(initialGenders);
+    const [genders] = useState(initialGenders);
 
-    const getCustomers = () => {
-        async function loadCustomers() {
-            try{
-                const response = await getAllClientes();
-                setCustomers(response.data);
+    const getCustomers = async () => {
+        try
+        {
+            const response = await getAllClientes();
+            setCustomers(response.data);
 
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('clientes.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+        } catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('clientes.mensaje.errorListando');
+            handleOpenSnackbar();
         }
-
-        loadCustomers();
     }
 
-    const getCustomer = (cedula) => {
-        async function loadCustomer() {
+    const getCustomer = async (cedula) => {
+
+        if (cedula === null){
+            setEdit(false);
+            setCustomer(emptyCustomer);
+        }
+        else
+        {
+            setEdit(true);
+
             try{
                 const response = await getCliente(cedula);
                 const customerDataWithClave = { ...response.data, clave: '' };
@@ -102,119 +106,105 @@ export function CustomerState(props) {
                 handleOpenSnackbar();
             }
         }
+    }
 
-        if (cedula === null){
-            setCustomer(emptyCustomer);
-            setEdit(false);
+    const addCustomer = async (customer) => {
 
-        } else{
-            loadCustomer();
-            setEdit(true);
+        try
+        {
+            const response = await createCliente(customer);
+            setCustomers([...customers, response.data]);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.agregado');
+            handleOpenSnackbar();
+            handleCloseForm();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+
+            if(errors.cedula)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorCedula');
+                handleOpenSnackbar();
+                setCustomerError({...customerError, cedula: 'Cedula ya existe'});
+
+            }
+            else if(errors.email)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEmail');
+                handleOpenSnackbar();
+                setCustomerError({...customerError, correo: 'Correo ya existe'});
+
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.error');
+                handleOpenSnackbar();
+            }
         }
     }
 
-    const addCustomer = (customer) => {
-        async function postCustomer() {
-            try{
-                const response = await createCliente(customer);
-                setCustomers([...customers, response.data]);
+    const updateCustomer = async (customer) => {
+        try
+        {
+            await updateCliente(customer.cedula, customer);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.editado');
+            handleOpenSnackbar();
+            handleCloseForm();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.agregado');
+            if (errors.email)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEmail');
                 handleOpenSnackbar();
-                
-                handleCloseForm();
+                setCustomerError({...customerError, correo: 'Correo ya existe'});
 
-            } catch (error) {
-                const errors = error.response.data;
-
-                if(errors.cedula)
-                {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorCedula');
-                    handleOpenSnackbar();
-                    setCustomerError({...customerError, cedula: 'Cedula ya existe'});
-                
-                } else if(errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({...customerError, correo: 'Correo ya existe'});
-                
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.error');
-                    handleOpenSnackbar();
-                }
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEditar');
+                handleOpenSnackbar();
             }
         }
-
-        postCustomer();
-    }
-
-    const updateCustomer = (customer) => {
-        async function putCustomer() {
-            try{
-                const response = await updateCliente(customer.cedula, customer);
-                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.editado');
-                handleOpenSnackbar();
-
-                handleCloseForm();
-                getCustomers();
-            
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({...customerError, correo: 'Correo ya existe'});
-                
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEditar');
-                    handleOpenSnackbar();
-                }
-            }
-        }
-        
-        putCustomer();
     }
 
 
-    const deleteCustomer = (customer) => {
-        async function removeCustomer() {
-            try{
-                const response = await deleteCliente(customer.cedula);
-                setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
+    const deleteCustomer = async (customer) => {
+        try
+        {
+            await deleteCliente(customer.cedula);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.eliminado');
+            handleOpenSnackbar();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.eliminado');
+            if (errors.protected)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
 
-                getCustomers();
-            
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.protected) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar(errors.protected);
-                    handleOpenSnackbar();
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEliminar');
-                    handleOpenSnackbar();
-                }
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEliminar');
+                handleOpenSnackbar();
             }
         }
-        
-        removeCustomer();
     }
 
 
@@ -227,17 +217,18 @@ export function CustomerState(props) {
     }
     
     const handleSubmit = (event) => {
+
         event.preventDefault();
-        if (!validateCustomerOnSubmit()) {
+        if (!validateCustomerOnSubmit())
+        {
             if(edit)
             {
-                updateCustomer(customer);
+                updateCustomer(customer).then(() => getCustomers());
             }
             else
             {
-                addCustomer(customer);
+                addCustomer(customer).then(() => getCustomers());
             }
-            getCustomers();
         }
     }
     const handleOnBlur = (event) => {
@@ -247,21 +238,20 @@ export function CustomerState(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteCustomer(customer);
-
+        deleteCustomer(customer).then(() => getCustomers());
         handleCloseDelete();
     }
-    const handleOpenForm = (event, cedula) => {
+    const handleOpenForm = async (event, cedula) => {
         getCustomerError();
-        getCustomer(cedula);
+        await getCustomer(cedula);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
         setShowPassword(false);
         setOpenForm(false);
     };
-    const handleOpenDelete = (event, cedula) => {
-        getCustomer(cedula);
+    const handleOpenDelete = async (event, cedula) => {
+        await getCustomer(cedula);
         setOpenDelete(true);
     }
     const handleCloseDelete = () => {

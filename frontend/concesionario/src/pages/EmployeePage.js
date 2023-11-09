@@ -104,7 +104,7 @@ export default function EmployeePage() {
                                 <ListHead context={EmployeeContext} name={'empleados'}/>
                                 <TableBody>
                                     {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
+                                        const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
                                         const nombre = `${primerNombre} ${primerApellido}`;
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 

@@ -49,177 +49,167 @@ export function VehicleState(props) {
     const [branches, setBranches] = useState([]);
 
 
-    const getBranches = () => {
-        async function loadBranches() {
-            try{
-                const response = await getAllSucursales();
-                setBranches(response.data);
-        
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+    const getBranches = async () => {
+
+        try
+        {
+            const response = await getAllSucursales();
+            setBranches(response.data);
         }
-        
-        loadBranches();
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('sucursales.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
-    const getColors = () => {
-        async function loadColors() {
-            try{
-                const response = await getAllColors();
-                setColors(response.data);
-        
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('colores.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+    const getColors = async () => {
+
+        try
+        {
+            const response = await getAllColors();
+            setColors(response.data);
         }
-        
-        loadColors();
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('colores.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
-    const getModels = () => {
-        async function loadModels() {
-            try{
-                const response = await getAllModelos();
-                setModels(response.data);
-        
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+    const getModels = async () => {
+
+        try
+        {
+            const response = await getAllModelos();
+            setModels(response.data);
         }
-        
-        loadModels();
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('modelos.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
 
-    const getVehicles = () => {
-        async function loadVehicles() {
-            try{
-                const response = await getAllVehiculos();
-                setVehicles(response.data);
+    const getVehicles = async () => {
+        try
+        {
+            const response = await getAllVehiculos();
+            setVehicles(response.data);
 
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('empleados.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
         }
-
-        loadVehicles();        
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('empleados.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
-    const getVehicle = (vin) => {
-        async function loadVehicles() {
-            try{
+    const getVehicle = async (vin) => {
+
+        if (vin === null)
+        {
+            setEdit(false);
+            setVehicle(emptyVehicle);
+        }
+        else
+        {
+            setEdit(true);
+            try
+            {
                 const response = await getVehiculo(vin);
                 setVehicle(response.data);
-            } catch (error) {
+            }
+            catch (error)
+            {
                 setTypeSnackbar('error');
                 setMessageSnackbar('vehiculos.mensaje.errorCargando');
                 handleOpenSnackbar();
             }
         }
+    }
 
-        if (vin === null) {
-            setVehicle(emptyVehicle);
-            setEdit(false);
+    const addVehicle = async (vehicle) => {
 
-        } else {
-            loadVehicles();
-            setEdit(true);
+        try
+        {
+            const response = await createVehiculo(vehicle);
+            setVehicles([...vehicles, response.data]);
+            setTypeSnackbar('success');
+            setMessageSnackbar('vehiculos.mensaje.agregado');
+            handleOpenSnackbar();
+            handleCloseForm();
+
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+            if(errors.vin)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('vehiculos.mensaje.errorCedula');
+                setVehicleError({...vehicleError, vin: 'Vin ya existe'});
+                handleOpenSnackbar();
+
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('vehiculos.mensaje.error');
+                handleOpenSnackbar();
+            }
         }
     }
 
-    const addVehicle = (vehicle) => {
-        async function postVehicle() {
-            try{
-                const response = await createVehiculo(vehicle);
-                setVehicles([...vehicles, response.data]);
+    const updateVehicle = async (vehicle) => {
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('vehiculos.mensaje.agregado');
-                handleOpenSnackbar();
-
-                handleCloseForm();
-            
-            } catch (error) {
-                const errors = error.response.data;
-
-                if(errors.vin){
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('vehiculos.mensaje.errorCedula');
-                    setVehicleError({...vehicleError, vin: 'Vin ya existe'});
-                    handleOpenSnackbar();
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('vehiculos.mensaje.error');
-                    handleOpenSnackbar();
-                }
-            }
+        try
+        {
+            await updateVehiculo(vehicle.vin, vehicle);
+            setTypeSnackbar('success');
+            setMessageSnackbar('vehiculos.mensaje.editado');
+            handleOpenSnackbar();
+            handleCloseForm();
         }
-        
-        postVehicle();
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('vehiculos.mensaje.errorEditar');
+            handleOpenSnackbar();
+        }
     }
 
-    const updateVehicle = (vehicle) => {
-        async function putVehicle() {
-            try{
-                const response = await updateVehiculo(vehicle.vin, vehicle);
-                setVehicles(vehicles.map((item) => (item.vin === vehicle.vin ? vehicle : item)));
+    const deleteVehicle = async (vehicle) => {
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('vehiculos.mensaje.editado');
+        try
+        {
+            await deleteVehiculo(vehicle.vin);
+            setTypeSnackbar('success');
+            setMessageSnackbar('vehiculos.mensaje.eliminado');
+            handleOpenSnackbar();
+
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+            if(errors.protected)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
 
-                handleCloseForm();
-                getVehicles();
-            
-            } catch (error) {
-                const errors = error.response.data;
-
-                
-            }
-        }
-        
-        putVehicle();
-    }
-
-    const deleteVehicle = (vehicle) => {
-        async function removeVehicle() {
-            try{
-                const response = await deleteVehiculo(vehicle.vin);
-                setVehicles(vehicles.filter((item) => item.vin !== vehicle.vin));
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('vehiculos.mensaje.eliminado');
+            } else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('vehiculo.mensaje.errorEliminar');
                 handleOpenSnackbar();
-
-                getVehicles();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if(errors.protected) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar(errors.protected);
-                    handleOpenSnackbar();
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('vehiculo.mensaje.errorEliminar');
-                    handleOpenSnackbar();
-                }
             }
         }
-
-        removeVehicle();
     }
 
     const handleInputChange = (event) => {
@@ -234,13 +224,12 @@ export function VehicleState(props) {
         if (!validateVehicleOnSubmit()) {
             if(edit)
             {
-                updateVehicle(vehicle);
+                updateVehicle(vehicle).then(() => getVehicles());
             }
             else
             {
-                addVehicle(vehicle);
+                addVehicle(vehicle).then(() => getVehicles());
             }
-            getVehicles();
         }
     }
     const handleOnBlur = (event) => {
@@ -250,24 +239,22 @@ export function VehicleState(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteVehicle(vehicle);
-
+        deleteVehicle(vehicle).then(() => getVehicles());
         handleCloseDelete();
     }
-    const handleOpenForm = (event, vin) => {
+    const handleOpenForm = async (event, vin) => {
         getVehicleError();
-        getBranches();
-        getColors();
-        getModels();
-        getVehicle(vin);
+        await getBranches();
+        await getColors();
+        await getModels();
+        await getVehicle(vin);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
         setOpenForm(false);
     };
     const handleOpenDelete = (event, vin) => {
-        getVehicle(vin);
-        setOpenDelete(true);
+        getVehicle(vin).then(() => setOpenDelete(true));
     }
     const handleCloseDelete = () => {
         setOpenDelete(false);
