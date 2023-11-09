@@ -3,11 +3,10 @@ import React, {useState} from "react";
 import VehicleContext from './VehicleContext';
 import {checkVehicle} from "./VehicleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo} from "../../api/Vehiculo.api";
+import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllColors} from "../../api/Colors.api";
-import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
-import { getAllSucursales, getSucursal } from "../../api/Sucursal.api";
+import { getAllSucursales} from "../../api/Sucursal.api";
 
 
 VehicleState.propTypes = {
@@ -192,13 +191,13 @@ export function VehicleState(props) {
     }
 
     const deleteVehicle = (vehicle) => {
-        async function removeEmployee() {
+        async function removeVehicle() {
             try{
-                const response = await deleteEmpleado(vehicle.cedula);
-                setVehicles(vehicles.filter((item) => item.cedula !== vehicle.cedula));
+                const response = await deleteVehiculo(vehicle.vin);
+                setVehicles(vehicles.filter((item) => item.vin !== vehicle.vin));
 
                 setTypeSnackbar('success');
-                setMessageSnackbar('empleados.mensaje.eliminado');
+                setMessageSnackbar('vehiculos.mensaje.eliminado');
                 handleOpenSnackbar();
 
                 getVehicles();
@@ -213,13 +212,13 @@ export function VehicleState(props) {
 
                 } else {
                     setTypeSnackbar('error');
-                    setMessageSnackbar('empleados.mensaje.errorEliminar');
+                    setMessageSnackbar('vehiculo.mensaje.errorEliminar');
                     handleOpenSnackbar();
                 }
             }
         }
 
-        removeEmployee();
+        removeVehicle();
     }
 
     const handleInputChange = (event) => {
