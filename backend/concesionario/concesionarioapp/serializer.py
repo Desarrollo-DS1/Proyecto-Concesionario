@@ -204,14 +204,18 @@ class ModeloSerializer(serializers.ModelSerializer):
     
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
-    modeloVehiculo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
-    colorVehiculo = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
-    sucursalVehiculo = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
-    disponibleVenta = serializers.BooleanField(source='disponible_para_venta')
-    
+    modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
+    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
+    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
+    nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    nombreColor = serializers.CharField(source='nombre_color', read_only=True)
+    nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
+    disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
+
+
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modeloVehiculo', 'colorVehiculo', 'sucursalVehiculo', 'disponibleVenta'
+        fields = 'vin', 'modelo', 'color', 'sucursal', 'nombreModelo', 'nombreColor', 'nombreSucursal', 'disponibleVenta'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -219,7 +223,19 @@ class VehiculoSerializer(serializers.ModelSerializer):
         
         vehiculo = Vehiculo.objects.create(**validated_data)
         return vehiculo
+    
+    def update(self, instance, validated_data):
+        Vehiculo.objects.filter(vin=instance.vin).update(**validated_data)
+        return instance
+        
 
+class ColorSerializer(serializers.ModelSerializer):
+    idColor = serializers.IntegerField(source='id_color')
+    colorNombre = serializers.CharField(source='nombre_color')
+    
+    class Meta:
+        model = Color
+        fields = "__all__"
 
 class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())

@@ -84,10 +84,10 @@ WSGI_APPLICATION = 'concesionario.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'BdConcesionario',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'concesionario',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': '123',
         'HOST': 'localhost',
         'PORT': '5432',
     }

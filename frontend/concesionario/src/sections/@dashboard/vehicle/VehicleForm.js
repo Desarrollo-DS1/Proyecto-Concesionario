@@ -116,6 +116,7 @@ export default function VehicleForm() {
                           fullWidth
                           required
                           name="vin"
+                          disabled={ edit }
                           value={vehicle.vin}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
@@ -140,10 +141,10 @@ export default function VehicleForm() {
                           style={textFieldStyle}
                       >
                           {models.map((option) => {
-                              const { sucursal, nombreSucursal } = option;
+                              const { id, nombre } = option;
                               return (
-                                  <MenuItem key={sucursal} value={sucursal}>
-                                      {nombreSucursal}
+                                  <MenuItem key={id} value={id}>
+                                      {nombre}
                                   </MenuItem>
                               ); })}
                       </TextField>
@@ -192,10 +193,10 @@ export default function VehicleForm() {
                           }}
                       >
                           {colors.map((option) => {
-                              const { sucursal, nombreSucursal } = option;
+                              const { idColor, colorNombre } = option;
                               return (
-                                  <MenuItem key={sucursal} value={sucursal}>
-                                      {nombreSucursal}
+                                  <MenuItem key={idColor} value={idColor}>
+                                      {colorNombre}
                                   </MenuItem>
                               ); })}
                       </TextField>
