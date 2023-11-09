@@ -197,13 +197,16 @@ class ModeloSerializer(serializers.ModelSerializer):
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
     modeloVehiculo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
+    nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
     colorVehiculo = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
+    nombreColor = serializers.CharField(source='nombre_color', read_only=True)
     sucursalVehiculo = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
+    nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
     disponibleVenta = serializers.BooleanField(source='disponible_para_venta')
     
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modeloVehiculo', 'colorVehiculo', 'sucursalVehiculo', 'disponibleVenta'
+        fields = 'vin', 'modeloVehiculo', 'colorVehiculo', 'sucursalVehiculo', 'disponibleVenta', 'nombreModelo', 'nombreColor', 'nombreSucursal'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
