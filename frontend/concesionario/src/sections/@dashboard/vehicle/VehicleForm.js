@@ -5,7 +5,7 @@ import {
     Box,
     Button,
     Divider,
-    Grid, IconButton, InputAdornment,
+    Grid, IconButton, InputAdornment, ListItemIcon,
     MenuItem,
     Stack,
     TextField,
@@ -196,7 +196,22 @@ export default function VehicleForm() {
                               const { idColor, colorNombre } = option;
                               return (
                                   <MenuItem key={idColor} value={idColor}>
-                                      {colorNombre}
+                                      <Stack direction={"row"}>
+                                          <div
+                                              style={{
+                                                  width: '20px',
+                                                  height: '20px',
+                                                  backgroundColor: "#000",
+                                                  display: 'flex',
+                                                  justifyContent: 'center',
+                                                  alignItems: 'center',
+                                                  borderRadius: '50%',
+                                                  marginRight: '10px'
+                                              }}
+                                          />
+                                          {colorNombre}
+                                      </Stack>
+
                                   </MenuItem>
                               ); })}
                       </TextField>
