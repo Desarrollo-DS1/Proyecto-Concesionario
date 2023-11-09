@@ -16,7 +16,7 @@ export function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applySortFilter(array, comparator, query, field) {
+export function applySortFilter(array, comparator, query, field, tabla) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
@@ -25,6 +25,16 @@ export function applySortFilter(array, comparator, query, field) {
     });
     if (query) {
         return filter(array, (_item) => {
+
+            if (tabla === 'usuarios' && field === 'nombre') {
+                const fieldValue = `${_item.primerNombre}${" "}${_item.primerApellido}`;
+                if (fieldValue === undefined) {
+                    return false;
+                }
+                const fieldLowercase = fieldValue.toString().toLowerCase();
+                const queryLowercase = query.toLowerCase();
+                return fieldLowercase.indexOf(queryLowercase) !== -1;
+            }
 
             const fieldValue = _item[field];
             if (fieldValue === undefined) {

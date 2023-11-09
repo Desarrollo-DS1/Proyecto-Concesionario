@@ -104,7 +104,7 @@ export default function EmployeePage() {
                                 <ListHead context={EmployeeContext} name={'empleados'}/>
                                 <TableBody>
                                     {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
+                                        const {cedula, primerNombre, primerApellido, correo, telefono, celular, salario, cargo} = row;
                                         const nombre = `${primerNombre} ${primerApellido}`;
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 
@@ -124,17 +124,9 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">{celular}</TableCell>
 
-                                                <TableCell align="left">{direccion}</TableCell>
+                                                <TableCell align="left">$ {salario}</TableCell>
 
-                                                <TableCell align="left">{ciudad}</TableCell>
-
-                                                <TableCell align="left">{fechaIngreso}</TableCell>
-
-                                                <TableCell align="left">{fechaRetiro}</TableCell>
-
-                                                <TableCell align="left">{salario}</TableCell>
-
-                                                <TableCell align="left">{cargo}</TableCell>
+                                                <TableCell align="left">{t(`cargos.${cargo}`)}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>

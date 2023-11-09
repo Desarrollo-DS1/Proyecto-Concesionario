@@ -19,10 +19,6 @@ export function EmployeeState(props) {
         { id: 'correo', label: 'correo', alignRight: false },
         { id: 'telefono', label: 'telefono', alignRight: false },
         { id: 'celular', label: 'celular', alignRight: false },
-        { id: 'direccion', label: 'direccion', alignRight: false },
-        { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaIngreso', label: 'fechaIngreso', alignRight: false },
-        { id: 'fechaRetiro', label: 'fechaRetiro', alignRight: false },
         { id: 'salario', label: 'salario', alignRight: false },
         { id: 'cargo', label: 'cargo', alignRight: false },
         { id: '' },
@@ -34,10 +30,6 @@ export function EmployeeState(props) {
         { id: 'correo', label: 'correo' },
         { id: 'telefono', label: 'telefono' },
         { id: 'celular', label: 'celular' },
-        { id: 'direccion', label: 'direccion' },
-        { id: 'ciudad', label: 'ciudad' },
-        { id: 'fechaIngreso', label: 'fechaIngreso' },
-        { id: 'fechaRetiro', label: 'fechaRetiro' },
         { id: 'salario', label: 'salario' },
         { id: 'cargo', label: 'cargo' },
     ];
@@ -405,7 +397,7 @@ export function EmployeeState(props) {
         handleCloseFilter();
     }
 
-    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName, filterField);
+    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName, filterField, 'usuarios');
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
     const isNotFound = !filteredEmployees.length && !!filterName;
 

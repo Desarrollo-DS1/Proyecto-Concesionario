@@ -79,8 +79,8 @@ export function ModelState(props) {
     const initialFuels = [
         { id: '1', label: 'Gasolina' },
         { id: '2', label: 'Diesel' },
-        { id: '3', label: 'Electrico' },
-        { id: '4', label: 'Hibrido' },
+        { id: '3', label: 'Eléctrico' },
+        { id: '4', label: 'Híbrido' },
         { id: '5', label: 'Gas' },
         { id: '6', label: 'Gas Natural' },
         { id: '7', label: 'Gas Licuado' },]

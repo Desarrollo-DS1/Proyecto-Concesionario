@@ -248,7 +248,7 @@ export default function CustomerForm() {
                       >
                           {genders.map((option) => (
                               <MenuItem key={option.id} value={option.label}>
-                                  {option.label}
+                                  {t(`generos.${option.label}`)}
                               </MenuItem>
                           ))}
                       </TextField>

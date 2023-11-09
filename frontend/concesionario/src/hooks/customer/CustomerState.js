@@ -21,8 +21,6 @@ export function CustomerState(props) {
         { id: 'celular', label: 'celular', alignRight: false },
         { id: 'direccion', label: 'direccion', alignRight: false },
         { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento', alignRight: false },
-        { id: 'genero', label: 'genero', alignRight: false },
         { id: '' },
     ];
 
@@ -34,8 +32,6 @@ export function CustomerState(props) {
         { id: 'celular', label: 'celular' },
         { id: 'direccion', label: 'direccion' },
         { id: 'ciudad', label: 'ciudad' },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento' },
-        { id: 'genero', label: 'genero' },
     ];
 
     const emptyCustomer = {
@@ -340,7 +336,7 @@ export function CustomerState(props) {
         handleCloseFilter();
     }
 
-    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName, filterField);
+    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName, filterField, 'usuarios');
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0;
     const isNotFound = !filteredCustomers.length && !!filterName;
 

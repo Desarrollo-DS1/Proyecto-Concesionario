@@ -15,81 +15,82 @@ import SvgColor from '../../../components/svg-color';
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
 const navConfig = [
+
   {
-    title: 'dashBoard',
-    path: '/dashboard/app',
-    icon: icon('ic_analytics'),
+    section: 'informes',
+    links: [
+      {
+        title: 'dashBoard',
+        path: '/dashboard/app',
+        icon: icon('ic_analytics'),
+      },
+    ]
   },
   {
-    title: 'clientes',
-    path: '/dashboard/clientes',
-    icon: <PersonIcon/>,
+    section: 'usuarios',
+    links: [
+      {
+        title: 'clientes',
+        path: '/dashboard/clientes',
+        icon: <PersonIcon/>,
+      },
+      {
+        title: 'empleados',
+        path: '/dashboard/empleados',
+        icon: <BadgeIcon/>,
+      },
+    ]
   },
   {
-    title: 'empleados',
-    path: '/dashboard/empleados',
-    icon: <BadgeIcon/>,
+    section: 'inventario',
+    links: [
+      {
+        title: 'modelos',
+        path: '/dashboard/modelos',
+        icon: <CarRepairIcon/>,
+      },
+      {
+        title: 'vehiculos',
+        path: '/dashboard/vehiculos',
+        icon: <DirectionsCarIcon/>,
+      },
+      {
+        title: 'repuestos',
+        path: '/dashboard/respuestos',
+        icon: <PlumbingIcon/>,
+      },
+    ]
   },
   {
-    title: 'modelos',
-    path: '/dashboard/modelos',
-    icon: <CarRepairIcon/>,
+    section: 'operaciones',
+    links: [
+      {
+        title: 'ordenesTrabajo',
+        path: '/dashboard/ordenes-trabajo',
+        icon: <HandymanIcon/>,
+      },
+      {
+        title: 'ventas',
+        path: '/dashboard/ventas',
+        icon: <SellIcon/>,
+      },
+      {
+        title: 'cotizaciones',
+        path: '/dashboard/cotizaciones',
+        icon: <RequestQuoteIcon/>,
+      },
+    ]
   },
   {
-    title: 'vehiculos',
-    path: '/dashboard/vehiculos',
-    icon: <DirectionsCarIcon/>,
+    section: 'ubicaciones',
+    links: [
+      {
+        title: 'sucursales',
+        path: '/dashboard/sucursales',
+        icon: <PlaceIcon/>
+      },
+    ]
   },
-  {
-    title: 'repuestos',
-    path: '/dashboard/respuestos',
-    icon: <PlumbingIcon/>,
-  },
-  {
-    title: 'ordenesTrabajo',
-    path: '/dashboard/ordenes-trabajo',
-    icon: <HandymanIcon/>,
-  },
-  {
-    title: 'ventas',
-    path: '/dashboard/ventas',
-    icon: <SellIcon/>,
-  },
-  {
-    title: 'cotizaciones',
-    path: '/dashboard/cotizaciones',
-    icon: <RequestQuoteIcon/>,
-  },
-  {
-    title: 'sucursales',
-    path: '/dashboard/sucursales',
-    icon: <PlaceIcon/>
-  },
-  // {
-  //   title: 'user',
-  //   path: '/dashboard/user',
-  //   icon: icon('ic_user'),
-  // },
-  // {
-  //   title: 'product',
-  //   path: '/dashboard/products',
-  //   icon: icon('ic_cart'),
-  // },
-  // {
-  //   title: 'blog',
-  //   path: '/dashboard/blog',
-  //   icon: icon('ic_blog'),
-  // },
-  // {
-  //   title: 'login',
-  //   path: '/login',
-  //   icon: icon('ic_lock'),
-  // },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: icon('ic_disabled'),
-  // },
 ];
 
 export default navConfig;

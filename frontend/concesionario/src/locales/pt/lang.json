@@ -5,6 +5,13 @@
       "en": "Inglês",
       "pt": "Português"
     },
+    "secciones": {
+      "informes": "Relatórios",
+      "usuarios": "Usuários",
+      "inventario": "Inventário",
+      "operaciones": "Operações",
+      "ubicaciones": "Localizações"
+    },
     "barraNavegacion": {
       "dashBoard": "Painel",
       "clientes": "Clientes",
@@ -23,7 +30,8 @@
       "cancelar": "Cancelar",
       "buscar": "Buscar",
       "si": "Sim",
-      "no": "Não"
+      "no": "Não",
+      "filtroLista": "Filtro Lista"
     },
     "perfil": {
       "inicio": "Início",
@@ -231,5 +239,53 @@
     "numeroVentasMensuales": "Número Vendas Mensais",
     "ventasMensuales": "Vendas Mensais",
     "ventasPorModelo": "Vendas por Modelo"
+  },
+  "colores": {
+    "Amarillo": "Amarelo",
+    "Azul": "Azul",
+    "Blanco": "Branco",
+    "Gris": "Cinza",
+    "Negro": "Preto",
+    "Plata": "Prata",
+    "Rojo": "Vermelho",
+    "Verde": "Verde"
+  },
+  "combustibles": {
+    "Gasolina": "Gasolina",
+    "Diesel": "Diesel",
+    "Eléctrico": "Eléctrico",
+    "Híbrido": "Híbrido",
+    "Gas": "Gás",
+    "Gas Natural": "Gás Natural",
+    "Gas Licuado": "Gás Liquefeito"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Perua",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Conversível",
+    "Coupe": "Coupé",
+    "Roadster": "Roadster",
+    "Camion": "Caminhão",
+    "Camioneta": "Utilitário",
+    "Bus": "Ônibus",
+    "Minivan": "Minivan",
+    "Microbus": "Micro-ônibus",
+    "Micro": "Micro",
+    "Tracto Camion": "Caminhão-trator",
+    "Trailer": "Reboque"
+  },
+  "generos": {
+    "Masculino": "Masculino",
+    "Femenino": "Feminino",
+    "Otro": "Outro"
+  },
+  "cargos": {
+    "Vendedor": "Vendedor",
+    "Jefe de Taller": "Chefe de Oficina",
+    "Gerente": "Gerente"
   }
 }

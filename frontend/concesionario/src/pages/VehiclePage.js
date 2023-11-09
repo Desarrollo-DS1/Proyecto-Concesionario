@@ -91,7 +91,7 @@ export default function VehiclePage() {
                                 <ListHead context={VehicleContext} name={'vehiculos'}/>
                                 <TableBody>
                                     {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { vin, nombreModelo, nombreSucursal, nombreColor, disponibleVenta} = row;
+                                        const { vin, nombreModelo, nombreSucursal, nombreColor, disponibleVenta, hexadecimalColor} = row;
                                         const selectedVehicle = selected.indexOf(vin) !== -1;
 
                                         return (
@@ -106,7 +106,24 @@ export default function VehiclePage() {
 
                                                 <TableCell align="left">{nombreSucursal}</TableCell>
 
-                                                <TableCell align="left">{nombreColor}</TableCell>
+                                                <TableCell align="left">
+                                                    <Stack direction={"row"}>
+                                                        <div
+                                                            style={{
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                backgroundColor: hexadecimalColor,
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                borderRadius: '30%',
+                                                                marginRight: '10px',
+                                                                border: '1px solid #E6E6E6'
+                                                            }}
+                                                        />
+                                                        {t(`colores.${nombreColor}`)}
+                                                    </Stack>
+                                                </TableCell>
 
                                                 <TableCell align="left"><Label startIcon={disponibleVenta ? <InventoryIcon /> : <SellIcon/> } color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
 

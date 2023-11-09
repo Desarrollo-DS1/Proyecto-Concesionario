@@ -5,6 +5,13 @@
       "en": "English",
       "pt": "Portuguese"
     },
+    "secciones": {
+      "informes": "Reports",
+      "usuarios": "Users",
+      "inventario": "Inventory",
+      "operaciones": "Operations",
+      "ubicaciones": "Locations"
+    },
     "barraNavegacion": {
       "dashBoard": "Dashboard",
       "clientes": "Customers",
@@ -23,7 +30,8 @@
       "cancelar": "Cancel",
       "buscar": "Search",
       "si": "Yes",
-      "no": "No"
+      "no": "No",
+      "filtroLista": "List Filter"
     },
     "perfil": {
       "inicio": "Home",
@@ -240,5 +248,53 @@
     "numeroVentasMensuales": "Number Monthly Sales",
     "ventasMensuales": "Monthly Sales",
     "ventasPorModelo": "Sales by Model"
+  },
+  "colores": {
+    "Amarillo": "Yellow",
+    "Azul": "Blue",
+    "Blanco": "White",
+    "Gris": "Gray",
+    "Negro": "Black",
+    "Plata": "Silver",
+    "Rojo": "Red",
+    "Verde": "Green"
+  },
+  "combustibles": {
+    "Gasolina": "Gasoline",
+    "Diesel": "Diesel",
+    "Eléctrico": "Electric",
+    "Híbrido": "Hybrid",
+    "Gas": "Gas",
+    "Gas Natural": "Natural Gas",
+    "Gas Licuado": "Liquefied Gas"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Station Wagon",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Convertible",
+    "Coupe": "Coupe",
+    "Roadster": "Roadster",
+    "Camion": "Truck",
+    "Camioneta": "Van",
+    "Bus": "Bus",
+    "Minivan": "Minivan",
+    "Microbus": "Microbus",
+    "Micro": "Micro",
+    "Tracto Camion": "Semi-truck",
+    "Trailer": "Trailer"
+  },
+  "generos": {
+    "Masculino": "Male",
+    "Femenino": "Female",
+    "Otro": "Other"
+  },
+  "cargos": {
+    "Vendedor": "Salesperson",
+    "Jefe de Taller": "Workshop Manager",
+    "Gerente": "Manager"
   }
 }
