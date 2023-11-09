@@ -5,6 +5,13 @@
       "en": "Inglês",
       "pt": "Português"
     },
+    "secciones": {
+      "informes": "Relatórios",
+      "usuarios": "Usuários",
+      "inventario": "Inventário",
+      "operaciones": "Operações",
+      "ubicaciones": "Localizações"
+    },
     "barraNavegacion": {
       "dashBoard": "Painel",
       "clientes": "Clientes",
