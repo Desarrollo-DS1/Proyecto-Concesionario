@@ -101,6 +101,27 @@ class VehiculoView(viewsets.ModelViewSet):
     serializer_class = VehiculoSerializer
     queryset = Vehiculo.objects.all()
 
+    def destroy(self, request, *args, **kwargs):
+        vehiculo = self.get_object()
+
+        try:
+            self.perform_destroy(vehiculo)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar el vehiculo porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
+
 class ColorView(viewsets.ModelViewSet):
     serializer_class = ColorSerializer
     queryset = Color.objects.all()
