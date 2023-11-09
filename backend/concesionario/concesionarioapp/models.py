@@ -180,7 +180,6 @@ class Modelo(models.Model):
             self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(
             self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
 
-
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
     nombre_color = models.CharField('Nombre del Color', max_length=30, unique=True)
@@ -331,5 +330,67 @@ class Venta_Vehiculo(models.Model):
 
     def precio_str(self):
         return str(self.vehiculo.modelo_vehiculo.precio_base * (
-                1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
-                           1 - (self.porcentaje_descuento)))
+                    1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
+                               1 - (self.porcentaje_descuento)))
+    
+class Cotizacion_Modelo(models.Model):
+	id_cotizacion_modelo = models.AutoField('ID de la Cotización del Modelo', primary_key=True)
+	cotizacion = models.ForeignKey('Cotizacion', on_delete=models.CASCADE)
+	modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+	color = models.ForeignKey('Color', on_delete=models.PROTECT)
+	extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
+	cantidad = models.IntegerField('Cantidad', default=1)
+
+	class Meta:
+		verbose_name = 'Modelo en la Cotización'
+		verbose_name_plural = 'Modelos en la Cotización'
+		ordering = ['id_cotizacion_modelo']
+	
+	def __str__(self):
+		return 'Cotización del Modelo: ' + self.id_cotizacion_modelo + ' Cotización: ' + self.cotizacion.id_cotizacion + ' Modelo: ' + self.modelo.nombre_modelo + ' Color: ' + self.color.nombre_color + ' Extras: ' + self.extra.nombre_extra + ' Cantidad: ' + self.cantidad
+	
+	def nombre_modelo(self):
+		return self.modelo.nombre_modelo
+	
+	def nombre_color(self):
+		return self.color.nombre_color
+	
+	def nombre_extra(self):
+		return self.extra.nombre_extra
+	
+	def precio(self):
+		return self.cantidad * (self.modelo.precio_base * (1 + (self.color.porcentanje_incremento_por_color / 100)))
+     
+class Cotizacion(models.Model):
+	id_cotizacion = models.AutoField('ID de la Cotización', primary_key=True)
+	vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
+	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
+	fecha_creacion = models.DateField('Fecha de Creación', auto_now_add=True)
+	porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=5, decimal_places=4)
+	fecha_vencimiento = models.DateField('Fecha de Vencimiento', default=datetime.now()+timedelta(days=20))
+	modelos = models.ManyToManyField('Modelo', through='Cotizacion_Modelo')
+
+	class Meta:
+		verbose_name = 'Cotización'
+		verbose_name_plural = 'Cotizaciones'
+		ordering = ['id_cotizacion']
+
+	def __str__(self):
+		return 'Cotización: ' + self.id_cotizacion + ' Cliente: ' + self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido + ' Vendedor: ' + self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido + ', Fecha: ' + self.fecha_creacion
+	
+	def nombre_vendedor(self):
+		return self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido
+	
+	def nombre_cliente(self):
+		return self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido
+	
+	def lista_modelos(self):
+		return ', '.join([(cotizacion_modelo.cantidad + ' ' + cotizacion_modelo.modelo.nombre_modelo + ' ' + cotizacion_modelo.color.nombre_color + ' con extra ' + cotizacion_modelo.extras.nombre_extra) for cotizacion_modelo in Cotizacion_Modelo.objects.filter(cotizacion=self)])
+	
+	def precio_total(self):
+		precio_total = 0
+
+		for cotizacion_modelo in Cotizacion_Modelo.objects.filter(cotizacion=self):
+			precio_total += cotizacion_modelo.cantidad * (cotizacion_modelo.modelo.precio_base * (1 + (cotizacion_modelo.color.porcentanje_incremento_por_color / 100)))
+
+		return precio_total

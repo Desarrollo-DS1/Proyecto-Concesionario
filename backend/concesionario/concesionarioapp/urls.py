@@ -14,6 +14,8 @@ router.register(r'Modelo', views.ModelView, 'Modelo')
 router.register(r'Vehiculo', views.VehiculoView, 'Vehiculo')
 router.register(r'Venta' , views.VentaView, 'Venta')
 router.register(r'Venta_Vehiculo', views.VentaVehiculoView, 'Venta_Vehiculo')
+router.register(r'Cotizacion', views.CotizacionView, 'Cotizacion')
+router.register(r'Cotizacion_Modelo', views.CotizacionModeloView, 'Cotizacion_Modelo')
 
 
 urlpatterns = [
