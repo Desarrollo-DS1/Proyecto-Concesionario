@@ -124,15 +124,7 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">{celular}</TableCell>
 
-                                                <TableCell align="left">{direccion}</TableCell>
-
-                                                <TableCell align="left">{ciudad}</TableCell>
-
-                                                <TableCell align="left">{fechaIngreso}</TableCell>
-
-                                                <TableCell align="left">{fechaRetiro}</TableCell>
-
-                                                <TableCell align="left">{salario}</TableCell>
+                                                <TableCell align="left">$ {salario}</TableCell>
 
                                                 <TableCell align="left">{cargo}</TableCell>
 

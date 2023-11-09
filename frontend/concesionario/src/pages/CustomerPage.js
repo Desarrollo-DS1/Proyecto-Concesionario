@@ -115,10 +115,6 @@ export default function CustomerPage() {
 
                         <TableCell align="left">{ciudad}</TableCell>
 
-                        <TableCell align="left">{fechaNacimiento}</TableCell>
-
-                        <TableCell align="left">{genero}</TableCell>
-
                         <TableCell align="center" width={"5%"}>
                           <div style={{ display: 'flex' }}>
                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>

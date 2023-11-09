@@ -21,8 +21,6 @@ export function CustomerState(props) {
         { id: 'celular', label: 'celular', alignRight: false },
         { id: 'direccion', label: 'direccion', alignRight: false },
         { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento', alignRight: false },
-        { id: 'genero', label: 'genero', alignRight: false },
         { id: '' },
     ];
 
@@ -34,8 +32,6 @@ export function CustomerState(props) {
         { id: 'celular', label: 'celular' },
         { id: 'direccion', label: 'direccion' },
         { id: 'ciudad', label: 'ciudad' },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento' },
-        { id: 'genero', label: 'genero' },
     ];
 
     const emptyCustomer = {

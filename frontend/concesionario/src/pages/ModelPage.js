@@ -111,7 +111,7 @@ export default function ModelPage() {
 
                                                 <TableCell align="left">{numeroPasajeros}</TableCell>
 
-                                                <TableCell align="left">{precioBase}</TableCell>
+                                                <TableCell align="left">$ {precioBase}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
