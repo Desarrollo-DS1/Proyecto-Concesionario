@@ -179,16 +179,16 @@ ON CONFLICT (id_modelo) DO NOTHING;
 SELECT setval('concesionarioapp_modelo_id_modelo_seq', (SELECT MAX(id_modelo) FROM concesionarioapp_modelo));
 
 
-INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentanje_incremento_por_color)
+INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentanje_incremento_por_color, hexadecimal_color)
 VALUES
-(1, 'Blanco', 0.1),
-(2, 'Negro', 0.08),
-(3, 'Rojo', 0.06),
-(4, 'Azul', 0.05),
-(5, 'Plata', 0.04),
-(6, 'Gris', 0.03),
-(7, 'Verde', 0.02),
-(8, 'Amarillo', 0.01)
+(1, 'Blanco', 0.1, '#FFFFFF'),
+(2, 'Negro', 0.08, '#000000'),
+(3, 'Rojo', 0.06, '#FF0000'),
+(4, 'Azul', 0.05, '#0000FF'),
+(5, 'Plata', 0.04, '#C0C0C0'),
+(6, 'Gris', 0.03, '#808080'),
+(7, 'Verde', 0.02, '#008000'),
+(8, 'Amarillo', 0.01, '#FFFF00')
 ON CONFLICT (id_color) DO NOTHING;
 
 SELECT setval('concesionarioapp_color_id_color_seq', (SELECT MAX(id_color) FROM concesionarioapp_color));

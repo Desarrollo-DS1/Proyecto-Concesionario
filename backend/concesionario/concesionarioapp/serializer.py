@@ -205,17 +205,18 @@ class ModeloSerializer(serializers.ModelSerializer):
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
     modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
-    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
-    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
     nombreColor = serializers.CharField(source='nombre_color', read_only=True)
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
     disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
 
 
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modelo', 'color', 'sucursal', 'nombreModelo', 'nombreColor', 'nombreSucursal', 'disponibleVenta'
+        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -232,6 +233,7 @@ class VehiculoSerializer(serializers.ModelSerializer):
 class ColorSerializer(serializers.ModelSerializer):
     idColor = serializers.IntegerField(source='id_color')
     colorNombre = serializers.CharField(source='nombre_color')
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color')
     
     class Meta:
         model = Color

@@ -184,6 +184,7 @@ class Modelo(models.Model):
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
     nombre_color = models.CharField('Nombre del Color', max_length=30, unique=True)
+    hexadecimal_color = models.CharField('Hexadecimal del Color', max_length=7, unique=True)
     porcentanje_incremento_por_color = models.DecimalField('Porcentaje de Incremento por Color', max_digits=4,
                                                            decimal_places=2)
 
@@ -230,6 +231,9 @@ class Vehiculo(models.Model):
 
     def nombre_color(self):
         return self.color_vehiculo.nombre_color
+    
+    def hexadecimal_color(self):
+        return self.color_vehiculo.hexadecimal_color
 
     def sucursal(self):
         return self.sucursal_vehiculo.nombre_sucursal
