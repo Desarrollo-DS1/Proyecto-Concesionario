@@ -193,7 +193,7 @@ export default function VehicleForm() {
                           }}
                       >
                           {colors.map((option) => {
-                              const { idColor, colorNombre } = option;
+                              const { idColor, colorNombre, hexadecimalColor} = option;
                               return (
                                   <MenuItem key={idColor} value={idColor}>
                                       <Stack direction={"row"}>
@@ -201,11 +201,11 @@ export default function VehicleForm() {
                                               style={{
                                                   width: '20px',
                                                   height: '20px',
-                                                  backgroundColor: "#000",
+                                                  backgroundColor: hexadecimalColor,
                                                   display: 'flex',
                                                   justifyContent: 'center',
                                                   alignItems: 'center',
-                                                  borderRadius: '50%',
+                                                  borderRadius: '30%',
                                                   marginRight: '10px'
                                               }}
                                           />

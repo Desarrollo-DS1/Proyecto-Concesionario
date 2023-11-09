@@ -17,6 +17,8 @@ import {
     TableContainer,
     TablePagination, Box, Snackbar,
 } from '@mui/material';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SellIcon from '@mui/icons-material/Sell';
 // components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -106,15 +108,15 @@ export default function VehiclePage() {
 
                                                 <TableCell align="left">{nombreColor}</TableCell>
 
-                                                <TableCell align="left"><Label fullWidth color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
+                                                <TableCell align="left"><Label startIcon={disponibleVenta ? <InventoryIcon /> : <SellIcon/> } color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
+                                                        <IconButton disabled={!disponibleVenta} color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
                                                             <EditIcon />
                                                         </IconButton>
 
-                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
+                                                        <IconButton disabled={!disponibleVenta} color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>
