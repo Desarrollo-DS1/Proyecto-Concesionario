@@ -116,6 +116,7 @@ export default function VehicleForm() {
                           fullWidth
                           required
                           name="vin"
+                          disabled={ edit }
                           value={vehicle.vin}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
