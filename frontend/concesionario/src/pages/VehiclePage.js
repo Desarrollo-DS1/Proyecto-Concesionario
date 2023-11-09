@@ -84,7 +84,7 @@ export default function VehiclePage() {
                 <VehicleDelete />
 
                 <Card>
-                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')}/>
+                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')} title={'vehiculos'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>

@@ -28,6 +28,20 @@ export function EmployeeState(props) {
         { id: '' },
     ];
 
+    const FILTER_OPTIONS = [
+        { id: 'cedula', label: 'cedula' },
+        { id: 'nombre', label: 'nombre' },
+        { id: 'correo', label: 'correo' },
+        { id: 'telefono', label: 'telefono' },
+        { id: 'celular', label: 'celular' },
+        { id: 'direccion', label: 'direccion' },
+        { id: 'ciudad', label: 'ciudad' },
+        { id: 'fechaIngreso', label: 'fechaIngreso' },
+        { id: 'fechaRetiro', label: 'fechaRetiro' },
+        { id: 'salario', label: 'salario' },
+        { id: 'cargo', label: 'cargo' },
+    ];
+
     const emptyEmployee = {
         primerNombre: "",
         segundoNombre: "",
@@ -375,7 +389,23 @@ export function EmployeeState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName);
+    const [openFilter, setOpenFilter] = React.useState(null);
+    const [filterField, setFilterField] = React.useState('cedula');
+
+    const handleOpenFilter = (event) => {
+        setOpenFilter(event.currentTarget);
+    }
+
+    const handleCloseFilter = () => {
+        setOpenFilter(null);
+    }
+
+    const handleFilterField = (event, field) => {
+        setFilterField(field);
+        handleCloseFilter();
+    }
+
+    const filteredEmployees = applySortFilter(employees, getComparator(order, orderBy), filterName, filterField);
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employees.length) : 0;
     const isNotFound = !filteredEmployees.length && !!filterName;
 
@@ -401,6 +431,7 @@ export function EmployeeState(props) {
         <EmployeeContext.Provider value={
             {
                 TABLE_HEAD,
+                FILTER_OPTIONS,
                 employee,
                 employees,
                 epss,
@@ -442,7 +473,12 @@ export function EmployeeState(props) {
                 handleFilterByName,
                 employeeError,
                 showPassword,
-                handleTogglePassword}}>
+                handleTogglePassword,
+                filterField,
+                handleFilterField,
+                openFilter,
+                handleOpenFilter,
+                handleCloseFilter}}>
             {props.children}
         </EmployeeContext.Provider>
     )

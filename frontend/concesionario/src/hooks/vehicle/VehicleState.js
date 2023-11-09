@@ -24,6 +24,14 @@ export function VehicleState(props) {
         { id: '' },
     ];
 
+    const FILTER_OPTIONS = [
+        {id: 'vin', label: 'vin', type: 'text'},
+        {id: 'nombreModelo', label: 'modelo', type: 'text'},
+        {id: 'nombreSucursal', label: 'sucursal', type: 'text'},
+        {id: 'nombreColor', label: 'color', type: 'text'},
+        {id: 'disponible', label: 'disponible', type: 'boolean'},
+    ];
+
     const emptyVehicle = {
         vin: "",
         modelo: "",
@@ -308,7 +316,23 @@ export function VehicleState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredVehicles = applySortFilter(vehicles, getComparator(order, orderBy), filterName);
+    const [openFilter, setOpenFilter] = React.useState(null);
+    const [filterField, setFilterField] = React.useState('vin');
+
+    const handleOpenFilter = (event) => {
+        setOpenFilter(event.currentTarget);
+    }
+
+    const handleCloseFilter = () => {
+        setOpenFilter(null);
+    }
+
+    const handleFilterField = (event, field) => {
+        setFilterField(field);
+        handleCloseFilter();
+    }
+
+    const filteredVehicles = applySortFilter(vehicles, getComparator(order, orderBy), filterName, filterField);
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vehicles.length) : 0;
     const isNotFound = !filteredVehicles.length && !!filterName;
 
@@ -334,6 +358,7 @@ export function VehicleState(props) {
         <VehicleContext.Provider value={
             {
                 TABLE_HEAD,
+                FILTER_OPTIONS,
                 vehicle,
                 vehicles,
                 models,
@@ -370,7 +395,12 @@ export function VehicleState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                vehicleError,}}>
+                vehicleError,
+                filterField,
+                handleFilterField,
+                openFilter,
+                handleOpenFilter,
+                handleCloseFilter}}>
             {props.children}
         </VehicleContext.Provider>
     )

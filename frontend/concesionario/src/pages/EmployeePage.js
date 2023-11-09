@@ -97,7 +97,7 @@ export default function EmployeePage() {
                 <EmployeeDelete />
 
                 <Card>
-                    <ListToolbar context={EmployeeContext} name={t('empleados.encabezado.tituloSingular')}/>
+                    <ListToolbar context={EmployeeContext} name={t('empleados.encabezado.tituloSingular')} title={'empleados'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>

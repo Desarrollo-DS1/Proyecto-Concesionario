@@ -142,7 +142,8 @@
       "combustible": "Combustível",
       "capacidad": "Capacidade",
       "precioBase": "Preço Base",
-      "undefined": ""
+      "undefined": "",
+      "numeroPasajeros": "Capacidade"
     }
   },
   "vehiculos": {
@@ -171,7 +172,10 @@
       "sucursal": "Filial",
       "color": "Cor",
       "disponible": "Disponível",
-      "undefined" : ""
+      "undefined" : "",
+      "nombreModelo": "Modelo",
+      "nombreSucursal": "Filial",
+      "nombreColor": "Cor"
     },
     "disponible": {
       "enStock": "Estoque",

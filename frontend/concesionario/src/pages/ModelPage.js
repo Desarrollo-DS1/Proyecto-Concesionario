@@ -81,7 +81,7 @@ export default function ModelPage() {
                 <ModelDelete />
 
                 <Card>
-                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')}/>
+                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')} title={'modelos'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>

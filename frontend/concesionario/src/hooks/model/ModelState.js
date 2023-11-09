@@ -24,6 +24,17 @@ export function ModelState(props) {
         { id: '' },
     ];
 
+    const FILTER_OPTIONS = [
+        { id: 'nombre', label: 'nombre' },
+        { id: 'año', label: 'año' },
+        { id: 'carroceria', label: 'carroceria' },
+        { id: 'cilindraje', label: 'cilindraje' },
+        { id: 'potencia', label: 'potencia' },
+        { id: 'combustible', label: 'combustible' },
+        { id: 'numeroPasajeros', label: 'capacidad' },
+        { id: 'precioBase', label: 'precioBase' },
+    ];
+
     const emptyModel = {
         id: "",
         nombre: "",
@@ -304,7 +315,23 @@ export function ModelState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName);
+    const [openFilter, setOpenFilter] = React.useState(null);
+    const [filterField, setFilterField] = React.useState('nombre');
+
+    const handleOpenFilter = (event) => {
+        setOpenFilter(event.currentTarget);
+    }
+
+    const handleCloseFilter = () => {
+        setOpenFilter(null);
+    }
+
+    const handleFilterField = (event, field) => {
+        setFilterField(field);
+        handleCloseFilter();
+    }
+
+    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName, filterField);
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - models.length) : 0;
     const isNotFound = !filteredModels.length && !!filterName;
 
@@ -330,6 +357,7 @@ export function ModelState(props) {
         <ModelContext.Provider value={
             {
                 TABLE_HEAD,
+                FILTER_OPTIONS,
                 model,
                 models,
                 bodyworks,
@@ -364,7 +392,12 @@ export function ModelState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                modelError}}>
+                modelError,
+                filterField,
+                handleFilterField,
+                openFilter,
+                handleOpenFilter,
+                handleCloseFilter}}>
             {props.children}
         </ModelContext.Provider>
     )
