@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from datetime import datetime, timedelta, date
 from .managers import AdministradorUsuarios
 
+
 class Usuario(AbstractBaseUser, PermissionsMixin):
     cedula = models.CharField('Cédula', max_length=15, primary_key=True, unique=True)
     email = models.EmailField('Correo Electrónico', unique=True)
@@ -93,7 +94,7 @@ class Empleado(models.Model):
     eps = models.CharField('EPS', max_length=30, blank=True, null=True)
     arl = models.CharField('ARL', max_length=30, blank=True, null=True)
     cargo = models.CharField('Cargo', choices=(
-    ('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Jefe de Taller', 'Jefe de taller')))
+        ('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Jefe de Taller', 'Jefe de taller')))
     sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
@@ -153,27 +154,36 @@ class Sucursal(models.Model):
 
 
 class Modelo(models.Model):
-	id_modelo = models.AutoField('ID del Modelo', primary_key=True)
-	nombre_modelo = models.CharField('Nombre del Modelo', max_length=60, unique=True)
-	anho = models.IntegerField('Año del Modelo')
-	carroceria = models.CharField('Carrocería', choices=(('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'), ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Roadster', 'Roadster'), ('Camion', 'Camion'), ('Camioneta', 'Camioneta'), ('Bus', 'Bus'), ('Minivan', 'Minivan'), ('Microbus', 'Microbus'), ('Micro', 'Micro'), ('Tracto Camion','Tracto Camion'), ('Trailer', 'Trailer')),blank=True, null=True)
-	cilindraje = models.IntegerField('Cilindraje')
-	potencia = models.IntegerField('Potencia')
-	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'), ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')))
-	numero_pasajeros = models.IntegerField('Número de Pasajeros')
-	precio_base = models.IntegerField('Precio Base')
-  
-	class Meta:
-		verbose_name = 'Modelo'
-		verbose_name_plural = 'Modelos'
-		ordering = ['id_modelo']
-	
-	def __str__(self):
-		return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
+    id_modelo = models.AutoField('ID del Modelo', primary_key=True)
+    nombre_modelo = models.CharField('Nombre del Modelo', max_length=60, unique=True)
+    anho = models.IntegerField('Año del Modelo')
+    carroceria = models.CharField('Carrocería', choices=(
+    ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'),
+    ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Roadster', 'Roadster'),
+    ('Camion', 'Camion'), ('Camioneta', 'Camioneta'), ('Bus', 'Bus'), ('Minivan', 'Minivan'), ('Microbus', 'Microbus'),
+    ('Micro', 'Micro'), ('Tracto Camion', 'Tracto Camion'), ('Trailer', 'Trailer')), blank=True, null=True)
+    cilindraje = models.IntegerField('Cilindraje')
+    potencia = models.IntegerField('Potencia')
+    combustible = models.CharField('Combustible', choices=(
+    ('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'),
+    ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')))
+    numero_pasajeros = models.IntegerField('Número de Pasajeros')
+    precio_base = models.IntegerField('Precio Base')
+
+    class Meta:
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
+        ordering = ['id_modelo']
+
+    def __str__(self):
+        return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(
+            self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(
+            self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
 
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
     nombre_color = models.CharField('Nombre del Color', max_length=30, unique=True)
+    hexadecimal_color = models.CharField('Hexadecimal del Color', max_length=7, unique=True)
     porcentanje_incremento_por_color = models.DecimalField('Porcentaje de Incremento por Color', max_digits=4,
                                                            decimal_places=2)
 
@@ -217,9 +227,12 @@ class Vehiculo(models.Model):
 
     def numero_pasajeros(self):
         return self.modelo_vehiculo.numero_pasajeros
-      
+
     def nombre_color(self):
         return self.color_vehiculo.nombre_color
+    
+    def hexadecimal_color(self):
+        return self.color_vehiculo.hexadecimal_color
 
     def sucursal(self):
         return self.sucursal_vehiculo.nombre_sucursal
@@ -312,8 +325,8 @@ class Venta_Vehiculo(models.Model):
 
     def precio(self):
         return (self.vehiculo.modelo_vehiculo.precio_base * (
-                    1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
-                            1 - (self.porcentaje_descuento)))
+                1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
+                        1 - (self.porcentaje_descuento)))
 
     def precio_str(self):
         return str(self.vehiculo.modelo_vehiculo.precio_base * (

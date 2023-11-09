@@ -97,14 +97,14 @@ export default function EmployeePage() {
                 <EmployeeDelete />
 
                 <Card>
-                    <ListToolbar context={EmployeeContext} name={t('empleados.encabezado.tituloSingular')}/>
+                    <ListToolbar context={EmployeeContext} name={t('empleados.encabezado.tituloSingular')} title={'empleados'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
                                 <ListHead context={EmployeeContext} name={'empleados'}/>
                                 <TableBody>
                                     {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { id, cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
+                                        const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaIngreso, fechaRetiro, salario, cargo} = row;
                                         const nombre = `${primerNombre} ${primerApellido}`;
                                         const selectedUser = selected.indexOf(nombre) !== -1;
 

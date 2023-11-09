@@ -5,7 +5,7 @@ import {
     Box,
     Button,
     Divider,
-    Grid, IconButton, InputAdornment,
+    Grid,
     MenuItem,
     Stack,
     TextField,
@@ -31,10 +31,6 @@ const selectMenuProps = {
         }
     }
 };
-
-const inputProps = {
-    startAdornment: <InputAdornment position="start">$</InputAdornment>,
-}
 
 const scrollBarStyle = {
     scrollbarWidth: 'thin', // Para navegadores que no sean webkit
@@ -112,6 +108,7 @@ export default function VehicleForm() {
               <Grid container spacing={3}>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          id="vin"
                           error={vehicleError.vin !== ""}
                           fullWidth
                           required
@@ -120,7 +117,8 @@ export default function VehicleForm() {
                           value={vehicle.vin}
                           onChange={handleInputChange}
                           onBlur={handleOnBlur}
-                          label={t("vehiculos.label.vin")} variant="outlined"
+                          label={t("vehiculos.label.vin")}
+                          variant="outlined"
                           helperText={t(vehicleError.vin, {maximo: 17, minimo: 5})}
                           style={textFieldStyle}
                           inputProps={{style: {textTransform: 'uppercase'}}}
@@ -128,6 +126,7 @@ export default function VehicleForm() {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          id="modelo"
                           error={vehicleError.modelo !== ''}
                           select
                           fullWidth
@@ -151,6 +150,7 @@ export default function VehicleForm() {
                   </Grid>
                   <Grid item xs={12} sm={6}>
                       <TextField
+                          id="sucursal"
                           error={vehicleError.sucursal !== ''}
                           select
                           fullWidth
@@ -193,10 +193,25 @@ export default function VehicleForm() {
                           }}
                       >
                           {colors.map((option) => {
-                              const { idColor, colorNombre } = option;
+                              const { idColor, colorNombre, hexadecimalColor} = option;
                               return (
                                   <MenuItem key={idColor} value={idColor}>
-                                      {colorNombre}
+                                      <Stack direction={"row"}>
+                                          <div
+                                              style={{
+                                                  width: '20px',
+                                                  height: '20px',
+                                                  backgroundColor: hexadecimalColor,
+                                                  display: 'flex',
+                                                  justifyContent: 'center',
+                                                  alignItems: 'center',
+                                                  borderRadius: '30%',
+                                                  marginRight: '10px'
+                                              }}
+                                          />
+                                          {colorNombre}
+                                      </Stack>
+
                                   </MenuItem>
                               ); })}
                       </TextField>

@@ -1,12 +1,10 @@
 import {useState} from "react";
 import {useTranslation} from "react-i18next";
-import { Helmet } from 'react-helmet-async';
-import { faker } from '@faker-js/faker';
 // @mui
 import SellIcon from '@mui/icons-material/Sell';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import { useTheme } from '@mui/material/styles';
-import {Grid, Container, Typography, Box, Tab, Tabs} from '@mui/material';
+import {Container, Box, Tab, Tabs} from '@mui/material';
 // pages
 import SaleDashboard from "./SaleDashboard";
 import {SaleDashboardState} from "../hooks/dashboard/sale/SaleDashboardState";
@@ -14,7 +12,7 @@ import {SaleDashboardState} from "../hooks/dashboard/sale/SaleDashboardState";
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
-    const theme = useTheme();
+
     const [tabIndex, setTabIndex] = useState(0);
     const { t } = useTranslation("lang");
 

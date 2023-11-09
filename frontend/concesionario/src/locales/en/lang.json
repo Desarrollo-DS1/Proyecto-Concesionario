@@ -151,7 +151,8 @@
       "combustible": "Fuel",
       "capacidad": "Capacity",
       "precioBase": "Base Price",
-      "undefined" : ""
+      "undefined" : "",
+      "numeroPasajeros": "Capacity"
     }
   },
   "vehiculos": {
@@ -179,7 +180,15 @@
       "modelo": "Model",
       "sucursal": "Branch",
       "color": "Color",
-      "undefined" : ""
+      "disponible": "Available",
+      "undefined" : "",
+      "nombreModelo": "Model",
+      "nombreSucursal": "Branch",
+      "nombreColor": "Color"
+    },
+    "disponible": {
+      "enStock": "Stock",
+      "vendido": "Sold"
     }
   },
   "errores": {

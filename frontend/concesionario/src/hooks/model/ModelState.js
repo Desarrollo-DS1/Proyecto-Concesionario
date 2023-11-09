@@ -24,6 +24,17 @@ export function ModelState(props) {
         { id: '' },
     ];
 
+    const FILTER_OPTIONS = [
+        { id: 'nombre', label: 'nombre' },
+        { id: 'año', label: 'año' },
+        { id: 'carroceria', label: 'carroceria' },
+        { id: 'cilindraje', label: 'cilindraje' },
+        { id: 'potencia', label: 'potencia' },
+        { id: 'combustible', label: 'combustible' },
+        { id: 'numeroPasajeros', label: 'capacidad' },
+        { id: 'precioBase', label: 'precioBase' },
+    ];
+
     const emptyModel = {
         id: "",
         nombre: "",
@@ -81,176 +92,133 @@ export function ModelState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [bodyworks, setBodyworks] = useState(initialBodyworks);
-    const [fuels, setFuels] = useState(initialFuels);
+    const [bodyworks] = useState(initialBodyworks);
+    const [fuels] = useState(initialFuels);
     
-    const getModels = () => {
-        // Función para traer los modelos de la base de datos
-        async function fetchData() {
-            try {
-                const response = await getAllModelos();
-                // console.log(response.data);
-                setModels(response.data);
-            } catch (error) {
-                // console.error('Error fetching data:', error);
-                setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+    const getModels = async () => {
+
+        try
+        {
+            const response = await getAllModelos();
+            setModels(response.data);
         }
-
-        fetchData();
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('modelos.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
-
-    /*
-    const getBodyworks = () => {
-        // Aqui se aplicaria el axios.get
-        setBodyworks(initialBodyworks);
-    }
-    const getFuels = () => {
-        // Aqui se aplicaria el axios.get
-        setFuels(initialFuels);
-    }
-
-    */
    
-    const getModel = (id) => {
-        async function loadModel(){
-            try {
-                const response = await getModelo(id);
-                // console.log(response.data);
-                setModel(response.data);
-            
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorCargando');
-                handleOpenSnackbar();
-        }
-    }
+    const getModel = async (id) => {
 
         if(id == null)
         {
-            setModel(emptyModel);
             setEdit(false);
+            setModel(emptyModel);
         }
         else 
         {
-            loadModel();
             setEdit(true);
-        }
-
-        /*
-        const model = models.find(model => model.id === id);
-        if(model)
-        {
-            setModel(model)
-            setEdit(true)
-        }
-        else
-        {
-            setModel(emptyModel)
-            setEdit(false)
-        }
-        */
-
-    }
-
-
-
-    const addModel = (model) => {
-        async function postModel() {
-            try {
-                // console.log(model)
-                const response = await createModelo(model); // Pasa el modelo a la función
-                // console.log(response);
-                setModels([...models, response.data]);
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('modelos.mensaje.agregado');
+            try
+            {
+                const response = await getModelo(id);
+                setModel(response.data);
+            }
+            catch (error)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorCargando');
                 handleOpenSnackbar();
-            } catch (error) {
-                // console.error('Error creating model:', error);
-                const errors = error.response.data;
-                if(errors.nombre){
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.errorNombre');
-                    handleOpenSnackbar();
-                    setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
-                }
-                else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.error');
-                    handleOpenSnackbar();
-                }
             }
         }
-    
-        postModel(model);
     }
 
-    const updateModel = (model) => {
-        async function putModel() {
-            try{
-                const response = await updateModelo(model.id, model);
-                (models.map((item) => (item.id === model.id ? model : item)))
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('modelos.mensaje.editado');
-                handleOpenSnackbar();
 
-                handleCloseForm();
-                getModels();
-            }catch (error) {
-                // console.error('Error updating model:', error);
-                // const errors = error.response.data;
-                const errors = error.response.data;
+    const addModel = async (model) => {
 
-                if(errors.nombre){
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.errorNombre');
-                    handleOpenSnackbar();
-                    setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
-                }
-                else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.errorEditar');
-                    handleOpenSnackbar();
-                }
+        try
+        {
+            const response = await createModelo(model); // Pasa el modelo a la función
+            setModels([...models, response.data]);
+            setTypeSnackbar('success');
+            setMessageSnackbar('modelos.mensaje.agregado');
+            handleOpenSnackbar();
         }
-    }
-        putModel();
-    }
-    const deleteModel = (model) => {
-        // setModels(models.filter((item) => item.id !== model.id))
-        async function removeModel() {
-            try {
-                const response = await deleteModelo(model.id);
-                // console.log(response);
-                setModels(models.filter((item) => item.id !== model.id));
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('modelos.mensaje.eliminado');
+        catch (error)
+        {
+            const errors = error.response.data;
+            if(errors.nombre)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorNombre');
                 handleOpenSnackbar();
-                
-                getModels();
-                
-            } catch (error) {
-                // console.error('Error deleting model:', error);
-                const errors = error.response.data;
-
-                if(errors.protected){
-                    setTypeSnackbar('error');
-                    setMessageSnackbar(errors.protected);
-                    handleOpenSnackbar();
-                }   
-                else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('modelos.mensaje.errorEliminar');
-                    handleOpenSnackbar();
-                }
+                setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.error');
+                handleOpenSnackbar();
             }
         }
-        removeModel();
+    }
+
+    const updateModel = async (model) => {
+
+        try
+        {
+            await updateModelo(model.id, model);
+            setTypeSnackbar('success');
+            setMessageSnackbar('modelos.mensaje.editado');
+            handleOpenSnackbar();
+            handleCloseForm();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+            if(errors.nombre)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorNombre');
+                handleOpenSnackbar();
+                setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorEditar');
+                handleOpenSnackbar();
+            }
+        }
+    }
+
+    const deleteModel = async (model) => {
+
+        try
+        {
+            await deleteModelo(model.id);
+            setTypeSnackbar('success');
+            setMessageSnackbar('modelos.mensaje.eliminado');
+            handleOpenSnackbar();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+            if(errors.protected)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar(errors.protected);
+                handleOpenSnackbar();
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('modelos.mensaje.errorEliminar');
+                handleOpenSnackbar();
+            }
+        }
     }
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -264,45 +232,36 @@ export function ModelState(props) {
         if (!validateModelOnSubmit()) {
             if(edit)
             {
-                // console.log('siuuuuuuuu')
-                updateModel(model);
-                // setMessageSnackbar('modelos.mensaje.editado');
-                // setTypeSnackbar('success');
+                updateModel(model).then(() => getModels());
             }
             else
             {
-                addModel(model);
-                // setMessageSnackbar('modelos.mensaje.agregado');
-                // setTypeSnackbar('success');
+                addModel(model).then(() => getModels());
             }
-            // handleOpenSnackbar();
-            getModels();
-            // handleCloseForm();
         }
     }
+
     const handleOnBlur = (event) => {
         const {name} = event.target;
         validateModelOnBlur(model, name);
     }
+
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteModel(model);
-        // setMessageSnackbar('modelos.mensaje.eliminado');
-        // setTypeSnackbar('success');
-        // handleOpenSnackbar();
+        deleteModel(model).then(() => getModels());
         handleCloseDelete();
     }
+
     const handleOpenForm = (event, cedula) => {
         getModelError();
-        getModel(cedula);
-        setOpenForm(true)
+        getModel(cedula).then(() => setOpenForm(true));
     };
+
     const handleCloseForm = () => {
         setOpenForm(false);
     };
     const handleOpenDelete = (event, id) => {
-        getModel(id);
-        setOpenDelete(true);
+        getModel(id).then(() => setOpenDelete(true));
     }
     const handleCloseDelete = () => {
         setOpenDelete(false);
@@ -356,7 +315,23 @@ export function ModelState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName);
+    const [openFilter, setOpenFilter] = React.useState(null);
+    const [filterField, setFilterField] = React.useState('nombre');
+
+    const handleOpenFilter = (event) => {
+        setOpenFilter(event.currentTarget);
+    }
+
+    const handleCloseFilter = () => {
+        setOpenFilter(null);
+    }
+
+    const handleFilterField = (event, field) => {
+        setFilterField(field);
+        handleCloseFilter();
+    }
+
+    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName, filterField);
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - models.length) : 0;
     const isNotFound = !filteredModels.length && !!filterName;
 
@@ -382,6 +357,7 @@ export function ModelState(props) {
         <ModelContext.Provider value={
             {
                 TABLE_HEAD,
+                FILTER_OPTIONS,
                 model,
                 models,
                 bodyworks,
@@ -393,8 +369,6 @@ export function ModelState(props) {
                 typeSnackbar,
                 openDelete,
                 getModels,
-                // getBodyworks,
-                // getFuels,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
@@ -418,7 +392,12 @@ export function ModelState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                modelError}}>
+                modelError,
+                filterField,
+                handleFilterField,
+                openFilter,
+                handleOpenFilter,
+                handleCloseFilter}}>
             {props.children}
         </ModelContext.Provider>
     )
