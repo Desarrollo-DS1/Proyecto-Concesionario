@@ -5,9 +5,39 @@ from django.db import transaction
 from .models import *
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    cedula = serializers.CharField()
+    clave = serializers.CharField(source='password', write_only=True)
+    correo = serializers.EmailField(source='email')
+    primerNombre = serializers.CharField(source='primer_nombre')
+    segundoNombre = serializers.CharField(source='segundo_nombre', required=False, allow_blank=True)
+    primerApellido = serializers.CharField(source='primer_apellido')
+    segundoApellido = serializers.CharField(source='segundo_apellido', required=False, allow_blank=True)
+    telefono = serializers.CharField()
+    celular = serializers.CharField()
+    direccion = serializers.CharField()
+    ciudad = serializers.CharField()
+    fechaNacimiento = serializers.DateField(source='fecha_nacimiento', required=False, allow_null=True)
+    genero = serializers.CharField()
+
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
+    
+    def create(self, validated_data):
+        if Usuario.objects.filter(cedula=validated_data['cedula']).exists():
+            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
+        
+        if Usuario.objects.filter(email=validated_data['email']).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+        
+        usuario = Usuario.objects.create(**validated_data)
+
+        usuario.set_password(validated_data['password'])
+        usuario.save()
+
+        return usuario
+
+
 
 
 class ClienteSerializer(serializers.ModelSerializer):
@@ -31,21 +61,7 @@ class ClienteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        password = usuario_data.pop('password')
-
-        if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
-            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
-        
-        if Usuario.objects.filter(email=usuario_data['email']).exists():
-            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
-        
-        if not password:
-            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
-        
-        usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(password)
-        usuario.save()
-        
+        usuario = Usuario.objects.get(cedula=usuario_data['cedula'])
         cliente = Cliente.objects.create(usuario=usuario)
         return cliente
     
@@ -111,9 +127,9 @@ class EmpleadoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
         
         if not password:
-            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
+            raise serializers.ValidationError({'clave': 'Este campo es requeridoooo'})
 
-        usuario = Usuario.objects.create(**usuario_data)
+        usuario = UsuarioSerializer.create(UsuarioSerializer(), validated_data=usuario_data)
         usuario.set_password(password)
         usuario.is_staff = True
         usuario.save()

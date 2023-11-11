@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.documentation import include_docs_urls
@@ -18,5 +17,7 @@ router.register(r'Venta_Vehiculo', views.VentaVehiculoView, 'Venta_Vehiculo')
 urlpatterns = [
     path('docs/', include_docs_urls(title='Concesionario API')),
     path('api/v1/', include(router.urls)),
+    path('api/v1/auth/', include('djoser.urls')),
+    path('api/v1/auth/', include('djoser.urls.jwt')),
 
 ]
