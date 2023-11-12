@@ -35,6 +35,7 @@ class ClienteView(viewsets.ModelViewSet):
             raise serializers.ValidationError({'protected': f'No se puede eliminar el cliente porque está referenciado en la tabla {table_name}.'})
         
         except Exception as e:
+            print(e)
             raise serializers.ValidationError({'error': str(e)})
     
 

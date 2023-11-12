@@ -1,10 +1,11 @@
-import React, {useState} from "react";
+import propTypes from 'prop-types';
+import React, { useState } from "react";
 import EmployeeContext from './EmployeeContext';
-import {checkEmployee} from "./EmployeeValidation";
-import {applySortFilter, getComparator} from "../filter/Filter";
+import { checkEmployee } from "./EmployeeValidation";
+import { applySortFilter, getComparator } from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
 import { getAllSucursales } from "../../api/Sucursal.api";
-
+import { createUsuario } from "../../api/Usuario.api";
 
 EmployeeState.propTypes = {
     children: propTypes.node,
@@ -101,17 +102,17 @@ export function EmployeeState(props) {
         { id: '8', label: 'Aliansalud' },
         { id: '9', label: 'Cafesalud' },
         { id: '10', label: 'Famisanar' },
-        {id: '11', label: 'Cafam'},
-        {id: '12', label: 'Comfenalco'}]
+        { id: '11', label: 'Cafam' },
+        { id: '12', label: 'Comfenalco' }]
 
     const initialArls = [
         { id: '1', label: 'Sura' },
-        { id: '2', label: 'Colmena'}]
+        { id: '2', label: 'Colmena' }]
 
     const initialPositions = [
         { id: '1', label: 'Vendedor' },
         { id: '2', label: 'Jefe de Taller' },
-        {id: '3', label: 'Gerente'}]
+        { id: '3', label: 'Gerente' }]
 
     const initialGenders = [
         { id: '1', label: 'Masculino' },
@@ -135,13 +136,11 @@ export function EmployeeState(props) {
 
     const getBranches = async () => {
 
-        try
-        {
+        try {
             const response = await getAllSucursales();
             setBranches(response.data);
         }
-        catch (error)
-        {
+        catch (error) {
             setTypeSnackbar('error');
             setMessageSnackbar('sucursales.mensaje.errorListando');
             handleOpenSnackbar();
@@ -149,7 +148,7 @@ export function EmployeeState(props) {
     }
 
     const getEmployees = async () => {
-        try{
+        try {
             const response = await getAllEmpleados();
             setEmployees(response.data);
 
@@ -162,22 +161,18 @@ export function EmployeeState(props) {
 
     const getEmployee = async (cedula) => {
 
-        if (cedula === null)
-        {
+        if (cedula === null) {
             setEdit(false);
             setEmployee(emptyEmployee);
         }
-        else
-        {
+        else {
             setEdit(true);
-            try
-            {
+            try {
                 const response = await getEmpleado(cedula);
                 const employeeDataWithClave = { ...response.data, clave: '' };
                 setEmployee(employeeDataWithClave);
             }
-            catch (error)
-            {
+            catch (error) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCargando');
                 handleOpenSnackbar();
@@ -187,39 +182,34 @@ export function EmployeeState(props) {
 
     const addEmployee = async (employee) => {
 
-        try
-        {
-                console.log(employee);
-                const response = await createUsuario(employee);
-                const response2 = await createEmpleado(employee);
-                setEmployees([...employees, response2.data]);
-          
-                setTypeSnackbar('success');
-                setMessageSnackbar('empleados.mensaje.agregado');
-                handleOpenSnackbar();
+        try {
+            console.log(employee);
+            const response = await createUsuario(employee);
+            const response2 = await createEmpleado(employee);
+            setEmployees([...employees, response2.data]);
 
-                handleCloseForm();
+            setTypeSnackbar('success');
+            setMessageSnackbar('empleados.mensaje.agregado');
+            handleOpenSnackbar();
+
+            handleCloseForm();
         }
-        catch (error)
-        {
+        catch (error) {
             const errors = error.response.data;
 
-            if(errors.cedula)
-            {
+            if (errors.cedula) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorCedula');
-                setEmployeeError({...employeeError, cedula: 'Cedula ya existe'});
+                setEmployeeError({ ...employeeError, cedula: 'Cedula ya existe' });
                 handleOpenSnackbar();
 
-            } else if (errors.email)
-            {
+            } else if (errors.email) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorEmail');
-                setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                setEmployeeError({ ...employeeError, correo: 'Correo ya existe' });
                 handleOpenSnackbar();
 
-            } else
-            {
+            } else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.error');
                 handleOpenSnackbar();
@@ -229,26 +219,22 @@ export function EmployeeState(props) {
 
     const updateEmployee = async (employee) => {
 
-        try
-        {
+        try {
             await updateEmpleado(employee.cedula, employee);
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
-        catch (error)
-        {
+        catch (error) {
             const errors = error.response.data;
-            if(errors.email)
-            {
+            if (errors.email) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorEmail');
                 handleOpenSnackbar();
-                setEmployeeError({...employeeError, correo: 'Correo ya existe'});
+                setEmployeeError({ ...employeeError, correo: 'Correo ya existe' });
 
-            } else
-            {
+            } else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.error');
                 handleOpenSnackbar();
@@ -258,24 +244,20 @@ export function EmployeeState(props) {
 
     const deleteEmployee = async (employee) => {
 
-        try
-        {
+        try {
             await deleteEmpleado(employee.cedula);
             setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.eliminado');
             handleOpenSnackbar();
-        } catch (error)
-        {
+        } catch (error) {
             const errors = error.response.data;
-            if(errors.protected)
-            {
+            if (errors.protected) {
                 setTypeSnackbar('error');
                 setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
 
-            } else
-            {
+            } else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('empleados.mensaje.errorEliminar');
                 handleOpenSnackbar();
@@ -293,18 +275,16 @@ export function EmployeeState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateEmployeeOnSubmit()) {
-            if(edit)
-            {
+            if (edit) {
                 updateEmployee(employee).then(() => getEmployees());
             }
-            else
-            {
+            else {
                 addEmployee(employee).then(() => getEmployees());
             }
         }
     }
     const handleOnBlur = (event) => {
-        const {name} = event.target;
+        const { name } = event.target;
         validateEmployeeOnBlur(employee, name);
     }
 
@@ -419,7 +399,7 @@ export function EmployeeState(props) {
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateEmployeeOnBlur = (employee, name) => {
-        setEmployeeError({...employeeError, [name]: checkEmployee(employee, name, edit)});
+        setEmployeeError({ ...employeeError, [name]: checkEmployee(employee, name, edit) });
     };
 
     return (
@@ -473,8 +453,9 @@ export function EmployeeState(props) {
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
-                handleCloseFilter}}>
+                handleCloseFilter
+            }}>
             {props.children}
         </EmployeeContext.Provider>
-    )
+    )
 }

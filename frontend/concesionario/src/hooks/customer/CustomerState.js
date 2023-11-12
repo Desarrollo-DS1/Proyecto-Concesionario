@@ -1,5 +1,5 @@
 import propTypes from "prop-types";
-import React, {useState} from "react";
+import React, { useState } from "react";
 import CustomerContext from './CustomerContext';
 import { checkCustomer } from "./CustomerValidation";
 import { applySortFilter, getComparator } from "../filter/Filter";
@@ -81,13 +81,11 @@ export function CustomerState(props) {
     const [genders] = useState(initialGenders);
 
     const getCustomers = async () => {
-        try
-        {
+        try {
             const response = await getAllClientes();
             setCustomers(response.data);
 
-        } catch (error)
-        {
+        } catch (error) {
             setTypeSnackbar('error');
             setMessageSnackbar('clientes.mensaje.errorListando');
             handleOpenSnackbar();
@@ -96,15 +94,14 @@ export function CustomerState(props) {
 
 
     const getCustomer = async (cedula) => {
-        if (cedula === null){
+        if (cedula === null) {
             setEdit(false);
             setCustomer(emptyCustomer);
         }
-        else
-        {
+        else {
             setEdit(true);
-          
-            try{
+
+            try {
 
                 const response = await getCliente(cedula);
                 const customerDataWithClave = { ...response.data, clave: '' };
@@ -153,64 +150,56 @@ export function CustomerState(props) {
         }
     }
 
-const updateCustomer = async (customer) => {
-        try
-        {
+    const updateCustomer = async (customer) => {
+        try {
             await updateCliente(customer.cedula, customer);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
-        catch (error)
-        {
+        catch (error) {
             const errors = error.response.data;
 
-            if (errors.email)
-            {
+            if (errors.email) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorEmail');
                 handleOpenSnackbar();
-                setCustomerError({...customerError, correo: 'Correo ya existe'});
+                setCustomerError({ ...customerError, correo: 'Correo ya existe' });
 
             }
-            else
-            {
+            else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorEditar');
                 handleOpenSnackbar();
             }
-        }
-    }
+        }
+    }
 
 
-   const deleteCustomer = async (customer) => {
-        try
-        {
+    const deleteCustomer = async (customer) => {
+        try {
             await deleteCliente(customer.cedula);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.eliminado');
             handleOpenSnackbar();
         }
-        catch (error)
-        {
+        catch (error) {
             const errors = error.response.data;
 
-            if (errors.protected)
-            {
+            if (errors.protected) {
                 setTypeSnackbar('error');
                 setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
 
             }
-            else
-            {
+            else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorEliminar');
                 handleOpenSnackbar();
             }
-        }
-    }
+        }
+    }
 
 
     const handleInputChange = (event) => {
@@ -221,22 +210,19 @@ const updateCustomer = async (customer) => {
         });
     }
 
- const handleSubmit = (event) => {
+    const handleSubmit = (event) => {
 
         event.preventDefault();
-        if (!validateCustomerOnSubmit())
-        {
-            if(edit)
-            {
+        if (!validateCustomerOnSubmit()) {
+            if (edit) {
                 updateCustomer(customer).then(() => getCustomers());
             }
-            else
-            {
+            else {
                 addCustomer(customer).then(() => getCustomers());
             }
-        }
-    }
- 
+        }
+    }
+
     const handleOnBlur = (event) => {
         const { name } = event.target;
         validateCustomerOnBlur(customer, name);
@@ -356,7 +342,7 @@ const updateCustomer = async (customer) => {
         setCustomerError({ ...customerError, [name]: checkCustomer(customer, name, edit) });
     };
 
-return (
+    return (
         <CustomerContext.Provider value={
             {
                 TABLE_HEAD,
@@ -401,10 +387,11 @@ return (
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
-                handleCloseFilter}}>
+                handleCloseFilter
+            }}>
             {props.children}
         </CustomerContext.Provider>
-    )
+    )
 }
 
 
