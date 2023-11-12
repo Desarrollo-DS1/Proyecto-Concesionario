@@ -139,7 +139,6 @@ export function AuthState(props) {
                 setFormData,
                 setSnackbarOpen,
                 setErrorMessage,
-                auth,
                 ...contextData
             }}>
             {loading ? null : props.children}
