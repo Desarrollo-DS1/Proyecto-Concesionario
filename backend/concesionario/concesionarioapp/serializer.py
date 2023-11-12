@@ -1,8 +1,30 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Modelo
 from django.utils.timezone import now
 from django.db import transaction
 from .models import *
+
+
+class TokenPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, usuario):
+        token = super().get_token(usuario)
+
+        token['email'] = usuario.email
+        token['primerNombre'] = usuario.primer_nombre
+        token['primerApellido'] = usuario.primer_apellido
+
+        if usuario.is_superuser:
+            token['tipoUsuario'] = 'Superusuario'
+        elif usuario.is_staff:
+            token['tipoUsuario'] = Empleado.objects.get(usuario_id=usuario.cedula).cargo
+        else:
+            token['tipoUsuario'] = 'Cliente'
+
+        return token
+
 
 class UsuarioSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField()
