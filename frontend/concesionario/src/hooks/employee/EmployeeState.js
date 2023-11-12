@@ -1,4 +1,3 @@
-import propTypes from "prop-types";
 import React, {useState} from "react";
 import EmployeeContext from './EmployeeContext';
 import {checkEmployee} from "./EmployeeValidation";
@@ -190,12 +189,16 @@ export function EmployeeState(props) {
 
         try
         {
-            const response = await createEmpleado(employee);
-            setEmployees([...employees, response.data]);
-            setTypeSnackbar('success');
-            setMessageSnackbar('empleados.mensaje.agregado');
-            handleOpenSnackbar();
-            handleCloseForm();
+                console.log(employee);
+                const response = await createUsuario(employee);
+                const response2 = await createEmpleado(employee);
+                setEmployees([...employees, response2.data]);
+          
+                setTypeSnackbar('success');
+                setMessageSnackbar('empleados.mensaje.agregado');
+                handleOpenSnackbar();
+
+                handleCloseForm();
         }
         catch (error)
         {
@@ -473,8 +476,5 @@ export function EmployeeState(props) {
                 handleCloseFilter}}>
             {props.children}
         </EmployeeContext.Provider>
-    )
+    )
 }
-
-
-
