@@ -303,6 +303,8 @@
   "cargos": {
     "Vendedor": "Vendedor",
     "Jefe de Taller": "Jefe de Taller",
-    "Gerente": "Gerente"
+    "Gerente": "Gerente",
+    "Cliente": "Cliente",
+    "Superusuario": "Superusuario"
   }
 }

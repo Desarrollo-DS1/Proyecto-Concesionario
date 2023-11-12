@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import {useContext, useEffect} from 'react';
+import {Fragment, useContext, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
+import {Box, Link, Drawer, Typography, Avatar, Divider, List} from '@mui/material';
 // mock
 import account from '../../../_mock/account';
 // hooks
@@ -28,6 +29,74 @@ const StyledAccount = styled('div')(({ theme }) => ({
   backgroundColor: alpha(theme.palette.grey[500], 0.12),
 }));
 
+const chooseNavConfig = (user) => {
+  if (user.tipoUsuario === 'Superusuario' || user.tipoUsuario === 'Gerente') {
+    return navConfig;
+  }
+
+  if (user.tipoUsuario === 'Vendedor') {
+    const navConfigSec = navConfig.filter((section) => section.section !== 'ubicaciones');
+
+    const filteredNavConfig = navConfigSec.map((section) => {
+      if (section.section === 'operaciones') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'ordenesTrabajo')
+        };
+      }
+      if (section.section === 'usuarios') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'empleados')
+        };
+      }
+      if (section.section === 'inventario') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'repuestos')
+        };
+      }
+      return section;
+    });
+
+    return filteredNavConfig;
+  }
+
+  if (user.tipoUsuario === 'Jefe de Taller'){
+    const navConfigSec = navConfig.filter((section) => section.section !== 'ubicaciones');
+
+    const filteredNavConfig = navConfigSec.map((section) => {
+      if (section.section === 'operaciones') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'ventas' && link.title !== 'cotizaciones')
+        };
+      }
+      if (section.section === 'usuarios') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'empleados')
+        };
+      }
+      if (section.section === 'inventario') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'modelos' && link.title !== 'vehiculos')
+        };
+      }
+      return section;
+    });
+
+    return filteredNavConfig;
+  }
+
+  if (user.tipoUsuario === 'Cliente') {
+    return [];
+  }
+
+  return navConfig;
+};
+
 // ----------------------------------------------------------------------
 
 Nav.propTypes = {
@@ -40,13 +109,13 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const isDesktop = useResponsive('up', 'lg');
 
-  const {auth, user} = useContext(AuthContext);
+  const {user} = useContext(AuthContext);
 
-  const name = auth ? `${auth.primer_nombre}${" "}${auth.primer_apellido}` : 'Nombre';
+  const name = user ? `${user.primerNombre}${" "}${user.primerApellido}` : 'Nombre';
 
-  const cargo = auth ? auth.email : 'Cargo';
+  const type = user ? user.tipoUsuario : 'Cargo';
 
-  console.log(user)
+  const { t } = useTranslation("lang");
 
   useEffect(() => {
     if (openNav) {
@@ -77,14 +146,14 @@ export default function Nav({ openNav, onCloseNav }) {
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {cargo}
+                {t(`cargos.${type}`)}
               </Typography>
             </Box>
           </StyledAccount>
         </Link>
       </Box>
 
-      <NavSection data={navConfig} />
+      <NavSection data={chooseNavConfig(user)} />
 
       <Box sx={{ flexGrow: 1 }} />
 

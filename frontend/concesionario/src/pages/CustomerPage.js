@@ -30,6 +30,7 @@ import CustomerForm from "../sections/@dashboard/customer/CustomerForm";
 import CustomerDelete from "../sections/@dashboard/customer/CustomerDelete";
 // mock
 import CustomerContext from "../hooks/customer/CustomerContext";
+import AuthContext from "../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -55,6 +56,9 @@ export default function CustomerPage() {
     emptyRows,
     isNotFound,
     filterField} = useContext(CustomerContext);
+
+  const {
+    user} = useContext(AuthContext);
 
   const { t } = useTranslation("lang");
 
@@ -121,9 +125,9 @@ export default function CustomerPage() {
                               <EditIcon />
                             </IconButton>
 
-                            <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
+                            {(user.tipoUsuario !== "Vendedor" && user.tipoUsuario !== "Jefe de Taller" ) && <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
                               <DeleteIcon />
-                            </IconButton>
+                            </IconButton>}
                           </div>
                         </TableCell>
 

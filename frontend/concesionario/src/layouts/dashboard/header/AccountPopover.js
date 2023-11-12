@@ -36,6 +36,12 @@ export default function AccountPopover() {
 
   const [open, setOpen] = useState(null);
 
+  const {user} = useContext(AuthContext);
+
+  const name = user ? `${user.primerNombre}${" "}${user.primerApellido}` : 'Nombre';
+
+  const email = user ? user.email : 'Cargo';
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
@@ -68,7 +74,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={'/broken-image.jpg'} alt={account.displayName} />
+        <Avatar src={'/broken-image.jpg'} alt={name} />
       </IconButton>
 
       <Popover
@@ -92,10 +98,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 
