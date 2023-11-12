@@ -16,7 +16,7 @@ export function getComparator(order, orderBy) {
         : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-export function applySortFilter(array, comparator, query) {
+export function applySortFilter(array, comparator, query, field, tabla) {
     const stabilizedThis = array.map((el, index) => [el, index]);
     stabilizedThis.sort((a, b) => {
         const order = comparator(a[0], b[0]);
@@ -25,16 +25,25 @@ export function applySortFilter(array, comparator, query) {
     });
     if (query) {
         return filter(array, (_item) => {
-            let nombre
-            if (_item.nombre === undefined){
-                nombre = `${_item.primerNombre}${" "}${_item.primerApellido}` .toLowerCase();
+
+            if (tabla === 'usuarios' && field === 'nombre') {
+                const fieldValue = `${_item.primerNombre}${" "}${_item.primerApellido}`;
+                if (fieldValue === undefined) {
+                    return false;
+                }
+                const fieldLowercase = fieldValue.toString().toLowerCase();
+                const queryLowercase = query.toLowerCase();
+                return fieldLowercase.indexOf(queryLowercase) !== -1;
             }
-            else
-            {
-                nombre = _item.nombre.toLowerCase();
+
+            const fieldValue = _item[field];
+            if (fieldValue === undefined) {
+                return false;
             }
+            const fieldLowercase = fieldValue.toString().toLowerCase();
             const queryLowercase = query.toLowerCase();
-            return nombre.indexOf(queryLowercase) !== -1;});
+            return fieldLowercase.indexOf(queryLowercase) !== -1;
+        });
     }
     return stabilizedThis.map((el) => el[0]);
 }

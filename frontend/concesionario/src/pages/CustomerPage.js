@@ -53,7 +53,8 @@ export default function CustomerPage() {
     handleChangeRowsPerPage,
     filteredCustomers,
     emptyRows,
-    isNotFound} = useContext(CustomerContext);
+    isNotFound,
+    filterField} = useContext(CustomerContext);
 
   const { t } = useTranslation("lang");
 
@@ -82,7 +83,7 @@ export default function CustomerPage() {
         <CustomerDelete/>
 
         <Card>
-          <ListToolbar context={CustomerContext} name={t('clientes.encabezado.tituloSingular')} />
+          <ListToolbar context={CustomerContext} name={t('clientes.encabezado.tituloSingular')} title={"clientes"}/>
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 1000 }}>
@@ -90,7 +91,7 @@ export default function CustomerPage() {
                 <ListHead context={CustomerContext} name={"clientes"} />
                 <TableBody>
                   {filteredCustomers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion, fechaNacimiento, genero} = row;
+                    const {cedula, primerNombre, primerApellido, correo, telefono, celular, ciudad, direccion} = row;
                     const nombre = `${primerNombre} ${primerApellido}`;
                     const selectedUser = selected.indexOf(nombre) !== -1;
 
@@ -114,11 +115,7 @@ export default function CustomerPage() {
 
                         <TableCell align="left">{ciudad}</TableCell>
 
-                        <TableCell align="left">{fechaNacimiento}</TableCell>
-
-                        <TableCell align="left">{genero}</TableCell>
-
-                        <TableCell align="right">
+                        <TableCell align="center" width={"5%"}>
                           <div style={{ display: 'flex' }}>
                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />
@@ -154,7 +151,8 @@ export default function CustomerPage() {
                           </Typography>
 
                           <Typography variant="body2">
-                            {t('general.dataTable.noResultados')} &nbsp;
+                            {t('general.dataTable.noResultados')}&nbsp;
+                            {t(`clientes.label.${filterField}`)}&nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
                             <br /> {t('general.dataTable.mensajeNoResultados')}
                           </Typography>

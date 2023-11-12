@@ -81,7 +81,7 @@ export default function ModelPage() {
                 <ModelDelete />
 
                 <Card>
-                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')}/>
+                    <ListToolbar context={ModelContext} name={t('modelos.encabezado.tituloSingular')} title={'modelos'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
@@ -101,19 +101,19 @@ export default function ModelPage() {
 
                                                 <TableCell align="left">{año}</TableCell>
 
-                                                <TableCell align="left">{carroceria}</TableCell>
+                                                <TableCell align="left">{t(`carrocerias.${carroceria}`)}</TableCell>
 
                                                 <TableCell align="left">{cilindraje}</TableCell>
 
                                                 <TableCell align="left">{potencia}</TableCell>
 
-                                                <TableCell align="left">{combustible}</TableCell>
+                                                <TableCell align="left">{t(`combustibles.${combustible}`)}</TableCell>
 
                                                 <TableCell align="left">{numeroPasajeros}</TableCell>
 
-                                                <TableCell align="left">{precioBase}</TableCell>
+                                                <TableCell align="left">$ {precioBase}</TableCell>
 
-                                                <TableCell align="right">
+                                                <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
                                                         <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                                                             <EditIcon />

@@ -275,7 +275,7 @@ export default function EmployeeForm() {
                       >
                           {genders.map((option) => (
                               <MenuItem key={option.id} value={option.label}>
-                                    {option.label}
+                                    {t(`generos.${option.label}`)}
                               </MenuItem>
                           ))}
                       </TextField>
@@ -443,7 +443,7 @@ export default function EmployeeForm() {
                       >
                             {positions.map((option) => (
                                 <MenuItem key={option.id} value={option.label}>
-                                    {option.label}
+                                    {t(`cargos.${option.label}`)}
                                 </MenuItem>
                             ))}
                       </TextField>

@@ -1,7 +1,5 @@
 import propTypes from "prop-types";
-import React, { useState } from "react";
-import { set } from "lodash";
-// import CUSTOMERLIST from '../../_mock/customer';
+import React, {useState} from "react";
 import CustomerContext from './CustomerContext';
 import { checkCustomer } from "./CustomerValidation";
 import { applySortFilter, getComparator } from "../filter/Filter";
@@ -24,9 +22,17 @@ export function CustomerState(props) {
         { id: 'celular', label: 'celular', alignRight: false },
         { id: 'direccion', label: 'direccion', alignRight: false },
         { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento', alignRight: false },
-        { id: 'genero', label: 'genero', alignRight: false },
         { id: '' },
+    ];
+
+    const FILTER_OPTIONS = [
+        { id: 'cedula', label: 'cedula' },
+        { id: 'nombre', label: 'nombre' },
+        { id: 'correo', label: 'correo' },
+        { id: 'telefono', label: 'telefono' },
+        { id: 'celular', label: 'celular' },
+        { id: 'direccion', label: 'direccion' },
+        { id: 'ciudad', label: 'ciudad' },
     ];
 
     const emptyCustomer = {
@@ -72,27 +78,34 @@ export function CustomerState(props) {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [genders, setGenders] = useState(initialGenders);
+    const [genders] = useState(initialGenders);
 
-    const getCustomers = () => {
-        async function loadCustomers() {
-            try {
-                const response = await getAllClientes();
-                setCustomers(response.data);
+    const getCustomers = async () => {
+        try
+        {
+            const response = await getAllClientes();
+            setCustomers(response.data);
 
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('clientes.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
+        } catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('clientes.mensaje.errorListando');
+            handleOpenSnackbar();
         }
-
-        loadCustomers();
     }
 
-    const getCustomer = (cedula) => {
-        async function loadCustomer() {
-            try {
+
+    const getCustomer = async (cedula) => {
+        if (cedula === null){
+            setEdit(false);
+            setCustomer(emptyCustomer);
+        }
+        else
+        {
+            setEdit(true);
+          
+            try{
+
                 const response = await getCliente(cedula);
                 const customerDataWithClave = { ...response.data, clave: '' };
                 setCustomer(customerDataWithClave);
@@ -103,120 +116,101 @@ export function CustomerState(props) {
                 handleOpenSnackbar();
             }
         }
-
-        if (cedula === null) {
-            setCustomer(emptyCustomer);
-            setEdit(false);
-
-        } else {
-            loadCustomer();
-            setEdit(true);
-        }
     }
 
-    const addCustomer = (customer) => {
-        async function postCustomer() {
-            try {
-                const response = await createUsuario(customer);
-                const response2 = await createCliente(customer);
-                setCustomers([...customers, response2.data]);
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.agregado');
+    const addCustomer = async (customer) => {
+
+        try {
+            const response = await createUsuario(customer);
+            const response2 = await createCliente(customer);
+            setCustomers([...customers, response2.data]);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.agregado');
+            handleOpenSnackbar();
+            handleCloseForm();
+
+        } catch (error) {
+            const errors = error.response.data;
+
+            if (errors.cedula) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorCedula');
                 handleOpenSnackbar();
+                setCustomerError({ ...customerError, cedula: 'Cedula ya existe' });
 
-                handleCloseForm();
+            } else if (errors.email) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEmail');
+                handleOpenSnackbar();
+                setCustomerError({ ...customerError, correo: 'Correo ya existe' });
 
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.cedula) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorCedula');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, cedula: 'Cedula ya existe' });
-
-                } else if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, correo: 'Correo ya existe' });
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.error');
-                    handleOpenSnackbar();
-                }
+            } else {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.error');
+                handleOpenSnackbar();
             }
         }
-
-        postCustomer();
     }
 
-    const updateCustomer = (customer) => {
-        async function putCustomer() {
-            try {
-                const response = await updateCliente(customer.cedula, customer);
-                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
+const updateCustomer = async (customer) => {
+        try
+        {
+            await updateCliente(customer.cedula, customer);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.editado');
+            handleOpenSnackbar();
+            handleCloseForm();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
 
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.editado');
+            if (errors.email)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEmail');
+                handleOpenSnackbar();
+                setCustomerError({...customerError, correo: 'Correo ya existe'});
+
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEditar');
+                handleOpenSnackbar();
+            }
+        }
+    }
+
+
+   const deleteCustomer = async (customer) => {
+        try
+        {
+            await deleteCliente(customer.cedula);
+            setTypeSnackbar('success');
+            setMessageSnackbar('clientes.mensaje.eliminado');
+            handleOpenSnackbar();
+        }
+        catch (error)
+        {
+            const errors = error.response.data;
+
+            if (errors.protected)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
 
-                handleCloseForm();
-                getCustomers();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, correo: 'Correo ya existe' });
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEditar');
-                    handleOpenSnackbar();
-                }
             }
-        }
-
-        putCustomer();
-    }
-
-
-    const deleteCustomer = (customer) => {
-        async function removeCustomer() {
-            try {
-                const response = await deleteCliente(customer.cedula);
-                setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.eliminado');
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('clientes.mensaje.errorEliminar');
                 handleOpenSnackbar();
-
-                getCustomers();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.protected) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar(errors.protected);
-                    handleOpenSnackbar();
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEliminar');
-                    handleOpenSnackbar();
-                }
             }
-        }
-
-        removeCustomer();
-    }
+        }
+    }
 
 
     const handleInputChange = (event) => {
@@ -227,18 +221,22 @@ export function CustomerState(props) {
         });
     }
 
-    const handleSubmit = (event) => {
+ const handleSubmit = (event) => {
+
         event.preventDefault();
-        if (!validateCustomerOnSubmit()) {
-            if (edit) {
-                updateCustomer(customer);
+        if (!validateCustomerOnSubmit())
+        {
+            if(edit)
+            {
+                updateCustomer(customer).then(() => getCustomers());
             }
-            else {
-                addCustomer(customer);
+            else
+            {
+                addCustomer(customer).then(() => getCustomers());
             }
-            getCustomers();
-        }
-    }
+        }
+    }
+ 
     const handleOnBlur = (event) => {
         const { name } = event.target;
         validateCustomerOnBlur(customer, name);
@@ -246,21 +244,20 @@ export function CustomerState(props) {
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteCustomer(customer);
-
+        deleteCustomer(customer).then(() => getCustomers());
         handleCloseDelete();
     }
-    const handleOpenForm = (event, cedula) => {
+    const handleOpenForm = async (event, cedula) => {
         getCustomerError();
-        getCustomer(cedula);
+        await getCustomer(cedula);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
         setShowPassword(false);
         setOpenForm(false);
     };
-    const handleOpenDelete = (event, cedula) => {
-        getCustomer(cedula);
+    const handleOpenDelete = async (event, cedula) => {
+        await getCustomer(cedula);
         setOpenDelete(true);
     }
     const handleCloseDelete = () => {
@@ -321,7 +318,23 @@ export function CustomerState(props) {
         setFilterName(event.target.value);
     };
 
-    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName);
+    const [openFilter, setOpenFilter] = React.useState(null);
+    const [filterField, setFilterField] = React.useState('cedula');
+
+    const handleOpenFilter = (event) => {
+        setOpenFilter(event.currentTarget);
+    }
+
+    const handleCloseFilter = () => {
+        setOpenFilter(null);
+    }
+
+    const handleFilterField = (event, field) => {
+        setFilterField(field);
+        handleCloseFilter();
+    }
+
+    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName, filterField, 'usuarios');
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0;
     const isNotFound = !filteredCustomers.length && !!filterName;
 
@@ -343,10 +356,11 @@ export function CustomerState(props) {
         setCustomerError({ ...customerError, [name]: checkCustomer(customer, name, edit) });
     };
 
-    return (
+return (
         <CustomerContext.Provider value={
             {
                 TABLE_HEAD,
+                FILTER_OPTIONS,
                 customer,
                 customers,
                 genders,
@@ -382,11 +396,15 @@ export function CustomerState(props) {
                 handleFilterByName,
                 customerError,
                 showPassword,
-                handleTogglePassword
-            }}>
+                handleTogglePassword,
+                filterField,
+                handleFilterField,
+                openFilter,
+                handleOpenFilter,
+                handleCloseFilter}}>
             {props.children}
         </CustomerContext.Provider>
-    )
+    )
 }
 
 

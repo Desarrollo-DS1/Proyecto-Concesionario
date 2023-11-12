@@ -7,11 +7,14 @@ router = routers.DefaultRouter()
 router.register(r'Usuario', views.UsuarioView, 'Usuario')
 router.register(r'Cliente', views.ClienteView, 'Cliente')
 router.register(r'Empleado', views.EmpleadoView, 'Empleado')
+router.register(r'Color', views.ColorView, 'Color')
 router.register(r'Sucursal', views.SucursalView, 'Sucursal')
 router.register(r'Modelo', views.ModelView, 'Modelo')
 router.register(r'Vehiculo', views.VehiculoView, 'Vehiculo')
 router.register(r'Venta' , views.VentaView, 'Venta')
 router.register(r'Venta_Vehiculo', views.VentaVehiculoView, 'Venta_Vehiculo')
+router.register(r'Cotizacion', views.CotizacionView, 'Cotizacion')
+router.register(r'Cotizacion_Modelo', views.CotizacionModeloView, 'Cotizacion_Modelo')
 
 
 urlpatterns = [

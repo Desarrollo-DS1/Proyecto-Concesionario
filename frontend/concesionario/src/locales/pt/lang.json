@@ -5,6 +5,13 @@
       "en": "Inglês",
       "pt": "Português"
     },
+    "secciones": {
+      "informes": "Relatórios",
+      "usuarios": "Usuários",
+      "inventario": "Inventário",
+      "operaciones": "Operações",
+      "ubicaciones": "Localizações"
+    },
     "barraNavegacion": {
       "dashBoard": "Painel",
       "clientes": "Clientes",
@@ -23,7 +30,8 @@
       "cancelar": "Cancelar",
       "buscar": "Buscar",
       "si": "Sim",
-      "no": "Não"
+      "no": "Não",
+      "filtroLista": "Filtro Lista"
     },
     "perfil": {
       "inicio": "Início",
@@ -142,7 +150,44 @@
       "combustible": "Combustível",
       "capacidad": "Capacidade",
       "precioBase": "Preço Base",
-      "undefined": ""
+      "undefined": "",
+      "numeroPasajeros": "Capacidade"
+    }
+  },
+  "vehiculos": {
+    "encabezado": {
+      "tituloPlural": "Veículos",
+      "tituloSingular": "Veículo",
+      "agregar": "Adicionar Veículo",
+      "eliminar": "Excluir Veículo",
+      "editar": "Editar Veículo"
+    },
+    "mensaje": {
+      "agregado": "Veículo adicionado com sucesso",
+      "editado": "Veículo editado com sucesso",
+      "eliminado": "Veículo excluído com sucesso",
+      "error": "Erro ao adicionar veículo",
+      "errorEditar": "Erro ao editar veículo",
+      "errorEliminar": "Erro ao excluir veículo",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o veículo com VIN {{vin}}?",
+      "errorVin": "Erro ao adicionar veículo, VIN já existe",
+      "errorListando": "Erro ao listar veículos",
+      "errorCargando": "Erro ao carregar veículo"
+    },
+    "label": {
+      "vin": "VIN",
+      "modelo": "Modelo",
+      "sucursal": "Filial",
+      "color": "Cor",
+      "disponible": "Disponível",
+      "undefined" : "",
+      "nombreModelo": "Modelo",
+      "nombreSucursal": "Filial",
+      "nombreColor": "Cor"
+    },
+    "disponible": {
+      "enStock": "Estoque",
+      "vendido": "Vendido"
     }
   },
   "errores": {
@@ -155,6 +200,7 @@
     "longitudExacta": "Deve ter {{exacto}} caracteres",
     "correo": "Insira um endereço de e-mail válido",
     "fecha": "Insira uma data válida",
+    "vinCaracteresNoPermitidos": "Os caracteres I, O, Q não são permitidos",
     "contraseña": {
       "numerico": "Deve conter pelo menos um número",
       "minuscula": "Deve conter pelo menos uma letra minúscula",
@@ -193,5 +239,53 @@
     "numeroVentasMensuales": "Número Vendas Mensais",
     "ventasMensuales": "Vendas Mensais",
     "ventasPorModelo": "Vendas por Modelo"
+  },
+  "colores": {
+    "Amarillo": "Amarelo",
+    "Azul": "Azul",
+    "Blanco": "Branco",
+    "Gris": "Cinza",
+    "Negro": "Preto",
+    "Plata": "Prata",
+    "Rojo": "Vermelho",
+    "Verde": "Verde"
+  },
+  "combustibles": {
+    "Gasolina": "Gasolina",
+    "Diesel": "Diesel",
+    "Eléctrico": "Eléctrico",
+    "Híbrido": "Híbrido",
+    "Gas": "Gás",
+    "Gas Natural": "Gás Natural",
+    "Gas Licuado": "Gás Liquefeito"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Perua",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Conversível",
+    "Coupe": "Coupé",
+    "Roadster": "Roadster",
+    "Camion": "Caminhão",
+    "Camioneta": "Utilitário",
+    "Bus": "Ônibus",
+    "Minivan": "Minivan",
+    "Microbus": "Micro-ônibus",
+    "Micro": "Micro",
+    "Tracto Camion": "Caminhão-trator",
+    "Trailer": "Reboque"
+  },
+  "generos": {
+    "Masculino": "Masculino",
+    "Femenino": "Feminino",
+    "Otro": "Outro"
+  },
+  "cargos": {
+    "Vendedor": "Vendedor",
+    "Jefe de Taller": "Chefe de Oficina",
+    "Gerente": "Gerente"
   }
 }

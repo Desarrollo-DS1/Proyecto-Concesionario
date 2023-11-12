@@ -1,100 +1,91 @@
 import propTypes from "prop-types";
 import React, {useState} from "react";
-// import MODELIST from '../../_mock/model';
-import ModelContext from './ModelContext';
-import {checkModel} from "./ModelValidation";
-import {applySortFilter, getComparator} from "../filter/Filter"; 
-import {getAllModelos, createModelo, deleteModelo, updateModelo, getModelo} from "../../api/Modelo.api";
+import VehicleContext from './VehicleContext';
+import {checkVehicle} from "./VehicleValidation";
+import {applySortFilter, getComparator} from "../filter/Filter";
+import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
+import {getAllModelos} from "../../api/Modelo.api";
+import {getAllColors} from "../../api/Colors.api";
+import { getAllSucursales} from "../../api/Sucursal.api";
 
-ModelState.propTypes = {
+
+VehicleState.propTypes = {
     children: propTypes.node,
 }
 
-export function ModelState(props) {
+export function VehicleState(props) {
 
     const TABLE_HEAD = [
-        { id: 'nombre', label: 'nombre', alignRight: false },
-        { id: 'año', label: 'año', alignRight: false },
-        { id: 'carroceria', label: 'carroceria', alignRight: false },
-        { id: 'cilindraje', label: 'cilindraje', alignRight: false },
-        { id: 'potencia', label: 'potencia', alignRight: false },
-        { id: 'combustible', label: 'combustible', alignRight: false },
-        { id: 'numeroPasajeros', label: 'capacidad', alignRight: false },
-        { id: 'precioBase', label: 'precioBase', alignRight: false },
+        { id: 'vin', label: 'vin', alignRight: false },
+        { id: 'modelo', label: 'modelo', alignRight: false },
+        { id: 'sucursal', label: 'sucursal', alignRight: false },
+        { id: 'color', label: 'color', alignRight: false },
+        { id: 'disponible', label: 'disponible', alignRight: false },
         { id: '' },
     ];
 
     const FILTER_OPTIONS = [
-        { id: 'nombre', label: 'nombre' },
-        { id: 'año', label: 'año' },
-        { id: 'carroceria', label: 'carroceria' },
-        { id: 'cilindraje', label: 'cilindraje' },
-        { id: 'potencia', label: 'potencia' },
-        { id: 'combustible', label: 'combustible' },
-        { id: 'numeroPasajeros', label: 'capacidad' },
-        { id: 'precioBase', label: 'precioBase' },
+        {id: 'vin', label: 'vin', type: 'text'},
+        {id: 'nombreModelo', label: 'modelo', type: 'text'},
+        {id: 'nombreSucursal', label: 'sucursal', type: 'text'},
+        {id: 'nombreColor', label: 'color', type: 'text'},
     ];
 
-    const emptyModel = {
-        id: "",
-        nombre: "",
-        año: "",
-        carroceria: "",
-        cilindraje: "",
-        potencia: "",
-        combustible: "",
-        numeroPasajeros: "",
-        precioBase: "",
+    const emptyVehicle = {
+        vin: "",
+        modelo: "",
+        sucursal: "",
+        color: "",
     }
     const emptyError = {
-        nombre: "",
-        año: "",
-        carroceria: "",
-        cilindraje: "",
-        potencia: "",
-        combustible: "",
-        numeroPasajeros: "",
-        precioBase: "",
+        vin: "",
+        modelo: "",
+        sucursal: "",
+        color: "",
     }
 
-    const initialBodyworks = [
-        { id: '1', label: 'Sedan' },
-        { id: '2', label: 'Hatchback' },
-        { id: '3', label: 'Station Wagon' },
-        { id: '4', label: 'Pickup' },
-        { id: '5', label: 'SUV' },
-        { id: '6', label: 'Van' },
-        { id: '7', label: 'Convertible' },
-        { id: '8', label: 'Coupe' },
-        { id: '9', label: 'Roadster' },
-        { id: '10', label: 'Camion' },
-        { id: '11', label: 'Camioneta' },
-        { id: '12', label: 'Bus' },
-        { id: '13', label: 'Minivan' },
-        { id: '14', label: 'Microbus' },
-        { id: '15', label: 'Micro' },
-        { id: '16', label: 'Tracto Camion' },
-        { id: '17', label: 'Trailer' },]
-
-    const initialFuels = [
-        { id: '1', label: 'Gasolina' },
-        { id: '2', label: 'Diesel' },
-        { id: '3', label: 'Eléctrico' },
-        { id: '4', label: 'Híbrido' },
-        { id: '5', label: 'Gas' },
-        { id: '6', label: 'Gas Natural' },
-        { id: '7', label: 'Gas Licuado' },]
-
-    const [model, setModel] = React.useState(emptyModel);
-    const [models, setModels] = React.useState([]);
+    const [vehicle, setVehicle] = React.useState(emptyVehicle);
+    const [vehicles, setVehicles] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [bodyworks] = useState(initialBodyworks);
-    const [fuels] = useState(initialFuels);
-    
+    const [models, setModels] = useState([]);
+    const [colors, setColors] = useState([]);
+    const [branches, setBranches] = useState([]);
+
+
+    const getBranches = async () => {
+
+        try
+        {
+            const response = await getAllSucursales();
+            setBranches(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('sucursales.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
+    const getColors = async () => {
+
+        try
+        {
+            const response = await getAllColors();
+            setColors(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('colores.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
     const getModels = async () => {
 
         try
@@ -109,99 +100,106 @@ export function ModelState(props) {
             handleOpenSnackbar();
         }
     }
-   
-    const getModel = async (id) => {
 
-        if(id == null)
+
+    const getVehicles = async () => {
+        try
+        {
+            const response = await getAllVehiculos();
+            setVehicles(response.data);
+
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('empleados.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
+    const getVehicle = async (vin) => {
+
+        if (vin === null)
         {
             setEdit(false);
-            setModel(emptyModel);
+            setVehicle(emptyVehicle);
         }
-        else 
+        else
         {
             setEdit(true);
             try
             {
-                const response = await getModelo(id);
-                setModel(response.data);
+                const response = await getVehiculo(vin);
+                setVehicle(response.data);
             }
             catch (error)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorCargando');
+                setMessageSnackbar('vehiculos.mensaje.errorCargando');
                 handleOpenSnackbar();
             }
         }
     }
 
-
-
-    const addModel = async (model) => {
+    const addVehicle = async (vehicle) => {
 
         try
         {
-            const response = await createModelo(model); // Pasa el modelo a la función
-            setModels([...models, response.data]);
+            const response = await createVehiculo(vehicle);
+            setVehicles([...vehicles, response.data]);
             setTypeSnackbar('success');
-            setMessageSnackbar('modelos.mensaje.agregado');
+            setMessageSnackbar('vehiculos.mensaje.agregado');
             handleOpenSnackbar();
+            handleCloseForm();
+
         }
         catch (error)
         {
             const errors = error.response.data;
-            if(errors.nombre)
+            if(errors.vin)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorNombre');
+                setMessageSnackbar('vehiculos.mensaje.errorCedula');
+                setVehicleError({...vehicleError, vin: 'Vin ya existe'});
                 handleOpenSnackbar();
-                setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
+
             }
             else
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.error');
+                setMessageSnackbar('vehiculos.mensaje.error');
                 handleOpenSnackbar();
             }
         }
     }
 
-    const updateModel = async (model) => {
+    const updateVehicle = async (vehicle) => {
 
         try
         {
-            await updateModelo(model.id, model);
+            await updateVehiculo(vehicle.vin, vehicle);
             setTypeSnackbar('success');
-            setMessageSnackbar('modelos.mensaje.editado');
+            setMessageSnackbar('vehiculos.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
-            const errors = error.response.data;
-            if(errors.nombre)
-            {
-                setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorNombre');
-                handleOpenSnackbar();
-                setModelError({...modelError, nombre: 'Ya existe un modelo con ese nombre'});
-            }
-            else
-            {
-                setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorEditar');
-                handleOpenSnackbar();
-            }
+            setTypeSnackbar('error');
+            setMessageSnackbar('vehiculos.mensaje.errorEditar');
+            handleOpenSnackbar();
         }
     }
 
-    const deleteModel = async (model) => {
+    const deleteVehicle = async (vehicle) => {
 
         try
         {
-            await deleteModelo(model.id);
+            await deleteVehiculo(vehicle.vin);
             setTypeSnackbar('success');
-            setMessageSnackbar('modelos.mensaje.eliminado');
+            setMessageSnackbar('vehiculos.mensaje.eliminado');
             handleOpenSnackbar();
+
         }
         catch (error)
         {
@@ -211,57 +209,59 @@ export function ModelState(props) {
                 setTypeSnackbar('error');
                 setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
-            }
-            else
+
+            } else
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('modelos.mensaje.errorEliminar');
+                setMessageSnackbar('vehiculo.mensaje.errorEliminar');
                 handleOpenSnackbar();
             }
         }
     }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setModel({
-            ...model,
+        setVehicle({
+            ...vehicle,
             [name]: value
         });
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!validateModelOnSubmit()) {
+        if (!validateVehicleOnSubmit()) {
             if(edit)
             {
-                updateModel(model).then(() => getModels());
+                updateVehicle(vehicle).then(() => getVehicles());
             }
             else
             {
-                addModel(model).then(() => getModels());
+                addVehicle(vehicle).then(() => getVehicles());
             }
         }
     }
-
     const handleOnBlur = (event) => {
         const {name} = event.target;
-        validateModelOnBlur(model, name);
+        validateVehicleOnBlur(vehicle, name);
     }
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteModel(model).then(() => getModels());
+        deleteVehicle(vehicle).then(() => getVehicles());
         handleCloseDelete();
     }
-
-    const handleOpenForm = (event, cedula) => {
-        getModelError();
-        getModel(cedula).then(() => setOpenForm(true));
+    const handleOpenForm = async (event, vin) => {
+        getVehicleError();
+        await getBranches();
+        await getColors();
+        await getModels();
+        await getVehicle(vin);
+        setOpenForm(true)
     };
-
     const handleCloseForm = () => {
         setOpenForm(false);
     };
-    const handleOpenDelete = (event, id) => {
-        getModel(id).then(() => setOpenDelete(true));
+    const handleOpenDelete = (event, vin) => {
+        getVehicle(vin).then(() => setOpenDelete(true));
     }
     const handleCloseDelete = () => {
         setOpenDelete(false);
@@ -278,7 +278,7 @@ export function ModelState(props) {
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('nombre');
+    const [orderBy, setOrderBy] = useState('vin');
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [edit, setEdit] = React.useState(false);
@@ -316,7 +316,7 @@ export function ModelState(props) {
     };
 
     const [openFilter, setOpenFilter] = React.useState(null);
-    const [filterField, setFilterField] = React.useState('nombre');
+    const [filterField, setFilterField] = React.useState('vin');
 
     const handleOpenFilter = (event) => {
         setOpenFilter(event.currentTarget);
@@ -331,44 +331,46 @@ export function ModelState(props) {
         handleCloseFilter();
     }
 
-    const filteredModels = applySortFilter(models, getComparator(order, orderBy), filterName, filterField);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - models.length) : 0;
-    const isNotFound = !filteredModels.length && !!filterName;
+    const filteredVehicles = applySortFilter(vehicles, getComparator(order, orderBy), filterName, filterField);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - vehicles.length) : 0;
+    const isNotFound = !filteredVehicles.length && !!filterName;
 
-    const [modelError, setModelError] = React.useState(emptyError);
+    const [vehicleError, setVehicleError] = React.useState(emptyError);
 
-    const getModelError = () => {
-        setModelError(emptyError)
+    const getVehicleError = () => {
+        setVehicleError(emptyError)
     }
 
-    const validateModelOnSubmit = () => {
+    const validateVehicleOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(modelError).forEach((name) => {
-            updatedErrors[name] = checkModel(model, name);
+        Object.keys(vehicleError).forEach((name) => {
+            updatedErrors[name] = checkVehicle(vehicle, name);
         });
-        setModelError(updatedErrors);
+        setVehicleError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
-    const validateModelOnBlur = (model, name) => {
-        setModelError({...modelError, [name]: checkModel(model, name)});
+    const validateVehicleOnBlur = (vehicle, name) => {
+        setVehicleError({...vehicleError, [name]: checkVehicle(vehicle, name)});
     };
 
     return (
-        <ModelContext.Provider value={
+        <VehicleContext.Provider value={
             {
                 TABLE_HEAD,
                 FILTER_OPTIONS,
-                model,
+                vehicle,
+                vehicles,
                 models,
-                bodyworks,
-                fuels,
+                colors,
+                branches,
                 openForm,
                 edit,
                 openSnackbar,
                 messageSnackbar,
                 typeSnackbar,
                 openDelete,
-                getModels,
+                getVehicles,
+                getBranches,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
@@ -384,7 +386,7 @@ export function ModelState(props) {
                 page,
                 rowsPerPage,
                 selected,
-                filteredModels,
+                filteredVehicles,
                 emptyRows,
                 isNotFound,
                 handleRequestSort,
@@ -392,13 +394,16 @@ export function ModelState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                modelError,
+                vehicleError,
                 filterField,
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
                 handleCloseFilter}}>
             {props.children}
-        </ModelContext.Provider>
+        </VehicleContext.Provider>
     )
 }
+
+
+

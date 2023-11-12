@@ -17,6 +17,8 @@ import {
     TableContainer,
     TablePagination, Box, Snackbar,
 } from '@mui/material';
+import InventoryIcon from '@mui/icons-material/Inventory';
+import SellIcon from '@mui/icons-material/Sell';
 // components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
@@ -25,21 +27,22 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
-import EmployeeDelete from "../sections/@dashboard/employee/EmployeeDelete";
+import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
+import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
-import EmployeeContext from "../hooks/employee/EmployeeContext";
+import VehicleContext from "../hooks/vehicle/VehicleContext";
+import Label from "../components/label";
 
 // ----------------------------------------------------------------------
 
-export default function EmployeePage() {
+export default function VehiclePage() {
 
     const {
-        employees,
+        vehicles,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
-        getEmployees,
+        getVehicles,
         handleOpenForm,
         handleOpenDelete,
         handleCloseSnackbar,
@@ -50,91 +53,87 @@ export default function EmployeePage() {
         handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        filteredEmployees,
+        filteredVehicles,
         emptyRows,
-        isNotFound} = useContext(EmployeeContext);
+        isNotFound} = useContext(VehicleContext);
 
     useEffect(() => {
-        getEmployees();
+         getVehicles();
     }, []);
-
-    // useEffect(() => {
-    //     getBloodTypes();
-    // }, [bloodTypes]);
-    //
-    // useEffect(() => {
-    //     getEpss();
-    // }, [epss]);
-    //
-    // useEffect(() => {
-    //     getArls();
-    // }, [arls]);
-    //
-    // useEffect(() => {
-    //     getPositions();
-    // }, [positions]);
 
     const { t } = useTranslation("lang");
 
     return (
         <>
             <Helmet>
-                <title>{t('empleados.encabezado.tituloPlural')}</title>
+                <title>{t('vehiculos.encabezado.tituloPlural')}</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        {t('empleados.encabezado.tituloPlural')}
+                        {t('vehiculos.encabezado.tituloPlural')}
                     </Typography>
                     <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
-                        {t('empleados.encabezado.tituloSingular')}
+                        {t('vehiculos.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
 
-                <EmployeeForm />
+                <VehicleForm />
 
-                <EmployeeDelete />
+                <VehicleDelete />
 
                 <Card>
-                    <ListToolbar context={EmployeeContext} name={t('empleados.encabezado.tituloSingular')} title={'empleados'}/>
+                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')} title={'vehiculos'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={EmployeeContext} name={'empleados'}/>
+                                <ListHead context={VehicleContext} name={'vehiculos'}/>
                                 <TableBody>
-                                    {filteredEmployees.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const {cedula, primerNombre, primerApellido, correo, telefono, celular, salario, cargo} = row;
-                                        const nombre = `${primerNombre} ${primerApellido}`;
-                                        const selectedUser = selected.indexOf(nombre) !== -1;
+                                    {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const { vin, nombreModelo, nombreSucursal, nombreColor, disponibleVenta, hexadecimalColor} = row;
+                                        const selectedVehicle = selected.indexOf(vin) !== -1;
 
                                         return (
-                                            <TableRow hover key={cedula} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                                            <TableRow hover key={vin} tabIndex={-1} role="checkbox" selected={selectedVehicle}>
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, nombre)} />
+                                                    <Checkbox checked={selectedVehicle} onChange={(event) => handleClick(event, vin)} />
                                                 </TableCell>
 
-                                                <TableCell align="left">{cedula}</TableCell>
+                                                <TableCell align="left">{vin}</TableCell>
 
-                                                <TableCell align="left">{nombre}</TableCell>
+                                                <TableCell align="left">{nombreModelo}</TableCell>
 
-                                                <TableCell align="left">{correo}</TableCell>
+                                                <TableCell align="left">{nombreSucursal}</TableCell>
 
-                                                <TableCell align="left">{telefono}</TableCell>
+                                                <TableCell align="left">
+                                                    <Stack direction={"row"}>
+                                                        <div
+                                                            style={{
+                                                                width: '20px',
+                                                                height: '20px',
+                                                                backgroundColor: hexadecimalColor,
+                                                                display: 'flex',
+                                                                justifyContent: 'center',
+                                                                alignItems: 'center',
+                                                                borderRadius: '30%',
+                                                                marginRight: '10px',
+                                                                border: '1px solid #E6E6E6'
+                                                            }}
+                                                        />
+                                                        {t(`colores.${nombreColor}`)}
+                                                    </Stack>
+                                                </TableCell>
 
-                                                <TableCell align="left">{celular}</TableCell>
-
-                                                <TableCell align="left">$ {salario}</TableCell>
-
-                                                <TableCell align="left">{t(`cargos.${cargo}`)}</TableCell>
+                                                <TableCell align="left"><Label startIcon={disponibleVenta ? <InventoryIcon /> : <SellIcon/> } color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
+                                                        <IconButton disabled={!disponibleVenta} color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
                                                             <EditIcon />
                                                         </IconButton>
 
-                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
+                                                        <IconButton disabled={!disponibleVenta} color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>
@@ -145,7 +144,7 @@ export default function EmployeePage() {
                                     })}
                                     {emptyRows > 0 && (
                                         <TableRow style={{ height: 53 * emptyRows }}>
-                                            <TableCell colSpan={12} />
+                                            <TableCell colSpan={5} />
                                         </TableRow>
                                     )}
                                 </TableBody>
@@ -153,7 +152,7 @@ export default function EmployeePage() {
                                 {isNotFound && (
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell align="center" colSpan={12} sx={{ py: 3 }}>
+                                            <TableCell align="center" colSpan={5} sx={{ py: 3 }}>
                                                 <Paper
                                                     sx={{
                                                         textAlign: 'center',
@@ -180,7 +179,7 @@ export default function EmployeePage() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={employees.length}
+                        count={vehicles.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -191,7 +190,7 @@ export default function EmployeePage() {
             </Box>
 
             <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
-                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%'}}>
+                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
                     {t(messageSnackbar)}
                 </Alert>
             </Snackbar>

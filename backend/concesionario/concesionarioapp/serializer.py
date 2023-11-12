@@ -163,7 +163,7 @@ class ModeloSerializer(serializers.ModelSerializer):
     nombre = serializers.CharField(source='nombre_modelo')
     año = serializers.IntegerField(source='anho')
     numeroPasajeros = serializers.IntegerField(source='numero_pasajeros')
-    precioBase = serializers.DecimalField(source='precio_base', max_digits=12, decimal_places=2)
+    precioBase = serializers.IntegerField(source='precio_base')
     cilindraje = serializers.IntegerField()
     potencia = serializers.IntegerField()
     combustible = serializers.CharField()
@@ -191,23 +191,33 @@ class ModeloSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         if(Modelo.objects.filter(nombre_modelo = validated_data['nombre_modelo']).exists()):
-            raise serializers.ValidationError("Ya existe un modelo con ese nombre")
+            raise serializers.ValidationError({'nombre': 'Ya existe un modelo con ese nombre'})
           
         return Modelo.objects.create(**validated_data)
-
+    
+    
+    def update(self, instance, validated_data):
+        if(Modelo.objects.filter(nombre_modelo = validated_data['nombre_modelo']).exists() and instance.nombre_modelo != validated_data['nombre_modelo']):
+            raise serializers.ValidationError({'nombre': 'Ya existe un modelo con ese nombre'})
+        
+        return super().update(instance, validated_data)
+    
+    
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
-    modeloVehiculo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
+    modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
     nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
-    colorVehiculo = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
+    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
     nombreColor = serializers.CharField(source='nombre_color', read_only=True)
-    sucursalVehiculo = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
-    disponibleVenta = serializers.BooleanField(source='disponible_para_venta')
-    
+    disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
+
+
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modeloVehiculo', 'colorVehiculo', 'sucursalVehiculo', 'disponibleVenta', 'nombreModelo', 'nombreColor', 'nombreSucursal'
+        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -215,7 +225,20 @@ class VehiculoSerializer(serializers.ModelSerializer):
         
         vehiculo = Vehiculo.objects.create(**validated_data)
         return vehiculo
+    
+    def update(self, instance, validated_data):
+        Vehiculo.objects.filter(vin=instance.vin).update(**validated_data)
+        return instance
+        
 
+class ColorSerializer(serializers.ModelSerializer):
+    idColor = serializers.IntegerField(source='id_color')
+    colorNombre = serializers.CharField(source='nombre_color')
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color')
+    
+    class Meta:
+        model = Color
+        fields = "__all__"
 
 class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
@@ -286,3 +309,29 @@ class VentaSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
         
         return instance
+
+class CotizacionSerializer():
+    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
+    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
+    fechaCreacion = serializers.DateField()
+    porcentajeDescuento = serializers.DecimalField(max_digits=5, decimal_places=4)  
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
+    modelos = models.ManyToManyField(Modelo, through='Cotizacion_Modelo', related_name='modelos')
+
+    class Meta:
+        model = Cotizacion
+        fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
+    
+
+class CotizacionModeloSerializer():
+    idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
+    cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
+    modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
+    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    cantidad = serializers.IntegerField()
+
+    class Meta:
+        model = Cotizacion_Modelo
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'
