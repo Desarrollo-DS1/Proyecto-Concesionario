@@ -218,7 +218,7 @@
 
   "login": {
     "titulo": "Iniciar Sessão",
-    "correo": "E-mail",
+    "cedula": "Cédula",
     "contraseña": "Senha",
     "olvido": "Esqueceu sua senha?",
     "boton": "Iniciar Sessão",

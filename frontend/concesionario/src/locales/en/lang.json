@@ -227,7 +227,7 @@
 
   "login": {
     "titulo": "Login",
-    "correo": "Email",
+    "cedula": "ID",
     "contraseña": "Password",
     "olvido": "Forgot your password?",
     "boton": "Login",

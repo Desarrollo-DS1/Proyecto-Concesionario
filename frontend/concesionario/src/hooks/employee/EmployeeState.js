@@ -183,7 +183,7 @@ export function EmployeeState(props) {
     const addEmployee = async (employee) => {
 
         try {
-            console.log(employee);
+            setIsLoading(true);
             const response = await createUsuario(employee);
             const response2 = await createEmpleado(employee);
             setEmployees([...employees, response2.data]);
@@ -191,10 +191,12 @@ export function EmployeeState(props) {
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.agregado');
             handleOpenSnackbar();
-
             handleCloseForm();
+            setIsLoading(false);
         }
         catch (error) {
+
+            setIsLoading(false);
             const errors = error.response.data;
 
             if (errors.cedula) {
@@ -220,13 +222,17 @@ export function EmployeeState(props) {
     const updateEmployee = async (employee) => {
 
         try {
+            setIsLoading(true);
             await updateEmpleado(employee.cedula, employee);
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
+            setIsLoading(false);
         }
         catch (error) {
+
+            setIsLoading(false);
             const errors = error.response.data;
             if (errors.email) {
                 setTypeSnackbar('error');
@@ -402,6 +408,8 @@ export function EmployeeState(props) {
         setEmployeeError({ ...employeeError, [name]: checkEmployee(employee, name, edit) });
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+
     return (
         <EmployeeContext.Provider value={
             {
@@ -453,7 +461,8 @@ export function EmployeeState(props) {
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
-                handleCloseFilter
+                handleCloseFilter,
+                isLoading
             }}>
             {props.children}
         </EmployeeContext.Provider>

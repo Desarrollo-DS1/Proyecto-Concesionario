@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import {useContext, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
@@ -14,6 +14,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import AuthContext from "../../../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -39,6 +40,14 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const isDesktop = useResponsive('up', 'lg');
 
+  const {auth, user} = useContext(AuthContext);
+
+  const name = auth ? `${auth.primer_nombre}${" "}${auth.primer_apellido}` : 'Nombre';
+
+  const cargo = auth ? auth.email : 'Cargo';
+
+  console.log(user)
+
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -60,15 +69,15 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={'/broken-image.jpg'} alt={account.displayName} />
+            <Avatar src={'/broken-image.jpg'} alt={name} />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {cargo}
               </Typography>
             </Box>
           </StyledAccount>

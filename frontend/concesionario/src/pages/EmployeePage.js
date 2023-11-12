@@ -15,7 +15,7 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, Snackbar,
+    TablePagination, Box, Snackbar, CircularProgress, Backdrop,
 } from '@mui/material';
 // components
 import Alert from '@mui/material/Alert';
@@ -57,22 +57,6 @@ export default function EmployeePage() {
     useEffect(() => {
         getEmployees();
     }, []);
-
-    // useEffect(() => {
-    //     getBloodTypes();
-    // }, [bloodTypes]);
-    //
-    // useEffect(() => {
-    //     getEpss();
-    // }, [epss]);
-    //
-    // useEffect(() => {
-    //     getArls();
-    // }, [arls]);
-    //
-    // useEffect(() => {
-    //     getPositions();
-    // }, [positions]);
 
     const { t } = useTranslation("lang");
 

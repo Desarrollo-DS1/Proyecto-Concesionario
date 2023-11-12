@@ -234,7 +234,7 @@
 
   "login": {
     "titulo": "Iniciar Sesión",
-    "correo": "Correo",
+    "cedula": "Cedula",
     "contraseña": "Contraseña",
     "olvido": "¿Olvidaste tu contraseña?",
     "boton": "Iniciar Sesión",
