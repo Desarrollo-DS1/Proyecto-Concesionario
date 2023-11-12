@@ -21,7 +21,6 @@ import ModeViewSwitch from "../../../layouts/dashboard/header/ModeViewSwitch";
 export default function LoginForm() {
 
     const {
-        captcha,
         formData,
         showPassword,
         snackbarOpen,
@@ -31,10 +30,7 @@ export default function LoginForm() {
         handleLogin,
         handleCloseSnackbar,
         setShowPassword,
-        setCaptcha,
-        setFormData,
-        setSnackbarOpen,
-        setErrorMessage } = useContext(AuthContext);
+        } = useContext(AuthContext);
 
     const navigate = useNavigate();
 
@@ -45,7 +41,7 @@ export default function LoginForm() {
           <Stack spacing={3}>
             <TextField
                 name="cedula"
-                label={t('login.correo')}
+                label={t('login.cedula')}
                 value={formData.cedula}
                 onChange={handleInputChange} />
 
@@ -91,7 +87,7 @@ export default function LoginForm() {
                 onClose={handleCloseSnackbar}
             >
                 <Alert onClose={handleCloseSnackbar} severity="error" sx={{ width: '100%', fontSize: '1.2rem', padding: '20px' }}>
-                    {errorMessage}
+                    {t(errorMessage)}
                 </Alert>
             </Snackbar>
         </>

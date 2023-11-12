@@ -1,5 +1,4 @@
 import propTypes from "prop-types";
-import {useTranslation} from "react-i18next";
 import React, {createRef, useEffect, useState} from "react";
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
@@ -14,22 +13,21 @@ export function AuthState(props) {
 
     const captchaRef = createRef(null);
 
-    const [captcha, setCaptcha] = useState(null);
+    const history = useNavigate()
 
     const emptyData = {
         cedula: '',
         password: '',
     }
 
-    const navigate = useNavigate();
-
+    const [captcha, setCaptcha] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(emptyData);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
-
-
-    const { t } = useTranslation("lang");
+    const [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
+    const [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null)
+    const [loading, setLoading] = useState(true)
 
     const handleInputChange = (e) => {
         setFormData({
@@ -50,7 +48,8 @@ export function AuthState(props) {
             history('/dashboard', { replace: true })
         
         } catch(error){
-            alert('Something went wrong!')
+            setErrorMessage('login.error')
+            setSnackbarOpen(true);
         }
     }
 
@@ -62,7 +61,7 @@ export function AuthState(props) {
         }
         else
         {
-            setErrorMessage(t('login.captcha'))
+            setErrorMessage('login.captcha')
             setSnackbarOpen(true);
         }
     };
@@ -73,13 +72,6 @@ export function AuthState(props) {
         }
         setSnackbarOpen(false);
     };
-
-
-    const [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
-    const [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null)
-    const [loading, setLoading] = useState(true)
-
-    const history = useNavigate()
 
     const logoutUser = () => {
         setAuthTokens(null)
@@ -130,7 +122,6 @@ export function AuthState(props) {
 
     }, [authTokens, loading])
 
-
     return (
         <AuthContext.Provider value={
             {
@@ -148,6 +139,7 @@ export function AuthState(props) {
                 setFormData,
                 setSnackbarOpen,
                 setErrorMessage,
+                auth,
                 ...contextData
             }}>
             {loading ? null : props.children}

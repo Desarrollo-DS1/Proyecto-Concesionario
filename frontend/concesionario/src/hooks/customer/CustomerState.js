@@ -119,6 +119,7 @@ export function CustomerState(props) {
     const addCustomer = async (customer) => {
 
         try {
+            setIsLoading(true)
             const response = await createUsuario(customer);
             const response2 = await createCliente(customer);
             setCustomers([...customers, response2.data]);
@@ -126,8 +127,11 @@ export function CustomerState(props) {
             setMessageSnackbar('clientes.mensaje.agregado');
             handleOpenSnackbar();
             handleCloseForm();
+            setIsLoading(false)
 
         } catch (error) {
+
+            setIsLoading(false)
             const errors = error.response.data;
 
             if (errors.cedula) {
@@ -152,15 +156,18 @@ export function CustomerState(props) {
 
     const updateCustomer = async (customer) => {
         try {
+
+            setIsLoading(true);
             await updateCliente(customer.cedula, customer);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
+            setIsLoading(false);
         }
         catch (error) {
+            setIsLoading(false);
             const errors = error.response.data;
-
             if (errors.email) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('clientes.mensaje.errorEmail');
@@ -342,6 +349,8 @@ export function CustomerState(props) {
         setCustomerError({ ...customerError, [name]: checkCustomer(customer, name, edit) });
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+
     return (
         <CustomerContext.Provider value={
             {
@@ -387,7 +396,8 @@ export function CustomerState(props) {
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
-                handleCloseFilter
+                handleCloseFilter,
+                isLoading
             }}>
             {props.children}
         </CustomerContext.Provider>

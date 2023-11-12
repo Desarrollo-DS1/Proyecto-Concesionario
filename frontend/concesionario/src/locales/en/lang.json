@@ -227,7 +227,7 @@
 
   "login": {
     "titulo": "Login",
-    "correo": "Email",
+    "cedula": "ID",
     "contraseña": "Password",
     "olvido": "Forgot your password?",
     "boton": "Login",
@@ -295,6 +295,8 @@
   "cargos": {
     "Vendedor": "Salesperson",
     "Jefe de Taller": "Workshop Manager",
-    "Gerente": "Manager"
+    "Gerente": "Manager",
+    "Cliente": "Customer",
+    "Superusuario": "Superuser"
   }
 }
