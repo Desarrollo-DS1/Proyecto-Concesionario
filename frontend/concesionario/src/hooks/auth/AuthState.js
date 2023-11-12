@@ -42,16 +42,15 @@ export function AuthState(props) {
 
     const loginUser = async ( e )=> {
         e.preventDefault()
-        console.log(formData)
         const response = await login(formData)
 
         if(response.status === 200){
             setAuthTokens(response.data)
             setUser(jwtDecode(response.data.access))
             localStorage.setItem('authTokens', JSON.stringify(response.data))
-            const responseEmpleado = await getEmpleadoByToken(response.data.access)
+
+            const responseEmpleado = await getEmpleadoByToken(JSON.parse(localStorage.getItem('authTokens')).access)
             setAuth(responseEmpleado.data)
-            console.log(responseEmpleado.data)
 
             history('/dashboard', { replace: true })
         }else{
@@ -63,7 +62,7 @@ export function AuthState(props) {
         e.preventDefault();
         if(captchaRef.current.getValue())
         {
-            loginUser(e).then(() => console.log('Login successful'))
+            await loginUser(e)
         }
         else
         {
@@ -97,7 +96,9 @@ export function AuthState(props) {
 
     const updateToken = async ()=> {
 
-        const response = await refresh(authTokens.refresh)
+        
+        const refreshTokens = JSON.parse(localStorage.getItem('authTokens')).refresh 
+        const response = await refresh({refresh: refreshTokens})
 
         if (response.status === 200){
             setAuthTokens(response.data)

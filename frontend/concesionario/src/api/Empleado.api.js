@@ -2,7 +2,7 @@ import axios from "axios";
 
 const empleadoApi = axios.create({
     baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/"
-    });
+});
 
 export const getAllEmpleados = () => empleadoApi.get("/");
 
@@ -14,4 +14,6 @@ export const updateEmpleado = (id, empleado) => empleadoApi.put(`/${id}/`, emple
 
 export const deleteEmpleado = (id) => empleadoApi.delete(`/${id}/`);
 
-export const getEmpleadoByToken = (token) => axios.get( "http://localhost:8000/concesionarioapp/api/v1/auth/users/me/", { headers: { Authorization: `Bearer ${token}` } });
+export const getEmpleadoByToken = (token) => axios.get("http://localhost:8000/concesionarioapp/api/v1/auth/users/me/", {
+    headers: { Authorization: `JWT ${token}` }
+});
