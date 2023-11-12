@@ -218,7 +218,7 @@
 
   "login": {
     "titulo": "Iniciar Sessão",
-    "correo": "E-mail",
+    "cedula": "Cédula",
     "contraseña": "Senha",
     "olvido": "Esqueceu sua senha?",
     "boton": "Iniciar Sessão",
@@ -286,6 +286,8 @@
   "cargos": {
     "Vendedor": "Vendedor",
     "Jefe de Taller": "Chefe de Oficina",
-    "Gerente": "Gerente"
+    "Gerente": "Gerente",
+    "Cliente": "Cliente",
+    "Superusuario": "Superusuário"
   }
 }

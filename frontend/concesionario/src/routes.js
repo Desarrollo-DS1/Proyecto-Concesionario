@@ -1,3 +1,4 @@
+import {useContext} from "react";
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
@@ -15,10 +16,17 @@ import {ModelState} from "./hooks/model/ModelState";
 import ModelPage from "./pages/ModelPage";
 import {VehicleState} from "./hooks/vehicle/VehicleState";
 import VehiclePage from "./pages/VehiclePage";
+import AuthContext  from "./hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+
+  const {user} = useContext(AuthContext)
+
+  const redirectToLogin = () => <Navigate to="/login" replace />;
+  const redirectToDashboard = () => <Navigate to="/dashboard" replace />;
+
   const routes = useRoutes([
     {
       path: '/login',
@@ -26,7 +34,7 @@ export default function Router() {
     },
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: user ? <DashboardLayout /> : redirectToLogin(),
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },

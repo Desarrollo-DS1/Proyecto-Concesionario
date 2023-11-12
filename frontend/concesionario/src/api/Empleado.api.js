@@ -2,7 +2,7 @@ import axios from "axios";
 
 const empleadoApi = axios.create({
     baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/"
-    });
+});
 
 export const getAllEmpleados = () => empleadoApi.get("/");
 

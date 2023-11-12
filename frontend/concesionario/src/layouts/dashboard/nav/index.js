@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
+import {Fragment, useContext, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
+import {useTranslation} from "react-i18next";
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
+import {Box, Link, Drawer, Typography, Avatar, Divider, List} from '@mui/material';
 // mock
 import account from '../../../_mock/account';
 // hooks
@@ -14,6 +15,7 @@ import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
 //
 import navConfig from './config';
+import AuthContext from "../../../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +29,74 @@ const StyledAccount = styled('div')(({ theme }) => ({
   backgroundColor: alpha(theme.palette.grey[500], 0.12),
 }));
 
+const chooseNavConfig = (user) => {
+  if (user.tipoUsuario === 'Superusuario' || user.tipoUsuario === 'Gerente') {
+    return navConfig;
+  }
+
+  if (user.tipoUsuario === 'Vendedor') {
+    const navConfigSec = navConfig.filter((section) => section.section !== 'ubicaciones');
+
+    const filteredNavConfig = navConfigSec.map((section) => {
+      if (section.section === 'operaciones') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'ordenesTrabajo')
+        };
+      }
+      if (section.section === 'usuarios') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'empleados')
+        };
+      }
+      if (section.section === 'inventario') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'repuestos')
+        };
+      }
+      return section;
+    });
+
+    return filteredNavConfig;
+  }
+
+  if (user.tipoUsuario === 'Jefe de Taller'){
+    const navConfigSec = navConfig.filter((section) => section.section !== 'ubicaciones');
+
+    const filteredNavConfig = navConfigSec.map((section) => {
+      if (section.section === 'operaciones') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'ventas' && link.title !== 'cotizaciones')
+        };
+      }
+      if (section.section === 'usuarios') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'empleados')
+        };
+      }
+      if (section.section === 'inventario') {
+        return {
+          ...section,
+          links: section.links.filter((link) => link.title !== 'modelos' && link.title !== 'vehiculos')
+        };
+      }
+      return section;
+    });
+
+    return filteredNavConfig;
+  }
+
+  if (user.tipoUsuario === 'Cliente') {
+    return [];
+  }
+
+  return navConfig;
+};
+
 // ----------------------------------------------------------------------
 
 Nav.propTypes = {
@@ -38,6 +108,14 @@ export default function Nav({ openNav, onCloseNav }) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive('up', 'lg');
+
+  const {user} = useContext(AuthContext);
+
+  const name = user ? `${user.primerNombre}${" "}${user.primerApellido}` : 'Nombre';
+
+  const type = user ? user.tipoUsuario : 'Cargo';
+
+  const { t } = useTranslation("lang");
 
   useEffect(() => {
     if (openNav) {
@@ -60,22 +138,22 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={'/broken-image.jpg'} alt={account.displayName} />
+            <Avatar src={'/broken-image.jpg'} alt={name} />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {name}
               </Typography>
 
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {account.role}
+                {t(`cargos.${type}`)}
               </Typography>
             </Box>
           </StyledAccount>
         </Link>
       </Box>
 
-      <NavSection data={navConfig} />
+      <NavSection data={chooseNavConfig(user)} />
 
       <Box sx={{ flexGrow: 1 }} />
 

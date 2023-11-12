@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 from .managers import AdministradorUsuarios
 
 
@@ -367,7 +367,7 @@ class Cotizacion(models.Model):
 	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
 	fecha_creacion = models.DateField('Fecha de Creación', auto_now_add=True)
 	porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=5, decimal_places=4)
-	fecha_vencimiento = models.DateField('Fecha de Vencimiento', default=datetime.now()+timedelta(days=20))
+	fecha_vencimiento = models.DateField('Fecha de Vencimiento', default=date.today()+timedelta(days=20))
 	modelos = models.ManyToManyField('Modelo', through='Cotizacion_Modelo')
 
 	class Meta:

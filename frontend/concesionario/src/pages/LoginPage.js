@@ -74,7 +74,7 @@ export default function LoginPage() {
             <Stack direction="row" spacing={2}>
 
               {LANGS.map((option) => (
-                  <Button fullWidth color="inherit" variant="outlined" style={{ backgroundColor: option.value === i18n.language ? theme.palette.divider: 'transparent' }} onClick={() => handleLanguageChange(option.value)}>
+                  <Button key={option.value} fullWidth color="inherit" variant="outlined" style={{ backgroundColor: option.value === i18n.language ? theme.palette.divider: 'transparent' }} onClick={() => handleLanguageChange(option.value)}>
                     <Avatar src={option.icon} alt={option.label} />
                   </Button>
               ))}
