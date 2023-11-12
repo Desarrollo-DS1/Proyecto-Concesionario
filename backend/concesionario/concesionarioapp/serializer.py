@@ -38,8 +38,6 @@ class UsuarioSerializer(serializers.ModelSerializer):
         return usuario
 
 
-
-
 class ClienteSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
     clave = serializers.CharField(source='usuario.password', write_only=True, required=False, allow_blank=True)
