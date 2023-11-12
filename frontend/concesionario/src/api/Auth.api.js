@@ -6,6 +6,6 @@ const AuthApi = axios.create({
 
 export const login = (login) => AuthApi.post('/jwt/create/', login);
 
-export const refresh = (refresh) => AuthApi.post('/jwt/refresh/', refresh);
+export const refresh = (refreshToken) => AuthApi.post('/jwt/refresh/', { refresh: refreshToken });
 
 

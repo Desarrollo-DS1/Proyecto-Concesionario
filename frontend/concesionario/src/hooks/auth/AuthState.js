@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import AuthContext from './AuthContext';
 import {login, refresh} from "../../api/Auth.api";
-import { getEmpleadoByToken } from "../../api/Empleado.api";
 
 AuthState.propTypes = {
     children: propTypes.node,
@@ -29,7 +28,6 @@ export function AuthState(props) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
 
-    const [auth, setAuth] = useState(null)
 
     const { t } = useTranslation("lang");
 
@@ -42,18 +40,16 @@ export function AuthState(props) {
 
     const loginUser = async ( e )=> {
         e.preventDefault()
-        const response = await login(formData)
 
-        if(response.status === 200){
+        try{
+            const response = await login(formData)
+
             setAuthTokens(response.data)
             setUser(jwtDecode(response.data.access))
             localStorage.setItem('authTokens', JSON.stringify(response.data))
-
-            const responseEmpleado = await getEmpleadoByToken(JSON.parse(localStorage.getItem('authTokens')).access)
-            setAuth(responseEmpleado.data)
-
             history('/dashboard', { replace: true })
-        }else{
+        
+        } catch(error){
             alert('Something went wrong!')
         }
     }
@@ -88,23 +84,19 @@ export function AuthState(props) {
     const logoutUser = () => {
         setAuthTokens(null)
         setUser(null)
-        setAuth(null)
         localStorage.removeItem('authTokens')
         history('/login')
     }
 
 
-    const updateToken = async ()=> {
-
-        
-        const refreshTokens = JSON.parse(localStorage.getItem('authTokens')).refresh 
-        const response = await refresh({refresh: refreshTokens})
-
-        if (response.status === 200){
+    const updateToken = async ()=> {       
+        try{
+            const response = await refresh(JSON.parse(localStorage.getItem('authTokens')).refresh)
             setAuthTokens(response.data)
             setUser(jwtDecode(response.data.access))
             localStorage.setItem('authTokens', JSON.stringify(response.data))
-        }else{
+
+        }catch(error){
             logoutUser()
         }
 
@@ -158,7 +150,7 @@ export function AuthState(props) {
                 setErrorMessage,
                 ...contextData
             }}>
-            {props.children}
+            {loading ? null : props.children}
         </AuthContext.Provider>
     )
 }

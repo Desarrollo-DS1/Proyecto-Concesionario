@@ -170,6 +170,7 @@ SIMPLE_JWT = {
     "UPDATE_LAST_LOGIN": False,
 
     'USER_ID_FIELD': 'cedula',
+    'AUTH_HEADER_TYPES': ('Bearer',),
     'TOKEN_OBTAIN_SERIALIZER': 'concesionarioapp.serializer.TokenPairSerializer',
 }
 
