@@ -1,391 +1,164 @@
 import propTypes from "prop-types";
-import React, { useState } from "react";
-import { set } from "lodash";
-// import CUSTOMERLIST from '../../_mock/customer';
-import CustomerContext from './CustomerContext';
-import { checkCustomer } from "./CustomerValidation";
-import { applySortFilter, getComparator } from "../filter/Filter";
-import { getAllClientes, getCliente, createCliente, updateCliente, deleteCliente } from "../../api/Cliente.api";
-import { createUsuario } from "../../api/Usuario.api";
+import {useTranslation} from "react-i18next";
+import React, {createRef, useEffect, useState} from "react";
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import AuthContext from './AuthContext';
+import {login, refresh} from "../../api/Auth.api";
+import { getEmpleadoByToken } from "../../api/Empleado.api";
 
-
-
-CustomerState.propTypes = {
+AuthState.propTypes = {
     children: propTypes.node,
 }
 
-export function CustomerState(props) {
+export function AuthState(props) {
 
-    const TABLE_HEAD = [
-        { id: 'cedula', label: 'cedula', alignRight: false },
-        { id: 'nombre', label: 'nombre', alignRight: false },
-        { id: 'correo', label: 'correo', alignRight: false },
-        { id: 'telefono', label: 'telefono', alignRight: false },
-        { id: 'celular', label: 'celular', alignRight: false },
-        { id: 'direccion', label: 'direccion', alignRight: false },
-        { id: 'ciudad', label: 'ciudad', alignRight: false },
-        { id: 'fechaNacimiento', label: 'fechaNacimiento', alignRight: false },
-        { id: 'genero', label: 'genero', alignRight: false },
-        { id: '' },
-    ];
+    const captchaRef = createRef(null);
 
-    const emptyCustomer = {
-        primerNombre: "",
-        segundoNombre: "",
-        primerApellido: "",
-        segundoApellido: "",
-        cedula: "",
-        telefono: "",
-        celular: "",
-        ciudad: "",
-        direccion: "",
-        fechaNacimiento: "",
-        genero: "",
-        correo: "",
-        clave: "",
-    }
-    const emptyError = {
-        primerNombre: '',
-        segundoNombre: '',
-        primerApellido: '',
-        segundoApellido: '',
+    const [captcha, setCaptcha] = useState(null);
+
+    const emptyData = {
         cedula: '',
-        telefono: '',
-        celular: '',
-        ciudad: '',
-        direccion: '',
-        fechaNacimiento: '',
-        genero: '',
-        correo: '',
-        clave: '',
+        password: '',
     }
 
-    const initialGenders = [
-        { id: '1', label: 'Masculino' },
-        { id: '2', label: 'Femenino' },
-        { id: '3', label: 'Otro' }]
+    const navigate = useNavigate();
 
-    const [customer, setCustomer] = React.useState(emptyCustomer);
-    const [customers, setCustomers] = React.useState([]);
-    const [openForm, setOpenForm] = useState(false);
-    const [openDelete, setOpenDelete] = useState(false);
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [messageSnackbar, setMessageSnackbar] = useState('');
-    const [typeSnackbar, setTypeSnackbar] = useState('success');
-    const [genders, setGenders] = useState(initialGenders);
+    const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState(emptyData);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const getCustomers = () => {
-        async function loadCustomers() {
-            try {
-                const response = await getAllClientes();
-                setCustomers(response.data);
+    const [auth, setAuth] = useState(null)
 
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('clientes.mensaje.errorListando');
-                handleOpenSnackbar();
-            }
-        }
+    const { t } = useTranslation("lang");
 
-        loadCustomers();
-    }
-
-    const getCustomer = (cedula) => {
-        async function loadCustomer() {
-            try {
-                const response = await getCliente(cedula);
-                const customerDataWithClave = { ...response.data, clave: '' };
-                setCustomer(customerDataWithClave);
-
-            } catch (error) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('clientes.mensaje.errorCargando');
-                handleOpenSnackbar();
-            }
-        }
-
-        if (cedula === null) {
-            setCustomer(emptyCustomer);
-            setEdit(false);
-
-        } else {
-            loadCustomer();
-            setEdit(true);
-        }
-    }
-
-    const addCustomer = (customer) => {
-        async function postCustomer() {
-            try {
-                const response = await createUsuario(customer);
-                const response2 = await createCliente(customer);
-                setCustomers([...customers, response2.data]);
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.agregado');
-                handleOpenSnackbar();
-
-                handleCloseForm();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.cedula) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorCedula');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, cedula: 'Cedula ya existe' });
-
-                } else if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, correo: 'Correo ya existe' });
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.error');
-                    handleOpenSnackbar();
-                }
-            }
-        }
-
-        postCustomer();
-    }
-
-    const updateCustomer = (customer) => {
-        async function putCustomer() {
-            try {
-                const response = await updateCliente(customer.cedula, customer);
-                (customers.map((item) => (item.cedula === customer.cedula ? customer : item)))
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.editado');
-                handleOpenSnackbar();
-
-                handleCloseForm();
-                getCustomers();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.email) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEmail');
-                    handleOpenSnackbar();
-                    setCustomerError({ ...customerError, correo: 'Correo ya existe' });
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEditar');
-                    handleOpenSnackbar();
-                }
-            }
-        }
-
-        putCustomer();
-    }
-
-
-    const deleteCustomer = (customer) => {
-        async function removeCustomer() {
-            try {
-                const response = await deleteCliente(customer.cedula);
-                setCustomers(customers.filter((item) => item.cedula !== customer.cedula))
-
-                setTypeSnackbar('success');
-                setMessageSnackbar('clientes.mensaje.eliminado');
-                handleOpenSnackbar();
-
-                getCustomers();
-
-            } catch (error) {
-                const errors = error.response.data;
-
-                if (errors.protected) {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar(errors.protected);
-                    handleOpenSnackbar();
-
-                } else {
-                    setTypeSnackbar('error');
-                    setMessageSnackbar('clientes.mensaje.errorEliminar');
-                    handleOpenSnackbar();
-                }
-            }
-        }
-
-        removeCustomer();
-    }
-
-
-    const handleInputChange = (event) => {
-        const { name, value } = event.target;
-        setCustomer({
-            ...customer,
-            [name]: value
+    const handleInputChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
         });
-    }
+    };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        if (!validateCustomerOnSubmit()) {
-            if (edit) {
-                updateCustomer(customer);
-            }
-            else {
-                addCustomer(customer);
-            }
-            getCustomers();
+    const loginUser = async ( e )=> {
+        e.preventDefault()
+        console.log(formData)
+        const response = await login(formData)
+
+        if(response.status === 200){
+            setAuthTokens(response.data)
+            setUser(jwtDecode(response.data.access))
+            localStorage.setItem('authTokens', JSON.stringify(response.data))
+            const responseEmpleado = await getEmpleadoByToken(response.data.access)
+            setAuth(responseEmpleado.data)
+            console.log(responseEmpleado.data)
+
+            history('/dashboard', { replace: true })
+        }else{
+            alert('Something went wrong!')
         }
     }
-    const handleOnBlur = (event) => {
-        const { name } = event.target;
-        validateCustomerOnBlur(customer, name);
-    }
 
-    const handleDelete = (event) => {
-        event.preventDefault();
-        deleteCustomer(customer);
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        if(captchaRef.current.getValue())
+        {
+            loginUser(e).then(() => console.log('Login successful'))
+        }
+        else
+        {
+            setErrorMessage(t('login.captcha'))
+            setSnackbarOpen(true);
+        }
+    };
 
-        handleCloseDelete();
-    }
-    const handleOpenForm = (event, cedula) => {
-        getCustomerError();
-        getCustomer(cedula);
-        setOpenForm(true)
-    };
-    const handleCloseForm = () => {
-        setShowPassword(false);
-        setOpenForm(false);
-    };
-    const handleOpenDelete = (event, cedula) => {
-        getCustomer(cedula);
-        setOpenDelete(true);
-    }
-    const handleCloseDelete = () => {
-        setOpenDelete(false);
-    }
     const handleCloseSnackbar = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpenSnackbar(false);
-    }
-    const handleOpenSnackbar = () => {
-        setOpenSnackbar(true);
-    }
-
-    const [showPassword, setShowPassword] = useState(false);
-
-    const handleTogglePassword = () => {
-        setShowPassword(!showPassword);
+        setSnackbarOpen(false);
     };
 
-    const [filterName, setFilterName] = useState('');
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('cedula');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [edit, setEdit] = React.useState(false);
-    const [selected, setSelected] = React.useState([]);
 
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
-    const handleClick = (event, name) => {
-        const selectedIndex = selected.indexOf(name);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    const [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
+    const [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwtDecode(localStorage.getItem('authTokens')) : null)
+    const [loading, setLoading] = useState(true)
+
+    const history = useNavigate()
+
+    const logoutUser = () => {
+        setAuthTokens(null)
+        setUser(null)
+        setAuth(null)
+        localStorage.removeItem('authTokens')
+        history('/login')
+    }
+
+
+    const updateToken = async ()=> {
+
+        const response = await refresh(authTokens.refresh)
+
+        if (response.status === 200){
+            setAuthTokens(response.data)
+            setUser(jwtDecode(response.data.access))
+            localStorage.setItem('authTokens', JSON.stringify(response.data))
+        }else{
+            logoutUser()
         }
-        setSelected(newSelected);
-    };
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-    const handleChangeRowsPerPage = (event) => {
-        setPage(0);
-        setRowsPerPage(parseInt(event.target.value, 10));
-    };
-    const handleFilterByName = (event) => {
-        setPage(0);
-        setFilterName(event.target.value);
-    };
 
-    const filteredCustomers = applySortFilter(customers, getComparator(order, orderBy), filterName);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customers.length) : 0;
-    const isNotFound = !filteredCustomers.length && !!filterName;
-
-    const [customerError, setCustomerError] = React.useState(emptyError);
-
-    const getCustomerError = () => {
-        setCustomerError(emptyError)
+        if(loading){
+            setLoading(false)
+        }
     }
 
-    const validateCustomerOnSubmit = () => {
-        const updatedErrors = {};
-        Object.keys(customerError).forEach((name) => {
-            updatedErrors[name] = checkCustomer(customer, name, edit);
-        });
-        setCustomerError(updatedErrors);
-        return Object.values(updatedErrors).some((error) => error !== '');
-    };
-    const validateCustomerOnBlur = (customer, name) => {
-        setCustomerError({ ...customerError, [name]: checkCustomer(customer, name, edit) });
-    };
+    const contextData = {
+        user,
+        authTokens,
+        loginUser,
+        logoutUser
+    }
+
+
+    useEffect(()=> {
+
+        if(loading){
+            updateToken()
+        }
+
+        const fourMinutes = 1000 * 60 * 4
+
+        const interval =  setInterval(()=> {
+            if(authTokens){
+                updateToken()
+            }
+        }, fourMinutes)
+        return ()=> clearInterval(interval)
+
+    }, [authTokens, loading])
+
 
     return (
-        <CustomerContext.Provider value={
+        <AuthContext.Provider value={
             {
-                TABLE_HEAD,
-                customer,
-                customers,
-                genders,
-                openForm,
-                edit,
-                openSnackbar,
-                messageSnackbar,
-                typeSnackbar,
-                openDelete,
-                getCustomers,
-                handleInputChange,
-                handleSubmit,
-                handleDelete,
-                handleOnBlur,
-                handleOpenForm,
-                handleCloseForm,
-                handleOpenDelete,
-                handleCloseDelete,
-                handleCloseSnackbar,
-                filterName,
-                order,
-                orderBy,
-                page,
-                rowsPerPage,
-                selected,
-                filteredCustomers,
-                emptyRows,
-                isNotFound,
-                handleRequestSort,
-                handleClick,
-                handleChangePage,
-                handleChangeRowsPerPage,
-                handleFilterByName,
-                customerError,
+                captcha,
+                formData,
                 showPassword,
-                handleTogglePassword
+                snackbarOpen,
+                errorMessage,
+                captchaRef,
+                handleInputChange,
+                handleLogin,
+                handleCloseSnackbar,
+                setShowPassword,
+                setCaptcha,
+                setFormData,
+                setSnackbarOpen,
+                setErrorMessage,
+                ...contextData
             }}>
             {props.children}
-        </CustomerContext.Provider>
+        </AuthContext.Provider>
     )
 }
 

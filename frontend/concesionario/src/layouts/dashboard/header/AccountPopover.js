@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import {Link as RouterLink} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 // @mui
@@ -6,6 +6,8 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import {AuthState} from "../../../hooks/auth/AuthState";
+import AuthContext from "../../../hooks/auth/AuthContext";
 
 
 // ----------------------------------------------------------------------
@@ -27,6 +29,9 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
+  const {
+    logoutUser } = useContext(AuthContext);
+
   const { t } = useTranslation("lang");
 
   const [open, setOpen] = useState(null);
@@ -36,6 +41,11 @@ export default function AccountPopover() {
   };
 
   const handleClose = () => {
+    setOpen(null);
+  };
+
+  const handleLogOut = () => {
+    logoutUser();
     setOpen(null);
   };
 
@@ -101,7 +111,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }} to="/login" component={RouterLink}>
+        <MenuItem onClick={handleLogOut} sx={{ m: 1 }} >
           {t('general.perfil.cerrarSesion')}
         </MenuItem>
       </Popover>
