@@ -1,9 +1,11 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from rest_framework.exceptions import MethodNotAllowed
 from django.db.models.deletion import ProtectedError
 from .serializer import *
 from .models import *
+import requests
 
 
 class UsuarioView(viewsets.ModelViewSet):
@@ -35,7 +37,6 @@ class ClienteView(viewsets.ModelViewSet):
             raise serializers.ValidationError({'protected': f'No se puede eliminar el cliente porque está referenciado en la tabla {table_name}.'})
         
         except Exception as e:
-            print(e)
             raise serializers.ValidationError({'error': str(e)})
     
 
@@ -146,3 +147,24 @@ class CotizacionModeloView(viewsets.ModelViewSet):
 class CotizacionView(viewsets.ModelViewSet):
     serializer_class = CotizacionSerializer
     queryset = Cotizacion.objects.all()
+
+
+@api_view(['POST'])
+def recaptcha(request):
+    captcha_token = request.data.get('captcha_token')
+
+    if not captcha_token:
+        return Response({"missing_captcha": "El captcha es requerido"}, status=400)
+    
+    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
+        'secret': '6LcaL_8oAAAAAKsq5c-ImF_wkAQdhX4Xb4xWKfYf',
+        'response': captcha_token
+    })
+
+    result = response.json()
+    
+    if result.get('success'):
+        return Response({"success": "El captcha es válido"})
+    else:
+        return Response({"fail": result.get('error-codes')[0]}, status=400)
+    

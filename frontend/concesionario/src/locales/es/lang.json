@@ -239,7 +239,8 @@
     "olvido": "¿Olvidaste tu contraseña?",
     "boton": "Iniciar Sesión",
     "error": "Email o contraseña incorrectos",
-    "captcha": "Por favor acepte el captcha"
+    "captcha": "Por favor acepte el captcha",
+    "captchaDuplicado": "Debe volver a aceptar el captcha"
   },
 
   "dashBoardVenta": {

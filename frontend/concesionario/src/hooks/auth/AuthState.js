@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import AuthContext from './AuthContext';
 import {login, refresh} from "../../api/Auth.api";
+import {verifyCaptcha} from "../../api/Captcha.api";
 
 AuthState.propTypes = {
     children: propTypes.node,
@@ -20,7 +21,6 @@ export function AuthState(props) {
         password: '',
     }
 
-    const [captcha, setCaptcha] = useState(null);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState(emptyData);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -55,14 +55,33 @@ export function AuthState(props) {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        if(captchaRef.current.getValue())
-        {
-            await loginUser(e)
+
+        let response;
+        try{
+            response = await verifyCaptcha(captchaRef.current.getValue())
+
+        } catch(error){
+
+            if (error.response.data.fail === 'timeout-or-duplicate') {
+                setErrorMessage('login.captchaDuplicado')
+                setSnackbarOpen(true);
+                captchaRef.current.reset();
+
+            } else  {
+                setErrorMessage('login.captcha')
+                setSnackbarOpen(true);
+            }
+
+            return;
         }
-        else
-        {
+
+        if (response.data.success) {
+            await loginUser(e)
+
+        } else {
             setErrorMessage('login.captcha')
             setSnackbarOpen(true);
+            captchaRef.current.reset();
         }
     };
 
@@ -125,7 +144,6 @@ export function AuthState(props) {
     return (
         <AuthContext.Provider value={
             {
-                captcha,
                 formData,
                 showPassword,
                 snackbarOpen,
@@ -135,7 +153,6 @@ export function AuthState(props) {
                 handleLogin,
                 handleCloseSnackbar,
                 setShowPassword,
-                setCaptcha,
                 setFormData,
                 setSnackbarOpen,
                 setErrorMessage,
