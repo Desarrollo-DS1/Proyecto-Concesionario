@@ -2,6 +2,7 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.permissions import IsAuthenticated
 from django.db.models.deletion import ProtectedError
 from .serializer import *
 from .models import *
@@ -11,11 +12,13 @@ import requests
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     queryset = Usuario.objects.all()
+    permission_classes = [IsAuthenticated]
         
 
 class ClienteView(viewsets.ModelViewSet):
     serializer_class = ClienteSerializer
     queryset = Cliente.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         cliente = self.get_object()
@@ -164,7 +167,7 @@ def recaptcha(request):
     result = response.json()
     
     if result.get('success'):
-        return Response({"success": "El captcha es válido"})
+        return Response({"success": "El captcha es válido"}, status=200)
     else:
         return Response({"fail": result.get('error-codes')[0]}, status=400)
     
