@@ -32,6 +32,7 @@ import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
 import VehicleContext from "../hooks/vehicle/VehicleContext";
 import Label from "../components/label";
+import AuthContext from "../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -57,6 +58,9 @@ export default function VehiclePage() {
         emptyRows,
         isNotFound} = useContext(VehicleContext);
 
+    const {
+        user} = useContext(AuthContext);
+
     useEffect(() => {
          getVehicles();
     }, []);
@@ -74,9 +78,10 @@ export default function VehiclePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('vehiculos.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
-                        {t('vehiculos.encabezado.tituloSingular')}
-                    </Button>
+                    {user.tipoUsuario !== "Vendedor" &&
+                        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                            {t('vehiculos.encabezado.tituloSingular')}
+                        </Button>}
                 </Stack>
 
                 <VehicleForm />
@@ -129,13 +134,16 @@ export default function VehiclePage() {
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton disabled={!disponibleVenta} color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
-                                                            <EditIcon />
-                                                        </IconButton>
 
-                                                        <IconButton disabled={!disponibleVenta} color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
-                                                            <DeleteIcon />
-                                                        </IconButton>
+                                                        {user.tipoUsuario !== "Vendedor" &&
+                                                            <IconButton disabled={!disponibleVenta} color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
+                                                                <EditIcon />
+                                                            </IconButton>}
+
+                                                        {user.tipoUsuario !== "Vendedor" &&
+                                                            <IconButton disabled={!disponibleVenta} color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
+                                                                <DeleteIcon />
+                                                            </IconButton>}
                                                     </div>
                                                 </TableCell>
 

@@ -53,7 +53,7 @@ const chooseNavConfig = (user) => {
       if (section.section === 'inventario') {
         return {
           ...section,
-          links: section.links.filter((link) => link.title !== 'repuestos')
+          links: section.links.filter((link) => link.title !== 'repuestos' && link.title !== 'modelos')
         };
       }
       return section;
