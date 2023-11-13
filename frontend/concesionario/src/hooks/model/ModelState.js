@@ -145,6 +145,7 @@ export function ModelState(props) {
             setTypeSnackbar('success');
             setMessageSnackbar('modelos.mensaje.agregado');
             handleOpenSnackbar();
+            handleCloseForm();
         }
         catch (error)
         {

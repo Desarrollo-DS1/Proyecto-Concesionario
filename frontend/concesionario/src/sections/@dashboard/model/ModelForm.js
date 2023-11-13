@@ -169,6 +169,7 @@ export default function ModelForm() {
                       <TextField
                           error={modelError.cilindraje !== ''}
                           fullWidth
+                          required
                           name={"cilindraje"}
                           value={model.cilindraje}
                           onChange={handleInputChange}
