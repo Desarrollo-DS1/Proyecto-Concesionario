@@ -45,6 +45,7 @@ export function AuthState(props) {
             setAuthTokens(response.data)
             setUser(jwtDecode(response.data.access))
             localStorage.setItem('authTokens', JSON.stringify(response.data))
+            setFormData(emptyData)
             history('/dashboard', { replace: true })
         
         } catch(error){
@@ -137,6 +138,7 @@ export function AuthState(props) {
         return ()=> clearInterval(interval)
 
     }, [authTokens, loading])
+
 
     return (
         <AuthContext.Provider value={
