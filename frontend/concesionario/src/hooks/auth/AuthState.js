@@ -54,6 +54,8 @@ export function AuthState(props) {
     }
 
     const handleLogin = async (e) => {
+        e.preventDefault();
+
         let response;
         try{
             response = await verifyCaptcha(captchaRef.current.getValue())
