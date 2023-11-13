@@ -1,3 +1,14 @@
+INSERT INTO auth_group (id, name)
+VALUES
+(1, 'Gerente'),
+(2, 'Vendedor'),
+(3, 'Jefe de Taller'),
+(4, 'Cliente')
+ON CONFLICT (id) DO NOTHING;
+
+SELECT setval('auth_group_id_seq', (SELECT MAX(id) FROM auth_group));
+
+
 INSERT INTO concesionarioapp_usuario (cedula, password, email, primer_nombre, segundo_nombre, primer_apellido, segundo_apellido, telefono, celular, direccion, ciudad, fecha_nacimiento, genero, is_active, is_staff, is_superuser)
 VALUES
 ('11234567', 'password1', 'cliente1@gmail.com', 'Juan', 'Carlos', 'Gomez', 'Perez', '6021234560', '3101234567', 'Carrera 9 # 10 - 25', 'Cali', '1985-05-15', 'Masculino', TRUE, FALSE, FALSE),
@@ -60,7 +71,9 @@ VALUES
 ('581234567', 'password58', 'empleado27@concesionario.co', 'Diana', 'Isabel', 'Lopez', 'Perez', '6023456710', '3103456791', 'Calle 8 # 10 - 22', 'Yotoco', '1984-12-13', 'Femenino', TRUE, TRUE, FALSE),
 ('591234567', 'password59', 'empleado28@concesionario.co', 'Pedro', 'Fernando', 'Hernandez', '', '6024567101', '3104567902', 'Avenida 2 # 4 - 12', 'Dagua', '1992-02-21', 'Masculino', TRUE, TRUE, FALSE),
 ('601234567', 'password60', 'empleado29@concesionario.co', 'Natalia', '', 'Lopez', '', '6025670912', '3105678903', 'Calle 4 # 6 - 17', 'Cali', '1983-05-27', 'Femenino', TRUE, TRUE, FALSE),
-('611234567', 'password61', 'empleado30@concesionario.co', 'Daniel', '', 'Llano', '', '6026789023', '3106789014', 'Carrera 14 # 16 - 35', 'Palmira', '1989-09-10', 'Masculino', TRUE, TRUE, FALSE)
+('611234567', 'password61', 'empleado30@concesionario.co', 'Daniel', '', 'Llano', '', '6026789023', '3106789014', 'Carrera 14 # 16 - 35', 'Palmira', '1989-09-10', 'Masculino', TRUE, TRUE, FALSE),
+('1001234567', 'password100', 'gerente@concesionario.co', 'Miguel', '', 'Restrepo', '', '6024445901', '3117707977', 'Carrera 44 # 24 - 2', 'Cali', '1970-10-10', 'Masculino', TRUE, TRUE, FALSE),
+('12345678', 'password', 'admin@correounivalle.edu.co', 'Admin', '', 'Admin', '', '6021234567', '1234567890', 'Localhost', 'Cali', '1990-01-01', 'Masculino', TRUE, TRUE, TRUE)
 ON CONFLICT (cedula) DO NOTHING;
 
 
@@ -98,6 +111,43 @@ VALUES
 ('301234567'),
 ('311234567')
 ON CONFLICT (usuario_id) DO NOTHING;
+
+INSERT INTO concesionarioapp_usuario_groups (id, usuario_id, group_id)
+VALUES
+(1, '11234567', '4'),
+(2, '21234567', '4'),
+(3, '31234567', '4'),
+(4, '41234567', '4'),
+(5, '51234567', '4'),
+(6, '61234567', '4'),
+(7, '71234567', '4'),
+(8, '81234567', '4'),
+(9, '91234567', '4'),
+(10, '101234567', '4'),
+(11, '111234567', '4'),
+(12, '121234567', '4'),
+(13, '131234567', '4'),
+(14, '141234567', '4'),
+(15, '151234567', '4'),
+(16, '161234567', '4'),
+(17, '171234567', '4'),
+(18, '181234567', '4'),
+(19, '191234567', '4'),
+(20, '201234567', '4'),
+(21, '211234567', '4'),
+(22, '221234567', '4'),
+(23, '231234567', '4'),
+(24, '241234567', '4'),
+(25, '251234567', '4'),
+(26, '261234567', '4'),
+(27, '271234567', '4'),
+(28, '281234567', '4'),
+(29, '291234567', '4'),
+(30, '301234567', '4'),
+(31, '311234567', '4')
+ON CONFLICT (id) DO NOTHING;
+
+SELECT setval('concesionarioapp_usuario_groups_id_seq', (SELECT MAX(id) FROM concesionarioapp_usuario_groups));
 
 
 INSERT INTO concesionarioapp_sucursal (id_sucursal, nombre_sucursal, direccion_sucursal, ciudad_sucursal, telefono_sucursal)
@@ -143,8 +193,47 @@ VALUES
 ('581234567', '4', 'Jefe de Taller', '2017-04-16', NULL, '3800000', 'O+', 'Coomeva', 'Sura'),
 ('591234567', '4', 'Jefe de Taller', '2006-01-04', NULL, '5000000', 'O-', 'Nueva EPS', 'Colmena'),
 ('601234567', '5', 'Jefe de Taller', '2008-09-12', NULL, '4900000', 'A+', 'Sura', 'Sura'),
-('611234567', '5', 'Jefe de Taller', '2010-06-27', NULL, '3900000', 'B-', 'Sanitas', 'Colmena')
+('611234567', '5', 'Jefe de Taller', '2010-06-27', NULL, '3900000', 'B-', 'Sanitas', 'Colmena'),
+('1001234567', '1', 'Gerente', '2000-01-01', NULL, '10000000', 'O+', 'Sura', 'Colmena')
 ON CONFLICT (usuario_id) DO NOTHING;
+
+
+INSERT INTO concesionarioapp_usuario_groups (id, usuario_id, group_id)
+VALUES
+(32, '321234567', '2'),
+(33, '331234567', '2'),
+(34, '341234567', '2'),
+(35, '351234567', '2'),
+(36, '361234567', '2'),
+(37, '371234567', '2'),
+(38, '381234567', '2'),
+(39, '391234567', '2'),
+(40, '401234567', '2'),
+(41, '411234567', '2'),
+(42, '421234567', '2'),
+(43, '431234567', '2'),
+(44, '441234567', '2'),
+(45, '451234567', '2'),
+(46, '461234567', '2'),
+(47, '471234567', '2'),
+(48, '481234567', '2'),
+(49, '491234567', '2'),
+(50, '501234567', '2'),
+(51, '511234567', '3'),
+(52, '521234567', '3'),
+(53, '531234567', '3'),
+(54, '541234567', '3'),
+(55, '551234567', '3'),
+(56, '561234567', '3'),
+(57, '571234567', '3'),
+(58, '581234567', '3'),
+(59, '591234567', '3'),
+(60, '601234567', '3'),
+(61, '611234567', '3'),
+(62, '1001234567', '1')
+ON CONFLICT (id) DO NOTHING;
+
+SELECT setval('concesionarioapp_usuario_groups_id_seq', (SELECT MAX(id) FROM concesionarioapp_usuario_groups));
 
 
 INSERT INTO concesionarioapp_modelo (id_modelo, nombre_modelo, anho, carroceria, cilindraje, potencia, combustible, numero_pasajeros, precio_base)

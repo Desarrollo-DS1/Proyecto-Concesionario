@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const modeloApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Modelo/'
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Modelo/',
+    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
 })
 
 export const getAllModelos = () => modeloApi.get('/');

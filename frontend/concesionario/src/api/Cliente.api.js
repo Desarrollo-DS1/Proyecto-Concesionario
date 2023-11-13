@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const clienteApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cliente/'
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cliente/',
+    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
 });
 
 export const getAllClientes = () => clienteApi.get('/');

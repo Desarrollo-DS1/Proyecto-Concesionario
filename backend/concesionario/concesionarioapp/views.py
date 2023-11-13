@@ -2,7 +2,9 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import MethodNotAllowed
+from rest_framework.permissions import IsAuthenticated
 from django.db.models.deletion import ProtectedError
+from .permissions import EsEmpleado, EsGerente, EsVendedorOGerente, EsJefeDeTallerOGerente
 from .serializer import *
 from .models import *
 import requests
@@ -11,11 +13,13 @@ import requests
 class UsuarioView(viewsets.ModelViewSet):
     serializer_class = UsuarioSerializer
     queryset = Usuario.objects.all()
+    permission_classes = [IsAuthenticated, EsEmpleado]
         
 
 class ClienteView(viewsets.ModelViewSet):
     serializer_class = ClienteSerializer
     queryset = Cliente.objects.all()
+    permission_classes = [IsAuthenticated, EsEmpleado]
 
     def destroy(self, request, *args, **kwargs):
         cliente = self.get_object()
@@ -43,10 +47,10 @@ class ClienteView(viewsets.ModelViewSet):
 class EmpleadoView(viewsets.ModelViewSet):
     serializer_class = EmpleadoSerializer
     queryset = Empleado.objects.all()
+    permission_classes = [IsAuthenticated, EsGerente]
 
     def destroy(self, request, *args, **kwargs):
         empleado = self.get_object()
-
 
         try:
             empleado.usuario.delete()
@@ -71,11 +75,13 @@ class EmpleadoView(viewsets.ModelViewSet):
 class SucursalView(viewsets.ModelViewSet):
     serializer_class = SucursalSerializer
     queryset = Sucursal.objects.all()
+    permission_classes = [IsAuthenticated, EsGerente]
 
 
 class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
     def destroy(self, request, *args, **kwargs):
         modelo = self.get_object()
@@ -102,6 +108,7 @@ class ModelView(viewsets.ModelViewSet):
 class VehiculoView(viewsets.ModelViewSet):
     serializer_class = VehiculoSerializer
     queryset = Vehiculo.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
     def destroy(self, request, *args, **kwargs):
         vehiculo = self.get_object()
@@ -127,26 +134,34 @@ class VehiculoView(viewsets.ModelViewSet):
 class ColorView(viewsets.ModelViewSet):
     serializer_class = ColorSerializer
     queryset = Color.objects.all()
+    permission_classes = [IsAuthenticated, EsEmpleado]
+
 
 class VentaVehiculoView(viewsets.ModelViewSet):
     serializer_class = VentaVehiculoSerializer
     queryset = Venta_Vehiculo.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
 
 class VentaView(viewsets.ModelViewSet):
     serializer_class = VentaSerializer
     queryset = Venta.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
     def destroy(self, request, *args, **kwargs):
         return MethodNotAllowed('DELETE', detail='No se puede eliminar una venta')
 
+
 class CotizacionModeloView(viewsets.ModelViewSet):
     serializer_class = CotizacionModeloSerializer
     queryset = Cotizacion_Modelo.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
+
 
 class CotizacionView(viewsets.ModelViewSet):
     serializer_class = CotizacionSerializer
     queryset = Cotizacion.objects.all()
+    permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
 
 @api_view(['POST'])
@@ -164,7 +179,7 @@ def recaptcha(request):
     result = response.json()
     
     if result.get('success'):
-        return Response({"success": "El captcha es válido"})
+        return Response({"success": "El captcha es válido"}, status=200)
     else:
         return Response({"fail": result.get('error-codes')[0]}, status=400)
     

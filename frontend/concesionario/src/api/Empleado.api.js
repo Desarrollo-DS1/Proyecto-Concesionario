@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const empleadoApi = axios.create({
-    baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/"
+    baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/",
+    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
 });
 
 export const getAllEmpleados = () => empleadoApi.get("/");

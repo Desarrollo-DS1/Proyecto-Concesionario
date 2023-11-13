@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const cotizacionApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cotizacion/'
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cotizacion/',
+    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
 })
 
 export const getAllCotizaciones = () => cotizacionApi.get('/');

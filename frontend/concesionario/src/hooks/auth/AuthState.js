@@ -56,32 +56,29 @@ export function AuthState(props) {
     const handleLogin = async (e) => {
         e.preventDefault();
 
-        let response;
-        try{
-            response = await verifyCaptcha(captchaRef.current.getValue())
+        const captcha = captchaRef.current.getValue()
 
-        } catch(error){
+        if (captcha){
+            try{
+                const response = await verifyCaptcha(captcha)
+                await loginUser(e)
 
-            if (error.response.data.fail === 'timeout-or-duplicate') {
-                setErrorMessage('login.captchaDuplicado')
+            } catch(error){
+                if (error.response.data.fail === 'timeout-or-duplicate') {
+                    setErrorMessage('login.captchaDuplicado')
+
+                } else  {
+                    console.log(error.response.data.fail)
+                    setErrorMessage('login.captchaError')
+                }
+
                 setSnackbarOpen(true);
                 captchaRef.current.reset();
-
-            } else  {
-                setErrorMessage('login.captcha')
-                setSnackbarOpen(true);
             }
-
-            return;
-        }
-
-        if (response.data.success) {
-            await loginUser(e)
 
         } else {
             setErrorMessage('login.captcha')
             setSnackbarOpen(true);
-            captchaRef.current.reset();
         }
     };
 

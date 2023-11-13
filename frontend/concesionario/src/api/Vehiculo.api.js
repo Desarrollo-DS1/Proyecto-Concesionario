@@ -1,7 +1,8 @@
 import axios from 'axios'
 
 const vehiculoApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Vehiculo/'
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Vehiculo/',
+    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
 })
 
 export const getAllVehiculos = () => vehiculoApi.get('/')

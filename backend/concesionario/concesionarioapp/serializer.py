@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
 from .models import Modelo
 from django.utils.timezone import now
 from django.db import transaction
 from .models import *
+from django.contrib.auth.models import Group
 
 
 class TokenPairSerializer(TokenObtainPairSerializer):
@@ -82,7 +82,12 @@ class ClienteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
         usuario = Usuario.objects.get(cedula=usuario_data['cedula'])
+
         cliente = Cliente.objects.create(usuario=usuario)
+
+        grupo_clientes, created = Group.objects.get_or_create(name='Cliente')
+        usuario.groups.add(grupo_clientes)
+
         return cliente
     
 
@@ -142,6 +147,17 @@ class EmpleadoSerializer(serializers.ModelSerializer):
         usuario.save()
 
         empleado = Empleado.objects.create(usuario=usuario, **validated_data)
+        
+        if empleado.cargo == 'Gerente':
+            grupo_gerentes, created = Group.objects.get_or_create(name='Gerente')
+            usuario.groups.add(grupo_gerentes)
+        elif empleado.cargo == 'Vendedor':
+            grupo_vendedores, created = Group.objects.get_or_create(name='Vendedor')
+            usuario.groups.add(grupo_vendedores)
+        elif empleado.cargo == 'Jefe de taller':
+            grupo_jefes_taller, created = Group.objects.get_or_create(name='Jefe de taller')
+            usuario.groups.add(grupo_jefes_taller)
+
         return empleado
 
 
