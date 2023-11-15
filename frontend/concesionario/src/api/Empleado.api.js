@@ -1,15 +1,16 @@
 import axios from "axios";
 
-const empleadoApi = axios.create({
-    baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/"
-    });
+const empleadoApi = (token) => axios.create({
+    baseURL: "http://localhost:8000/concesionarioapp/api/v1/Empleado/",
+    headers: { Authorization: `Bearer ${token}` }
+});
 
-export const getAllEmpleados = () => empleadoApi.get("/");
+export const getAllEmpleados = (token) => empleadoApi(token).get("");
 
-export const getEmpleado = (id) => empleadoApi.get(`/${id}/`);
+export const getEmpleado = (id, token) => empleadoApi(token).get(`${id}/`);
 
-export const createEmpleado = (empleado) => empleadoApi.post("/", empleado);
+export const createEmpleado = (empleado, token) => empleadoApi(token).post("", empleado);
 
-export const updateEmpleado = (id, empleado) => empleadoApi.put(`/${id}/`, empleado);
+export const updateEmpleado = (id, empleado, token) => empleadoApi(token).put(`${id}/`, empleado);
 
-export const deleteEmpleado = (id) => empleadoApi.delete(`/${id}/`);
+export const deleteEmpleado = (id, token) => empleadoApi(token).delete(`${id}/`);

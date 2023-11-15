@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 from .managers import AdministradorUsuarios
+
 
 class Usuario(AbstractBaseUser, PermissionsMixin):
     cedula = models.CharField('Cédula', max_length=15, primary_key=True, unique=True)
@@ -93,7 +94,7 @@ class Empleado(models.Model):
     eps = models.CharField('EPS', max_length=30, blank=True, null=True)
     arl = models.CharField('ARL', max_length=30, blank=True, null=True)
     cargo = models.CharField('Cargo', choices=(
-    ('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Jefe de Taller', 'Jefe de taller')))
+        ('Gerente', 'Gerente'), ('Vendedor', 'Vendedor'), ('Jefe de Taller', 'Jefe de taller')))
     sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT, blank=True, null=True)
 
     class Meta:
@@ -153,28 +154,34 @@ class Sucursal(models.Model):
 
 
 class Modelo(models.Model):
-	id_modelo = models.AutoField('ID del Modelo', primary_key=True)
-	nombre_modelo = models.CharField('Nombre del Modelo', max_length=60, unique=True)
-	anho = models.IntegerField('Año del Modelo')
-	carroceria = models.CharField('Carrocería', choices=(('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'), ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Roadster', 'Roadster'), ('Camion', 'Camion'), ('Camioneta', 'Camioneta'), ('Bus', 'Bus'), ('Minivan', 'Minivan'), ('Microbus', 'Microbus'), ('Micro', 'Micro'), ('Tracto Camion','Tracto Camion'), ('Trailer', 'Trailer')),blank=True, null=True)
-	cilindraje = models.IntegerField('Cilindraje')
-	potencia = models.IntegerField('Potencia')
-	combustible = models.CharField('Combustible', choices=(('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'), ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')))
-	numero_pasajeros = models.IntegerField('Número de Pasajeros')
-	precio_base = models.IntegerField('Precio Base')
-  
-	class Meta:
-		verbose_name = 'Modelo'
-		verbose_name_plural = 'Modelos'
-		ordering = ['id_modelo']
-	
-	def __str__(self):
-		return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
+    id_modelo = models.AutoField('ID del Modelo', primary_key=True)
+    nombre_modelo = models.CharField('Nombre del Modelo', max_length=60, unique=True)
+    anho = models.IntegerField('Año del Modelo')
+    carroceria = models.CharField('Carrocería', choices=(
+    ('Sedan', 'Sedan'), ('Hatchback', 'Hatchback'), ('Station Wagon', 'Station Wagon'), ('Pickup', 'Pickup'),
+    ('SUV', 'SUV'), ('Van', 'Van'), ('Convertible', 'Convertible'), ('Coupe', 'Coupe'), ('Roadster', 'Roadster'),
+    ('Camion', 'Camion'), ('Camioneta', 'Camioneta'), ('Bus', 'Bus'), ('Minivan', 'Minivan'), ('Microbus', 'Microbus'),
+    ('Micro', 'Micro'), ('Tracto Camion', 'Tracto Camion'), ('Trailer', 'Trailer')), blank=True, null=True)
+    cilindraje = models.IntegerField('Cilindraje')
+    potencia = models.IntegerField('Potencia')
+    combustible = models.CharField('Combustible', choices=(
+    ('Gasolina', 'Gasolina'), ('Diesel', 'Diesel'), ('Electrico', 'Electrico'), ('Hibrido', 'Hibrido'), ('Gas', 'Gas'),
+    ('Gas Natural', 'Gas Natural'), ('Gas Licuado', 'Gas licuado')))
+    numero_pasajeros = models.IntegerField('Número de Pasajeros')
+    precio_base = models.IntegerField('Precio Base')
 
+    class Meta:
+        verbose_name = 'Modelo'
+        verbose_name_plural = 'Modelos'
+        ordering = ['id_modelo']
+
+    def __str__(self):
+        return str(self.nombre_modelo)
 
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
     nombre_color = models.CharField('Nombre del Color', max_length=30, unique=True)
+    hexadecimal_color = models.CharField('Hexadecimal del Color', max_length=7, unique=True)
     porcentanje_incremento_por_color = models.DecimalField('Porcentaje de Incremento por Color', max_digits=4,
                                                            decimal_places=2)
 
@@ -200,12 +207,10 @@ class Vehiculo(models.Model):
         ordering = ['vin']
 
     def __str__(self):
-        return 'Vehículo: ' + str(
-            self.vin) + ' ' + self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color + ' en ' + self.sucursal_vehiculo.nombre_sucursal + (
-            ' disponible para venta.' if self.disponible_para_venta else ' ( ya vendido.)')
+        return self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color
 
     def nombre_modelo(self):
-        return self.modelo_vehiculo.nombre_modelo
+        return str(self.modelo_vehiculo.nombre_modelo)
 
     def anho_modelo(self):
         return self.modelo_vehiculo.anho
@@ -218,9 +223,12 @@ class Vehiculo(models.Model):
 
     def numero_pasajeros(self):
         return self.modelo_vehiculo.numero_pasajeros
-      
+
     def nombre_color(self):
         return self.color_vehiculo.nombre_color
+    
+    def hexadecimal_color(self):
+        return self.color_vehiculo.hexadecimal_color
 
     def sucursal(self):
         return self.sucursal_vehiculo.nombre_sucursal
@@ -275,6 +283,15 @@ class Venta(models.Model):
             precio_total += venta_vehiculo.precio()
 
         return precio_total
+    
+    def vehiculos_en_venta(self):
+        vehiculos = Venta_Vehiculo.objects.filter(venta=self)
+
+        vehiculos_en_venta = str(vehiculos.count()) + (' Vehículo: ' if vehiculos.count() == 1 else ' Vehículos: ')
+        
+        vehiculos_en_venta += ',\n'.join([str(venta_vehiculo.vehiculo) for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self)])
+        
+        return vehiculos_en_venta
 
 
 class Venta_Vehiculo(models.Model):
@@ -294,7 +311,7 @@ class Venta_Vehiculo(models.Model):
             self.venta.id_venta) + ' Extra: ' + self.extra.nombre_extra + ' Cantidad: ' + str(self.cantidad)
 
     def nombre_modelo(self):
-        return self.vehiculo.nombre_modelo
+        return str(self.vehiculo.nombre_modelo())
 
     def anho_modelo(self):
         return str(self.vehiculo.anho_modelo)
@@ -313,10 +330,72 @@ class Venta_Vehiculo(models.Model):
 
     def precio(self):
         return (self.vehiculo.modelo_vehiculo.precio_base * (
-                    1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
-                            1 - (self.porcentaje_descuento)))
+                1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
+                        1 - (self.porcentaje_descuento)))
 
     def precio_str(self):
         return str(self.vehiculo.modelo_vehiculo.precio_base * (
                     1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
                                1 - (self.porcentaje_descuento)))
+    
+class Cotizacion_Modelo(models.Model):
+	id_cotizacion_modelo = models.AutoField('ID de la Cotización del Modelo', primary_key=True)
+	cotizacion = models.ForeignKey('Cotizacion', on_delete=models.CASCADE)
+	modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+	color = models.ForeignKey('Color', on_delete=models.PROTECT)
+	extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
+	cantidad = models.IntegerField('Cantidad', default=1)
+
+	class Meta:
+		verbose_name = 'Modelo en la Cotización'
+		verbose_name_plural = 'Modelos en la Cotización'
+		ordering = ['id_cotizacion_modelo']
+	
+	def __str__(self):
+		return 'Cotización del Modelo: ' + self.id_cotizacion_modelo + ' Cotización: ' + self.cotizacion.id_cotizacion + ' Modelo: ' + self.modelo.nombre_modelo + ' Color: ' + self.color.nombre_color + ' Extras: ' + self.extra.nombre_extra + ' Cantidad: ' + self.cantidad
+	
+	def nombre_modelo(self):
+		return self.modelo.nombre_modelo
+	
+	def nombre_color(self):
+		return self.color.nombre_color
+	
+	def nombre_extra(self):
+		return self.extra.nombre_extra
+	
+	def precio(self):
+		return self.cantidad * (self.modelo.precio_base * (1 + (self.color.porcentanje_incremento_por_color / 100)))
+     
+class Cotizacion(models.Model):
+	id_cotizacion = models.AutoField('ID de la Cotización', primary_key=True)
+	vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
+	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
+	fecha_creacion = models.DateField('Fecha de Creación', auto_now_add=True)
+	porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=5, decimal_places=4)
+	fecha_vencimiento = models.DateField('Fecha de Vencimiento', default=date.today()+timedelta(days=20))
+	modelos = models.ManyToManyField('Modelo', through='Cotizacion_Modelo')
+
+	class Meta:
+		verbose_name = 'Cotización'
+		verbose_name_plural = 'Cotizaciones'
+		ordering = ['id_cotizacion']
+
+	def __str__(self):
+		return 'Cotización: ' + self.id_cotizacion + ' Cliente: ' + self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido + ' Vendedor: ' + self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido + ', Fecha: ' + self.fecha_creacion
+	
+	def nombre_vendedor(self):
+		return self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido
+	
+	def nombre_cliente(self):
+		return self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido
+	
+	def lista_modelos(self):
+		return ', '.join([(cotizacion_modelo.cantidad + ' ' + cotizacion_modelo.modelo.nombre_modelo + ' ' + cotizacion_modelo.color.nombre_color + ' con extra ' + cotizacion_modelo.extras.nombre_extra) for cotizacion_modelo in Cotizacion_Modelo.objects.filter(cotizacion=self)])
+	
+	def precio_total(self):
+		precio_total = 0
+
+		for cotizacion_modelo in Cotizacion_Modelo.objects.filter(cotizacion=self):
+			precio_total += cotizacion_modelo.cantidad * (cotizacion_modelo.modelo.precio_base * (1 + (cotizacion_modelo.color.porcentanje_incremento_por_color / 100)))
+
+		return precio_total

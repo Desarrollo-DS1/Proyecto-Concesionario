@@ -1,10 +1,11 @@
 import axios from 'axios';
 
-const sucursalApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Sucursal/'
+const sucursalApi = (token) => axios.create({
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Sucursal/',
+    headers: { Authorization: `Bearer ${token}` }
 })
 
-export const getAllSucursales = () => sucursalApi.get('/')
+export const getAllSucursales = (token) => sucursalApi(token).get('')
 
 export const getSucursal = (id_sucursal) => sucursalApi.get(`/${id_sucursal}/`)
 

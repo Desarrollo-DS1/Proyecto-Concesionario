@@ -12,25 +12,25 @@ function checkNombre(model) {
 function checkAño(model) {
     const anhoString = model.año.toString();
     if (anhoString === null || anhoString.trim() === '') {
-        return "error.requerido";
+        return "errores.requerido";
     }
     if (!anhoString.match(/^[0-9]+$/))
     {
-        return "error.numerico";
+        return "errores.numerico";
     }
     if (anhoString.length !== 4)
     {
-        return "error.longitudExacta";
+        return "errores.longitudExacta";
     }
 
     const fechaActual = new Date();
     if (model.año > fechaActual.getFullYear() + 1)
     {
-        return "error.fecha";
+        return "errores.fecha";
     }
     if (model.año < 1900)
     {
-        return "error.fecha";
+        return "errores.fecha";
     }
 
     return "";
@@ -76,7 +76,7 @@ function checkPotencia(model) {
 }
 
 function checkCombustible(model) {
-    if (model.combustible === null) {
+    if (model.combustible === null || model.combustible.trim() === '') {
         return "errores.requerido";
     }
     return "";

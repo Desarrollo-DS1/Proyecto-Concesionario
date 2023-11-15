@@ -5,6 +5,13 @@
       "en": "Ingles",
       "pt": "Portugues"
     },
+    "secciones": {
+      "informes": "Informes",
+      "usuarios": "Usuarios",
+      "inventario": "Inventario",
+      "operaciones": "Operaciones",
+      "ubicaciones": "Ubicaciones"
+    },
     "barraNavegacion": {
       "dashBoard": "Panel",
       "clientes": "Clientes",
@@ -23,7 +30,8 @@
       "cancelar": "Cancelar",
       "buscar": "Buscar",
       "si": "Si",
-      "no": "No"
+      "no": "No",
+      "filtroLista": "Filtro Lista"
     },
     "perfil": {
       "inicio": "Inicio",
@@ -124,6 +132,39 @@
       "undefined" : ""
       }
     },
+    "ventas": {
+      "encabezado": {
+        "tituloPlural": "Ventas",
+        "tituloSingular": "Venta",
+        "agregar": "Agregar venta",
+        "editar": "Editar venta"
+      },
+  
+      "mensaje": {
+        "agregado": "Venta agregada correctamente",
+        "editado": "Venta editada correctamente",
+        "error": "Error al agregar venta",
+        "errorEditar": "Error al editar venta",
+        "errorListando": "Error al listar ventas",
+        "errorCargando": "Error al cargar venta"
+      },
+  
+      "label": {
+        "ID": "ID",
+        "nombreCliente": "Nombre",
+        "nombreVendedor": "Nombre",
+        "cliente": "Cliente",
+        "vendedor": "Vendedor",
+        "fecha": "Fecha",
+        "valor": "Total",
+        "vehiculos": "Vehiculos",
+        "undefined": "",
+        "id": "ID",
+        "cedulaCliente": "Cliente",
+        "cedulaVendedor": "Vendedor",
+        "fechaVenta": "Fecha"
+      }
+    },
     "sucursal": {
         "mensaje": {
             "errorListando": "Error al listar sucursales"
@@ -158,7 +199,8 @@
       "combustible": "Combustible",
       "capacidad": "Capacidad",
       "precioBase": "Precio Base",
-      "undefined" : ""
+      "undefined" : "",
+      "numeroPasajeros": "Capacidad"
     }
   },
   "vehiculos": {
@@ -186,7 +228,15 @@
       "modelo": "Modelo",
       "sucursal": "Sucursal",
       "color": "Color",
-      "undefined" : ""
+      "disponible": "Disponible",
+      "undefined" : "",
+      "nombreModelo": "Modelo",
+      "nombreSucursal": "Sucursal",
+      "nombreColor": "Color"
+    },
+    "disponible": {
+      "enStock": "En Stock",
+      "vendido": "Vendido"
     }
   },
   "errores": {
@@ -217,12 +267,14 @@
 
   "login": {
     "titulo": "Iniciar Sesión",
-    "correo": "Correo",
+    "cedula": "Cedula",
     "contraseña": "Contraseña",
     "olvido": "¿Olvidaste tu contraseña?",
     "boton": "Iniciar Sesión",
-    "error": "Email o contraseña incorrectos",
-    "captcha": "Por favor acepte el captcha"
+    "error": "Cedula o contraseña incorrectas",
+    "captcha": "Por favor acepte el captcha",
+    "captchaDuplicado": "Debe volver a aceptar el captcha",
+    "captchaError": "Error al validar el captcha, por favor vuelva a intentarlo"
   },
 
   "dashBoardVenta": {
@@ -239,5 +291,55 @@
     "numeroVentasMensuales": "Numero Ventas Mensuales",
     "ventasMensuales": "Ventas Mensuales",
     "ventasPorModelo": "Ventas por Modelo"
+  },
+  "colores": {
+    "Amarillo": "Amarillo",
+    "Azul": "Azul",
+    "Blanco": "Blanco",
+    "Gris": "Gris",
+    "Negro": "Negro",
+    "Plata": "Plata",
+    "Rojo": "Rojo",
+    "Verde": "Verde"
+  },
+  "combustibles": {
+    "Gasolina": "Gasolina",
+    "Diesel": "Diesel",
+    "Eléctrico": "Electrico",
+    "Híbrido": "Hibrido",
+    "Gas": "Gas",
+    "Gas Natural": "Gas Natural",
+    "Gas Licuado": "Gas Licuado"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Station Wagon",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Convertible",
+    "Coupe": "Coupe",
+    "Roadster": "Roadster",
+    "Camion": "Camión",
+    "Camioneta": "Camioneta",
+    "Bus": "Autobús",
+    "Minivan": "Minivan",
+    "Microbus": "Microbús",
+    "Micro": "Micro",
+    "Tracto Camion": "Tractocamión",
+    "Trailer": "Remolque"
+  },
+  "generos": {
+    "Masculino": "Masculino",
+    "Femenino": "Femenino",
+    "Otro": "Otro"
+  },
+  "cargos": {
+    "Vendedor": "Vendedor",
+    "Jefe de Taller": "Jefe de Taller",
+    "Gerente": "Gerente",
+    "Cliente": "Cliente",
+    "Superusuario": "Superusuario"
   }
 }

@@ -5,6 +5,13 @@
       "en": "Inglês",
       "pt": "Português"
     },
+    "secciones": {
+      "informes": "Relatórios",
+      "usuarios": "Usuários",
+      "inventario": "Inventário",
+      "operaciones": "Operações",
+      "ubicaciones": "Localizações"
+    },
     "barraNavegacion": {
       "dashBoard": "Painel",
       "clientes": "Clientes",
@@ -23,7 +30,8 @@
       "cancelar": "Cancelar",
       "buscar": "Buscar",
       "si": "Sim",
-      "no": "Não"
+      "no": "Não",
+      "filtroLista": "Filtro Lista"
     },
     "perfil": {
       "inicio": "Início",
@@ -116,6 +124,37 @@
       "undefined": ""
     }
   },
+  "ventas": {
+    "encabezado": {
+      "tituloPlural": "Vendas",
+      "tituloSingular": "Venda",
+      "agregar": "Adicionar venda",
+      "editar": "Editar venda"
+    },
+
+    "mensaje": {
+      "agregado": "Venda adicionada com sucesso",
+      "editado": "Venta editada com sucesso",
+      "error": "Erro ao adicionar venda",
+      "errorEditar": "Erro ao editar venda"
+    },
+
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Nome",
+      "nombreVendedor": "Nome",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fecha": "Data",
+      "valor": "Total",
+      "vehiculos": "Veículos",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaVenta": "Data"
+    }
+  },
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
@@ -142,7 +181,8 @@
       "combustible": "Combustível",
       "capacidad": "Capacidade",
       "precioBase": "Preço Base",
-      "undefined": ""
+      "undefined": "",
+      "numeroPasajeros": "Capacidade"
     }
   },
   "vehiculos": {
@@ -170,7 +210,15 @@
       "modelo": "Modelo",
       "sucursal": "Filial",
       "color": "Cor",
-      "undefined" : ""
+      "disponible": "Disponível",
+      "undefined" : "",
+      "nombreModelo": "Modelo",
+      "nombreSucursal": "Filial",
+      "nombreColor": "Cor"
+    },
+    "disponible": {
+      "enStock": "Estoque",
+      "vendido": "Vendido"
     }
   },
   "errores": {
@@ -201,11 +249,11 @@
 
   "login": {
     "titulo": "Iniciar Sessão",
-    "correo": "E-mail",
+    "cedula": "Cédula",
     "contraseña": "Senha",
     "olvido": "Esqueceu sua senha?",
     "boton": "Iniciar Sessão",
-    "error": "E-mail ou senha incorretos",
+    "error": "Cédula ou senha incorretos",
     "captcha": "Por favor, aceite o captcha"
   },
   "dashBoardVenta": {
@@ -222,5 +270,55 @@
     "numeroVentasMensuales": "Número Vendas Mensais",
     "ventasMensuales": "Vendas Mensais",
     "ventasPorModelo": "Vendas por Modelo"
+  },
+  "colores": {
+    "Amarillo": "Amarelo",
+    "Azul": "Azul",
+    "Blanco": "Branco",
+    "Gris": "Cinza",
+    "Negro": "Preto",
+    "Plata": "Prata",
+    "Rojo": "Vermelho",
+    "Verde": "Verde"
+  },
+  "combustibles": {
+    "Gasolina": "Gasolina",
+    "Diesel": "Diesel",
+    "Eléctrico": "Eléctrico",
+    "Híbrido": "Híbrido",
+    "Gas": "Gás",
+    "Gas Natural": "Gás Natural",
+    "Gas Licuado": "Gás Liquefeito"
+  },
+  "carrocerias": {
+    "Sedan": "Sedan",
+    "Hatchback": "Hatchback",
+    "Station Wagon": "Perua",
+    "Pickup": "Pickup",
+    "SUV": "SUV",
+    "Van": "Van",
+    "Convertible": "Conversível",
+    "Coupe": "Coupé",
+    "Roadster": "Roadster",
+    "Camion": "Caminhão",
+    "Camioneta": "Utilitário",
+    "Bus": "Ônibus",
+    "Minivan": "Minivan",
+    "Microbus": "Micro-ônibus",
+    "Micro": "Micro",
+    "Tracto Camion": "Caminhão-trator",
+    "Trailer": "Reboque"
+  },
+  "generos": {
+    "Masculino": "Masculino",
+    "Femenino": "Feminino",
+    "Otro": "Outro"
+  },
+  "cargos": {
+    "Vendedor": "Vendedor",
+    "Jefe de Taller": "Chefe de Oficina",
+    "Gerente": "Gerente",
+    "Cliente": "Cliente",
+    "Superusuario": "Superusuário"
   }
 }

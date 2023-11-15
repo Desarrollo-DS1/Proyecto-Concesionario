@@ -1,15 +1,16 @@
 import axios from 'axios'
 
-const modeloApi = axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Modelo/'
-})
+const modeloApi = (token) => axios.create({
+    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Modelo/',
+    headers: { Authorization: `Bearer ${token}` }
+});
 
-export const getAllModelos = () => modeloApi.get('/');
+export const getAllModelos = (token) => modeloApi(token).get('');
 
-export const getModelo = (id) => modeloApi.get(`/${id}/`);
+export const getModelo = (id, token) => modeloApi(token).get(`${id}/`);
 
-export const createModelo = (modelo) => modeloApi.post('/', modelo);
+export const createModelo = (modelo, token) => modeloApi(token).post('', modelo);
 
-export const updateModelo = (id, modelo) => modeloApi.put(`/${id}/`, modelo);
+export const updateModelo = (id, modelo, token) => modeloApi(token).put(`${id}/`, modelo);
 
-export const deleteModelo = (id) => modeloApi.delete(`/${id}`);
+export const deleteModelo = (id, token) => modeloApi(token).delete(`${id}/`);

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import {useContext, useState} from 'react';
 import {Link as RouterLink} from "react-router-dom";
 import {useTranslation} from "react-i18next";
 // @mui
@@ -6,6 +6,8 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
+import {AuthState} from "../../../hooks/auth/AuthState";
+import AuthContext from "../../../hooks/auth/AuthContext";
 
 
 // ----------------------------------------------------------------------
@@ -27,15 +29,29 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
 
+  const {
+    logoutUser } = useContext(AuthContext);
+
   const { t } = useTranslation("lang");
 
   const [open, setOpen] = useState(null);
+
+  const {user} = useContext(AuthContext);
+
+  const name = user ? `${user.primerNombre}${" "}${user.primerApellido}` : 'Nombre';
+
+  const email = user ? user.email : 'Cargo';
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = () => {
+    setOpen(null);
+  };
+
+  const handleLogOut = () => {
+    logoutUser();
     setOpen(null);
   };
 
@@ -58,7 +74,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={'/broken-image.jpg'} alt={account.displayName} />
+        <Avatar src={'/broken-image.jpg'} alt={name} />
       </IconButton>
 
       <Popover
@@ -82,10 +98,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {name}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {email}
           </Typography>
         </Box>
 
@@ -101,7 +117,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }} to="/login" component={RouterLink}>
+        <MenuItem onClick={handleLogOut} sx={{ m: 1 }} >
           {t('general.perfil.cerrarSesion')}
         </MenuItem>
       </Popover>

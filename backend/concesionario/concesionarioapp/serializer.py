@@ -1,13 +1,63 @@
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Modelo
 from django.utils.timezone import now
 from django.db import transaction
 from .models import *
+from django.contrib.auth.models import Group
+
+
+class TokenPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, usuario):
+        token = super().get_token(usuario)
+
+        token['email'] = usuario.email
+        token['primerNombre'] = usuario.primer_nombre
+        token['primerApellido'] = usuario.primer_apellido
+
+        if usuario.is_superuser:
+            token['tipoUsuario'] = 'Superusuario'
+        elif usuario.is_staff:
+            token['tipoUsuario'] = Empleado.objects.get(usuario_id=usuario.cedula).cargo
+        else:
+            token['tipoUsuario'] = 'Cliente'
+
+        return token
+
 
 class UsuarioSerializer(serializers.ModelSerializer):
+    cedula = serializers.CharField()
+    clave = serializers.CharField(source='password', write_only=True)
+    correo = serializers.EmailField(source='email')
+    primerNombre = serializers.CharField(source='primer_nombre')
+    segundoNombre = serializers.CharField(source='segundo_nombre', required=False, allow_blank=True)
+    primerApellido = serializers.CharField(source='primer_apellido')
+    segundoApellido = serializers.CharField(source='segundo_apellido', required=False, allow_blank=True)
+    telefono = serializers.CharField()
+    celular = serializers.CharField()
+    direccion = serializers.CharField()
+    ciudad = serializers.CharField()
+    fechaNacimiento = serializers.DateField(source='fecha_nacimiento')
+    genero = serializers.CharField()
+
     class Meta:
         model = Usuario
-        fields = '__all__'
+        fields = 'cedula', 'clave', 'correo', 'primerNombre', 'segundoNombre', 'primerApellido', 'segundoApellido', 'telefono', 'celular', 'direccion', 'ciudad', 'fechaNacimiento', 'genero'
+    
+    def create(self, validated_data):
+        if Usuario.objects.filter(cedula=validated_data['cedula']).exists():
+            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
+        
+        if Usuario.objects.filter(email=validated_data['email']).exists():
+            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
+        
+        usuario = Usuario.objects.create(**validated_data)
+
+        usuario.set_password(validated_data['password'])
+        usuario.save()
+
+        return usuario
 
 
 class ClienteSerializer(serializers.ModelSerializer):
@@ -18,12 +68,12 @@ class ClienteSerializer(serializers.ModelSerializer):
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
     primerApellido = serializers.CharField(source='usuario.primer_apellido')
     segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False, allow_blank=True)
-    telefono = serializers.CharField(source='usuario.telefono', required=False)
-    celular = serializers.CharField(source='usuario.celular', required=False)
-    direccion = serializers.CharField(source='usuario.direccion', required=False)
-    ciudad = serializers.CharField(source='usuario.ciudad', required=False)
-    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False, allow_null=True)
-    genero = serializers.CharField(source='usuario.genero', required=False)
+    telefono = serializers.CharField(source='usuario.telefono')
+    celular = serializers.CharField(source='usuario.celular')
+    direccion = serializers.CharField(source='usuario.direccion')
+    ciudad = serializers.CharField(source='usuario.ciudad')
+    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento')
+    genero = serializers.CharField(source='usuario.genero')
                         
     class Meta:
         model = Cliente
@@ -31,22 +81,13 @@ class ClienteSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        password = usuario_data.pop('password')
+        usuario = Usuario.objects.get(cedula=usuario_data['cedula'])
 
-        if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
-            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
-        
-        if Usuario.objects.filter(email=usuario_data['email']).exists():
-            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
-        
-        if not password:
-            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
-        
-        usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(password)
-        usuario.save()
-        
         cliente = Cliente.objects.create(usuario=usuario)
+
+        grupo_clientes, created = Group.objects.get_or_create(name='Cliente')
+        usuario.groups.add(grupo_clientes)
+
         return cliente
     
 
@@ -72,7 +113,6 @@ class CustomDateField(serializers.DateField):
             return None
         return super().to_internal_value(data)
 
-
 class EmpleadoSerializer(serializers.ModelSerializer):
     cedula = serializers.CharField(source='usuario.cedula')
     clave = serializers.CharField(source='usuario.password', write_only=True, required=False, allow_blank=True)
@@ -81,20 +121,20 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     segundoNombre = serializers.CharField(source='usuario.segundo_nombre', required=False, allow_blank=True)
     primerApellido = serializers.CharField(source='usuario.primer_apellido')
     segundoApellido = serializers.CharField(source='usuario.segundo_apellido', required=False, allow_blank=True)
-    telefono = serializers.CharField(source='usuario.telefono', required=False)
-    celular = serializers.CharField(source='usuario.celular', required=False)
-    direccion = serializers.CharField(source='usuario.direccion', required=False)
-    ciudad = serializers.CharField(source='usuario.ciudad', required=False)
-    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento', required=False, allow_null=True)
-    genero = serializers.CharField(source='usuario.genero', required=False)
-    fechaIngreso = serializers.DateField(source='fecha_ingreso', required=False, allow_null=True)
+    telefono = serializers.CharField(source='usuario.telefono')
+    celular = serializers.CharField(source='usuario.celular')
+    direccion = serializers.CharField(source='usuario.direccion')
+    ciudad = serializers.CharField(source='usuario.ciudad')
+    fechaNacimiento = serializers.DateField(source='usuario.fecha_nacimiento')
+    genero = serializers.CharField(source='usuario.genero')
+    fechaIngreso = serializers.DateField(source='fecha_ingreso')
     fechaRetiro = CustomDateField(source='fecha_retiro', required=False, allow_null=True)
-    salario = serializers.IntegerField(source='salario_base', required=False)
-    tipoSangre = serializers.CharField(source='tipo_sangre', required=False)
-    eps = serializers.CharField(required=False)
-    arl = serializers.CharField(required=False)
-    cargo = serializers.CharField(required=False)
-    sucursal = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all(), required=False, allow_null=True)
+    salario = serializers.IntegerField(source='salario_base')
+    tipoSangre = serializers.CharField(source='tipo_sangre')
+    eps = serializers.CharField()
+    arl = serializers.CharField()
+    cargo = serializers.CharField()
+    sucursal = serializers.PrimaryKeyRelatedField(queryset=Sucursal.objects.all())
 
     class Meta:
         model = Empleado
@@ -102,23 +142,22 @@ class EmpleadoSerializer(serializers.ModelSerializer):
     
     def create(self, validated_data):
         usuario_data = validated_data.pop('usuario')
-        password = usuario_data.pop('password')
-
-        if Usuario.objects.filter(cedula=usuario_data['cedula']).exists():
-            raise serializers.ValidationError({'cedula': 'Ya existe un usuario con esta cedula'})
-        
-        if Usuario.objects.filter(email=usuario_data['email']).exists():
-            raise serializers.ValidationError({'email': 'Ya existe un usuario con este correo'})
-        
-        if not password:
-            raise serializers.ValidationError({'clave': 'Este campo es requerido'})
-
-        usuario = Usuario.objects.create(**usuario_data)
-        usuario.set_password(password)
+        usuario = Usuario.objects.get(cedula=usuario_data['cedula'])
         usuario.is_staff = True
         usuario.save()
 
         empleado = Empleado.objects.create(usuario=usuario, **validated_data)
+        
+        if empleado.cargo == 'Gerente':
+            grupo_gerentes, created = Group.objects.get_or_create(name='Gerente')
+            usuario.groups.add(grupo_gerentes)
+        elif empleado.cargo == 'Vendedor':
+            grupo_vendedores, created = Group.objects.get_or_create(name='Vendedor')
+            usuario.groups.add(grupo_vendedores)
+        elif empleado.cargo == 'Jefe de taller':
+            grupo_jefes_taller, created = Group.objects.get_or_create(name='Jefe de taller')
+            usuario.groups.add(grupo_jefes_taller)
+
         return empleado
 
 
@@ -222,17 +261,18 @@ class ModeloSerializer(serializers.ModelSerializer):
 class VehiculoSerializer(serializers.ModelSerializer):
     vin = serializers.CharField()
     modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
-    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
-    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    color = serializers.PrimaryKeyRelatedField(source='color_vehiculo', queryset=Color.objects.all())
     nombreColor = serializers.CharField(source='nombre_color', read_only=True)
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
     disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
 
 
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modelo', 'color', 'sucursal', 'nombreModelo', 'nombreColor', 'nombreSucursal', 'disponibleVenta'
+        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -249,6 +289,7 @@ class VehiculoSerializer(serializers.ModelSerializer):
 class ColorSerializer(serializers.ModelSerializer):
     idColor = serializers.IntegerField(source='id_color')
     colorNombre = serializers.CharField(source='nombre_color')
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color')
     
     class Meta:
         model = Color
@@ -259,22 +300,28 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
     venta_id = serializers.IntegerField(read_only=True)
+    modelo = serializers.CharField(source='nombre_modelo', read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id'
+        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id', 'modelo'
 
     
 
 class VentaSerializer(serializers.ModelSerializer):
-    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
-    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    id = serializers.IntegerField(source='id_venta', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    cedulaVendedor = serializers.PrimaryKeyRelatedField(source='vendedor', queryset=Empleado.objects.all())
+    nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
     fechaVenta = serializers.DateField(source='fecha_venta')
+    valorVenta = serializers.IntegerField(source='precio_total', read_only=True)
+    vehiculos = serializers.CharField(source='vehiculos_en_venta', read_only=True)
     ventaVehiculo = VentaVehiculoSerializer(many=True, source='venta_vehiculo_set')
 
     class Meta:
         model = Venta
-        fields = 'cliente', 'vendedor', 'fechaVenta', 'ventaVehiculo'
+        fields = 'id', 'cedulaCliente', 'nombreCliente', 'cedulaVendedor', 'nombreVendedor', 'fechaVenta', 'valorVenta', 'vehiculos', 'ventaVehiculo'
 
     @transaction.atomic
     def create(self, validated_data):
@@ -285,9 +332,6 @@ class VentaSerializer(serializers.ModelSerializer):
             try:
                 if not venta_vehiculo['vehiculo'].disponible_para_venta:
                     raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'].vin)})
-                
-                if not venta.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
-                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, venta.vendedor.usuario.cedula, venta.vendedor.sucursal)})
                 
                 Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
                 Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
@@ -313,9 +357,6 @@ class VentaSerializer(serializers.ModelSerializer):
                 if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
                     raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
                 
-                if not instance.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
-                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, instance.vendedor.usuario.cedula, instance.vendedor.sucursal)})
-                
                 Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
                 Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
             
@@ -323,3 +364,29 @@ class VentaSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
         
         return instance
+
+class CotizacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
+    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
+    fechaCreacion = serializers.DateField()
+    porcentajeDescuento = serializers.DecimalField(max_digits=5, decimal_places=4)  
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
+    modelos = models.ManyToManyField(Modelo, through='Cotizacion_Modelo', related_name='modelos')
+
+    class Meta:
+        model = Cotizacion
+        fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
+    
+
+class CotizacionModeloSerializer(serializers.ModelSerializer):
+    idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
+    cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
+    modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
+    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    cantidad = serializers.IntegerField()
+
+    class Meta:
+        model = Cotizacion_Modelo
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'

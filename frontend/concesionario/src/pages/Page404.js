@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import {styled, useTheme} from '@mui/material/styles';
-import { Button, Typography, Container, Box } from '@mui/material';
+import { Button, Typography, Container} from '@mui/material';
 import {useTranslation} from "react-i18next";
 
 // ----------------------------------------------------------------------

@@ -142,7 +142,7 @@ export default function ModelForm() {
                       >
                             {bodyworks.map((option) => (
                                 <MenuItem key={option.id} value={option.label}>
-                                    {option.label}
+                                    {t(`carrocerias.${option.label}`)}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -169,6 +169,7 @@ export default function ModelForm() {
                       <TextField
                           error={modelError.cilindraje !== ''}
                           fullWidth
+                          required
                           name={"cilindraje"}
                           value={model.cilindraje}
                           onChange={handleInputChange}
@@ -211,7 +212,7 @@ export default function ModelForm() {
                       >
                           {fuels.map((option) => (
                               <MenuItem key={option.id} value={option.label}>
-                                    {option.label}
+                                    {t(`combustibles.${option.label}`)}
                               </MenuItem>
                           ))}
                       </TextField>

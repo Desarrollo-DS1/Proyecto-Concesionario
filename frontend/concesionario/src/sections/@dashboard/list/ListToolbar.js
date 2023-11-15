@@ -2,13 +2,15 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled, alpha } from '@mui/material/styles';
-import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
+import {Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment, Chip, Box} from '@mui/material';
 // translations
 import {useTranslation} from "react-i18next";
 // context
 import {useContext} from "react";
 // component
+import FilterPopover from './FilterPopover';
 import Iconify from '../../../components/iconify';
+
 
 // ----------------------------------------------------------------------
 
@@ -39,7 +41,8 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
 
 ListToolbar.propTypes = {
   context: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired
+  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired
 };
 
 export default function ListToolbar(props) {
@@ -48,6 +51,8 @@ export default function ListToolbar(props) {
     filterName,
     handleFilterByName,
     selected,
+    handleOpenFilter,
+    filterField,
   }= useContext(props.context);
 
   const { t } = useTranslation("lang");
@@ -85,12 +90,17 @@ export default function ListToolbar(props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+          <Box sx={{display: "flex"}}>
+            <Tooltip title={t('general.botones.filtroLista')}>
+              <IconButton onClick={(event) => handleOpenFilter(event)}>
+                <Iconify icon="ic:round-filter-list" />
+              </IconButton>
+            </Tooltip>
+            <Chip label={t(`${props.title}.label.${filterField}`)} />
+          </Box>
+
       )}
+      <FilterPopover context={props.context} name={props.title}/>
     </StyledRoot>
   );
 }

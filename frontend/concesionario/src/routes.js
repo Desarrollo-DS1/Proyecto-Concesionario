@@ -1,3 +1,4 @@
+import {useContext} from "react";
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
@@ -15,10 +16,19 @@ import {ModelState} from "./hooks/model/ModelState";
 import ModelPage from "./pages/ModelPage";
 import {VehicleState} from "./hooks/vehicle/VehicleState";
 import VehiclePage from "./pages/VehiclePage";
+import AuthContext  from "./hooks/auth/AuthContext";
+import {SaleState} from "./hooks/sales/SaleState";
+import SalePage from "./pages/SalePage";
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+
+  const {user} = useContext(AuthContext)
+
+  const redirectToLogin = () => <Navigate to="/login" replace />;
+  const redirectToDashboard = () => <Navigate to="/dashboard" replace />;
+
   const routes = useRoutes([
     {
       path: '/login',
@@ -26,19 +36,20 @@ export default function Router() {
     },
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: user ? <DashboardLayout /> : redirectToLogin(),
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'clientes', element: <CustomerState><CustomerPage /></CustomerState>},
         { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
         { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
-        { path: 'vehiculos', element: <VehicleState><VehiclePage /></VehicleState>}
+        { path: 'vehiculos', element: <VehicleState><VehiclePage /></VehicleState>},
+        { path: 'ventas', element: <SaleState><SalePage /></SaleState>}
       ],
     },
     {element: <LoadLayout />,
     children: [
-        { element: <Navigate to="/login" />, index: true },
+        { element: user ? redirectToDashboard() : <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },
       ],
     },
