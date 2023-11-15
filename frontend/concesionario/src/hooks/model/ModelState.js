@@ -1,16 +1,18 @@
 import propTypes from "prop-types";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 // import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter"; 
 import {getAllModelos, createModelo, deleteModelo, updateModelo, getModelo} from "../../api/Modelo.api";
+import AuthContext from "../auth/AuthContext";
 
 ModelState.propTypes = {
     children: propTypes.node,
 }
 
 export function ModelState(props) {
+    const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: 'nombre', label: 'nombre', alignRight: false },
@@ -99,7 +101,7 @@ export function ModelState(props) {
 
         try
         {
-            const response = await getAllModelos();
+            const response = await getAllModelos(authTokens.access);
             setModels(response.data);
         }
         catch (error)
@@ -122,7 +124,7 @@ export function ModelState(props) {
             setEdit(true);
             try
             {
-                const response = await getModelo(id);
+                const response = await getModelo(id, authTokens.access);
                 setModel(response.data);
             }
             catch (error)
@@ -140,7 +142,7 @@ export function ModelState(props) {
 
         try
         {
-            const response = await createModelo(model); // Pasa el modelo a la función
+            const response = await createModelo(model, authTokens.access); 
             setModels([...models, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('modelos.mensaje.agregado');
@@ -170,7 +172,7 @@ export function ModelState(props) {
 
         try
         {
-            await updateModelo(model.id, model);
+            await updateModelo(model.id, model, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('modelos.mensaje.editado');
             handleOpenSnackbar();
@@ -199,7 +201,7 @@ export function ModelState(props) {
 
         try
         {
-            await deleteModelo(model.id);
+            await deleteModelo(model.id, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('modelos.mensaje.eliminado');
             handleOpenSnackbar();

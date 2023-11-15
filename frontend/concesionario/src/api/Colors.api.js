@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const colorsApi = axios.create({
+const colorsApi = (token) => axios.create({
     baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Color/',
-    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
-})
+    headers: { Authorization: `Bearer ${token}` }
+});
 
-export const getAllColors = () => colorsApi.get('/')
+export const getAllColors = (token) => colorsApi(token).get('');

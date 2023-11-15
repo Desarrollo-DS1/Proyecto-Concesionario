@@ -1,10 +1,11 @@
 import propTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import CustomerContext from './CustomerContext';
 import { checkCustomer } from "./CustomerValidation";
 import { applySortFilter, getComparator } from "../filter/Filter";
 import { getAllClientes, getCliente, createCliente, updateCliente, deleteCliente } from "../../api/Cliente.api";
 import { createUsuario } from "../../api/Usuario.api";
+import AuthContext from "../auth/AuthContext";
 
 
 
@@ -13,6 +14,7 @@ CustomerState.propTypes = {
 }
 
 export function CustomerState(props) {
+    const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: 'cedula', label: 'cedula', alignRight: false },
@@ -82,7 +84,7 @@ export function CustomerState(props) {
 
     const getCustomers = async () => {
         try {
-            const response = await getAllClientes();
+            const response = await getAllClientes(authTokens.access);
             setCustomers(response.data);
 
         } catch (error) {
@@ -102,8 +104,7 @@ export function CustomerState(props) {
             setEdit(true);
 
             try {
-
-                const response = await getCliente(cedula);
+                const response = await getCliente(cedula, authTokens.access);
                 const customerDataWithClave = { ...response.data, clave: '' };
                 setCustomer(customerDataWithClave);
 
@@ -121,7 +122,7 @@ export function CustomerState(props) {
         try {
             setIsLoading(true)
             const response = await createUsuario(customer);
-            const response2 = await createCliente(customer);
+            const response2 = await createCliente(customer, authTokens.access);
             setCustomers([...customers, response2.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.agregado');
@@ -158,7 +159,7 @@ export function CustomerState(props) {
         try {
 
             setIsLoading(true);
-            await updateCliente(customer.cedula, customer);
+            await updateCliente(customer.cedula, customer, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.editado');
             handleOpenSnackbar();
@@ -186,7 +187,7 @@ export function CustomerState(props) {
 
     const deleteCustomer = async (customer) => {
         try {
-            await deleteCliente(customer.cedula);
+            await deleteCliente(customer.cedula, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('clientes.mensaje.eliminado');
             handleOpenSnackbar();

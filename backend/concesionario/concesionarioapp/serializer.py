@@ -348,7 +348,7 @@ class VentaSerializer(serializers.ModelSerializer):
         
         return instance
 
-class CotizacionSerializer():
+class CotizacionSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_cotizacion', read_only=True)
     vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
     cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
@@ -362,7 +362,7 @@ class CotizacionSerializer():
         fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
     
 
-class CotizacionModeloSerializer():
+class CotizacionModeloSerializer(serializers.ModelSerializer):
     idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
     cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
     modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
