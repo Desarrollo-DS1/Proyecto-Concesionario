@@ -131,6 +131,32 @@
     }
   },
 
+  "ventas": {
+    "encabezado": {
+      "tituloPlural": "Sales",
+      "tituloSingular": "Sale",
+      "agregar": "Add sale",
+      "editar": "Edit sale"
+    },
+
+    "mensaje": {
+      "agregado": "Sale added successfully",
+      "editado": "Sale edited successfully",
+      "error": "Error adding sale",
+      "errorEditar": "Error editing sale"
+    },
+
+    "label": {
+      "ID": "ID",
+      "cliente": "Customer",
+      "vendedor": "Salesperson",
+      "fecha": "Date",
+      "valor": "Total",
+      "vehiculos": "Vehicles",
+      "undefined": ""
+    }
+  },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Models",

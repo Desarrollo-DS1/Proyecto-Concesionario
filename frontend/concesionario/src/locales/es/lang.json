@@ -132,6 +132,31 @@
       "undefined" : ""
       }
     },
+    "ventas": {
+      "encabezado": {
+        "tituloPlural": "Ventas",
+        "tituloSingular": "Venta",
+        "agregar": "Agregar venta",
+        "editar": "Editar venta"
+      },
+  
+      "mensaje": {
+        "agregado": "Venta agregada correctamente",
+        "editado": "Venta editada correctamente",
+        "error": "Error al agregar venta",
+        "errorEditar": "Error al editar venta"
+      },
+  
+      "label": {
+        "ID": "ID",
+        "cliente": "Cliente",
+        "vendedor": "Vendedor",
+        "fecha": "Fecha",
+        "valor": "Total",
+        "vehiculos": "Vehiculos",
+        "undefined": ""
+      }
+    },
     "sucursal": {
         "mensaje": {
             "errorListando": "Error al listar sucursales"
