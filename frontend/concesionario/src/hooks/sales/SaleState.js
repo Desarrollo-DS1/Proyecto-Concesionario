@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import { getAllVentas, getVenta, createVenta, updateVenta } from "src/api/Venta.api";
-import { getAllEmpleados } from "src/api/Empleado.api";
-import { getAllClientes } from "src/api/Cliente.api";
+import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
+import { getAllEmpleados } from "../../api/Empleado.api";
+// import { setEmployeeError } from "../employee/EmployeeState";
+// import { setCustomers } from "../customer/CustomerState";
+// import { setEmployees } from "../employee/EmployeeState";
+import { getAllClientes } from "../../api/Cliente.api";
 
 SaleState.propTypes = {
     children: propTypes.node,
@@ -92,11 +95,11 @@ export function SaleState(props) {
 
         try {
             const response = await createVenta(venta);
-            setVentas([...ventas, response.data]);
+            setSales([...sales, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('ventas.mensaje.agregada');
             handleOpenSnackbar();
-            handelCloseForm();
+            handleCloseForm();
 
         } catch (error) {
             setTypeSnackbar('error');
@@ -123,7 +126,7 @@ export function SaleState(props) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('ventas.mensaje.errorID');
                 handleOpenSnackbar();
-                setEmployeeError({...employeeError, correo: 'ID de venta no identificado'});
+//                setEmployeeError({...employeeError, correo: 'ID de venta no identificado'});
 
             } else
             {
@@ -159,11 +162,6 @@ export function SaleState(props) {
         validateSaleOnBlur(sale, name);
     }
 
-    const handleDelete = (event) => {
-        event.preventDefault();
-        deleteVenta(sale).then(() => getSales());
-        handleCloseDelete();
-    }
 
     const handleOpenForm = async (event, id) => {
         getSaleError();
@@ -277,7 +275,7 @@ export function SaleState(props) {
     const clientesVenta = async () => {
         try {
             const response = await getAllClientes();
-            setClientes(response.data);
+//            setCustomers(response.data);
 
         } catch (error) {
             setTypeSnackbar('error');
@@ -289,7 +287,7 @@ export function SaleState(props) {
     const empleadosVenta = async () => {
         try {
             const response = await getAllEmpleados();
-            setEmpleados(response.data);
+            // setEmployees(response.data);
 
         } catch (error) {
             setTypeSnackbar('error');
@@ -320,13 +318,14 @@ export function SaleState(props) {
             orderBy,
             page,
             rowsPerPage,
+            filteredSales,
             emptyRows,
             isNotFound,
             filterField,
             handleInputChange,
             handleSubmit,
             handleOnBlur,
-            handleDelete,
+            // handleDelete,
             handleOpenForm,
             handleCloseForm,
             handleCloseSnackbar,
