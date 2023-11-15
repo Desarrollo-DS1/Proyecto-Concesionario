@@ -101,13 +101,15 @@ export default function SalePage() {
 
                         <TableCell align="left">{cedulaCliente}</TableCell>
 
+                        <TableCell align="left">""</TableCell>
+
                         <TableCell align="left">{cedulaVendedor}</TableCell>
+
+                        <TableCell align="left">""</TableCell>
 
                         <TableCell align="left">{fechaVenta}</TableCell>
 
-                        <TableCell align="left">{valorVenta}</TableCell>
-
-
+                        <TableCell align="left">$ {valorVenta}</TableCell>
 
                         <TableCell align="left">{vehiculos}</TableCell>
 

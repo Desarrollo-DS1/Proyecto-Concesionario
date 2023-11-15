@@ -151,6 +151,8 @@
   
       "label": {
         "ID": "ID",
+        "nombreCliente": "Nombre",
+        "nombreVendedor": "Nombre",
         "cliente": "Cliente",
         "vendedor": "Vendedor",
         "fecha": "Fecha",

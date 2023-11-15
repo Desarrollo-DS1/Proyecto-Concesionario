@@ -22,17 +22,20 @@ export function SaleState(props) {
     const TABLE_HEAD = [
         { id: "id", label: "ID", alignRight: false },
         { id: "cedulaCliente", label: "cliente", alignRight: false },
+        { id: "nombreCliente", label: "nombreCliente", alignRight: false },
         { id: "cedulaVendedor", label: "vendedor", alignRight: false },
+        { id: "nombreVendedor", label: "nombreVendedor", alignRight: false },
         { id: "fechaVenta", label: "fecha", alignRight: false },
         { id: "valorVenta", label: "valor", alignRight: false },
         { id: "vehiculos", label: "vehiculos", alignRight: false },
+        { id: ""}
     ];
 
     const FILTER_OPTIONS = [
         { id: "id", label: "ID" },
-        { id: "cedulaCliente", label: "cliente" },
-        { id: "cedulaVendedor", label: "vendedor" },
-        { id: "fechaVenta", label: "fecha" },
+        { id: "cliente", label: "cliente" },
+        { id: "vendedor", label: "vendedor" },
+        { id: "fecha", label: "fecha" },
     ];
 
     const emptySale = {
@@ -348,6 +351,7 @@ export function SaleState(props) {
             getSaleError,
             validateSaleOnSubmit,
             validateSaleOnBlur,
+            openFilter,
         }}>
             {props.children}
         </SaleContext.Provider>
