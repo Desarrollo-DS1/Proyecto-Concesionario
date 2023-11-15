@@ -148,12 +148,18 @@
 
     "label": {
       "ID": "ID",
+      "nombreCliente": "Name",
+      "nombreVendedor": "Name",
       "cliente": "Customer",
       "vendedor": "Salesperson",
       "fecha": "Date",
       "valor": "Total",
       "vehiculos": "Vehicles",
-      "undefined": ""
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Customer",
+      "cedulaVendedor": "Salesperson",
+      "fechaVenta": "Date"
     }
   },
 

@@ -141,12 +141,18 @@
 
     "label": {
       "ID": "ID",
+      "nombreCliente": "Nome",
+      "nombreVendedor": "Nome",
       "cliente": "Cliente",
       "vendedor": "Vendedor",
       "fecha": "Data",
       "valor": "Total",
       "vehiculos": "Veículos",
-      "undefined": ""
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaVenta": "Data"
     }
   },
   "modelos": {

@@ -1,5 +1,5 @@
 import propTypes, { func } from "prop-types";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
@@ -9,6 +9,7 @@ import { getAllEmpleados } from "../../api/Empleado.api";
 // import { setCustomers } from "../customer/CustomerState";
 // import { setEmployees } from "../employee/EmployeeState";
 import { getAllClientes } from "../../api/Cliente.api";
+import AuthContext from "../auth/AuthContext";
 
 SaleState.propTypes = {
     children: propTypes.node,
@@ -16,13 +17,18 @@ SaleState.propTypes = {
 
 export function SaleState(props) {
 
+    const {authTokens} = useContext(AuthContext);
+
     const TABLE_HEAD = [
         { id: "id", label: "ID", alignRight: false },
         { id: "cedulaCliente", label: "cliente", alignRight: false },
+        { id: "nombreCliente", label: "nombreCliente", alignRight: false },
         { id: "cedulaVendedor", label: "vendedor", alignRight: false },
+        { id: "nombreVendedor", label: "nombreVendedor", alignRight: false },
         { id: "fechaVenta", label: "fecha", alignRight: false },
         { id: "valorVenta", label: "valor", alignRight: false },
         { id: "vehiculos", label: "vehiculos", alignRight: false },
+        { id: ""}
     ];
 
     const FILTER_OPTIONS = [
@@ -61,7 +67,9 @@ export function SaleState(props) {
     
     const getSales = async () => {
         try {
-            const response = await getAllVentas();
+            const response = await getAllVentas(authTokens.access);
+            console.log(response);
+            console.log(response.data);
             setSales(response.data);
 
         } catch (error) {
@@ -233,7 +241,7 @@ export function SaleState(props) {
     }
 
     const [openFilter, setOpenFilter] = React.useState(null);
-    const [filterField, setFilterField] = React.useState('id');
+    const [filterField, setFilterField] = React.useState('ID');
 
     const handleOpenFilter = (event) => {
         setOpenFilter(event.currentTarget);
@@ -343,6 +351,7 @@ export function SaleState(props) {
             getSaleError,
             validateSaleOnSubmit,
             validateSaleOnBlur,
+            openFilter,
         }}>
             {props.children}
         </SaleContext.Provider>

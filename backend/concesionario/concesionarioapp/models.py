@@ -176,9 +176,7 @@ class Modelo(models.Model):
         ordering = ['id_modelo']
 
     def __str__(self):
-        return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(
-            self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(
-            self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
+        return str(self.nombre_modelo)
 
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
@@ -209,12 +207,10 @@ class Vehiculo(models.Model):
         ordering = ['vin']
 
     def __str__(self):
-        return 'Vehículo: ' + str(
-            self.vin) + ' ' + self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color + ' en ' + self.sucursal_vehiculo.nombre_sucursal + (
-            ' disponible para venta.' if self.disponible_para_venta else ' ( ya vendido.)')
+        return self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color
 
     def nombre_modelo(self):
-        return self.modelo_vehiculo.nombre_modelo
+        return str(self.modelo_vehiculo.nombre_modelo)
 
     def anho_modelo(self):
         return self.modelo_vehiculo.anho
@@ -287,6 +283,15 @@ class Venta(models.Model):
             precio_total += venta_vehiculo.precio()
 
         return precio_total
+    
+    def vehiculos_en_venta(self):
+        vehiculos = Venta_Vehiculo.objects.filter(venta=self)
+
+        vehiculos_en_venta = str(vehiculos.count()) + (' Vehículo: ' if vehiculos.count() == 1 else ' Vehículos: ')
+        
+        vehiculos_en_venta += ',\n'.join([str(venta_vehiculo.vehiculo) for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self)])
+        
+        return vehiculos_en_venta
 
 
 class Venta_Vehiculo(models.Model):
@@ -306,7 +311,7 @@ class Venta_Vehiculo(models.Model):
             self.venta.id_venta) + ' Extra: ' + self.extra.nombre_extra + ' Cantidad: ' + str(self.cantidad)
 
     def nombre_modelo(self):
-        return self.vehiculo.nombre_modelo
+        return str(self.vehiculo.nombre_modelo())
 
     def anho_modelo(self):
         return str(self.vehiculo.anho_modelo)
