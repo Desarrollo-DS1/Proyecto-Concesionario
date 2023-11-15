@@ -1,17 +1,19 @@
 import propTypes from 'prop-types';
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import EmployeeContext from './EmployeeContext';
 import { checkEmployee } from "./EmployeeValidation";
 import { applySortFilter, getComparator } from "../filter/Filter";
 import { getAllEmpleados, getEmpleado, createEmpleado, updateEmpleado, deleteEmpleado } from "../../api/Empleado.api";
 import { getAllSucursales } from "../../api/Sucursal.api";
 import { createUsuario } from "../../api/Usuario.api";
+import AuthContext from "../auth/AuthContext";
 
 EmployeeState.propTypes = {
     children: propTypes.node,
 }
 
 export function EmployeeState(props) {
+    const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: 'cedula', label: 'cedula', alignRight: false },
@@ -137,7 +139,7 @@ export function EmployeeState(props) {
     const getBranches = async () => {
 
         try {
-            const response = await getAllSucursales();
+            const response = await getAllSucursales(authTokens.access);
             setBranches(response.data);
         }
         catch (error) {
@@ -149,7 +151,7 @@ export function EmployeeState(props) {
 
     const getEmployees = async () => {
         try {
-            const response = await getAllEmpleados();
+            const response = await getAllEmpleados(authTokens.access);
             setEmployees(response.data);
 
         } catch (error) {
@@ -168,7 +170,7 @@ export function EmployeeState(props) {
         else {
             setEdit(true);
             try {
-                const response = await getEmpleado(cedula);
+                const response = await getEmpleado(cedula, authTokens.access);
                 const employeeDataWithClave = { ...response.data, clave: '' };
                 setEmployee(employeeDataWithClave);
             }
@@ -185,7 +187,7 @@ export function EmployeeState(props) {
         try {
             setIsLoading(true);
             const response = await createUsuario(employee);
-            const response2 = await createEmpleado(employee);
+            const response2 = await createEmpleado(employee, authTokens.access);
             setEmployees([...employees, response2.data]);
 
             setTypeSnackbar('success');
@@ -223,7 +225,7 @@ export function EmployeeState(props) {
 
         try {
             setIsLoading(true);
-            await updateEmpleado(employee.cedula, employee);
+            await updateEmpleado(employee.cedula, employee, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.editado');
             handleOpenSnackbar();
@@ -251,7 +253,7 @@ export function EmployeeState(props) {
     const deleteEmployee = async (employee) => {
 
         try {
-            await deleteEmpleado(employee.cedula);
+            await deleteEmpleado(employee.cedula, authTokens.access);
             setEmployees(employees.filter((item) => item.cedula !== employee.cedula));
             setTypeSnackbar('success');
             setMessageSnackbar('empleados.mensaje.eliminado');

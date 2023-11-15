@@ -1,5 +1,5 @@
 import propTypes from "prop-types";
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import VehicleContext from './VehicleContext';
 import {checkVehicle} from "./VehicleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
@@ -7,6 +7,7 @@ import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehi
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllColors} from "../../api/Colors.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
+import AuthContext from "../auth/AuthContext";
 
 
 VehicleState.propTypes = {
@@ -14,6 +15,7 @@ VehicleState.propTypes = {
 }
 
 export function VehicleState(props) {
+    const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: 'vin', label: 'vin', alignRight: false },
@@ -60,7 +62,7 @@ export function VehicleState(props) {
 
         try
         {
-            const response = await getAllSucursales();
+            const response = await getAllSucursales(authTokens.access);
             setBranches(response.data);
         }
         catch (error)
@@ -75,7 +77,7 @@ export function VehicleState(props) {
 
         try
         {
-            const response = await getAllColors();
+            const response = await getAllColors(authTokens.access);
             setColors(response.data);
         }
         catch (error)
@@ -90,7 +92,7 @@ export function VehicleState(props) {
 
         try
         {
-            const response = await getAllModelos();
+            const response = await getAllModelos(authTokens.access);
             setModels(response.data);
         }
         catch (error)
@@ -105,7 +107,7 @@ export function VehicleState(props) {
     const getVehicles = async () => {
         try
         {
-            const response = await getAllVehiculos();
+            const response = await getAllVehiculos(authTokens.access);
             setVehicles(response.data);
 
         }
@@ -129,7 +131,7 @@ export function VehicleState(props) {
             setEdit(true);
             try
             {
-                const response = await getVehiculo(vin);
+                const response = await getVehiculo(vin, authTokens.access);
                 setVehicle(response.data);
             }
             catch (error)
@@ -145,7 +147,7 @@ export function VehicleState(props) {
 
         try
         {
-            const response = await createVehiculo(vehicle);
+            const response = await createVehiculo(vehicle, authTokens.access);
             setVehicles([...vehicles, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.agregado');
@@ -177,7 +179,7 @@ export function VehicleState(props) {
 
         try
         {
-            await updateVehiculo(vehicle.vin, vehicle);
+            await updateVehiculo(vehicle.vin, vehicle, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.editado');
             handleOpenSnackbar();
@@ -195,7 +197,7 @@ export function VehicleState(props) {
 
         try
         {
-            await deleteVehiculo(vehicle.vin);
+            await deleteVehiculo(vehicle.vin, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.eliminado');
             handleOpenSnackbar();

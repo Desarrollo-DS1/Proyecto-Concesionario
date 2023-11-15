@@ -1,16 +1,16 @@
 import axios from "axios";
 
-const cotizacionApi = axios.create({
+const cotizacionApi = (token) => axios.create({
     baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cotizacion/',
-    headers: localStorage.getItem('authTokens') ? { Authorization: `Bearer ${JSON.parse(localStorage.getItem('authTokens')).access}` } : null
-})
+    headers: { Authorization: `Bearer ${token}` }
+});
 
-export const getAllCotizaciones = () => cotizacionApi.get('/');
+export const getAllCotizaciones = (token) => cotizacionApi(token).get('');
 
-export const getCotizacion = (id) => cotizacionApi.get(`/${id}/`);
+export const getCotizacion = (id, token) => cotizacionApi(token).get(`${id}/`);
 
-export const createCotizacion = (Cotizacion) => cotizacionApi.post('/', Cotizacion);
+export const createCotizacion = (cotizacion, token) => cotizacionApi(token).post('', cotizacion);
 
-export const updateCotizacion = (id, Cotizacion) => cotizacionApi.put(`/${id}/`, Cotizacion);
+export const updateCotizacion = (id, cotizacion, token) => cotizacionApi(token).put(`${id}/`, cotizacion);
 
-export const deleteCotizacion = (id) => cotizacionApi.delete(`/${id}`);
+export const deleteCotizacion = (id, token) => cotizacionApi(token).delete(`${id}/`);

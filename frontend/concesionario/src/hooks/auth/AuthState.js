@@ -100,7 +100,7 @@ export function AuthState(props) {
 
     const updateToken = async ()=> {       
         try{
-            const response = await refresh(JSON.parse(localStorage.getItem('authTokens')).refresh)
+            const response = await refresh(authTokens.refresh)
             setAuthTokens(response.data)
             setUser(jwtDecode(response.data.access))
             localStorage.setItem('authTokens', JSON.stringify(response.data))
