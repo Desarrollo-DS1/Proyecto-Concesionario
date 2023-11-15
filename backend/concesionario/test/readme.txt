@@ -1,0 +1,1 @@
+Antes de ejecutar las pruebas logearse para que el selenium acceda a la dirección de las pruebas directamente

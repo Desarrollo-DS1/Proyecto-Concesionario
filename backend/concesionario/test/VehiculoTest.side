@@ -1,0 +1,956 @@
+{
+  "id": "cd4a020c-5914-4c78-adb7-202abb23205b",
+  "version": "2.0",
+  "name": "VehiculoTest",
+  "url": "http://localhost:3000/dashboard/vehiculos",
+  "tests": [{
+    "id": "f3f53a0a-aeaf-42b1-b9b6-24436f31b516",
+    "name": "SuccesDelete",
+    "commands": [{
+      "id": "80dca992-a01a-412e-92df-7e38108de638",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/vehiculos",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b34193fb-9707-485b-9d7f-ac77e3a63c0a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiOutlinedInput-input",
+      "targets": [
+        ["css=.MuiOutlinedInput-input", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e378e575-dd05-4d18-9000-be4577b6d6c8",
+      "comment": "",
+      "command": "type",
+      "target": "css=.MuiOutlinedInput-input",
+      "targets": [
+        ["css=.MuiOutlinedInput-input", "css:finder"],
+        ["xpath=//input[@value='1GCCWDED1M1123456']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "1GCCWDED1M1123460"
+    }, {
+      "id": "479453a2-f23b-4751-87b2-9e038df2d08b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiIconButton-colorError > .MuiSvgIcon-root",
+      "targets": [
+        ["css=.MuiIconButton-colorError > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "11cbf9e0-4ccd-4a53-b65d-6123eb2f3105",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-containedError",
+      "targets": [
+        ["css=.MuiButton-containedError", "css:finder"],
+        ["xpath=(//button[@type='button'])[11]", "xpath:attributes"],
+        ["xpath=//div[3]/div[2]/button[2]", "xpath:position"],
+        ["xpath=//button[contains(.,'Si')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "18c9d592-2fb2-4163-bfe2-e11ccbeb8de4",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[2]/div/div[2]", "xpath:position"]
+      ],
+      "value": "Vehiculo eliminado correctamente"
+    }]
+  }, {
+    "id": "f81363ed-f253-462e-ad34-472fa3347c7b",
+    "name": "SuccesEdit",
+    "commands": [{
+      "id": "a7105178-42af-4dbc-825b-b29c961a4f20",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/vehiculos",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b269dde6-c1b2-4b9f-85b4-1bd7b168aa90",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiOutlinedInput-input",
+      "targets": [
+        ["css=.MuiOutlinedInput-input", "css:finder"],
+        ["xpath=//input[@value='']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5708e882-f4a4-4ce0-a42b-d418a52d5860",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root",
+      "targets": [
+        ["css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "e4bdd086-60c6-4dc7-a9cc-7f459db2ce50",
+      "comment": "",
+      "command": "type",
+      "target": "css=.MuiOutlinedInput-input",
+      "targets": [
+        ["css=.MuiOutlinedInput-input", "css:finder"],
+        ["xpath=//input[@value='1GCCWDED1M1123460']", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div[2]/div/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "1GCCWDED1M1123459"
+    }, {
+      "id": "464c8d71-630c-4d3b-b239-1283ca16c9a7",
+      "comment": "",
+      "command": "click",
+      "target": "css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root",
+      "targets": [
+        ["css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "5a32a993-ee7d-4304-b69b-6965a5e55e2c",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root",
+      "targets": [
+        ["css=div:nth-child(1) > .MuiIconButton-colorInherit > .MuiSvgIcon-root", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "818cc74c-d1a2-4972-8c6c-7d4ed556ecc5",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "2c679a85-b961-42af-acf6-0d3b628f0bfd",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=modelo",
+      "targets": [
+        ["id=modelo", "id"],
+        ["css=#modelo", "css:finder"],
+        ["xpath=//div[@id='modelo']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "8ce21022-6a72-45e4-81c1-5e022b83c6a3",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div", "xpath:idRelative"],
+        ["xpath=//body/div[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "180af855-ca57-4b87-b82e-c17902b09b25",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b000b36f-12fd-4c3d-a109-409f7fafd210",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(25)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(25)", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div[3]/ul/li[25]", "xpath:idRelative"],
+        ["xpath=//li[25]", "xpath:position"],
+        ["xpath=//li[contains(.,'Chevrolet Suburban 2 2022 Gasolina')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b66d1975-b40a-480b-a854-f527b7c0e9fe",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=sucursal",
+      "targets": [
+        ["id=sucursal", "id"],
+        ["css=#sucursal", "css:finder"],
+        ["xpath=//div[@id='sucursal']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6f53b17a-e35f-4e08-b42e-194e966c9c78",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div", "xpath:idRelative"],
+        ["xpath=//body/div[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "19298def-aa74-495e-ba3c-3cd715ef875e",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "32afb941-c1d9-41c8-8e01-719fe6750204",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(4)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(4)", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div[3]/ul/li[4]", "xpath:idRelative"],
+        ["xpath=//li[4]", "xpath:position"],
+        ["xpath=//li[contains(.,'Sucursal Oriente')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bfd36ceb-024f-4c06-bf17-2f81ab03f760",
+      "comment": "",
+      "command": "runScript",
+      "target": "window.scrollTo(0,0)",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "25695f31-fbde-4912-8289-43c32f6088bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "71b53144-18fc-49ac-9578-fe7290ca5824",
+      "comment": "",
+      "command": "click",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//div[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[2]/div[4]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c08f1c5d-fd5b-4a12-8373-3b9ab34a9ea1",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Editar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b1eb69e3-8e37-4646-8815-6480cddd1553",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[2]/div/div[2]", "xpath:position"]
+      ],
+      "value": "Vehiculo editado correctamente"
+    }]
+  }, {
+    "id": "2bc545d8-1cc1-4cb9-a69e-9ac7014af0ab",
+    "name": "FailedCreate_MissingArguments",
+    "commands": [{
+      "id": "d170ea7f-1efe-4d3c-a5c0-3f718293c4fc",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/vehiculos",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "011d0b4d-48ce-47fd-8221-eb2223deda9b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1052x1010",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f87d3503-2488-44cc-af72-ef4cc03f7146",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Vehiculo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "35930bc2-a381-459b-a19b-184a3de1368f",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b6037c7c-17b6-4829-9e12-c348f2d5288c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "302fbdf1-811d-4e1b-a4fb-da90eb4a8e5f",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "775dfe8a-f1d5-4123-a70a-46acdec842cc",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=vin-helper-text",
+      "targets": [
+        ["id=vin-helper-text", "id"],
+        ["css=#vin-helper-text", "css:finder"],
+        ["xpath=//p[@id='vin-helper-text']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Este campo es requerido')]", "xpath:innerText"]
+      ],
+      "value": "Este campo es requerido"
+    }, {
+      "id": "a1c6fc41-0284-4255-b8fb-4924c7d5f646",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=modelo-helper-text",
+      "targets": [
+        ["id=modelo-helper-text", "id"],
+        ["css=#modelo-helper-text", "css:finder"],
+        ["xpath=//p[@id='modelo-helper-text']", "xpath:attributes"],
+        ["xpath=//div[2]/div/p", "xpath:position"]
+      ],
+      "value": "Este campo es requerido"
+    }, {
+      "id": "ad6d1c70-eff4-4675-9191-f6d8f4e26c94",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=sucursal-helper-text",
+      "targets": [
+        ["id=sucursal-helper-text", "id"],
+        ["css=#sucursal-helper-text", "css:finder"],
+        ["xpath=//p[@id='sucursal-helper-text']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[3]/div/p", "xpath:position"]
+      ],
+      "value": "Este campo es requerido"
+    }, {
+      "id": "16e0a7a2-13a6-4dde-a17d-532127366685",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=:r6:-helper-text",
+      "targets": [
+        ["id=:r6:-helper-text", "id"],
+        ["css=#\\3Ar6\\3A-helper-text", "css:finder"],
+        ["xpath=//p[@id=':r6:-helper-text']", "xpath:attributes"],
+        ["xpath=//div[4]/div/p", "xpath:position"]
+      ],
+      "value": "Este campo es requerido"
+    }]
+  }, {
+    "id": "92e3ca6f-3a26-4fa4-88f6-7ed6e9f9c7d9",
+    "name": "FailedCreate_InvalidVin",
+    "commands": [{
+      "id": "0fe27788-0c87-4a2f-a269-d024658dd442",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/vehiculos",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9009f20a-cf6f-418c-9293-8e0fbf46f07b",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1052x1010",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "5dbab010-0f30-4806-868d-e9988080689c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Vehiculo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e54fa66-991c-45fd-be70-7758d4670e2f",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=modelo",
+      "targets": [
+        ["id=modelo", "id"],
+        ["css=#modelo", "css:finder"],
+        ["xpath=//div[@id='modelo']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e92d0698-c9c9-426c-beb0-7ee72a609960",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e927855b-b9c4-42ed-bcc6-7486adee4818",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b660ae81-152d-453e-9ac5-1f07b8d9f65a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiMenuItem-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiMenuItem-root:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div[3]/ul/li[2]", "xpath:idRelative"],
+        ["xpath=//li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'Chevrolet Sonic 2018 Gasolina')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ccd91f29-e8d5-459b-abf0-4d2e79b78e55",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=sucursal",
+      "targets": [
+        ["id=sucursal", "id"],
+        ["css=#sucursal", "css:finder"],
+        ["xpath=//div[@id='sucursal']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "018c34f4-828d-485a-bf6e-f344b5bfe191",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "f1ce42e8-7eea-40af-9f97-00ac5fea88a2",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6cceda21-f01a-4136-8c9d-f58afef202ae",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div[3]/ul/li[5]", "xpath:idRelative"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'Sucursal Sur')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c6a55c79-106f-4352-ae92-957cadc6ed03",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//div[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[4]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9bdd70b2-90ef-4a3a-8501-ab709b535588",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-color']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "d1294010-fd7a-4c5d-9a0b-beba9debc186",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "35e2747a-5aa2-4edd-b5fb-93ebcc8e522a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(2) > .css-m69qwo-MuiStack-root",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(2) > .css-m69qwo-MuiStack-root", "css:finder"],
+        ["xpath=//div[@id='menu-color']/div[3]/ul/li[2]/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9279c6dd-7088-4078-a104-42e3516157ae",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "6b8f551a-a1ab-4672-9035-49d9e906a499",
+      "comment": "",
+      "command": "click",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "512d2569-70f2-43a2-a7db-1543927b4652",
+      "comment": "",
+      "command": "type",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "ghj"
+    }, {
+      "id": "d01e7ce6-fca2-4083-ba32-ab7e9e6ccf4a",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b50f9a43-0d82-44b3-9bcf-7379854e0bc2",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2e1f790f-241a-4757-855a-e4056dad269f",
+      "comment": "",
+      "command": "mouseOut",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "b02594d2-9211-4843-b350-b976089b4e2a",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(1)", "css:finder"],
+        ["xpath=//form/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9153eeee-6f97-4aaa-b7cb-0436e1c95d47",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=vin-helper-text",
+      "targets": [
+        ["id=vin-helper-text", "id"],
+        ["css=#vin-helper-text", "css:finder"],
+        ["xpath=//p[@id='vin-helper-text']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Max: 17 caracteres, Min: 5 caracteres')]", "xpath:innerText"]
+      ],
+      "value": "Max: 17 caracteres, Min: 5 caracteres"
+    }, {
+      "id": "379cb421-ed24-4b92-93ba-947aa54eb382",
+      "comment": "",
+      "command": "click",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "03c6e5e7-5e1b-45f7-bb7f-e9eb97fd2fd8",
+      "comment": "",
+      "command": "type",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "ghje546234534525234254"
+    }, {
+      "id": "56558361-fd98-49cc-b547-c7894d693ea9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiGrid-root:nth-child(3)",
+      "targets": [
+        ["css=.MuiGrid-root:nth-child(3)", "css:finder"],
+        ["xpath=//form/div[2]/div[3]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ca02c0b7-359f-40b6-b741-49a8e3f58c06",
+      "comment": "",
+      "command": "assertText",
+      "target": "id=vin-helper-text",
+      "targets": [
+        ["id=vin-helper-text", "id"],
+        ["css=#vin-helper-text", "css:finder"],
+        ["xpath=//p[@id='vin-helper-text']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Este campo es requerido')]", "xpath:innerText"]
+      ],
+      "value": "Max: 17 caracteres, Min: 5 caracteres"
+    }]
+  }, {
+    "id": "5f2b5903-92eb-40f3-85d4-7aba1b42fae2",
+    "name": "SuccesCreate",
+    "commands": [{
+      "id": "376986be-daf1-4346-abfe-be3d941ac220",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/vehiculos",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "09be6be8-4c0f-4f93-a68a-f7c7787ae3a5",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1052x1010",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "caf16f3f-d6f2-46ef-8039-a5dfcb88dc29",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root",
+      "targets": [
+        ["css=.MuiButton-root", "css:finder"],
+        ["xpath=(//button[@type='button'])[4]", "xpath:attributes"],
+        ["xpath=//div[@id='root']/div/div/div/div/button", "xpath:idRelative"],
+        ["xpath=//div/div/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Vehiculo')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "29560396-0ac6-4f8e-af6c-ef3e75355c1f",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=modelo",
+      "targets": [
+        ["id=modelo", "id"],
+        ["css=#modelo", "css:finder"],
+        ["xpath=//div[@id='modelo']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "ee351a8c-e882-43cb-92aa-b1e2592d4fc0",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "67fabab8-136f-476e-8307-4b98026345ff",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "44cc4f2a-83d0-43cd-9338-12fe84b0cfbc",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiMenuItem-root:nth-child(2)",
+      "targets": [
+        ["css=.MuiMenuItem-root:nth-child(2)", "css:finder"],
+        ["xpath=//div[@id='menu-modelo']/div[3]/ul/li[2]", "xpath:idRelative"],
+        ["xpath=//li[2]", "xpath:position"],
+        ["xpath=//li[contains(.,'Chevrolet Sonic 2018 Gasolina')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "60ab8cbe-86ec-4abf-a5b5-e50b6bbcb9ed",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=sucursal",
+      "targets": [
+        ["id=sucursal", "id"],
+        ["css=#sucursal", "css:finder"],
+        ["xpath=//div[@id='sucursal']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div[3]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9fcc1f94-c5c7-4d6d-b890-5844b94f3e80",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "abb06394-fca9-4554-aea6-67de74ae818b",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3a78d66c-807c-4e7e-aa4b-01bc12b2ec34",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(5)",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(5)", "css:finder"],
+        ["xpath=//div[@id='menu-sucursal']/div[3]/ul/li[5]", "xpath:idRelative"],
+        ["xpath=//li[5]", "xpath:position"],
+        ["xpath=//li[contains(.,'Sucursal Sur')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "2943c574-1c7d-4c01-9c2b-7a2b5a137421",
+      "comment": "",
+      "command": "mouseDown",
+      "target": "id=:r6:",
+      "targets": [
+        ["id=:r6:", "id"],
+        ["css=#\\3Ar6\\3A", "css:finder"],
+        ["xpath=//div[@id=':r6:']", "xpath:attributes"],
+        ["xpath=//div[4]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "21c93a84-effd-40d4-aa70-4f13943afda5",
+      "comment": "",
+      "command": "mouseUp",
+      "target": "css=.MuiBackdrop-invisible",
+      "targets": [
+        ["css=.MuiBackdrop-invisible", "css:finder"],
+        ["xpath=//div[@id='menu-color']/div", "xpath:idRelative"],
+        ["xpath=//body/div[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "e173a95d-940e-4276-892e-2a222adaf3f0",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "517cfc74-c83d-44c5-b092-6d69d87c5284",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButtonBase-root:nth-child(2) > .css-m69qwo-MuiStack-root",
+      "targets": [
+        ["css=.MuiButtonBase-root:nth-child(2) > .css-m69qwo-MuiStack-root", "css:finder"],
+        ["xpath=//div[@id='menu-color']/div[3]/ul/li[2]/div", "xpath:idRelative"],
+        ["xpath=//li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "a9160475-4e4c-41fd-8224-5d163fdff3fa",
+      "comment": "",
+      "command": "click",
+      "target": "css=body",
+      "targets": [
+        ["css=body", "css:finder"],
+        ["xpath=//body", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5240a6fd-1387-40c4-9309-7f7aa8198f73",
+      "comment": "",
+      "command": "click",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "aa436baa-9ff2-40ef-8907-8bca087acbb5",
+      "comment": "",
+      "command": "type",
+      "target": "id=vin",
+      "targets": [
+        ["id=vin", "id"],
+        ["name=vin", "name"],
+        ["css=#vin", "css:finder"],
+        ["xpath=//input[@id='vin']", "xpath:attributes"],
+        ["xpath=//form/div[2]/div/div/div/input", "xpath:position"]
+      ],
+      "value": "1GCCWFEF1M1123459"
+    }, {
+      "id": "187b2cdc-8fbc-4c57-bf56-030325cf48e1",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "bea8821b-500d-4eae-815c-0e805a764601",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiButton-root:nth-child(1)",
+      "targets": [
+        ["css=.MuiButton-root:nth-child(1)", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div[3]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Agregar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "5224c842-01b5-4067-8613-acd308c3ce7d",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=.MuiAlert-message",
+      "targets": [
+        ["css=.MuiAlert-message", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div/div[2]", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[2]/div/div[2]", "xpath:position"]
+      ],
+      "value": "Vehiculo agregado correctamente"
+    }]
+  }],
+  "suites": [{
+    "id": "c84438bc-f1c3-4c01-ae09-c11efaf5abc6",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["f3f53a0a-aeaf-42b1-b9b6-24436f31b516"]
+  }],
+  "urls": ["http://localhost:3000/dashboard/vehiculos"],
+  "plugins": []
+}
