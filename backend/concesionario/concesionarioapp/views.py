@@ -77,6 +77,27 @@ class SucursalView(viewsets.ModelViewSet):
     queryset = Sucursal.objects.all()
     permission_classes = [IsAuthenticated, EsGerente]
 
+    def destroy(self, request, *args, **kwargs):
+        sucursal = self.get_object()
+
+        try:
+            self.perform_destroy(sucursal)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar la sucursal porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
+
 
 class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer

@@ -7,4 +7,10 @@ const sucursalApi = (token) => axios.create({
 
 export const getAllSucursales = (token) => sucursalApi(token).get('')
 
-export const getSucursal = (id, token) => sucursalApi(token).get(`${id}/`)
+export const getSucursal = (id_sucursal) => sucursalApi.get(`/${id_sucursal}/`)
+
+export const createSucursal = (sucursal) => sucursalApi.post('/', sucursal);
+
+export const updateSucursal = (id_sucursal, sucursal) => sucursalApi.put(`/${id_sucursal}/`, sucursal);
+
+export const deleteSucursal = (id_sucursal) => sucursalApi.delete(`/${id_sucursal}`);
