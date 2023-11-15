@@ -152,7 +152,8 @@
       "vendedor": "Salesperson",
       "fecha": "Date",
       "valor": "Total",
-      "vehiculos": "Vehicles"
+      "vehiculos": "Vehicles",
+      "undefined": ""
     }
   },
 

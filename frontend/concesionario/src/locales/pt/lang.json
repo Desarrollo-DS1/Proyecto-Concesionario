@@ -124,6 +124,31 @@
       "undefined": ""
     }
   },
+  "ventas": {
+    "encabezado": {
+      "tituloPlural": "Vendas",
+      "tituloSingular": "Venda",
+      "agregar": "Adicionar venda",
+      "editar": "Editar venda"
+    },
+
+    "mensaje": {
+      "agregado": "Venda adicionada com sucesso",
+      "editado": "Venta editada com sucesso",
+      "error": "Erro ao adicionar venda",
+      "errorEditar": "Erro ao editar venda"
+    },
+
+    "label": {
+      "ID": "ID",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fecha": "Data",
+      "valor": "Total",
+      "vehiculos": "Veículos",
+      "undefined": ""
+    }
+  },
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
