@@ -291,14 +291,17 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
     
 
 class VentaSerializer(serializers.ModelSerializer):
-    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
-    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
+    id = serializers.IntegerField(source='id_venta', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
+    cedulaVendedor = serializers.PrimaryKeyRelatedField(source='vendedor', queryset=Empleado.objects.all())
     fechaVenta = serializers.DateField(source='fecha_venta')
+    valorVenta = serializers.IntegerField(source='precio_total', read_only=True)
+    vehiculos = serializers.CharField(source='vehiculos_en_venta', read_only=True)
     ventaVehiculo = VentaVehiculoSerializer(many=True, source='venta_vehiculo_set')
 
     class Meta:
         model = Venta
-        fields = 'cliente', 'vendedor', 'fechaVenta', 'ventaVehiculo'
+        fields = 'id', 'cedulaCliente', 'cedulaVendedor', 'fechaVenta', 'valorVenta', 'vehiculos', 'ventaVehiculo'
 
     @transaction.atomic
     def create(self, validated_data):
@@ -309,9 +312,6 @@ class VentaSerializer(serializers.ModelSerializer):
             try:
                 if not venta_vehiculo['vehiculo'].disponible_para_venta:
                     raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'].vin)})
-                
-                if not venta.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
-                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, venta.vendedor.usuario.cedula, venta.vendedor.sucursal)})
                 
                 Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
                 Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
@@ -336,9 +336,6 @@ class VentaSerializer(serializers.ModelSerializer):
             try:
                 if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
                     raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
-                
-                if not instance.vendedor.sucursal == venta_vehiculo['vehiculo'].sucursal_vehiculo:
-                    raise serializers.ValidationError({'vendedor': 'El vehiculo {} se encuentra en la sucursal {}, pero el vendedor {} hace parte de la sucursal {}'.format(venta_vehiculo['vehiculo'].vin, venta_vehiculo['vehiculo'].sucursal_vehiculo, instance.vendedor.usuario.cedula, instance.vendedor.sucursal)})
                 
                 Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
                 Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)

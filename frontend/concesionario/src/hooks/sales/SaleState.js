@@ -1,5 +1,5 @@
 import propTypes, { func } from "prop-types";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
@@ -9,12 +9,15 @@ import { getAllEmpleados } from "../../api/Empleado.api";
 // import { setCustomers } from "../customer/CustomerState";
 // import { setEmployees } from "../employee/EmployeeState";
 import { getAllClientes } from "../../api/Cliente.api";
+import AuthContext from "../auth/AuthContext";
 
 SaleState.propTypes = {
     children: propTypes.node,
 };
 
 export function SaleState(props) {
+
+    const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: "id", label: "ID", alignRight: false },
@@ -61,7 +64,9 @@ export function SaleState(props) {
     
     const getSales = async () => {
         try {
-            const response = await getAllVentas();
+            const response = await getAllVentas(authTokens.access);
+            console.log(response);
+            console.log(response.data);
             setSales(response.data);
 
         } catch (error) {

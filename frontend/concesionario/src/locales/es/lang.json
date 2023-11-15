@@ -144,7 +144,9 @@
         "agregado": "Venta agregada correctamente",
         "editado": "Venta editada correctamente",
         "error": "Error al agregar venta",
-        "errorEditar": "Error al editar venta"
+        "errorEditar": "Error al editar venta",
+        "errorListando": "Error al listar ventas",
+        "errorCargando": "Error al cargar venta"
       },
   
       "label": {

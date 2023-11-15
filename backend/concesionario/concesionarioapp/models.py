@@ -209,9 +209,7 @@ class Vehiculo(models.Model):
         ordering = ['vin']
 
     def __str__(self):
-        return 'Vehículo: ' + str(
-            self.vin) + ' ' + self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color + ' en ' + self.sucursal_vehiculo.nombre_sucursal + (
-            ' disponible para venta.' if self.disponible_para_venta else ' ( ya vendido.)')
+        return self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color
 
     def nombre_modelo(self):
         return self.modelo_vehiculo.nombre_modelo
@@ -287,6 +285,15 @@ class Venta(models.Model):
             precio_total += venta_vehiculo.precio()
 
         return precio_total
+    
+    def vehiculos_en_venta(self):
+        vehiculos = Venta_Vehiculo.objects.filter(venta=self)
+
+        vehiculos_en_venta = str(vehiculos.count()) + (' Vehículo: ' if vehiculos.count() == 1 else ' Vehículos: ')
+        
+        vehiculos_en_venta += ',\n'.join([str(venta_vehiculo.vehiculo) for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self)])
+        
+        return vehiculos_en_venta
 
 
 class Venta_Vehiculo(models.Model):
