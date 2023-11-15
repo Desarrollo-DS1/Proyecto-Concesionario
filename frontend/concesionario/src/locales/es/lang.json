@@ -158,7 +158,11 @@
         "fecha": "Fecha",
         "valor": "Total",
         "vehiculos": "Vehiculos",
-        "undefined": ""
+        "undefined": "",
+        "id": "ID",
+        "cedulaCliente": "Cliente",
+        "cedulaVendedor": "Vendedor",
+        "fechaVenta": "Fecha"
       }
     },
     "sucursal": {

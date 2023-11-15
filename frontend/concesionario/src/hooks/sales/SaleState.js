@@ -32,10 +32,10 @@ export function SaleState(props) {
     ];
 
     const FILTER_OPTIONS = [
-        { id: "ID", label: "ID" },
-        { id: "cliente", label: "cliente" },
-        { id: "vendedor", label: "vendedor" },
-        { id: "fecha", label: "fecha" },
+        { id: "id", label: "ID" },
+        { id: "cedulaCliente", label: "cliente" },
+        { id: "cedulaVendedor", label: "vendedor" },
+        { id: "fechaVenta", label: "fecha" },
     ];
 
     const emptySale = {

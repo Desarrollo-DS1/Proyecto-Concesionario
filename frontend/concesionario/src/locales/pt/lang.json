@@ -148,7 +148,11 @@
       "fecha": "Data",
       "valor": "Total",
       "vehiculos": "Veículos",
-      "undefined": ""
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaVenta": "Data"
     }
   },
   "modelos": {

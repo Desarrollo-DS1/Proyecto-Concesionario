@@ -14,7 +14,7 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, Snackbar,
+    TablePagination, Box, Snackbar, List, ListItem, MenuItem, ListItemIcon,
 } from '@mui/material';
 // translations
 import {useTranslation} from "react-i18next";
@@ -88,8 +88,10 @@ export default function SalePage() {
                 <ListHead context={SaleContext} name={"ventas"} />
                 <TableBody>
                   {filteredSales.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {id, cedulaCliente, nombreCliente, cedulaVendedor, nombreVendedor, fechaVenta, valorVenta, vehiculos} = row;
+                    const {id, cedulaCliente, nombreCliente, cedulaVendedor, nombreVendedor, fechaVenta, valorVenta, vehiculos, ventaVehiculo} = row;
                     const selectedSale = selected.indexOf(id) !== -1;
+
+                    console.log(ventaVehiculo)
 
                     return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedSale}>
@@ -111,16 +113,20 @@ export default function SalePage() {
 
                         <TableCell align="left">$ {valorVenta}</TableCell>
 
-                        <TableCell align="left">{vehiculos}</TableCell>
+                        <TableCell align="left">
+                            <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>
+                                {ventaVehiculo.map((option) => (
+                                    <ListItem key={option.vehiculo} sx={{ display: 'list-item', paddingLeft: 0  }} dense>
+                                        {option.modelo}
+                                    </ListItem>
+                                ))}
+                            </List>
+                        </TableCell>
 
-                        <TableCell align="center" width={"5%"}>
+                        <TableCell align="center" width={"2%"}>
                         <div style={{ display: 'flex' }}>
                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                             <EditIcon />
-                            </IconButton>
-
-                            <IconButton color="error" onClick={(event)=> handleOpenDelete(event, id)}>
-                            <DeleteIcon />
                             </IconButton>
                         </div>
                         </TableCell>
