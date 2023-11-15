@@ -176,9 +176,7 @@ class Modelo(models.Model):
         ordering = ['id_modelo']
 
     def __str__(self):
-        return 'Modelo: ' + str(self.id_modelo) + ' ' + self.nombre_modelo + ' ' + str(
-            self.anho) + ' Carrocería: ' + str(self.carroceria) + ' Combustible: ' + str(
-            self.combustible) + ' Pasajeros: ' + str(self.numero_pasajeros) + ' Precio: ' + str(self.precio_base)
+        return str(self.nombre_modelo)
 
 class Color(models.Model):
     id_color = models.AutoField('ID del Color', primary_key=True)
@@ -212,7 +210,7 @@ class Vehiculo(models.Model):
         return self.modelo_vehiculo.nombre_modelo + ' ' + self.color_vehiculo.nombre_color
 
     def nombre_modelo(self):
-        return self.modelo_vehiculo.nombre_modelo
+        return str(self.modelo_vehiculo.nombre_modelo)
 
     def anho_modelo(self):
         return self.modelo_vehiculo.anho
@@ -313,7 +311,7 @@ class Venta_Vehiculo(models.Model):
             self.venta.id_venta) + ' Extra: ' + self.extra.nombre_extra + ' Cantidad: ' + str(self.cantidad)
 
     def nombre_modelo(self):
-        return self.vehiculo.nombre_modelo
+        return str(self.vehiculo.nombre_modelo())
 
     def anho_modelo(self):
         return str(self.vehiculo.anho_modelo)

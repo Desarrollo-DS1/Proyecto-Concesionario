@@ -283,17 +283,20 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
     venta_id = serializers.IntegerField(read_only=True)
+    modelo = serializers.CharField(source='nombre_modelo', read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id'
+        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id', 'modelo'
 
     
 
 class VentaSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_venta', read_only=True)
     cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
     cedulaVendedor = serializers.PrimaryKeyRelatedField(source='vendedor', queryset=Empleado.objects.all())
+    nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
     fechaVenta = serializers.DateField(source='fecha_venta')
     valorVenta = serializers.IntegerField(source='precio_total', read_only=True)
     vehiculos = serializers.CharField(source='vehiculos_en_venta', read_only=True)
@@ -301,7 +304,7 @@ class VentaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Venta
-        fields = 'id', 'cedulaCliente', 'cedulaVendedor', 'fechaVenta', 'valorVenta', 'vehiculos', 'ventaVehiculo'
+        fields = 'id', 'cedulaCliente', 'nombreCliente', 'cedulaVendedor', 'nombreVendedor', 'fechaVenta', 'valorVenta', 'vehiculos', 'ventaVehiculo'
 
     @transaction.atomic
     def create(self, validated_data):

@@ -88,7 +88,7 @@ export default function SalePage() {
                 <ListHead context={SaleContext} name={"ventas"} />
                 <TableBody>
                   {filteredSales.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const {id, cedulaCliente, cedulaVendedor, fechaVenta, valorVenta, vehiculos} = row;
+                    const {id, cedulaCliente, nombreCliente, cedulaVendedor, nombreVendedor, fechaVenta, valorVenta, vehiculos} = row;
                     const selectedSale = selected.indexOf(id) !== -1;
 
                     return (
@@ -101,11 +101,11 @@ export default function SalePage() {
 
                         <TableCell align="left">{cedulaCliente}</TableCell>
 
-                        <TableCell align="left">""</TableCell>
+                        <TableCell align="left">{nombreCliente}</TableCell>
 
                         <TableCell align="left">{cedulaVendedor}</TableCell>
 
-                        <TableCell align="left">""</TableCell>
+                        <TableCell align="left">{nombreVendedor}</TableCell>
 
                         <TableCell align="left">{fechaVenta}</TableCell>
 

@@ -32,7 +32,7 @@ export function SaleState(props) {
     ];
 
     const FILTER_OPTIONS = [
-        { id: "id", label: "ID" },
+        { id: "ID", label: "ID" },
         { id: "cliente", label: "cliente" },
         { id: "vendedor", label: "vendedor" },
         { id: "fecha", label: "fecha" },
@@ -241,7 +241,7 @@ export function SaleState(props) {
     }
 
     const [openFilter, setOpenFilter] = React.useState(null);
-    const [filterField, setFilterField] = React.useState('id');
+    const [filterField, setFilterField] = React.useState('ID');
 
     const handleOpenFilter = (event) => {
         setOpenFilter(event.currentTarget);
