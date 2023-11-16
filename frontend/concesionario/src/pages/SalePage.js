@@ -91,7 +91,6 @@ export default function SalePage() {
                     const {id, cedulaCliente, nombreCliente, cedulaVendedor, nombreVendedor, fechaVenta, valorVenta, vehiculos, ventaVehiculo} = row;
                     const selectedSale = selected.indexOf(id) !== -1;
 
-                    console.log(ventaVehiculo)
 
                     return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedSale}>
