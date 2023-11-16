@@ -88,9 +88,9 @@ WSGI_APPLICATION = 'concesionario.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'concesionario',
+        'NAME': 'DbConcesionario',
         'USER': 'postgres',
-        'PASSWORD': 'password',
+        'PASSWORD': '12345',
         'HOST': 'localhost',
         'PORT': '5432',
     }

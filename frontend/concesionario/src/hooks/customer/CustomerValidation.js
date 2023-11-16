@@ -55,6 +55,13 @@ function checkPasswordAdd(customer) {
     {
         return "errores.longitudMaxMin";
     }
+    if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
+        return "errores.contraseña.alfabetico";
+    }
+    if (!customer.clave.match(/(?=.*[0-9])/))
+    {
+        return "errores.contraseña.numerico";
+    }
     if (!customer.clave.match(/(?=.*[a-z])/))
     {
         return "errores.contraseña.minuscula";
@@ -63,10 +70,6 @@ function checkPasswordAdd(customer) {
     {
         return "errores.contraseña.mayuscula";
     }
-    if (!customer.clave.match(/(?=.*[0-9])/))
-    {
-        return "errores.contraseña.numerico";
-    }
     if (customer.clave.match(/\s/))
     {
         return "errores.contraseña.espacio";
@@ -74,9 +77,6 @@ function checkPasswordAdd(customer) {
     if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
     {
         return "errores.contraseña.especial";
-    }
-    if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
-        return "errores.contraseña.alfabetico";
     }
     return "";
 }
@@ -87,6 +87,13 @@ function checkPasswordEdit(customer) {
         {
             return "errores.longitudMaxMin";
         }
+        if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
+            return "errores.contraseña.alfabetico";
+        }
+        if (!customer.clave.match(/(?=.*[0-9])/))
+        {
+            return "errores.contraseña.numerico";
+        }
         if (!customer.clave.match(/(?=.*[a-z])/))
         {
             return "errores.contraseña.minuscula";
@@ -95,10 +102,6 @@ function checkPasswordEdit(customer) {
         {
             return "errores.contraseña.mayuscula";
         }
-        if (!customer.clave.match(/(?=.*[0-9])/))
-        {
-            return "errores.contraseña.numerico";
-        }
         if (customer.clave.match(/\s/))
         {
             return "errores.contraseña.espacio";
@@ -106,9 +109,6 @@ function checkPasswordEdit(customer) {
         if (!customer.clave.match(/(?=.*[!@#$%^&*])/))
         {
             return "errores.contraseña.especial";
-        }
-        if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
-            return "errores.contraseña.alfabetico";
         }
     }
 
