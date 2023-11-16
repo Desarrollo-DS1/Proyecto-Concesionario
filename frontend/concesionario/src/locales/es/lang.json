@@ -255,7 +255,8 @@
         "minuscula": "Debe tener al menos una minuscula",
         "mayuscula": "Debe tener al menos una mayuscula",
         "especial": "Debe tener al menos un caracter especial",
-        "espacio": "No se permiten espacios"
+        "espacio": "No se permiten espacios",
+        "alfabetico": "Debe tener al menos una letra"
     }
   },
   "404": {

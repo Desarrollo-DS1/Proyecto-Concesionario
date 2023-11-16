@@ -75,6 +75,9 @@ function checkPasswordAdd(employee) {
     {
         return "errores.contraseña.especial";
     }
+    if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
+        return "errores.contraseña.alfabetico";
+    }
     return "";
 }
 
@@ -103,6 +106,9 @@ function checkPasswordEdit(employee) {
         if (!employee.clave.match(/(?=.*[!@#$%^&*])/))
         {
             return "errores.contraseña.especial";
+        }
+        if (!customer.clave.match(/(?=.*[a-zA-Z])/)) {
+            return "errores.contraseña.alfabetico";
         }
     }
 
