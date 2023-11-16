@@ -247,7 +247,8 @@
       "minuscula": "Must have at least one lowercase",
       "mayuscula": "Must have at least one uppercase",
       "especial": "Must have at least one special character",
-      "espacio": "Must not have spaces"
+      "espacio": "Must not have spaces",
+      "alfabetico": "Must have at least one letter"
     }
   },
   "404": {
