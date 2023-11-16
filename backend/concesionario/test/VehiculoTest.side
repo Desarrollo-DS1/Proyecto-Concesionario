@@ -2,7 +2,7 @@
   "id": "cd4a020c-5914-4c78-adb7-202abb23205b",
   "version": "2.0",
   "name": "VehiculoTest",
-  "url": "http://localhost:3000/dashboard/vehiculos",
+  "url": "http://localhost:3000/dashboard/app",
   "tests": [{
     "id": "f3f53a0a-aeaf-42b1-b9b6-24436f31b516",
     "name": "SuccesDelete",
@@ -942,6 +942,46 @@
       ],
       "value": "Vehiculo agregado correctamente"
     }]
+  }, {
+    "id": "257891f9-9cca-41e1-a0c0-ad4096c8e57e",
+    "name": "SuccesGet",
+    "commands": [{
+      "id": "9c9d467c-4bba-4778-b4f1-37a107e8b7c9",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/app",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "356f90bc-5617-43a3-8a2a-3743f8b1606a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1696x1026",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "9962dddd-a000-4c15-9a14-4feeb081c21c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(11) > .MuiButtonBase-root:nth-child(2) > .MuiListItemText-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(11) > .MuiButtonBase-root:nth-child(2) > .MuiListItemText-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/nav/div/div/div/div/div/div[2]/div/div/div/ul[3]/a[2]/div[2]", "xpath:idRelative"],
+        ["xpath=//ul[3]/a[2]/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "45f9fd56-2ad9-40b2-a743-51c323e93e60",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "css=.MuiAlert-root",
+      "targets": [
+        ["css=.MuiAlert-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div", "xpath:idRelative"],
+        ["xpath=//div[4]/div/div/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "c84438bc-f1c3-4c01-ae09-c11efaf5abc6",
@@ -951,6 +991,6 @@
     "timeout": 300,
     "tests": ["f3f53a0a-aeaf-42b1-b9b6-24436f31b516"]
   }],
-  "urls": ["http://localhost:3000/dashboard/vehiculos"],
+  "urls": ["http://localhost:3000/dashboard/vehiculos", "http://localhost:3000/dashboard/app"],
   "plugins": []
 }
