@@ -2,7 +2,7 @@
   "id": "02f3ca57-9de1-447a-b614-e028c29c1a4a",
   "version": "2.0",
   "name": "Pruebas automaticas Modelo",
-  "url": "http://localhost:3000/dashboard/modelos",
+  "url": "http://localhost:3000/dashboard/app",
   "tests": [{
     "id": "b349befd-076f-4d8d-8b95-c72158014ec4",
     "name": "SuccesCreateModelo",
@@ -3959,6 +3959,60 @@
       "targets": [],
       "value": ""
     }]
+  }, {
+    "id": "beb8a522-6963-4870-a9e9-84a44351d0df",
+    "name": "SuccesfulGet",
+    "commands": [{
+      "id": "c861a225-e53d-4c67-bfd2-23fa236bdb97",
+      "comment": "",
+      "command": "open",
+      "target": "http://localhost:3000/dashboard/app",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1db9d7e4-8b13-4c9b-a27f-687dcaaf6e60",
+      "comment": "",
+      "command": "click",
+      "target": "css=.css-1t9pz9x",
+      "targets": [
+        ["css=.css-1t9pz9x", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "49709e7b-735b-4c18-9397-2db00078157c",
+      "comment": "",
+      "command": "click",
+      "target": "css=.MuiList-root:nth-child(11) > .MuiButtonBase-root:nth-child(1) > .MuiListItemText-root",
+      "targets": [
+        ["css=.MuiList-root:nth-child(11) > .MuiButtonBase-root:nth-child(1) > .MuiListItemText-root", "css:finder"],
+        ["xpath=//ul[3]/a/div[2]", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "b32da3db-af55-4da2-a5f3-3c41a6426beb",
+      "comment": "",
+      "command": "mouseOver",
+      "target": "linkText=Modelos",
+      "targets": [
+        ["linkText=Modelos", "linkText"],
+        ["css=.active", "css:finder"],
+        ["xpath=//a[contains(@href, '/dashboard/modelos')]", "xpath:href"],
+        ["xpath=//ul[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Modelos')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "14b4955b-8ffc-44cc-aee6-9a880691f5ed",
+      "comment": "",
+      "command": "assertElementNotPresent",
+      "target": "css=.MuiAlert-root",
+      "targets": [
+        ["css=.MuiAlert-root", "css:finder"],
+        ["xpath=//div[@id='root']/div/div/div[2]/div", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
   }],
   "suites": [{
     "id": "5b45c5d0-5409-4dd8-9dea-9790d61d7312",
@@ -3968,6 +4022,6 @@
     "timeout": 300,
     "tests": []
   }],
-  "urls": ["http://localhost:3000/", "http://localhost:3000/dashboard/modelos", "http://localhost:3000/login", "http://localhost:3000/dashboard"],
+  "urls": ["http://localhost:3000/", "http://localhost:3000/dashboard/modelos", "http://localhost:3000/login", "http://localhost:3000/dashboard", "http://localhost:3000/dashboard/app"],
   "plugins": []
 }
