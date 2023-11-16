@@ -316,12 +316,11 @@ class VentaSerializer(serializers.ModelSerializer):
     nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
     fechaVenta = serializers.DateField(source='fecha_venta')
     valorVenta = serializers.IntegerField(source='precio_total', read_only=True)
-    vehiculos = serializers.CharField(source='vehiculos_en_venta', read_only=True)
     ventaVehiculo = VentaVehiculoSerializer(many=True, source='venta_vehiculo_set')
 
     class Meta:
         model = Venta
-        fields = 'id', 'cedulaCliente', 'nombreCliente', 'cedulaVendedor', 'nombreVendedor', 'fechaVenta', 'valorVenta', 'vehiculos', 'ventaVehiculo'
+        fields = 'id', 'cedulaCliente', 'nombreCliente', 'cedulaVendedor', 'nombreVendedor', 'fechaVenta', 'valorVenta', 'ventaVehiculo'
 
     @transaction.atomic
     def create(self, validated_data):
