@@ -65,7 +65,11 @@
       "errorAgregar": "Error adding customer",
       "errorEditar": "Error editing customer",
       "errorEliminar": "Error deleting customer",
-      "confirmacionEliminar": "Are you sure you want to delete the cédula client {{cedula}}?"
+      "confirmacionEliminar": "Are you sure you want to delete the cédula client {{cedula}}?",
+      "errorCedula": "There is already a client with the ID entered",
+      "errorEmail": "There is already a client with the email entered",
+      "errorListando": "Error when listing clients",
+      "errorCargando": "Error loading client"
     },
 
     "label": {

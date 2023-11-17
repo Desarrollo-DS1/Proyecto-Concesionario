@@ -123,6 +123,10 @@ function checkCity(employee) {
     {
         return "errores.longitudMax";
     }
+    if (!employee.ciudad.match(/^[a-zA-Z]+$/))
+    {
+        return "errores.alfabetico";
+    }
     return "";
 }
 
@@ -219,7 +223,7 @@ function checkBornDate(employee) {
 
 function checkCedula(employee) {
 
-    if (employee.cedula === null || toString(employee.cedula).trim() === '') {
+    if (employee.cedula === null || toString(employee.cedula).trim() === '' || customer.cedula  === '') {
         return "errores.requerido";
     }
     if (!employee.cedula.match(/^[0-9]+$/))

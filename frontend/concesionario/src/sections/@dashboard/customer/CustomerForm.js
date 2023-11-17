@@ -96,6 +96,7 @@ export default function CustomerForm() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"primerNombre"}
                                 error={customerError.primerNombre !== ""}
                                 fullWidth
                                 required
@@ -110,6 +111,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"segundoNombre"}
                                 error={customerError.segundoNombre !== ''}
                                 fullWidth
                                 name="segundoNombre"
@@ -123,6 +125,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"primerApellido"}
                                 error={customerError.primerApellido !== ''}
                                 fullWidth
                                 required
@@ -137,6 +140,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"segundoApellido"}
                                 error={customerError.segundoApellido !== ''}
                                 fullWidth
                                 name={"segundoApellido"}
@@ -150,6 +154,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"cedula"}
                                 error={customerError.cedula !== ''}
                                 fullWidth
                                 required
@@ -165,6 +170,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"telefono"}
                                 error={customerError.telefono !== ''}
                                 fullWidth
                                 required
@@ -179,6 +185,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"celular"}
                                 error={customerError.celular !== ''}
                                 fullWidth
                                 required
@@ -193,6 +200,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"ciudad"}
                                 error={customerError.ciudad !== ''}
                                 fullWidth
                                 required
@@ -207,6 +215,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"direccion"}
                                 error={customerError.direccion !== ''}
                                 fullWidth
                                 required
@@ -221,6 +230,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"fechaNacimiento"}
                                 error={customerError.fechaNacimiento !== ''}
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
@@ -237,6 +247,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"genero"}
                                 error={customerError.genero !== ''}
                                 select
                                 fullWidth
@@ -250,7 +261,7 @@ export default function CustomerForm() {
                                 style={textFieldStyle}
                             >
                                 {genders.map((option) => (
-                                    <MenuItem key={option.id} value={option.label}>
+                                    <MenuItem id={option.id} key={option.id} value={option.label}>
                                         {t(`generos.${option.label}`)}
                                     </MenuItem>
                                 ))}
@@ -258,6 +269,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"correo"}
                                 error={customerError.correo !== ''}
                                 fullWidth
                                 required
@@ -272,6 +284,7 @@ export default function CustomerForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"clave"}
                                 type={showPassword ? 'text' : 'password'}
                                 error={customerError.clave !== ''}
                                 fullWidth
@@ -300,7 +313,7 @@ export default function CustomerForm() {
                     </Grid>
                     <Divider sx={{ my: 2 }} />
                     <Stack direction="row" alignItems="center" justifyContent="space-between" >
-                        <Button variant="contained" type="submit">
+                        <Button id={"agregar-editar-cliente"} variant="contained" type="submit">
                             {t(`general.botones.${edit? "editar" : "agregar"}`)}
                         </Button>
                         <Button variant="contained" onClick={handleCloseForm}>

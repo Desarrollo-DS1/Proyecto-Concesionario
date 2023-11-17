@@ -71,7 +71,7 @@ export default function EmployeePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('empleados.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                    <Button id={'agregar-empleado'} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                         {t('empleados.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
@@ -114,11 +114,11 @@ export default function EmployeePage() {
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
+                                                        <IconButton id={`editar-empleado-${cedula}`}  color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                                                             <EditIcon />
                                                         </IconButton>
 
-                                                        <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
+                                                        <IconButton id={`eliminar-empleado-${cedula}`}  color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
                                                             <DeleteIcon />
                                                         </IconButton>
                                                     </div>
