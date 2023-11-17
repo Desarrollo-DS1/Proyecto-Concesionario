@@ -55,7 +55,7 @@ export default function CustomerDelete() {
                     <Button variant="contained" onClick={handleCloseDelete}>
                         {t('general.botones.no')}
                     </Button>
-                    <Button variant="contained" color="error" onClick={handleDelete}>
+                    <Button id={"confirmar-eliminar-cliente"} variant="contained" color="error" onClick={handleDelete}>
                         {t('general.botones.si')}
                     </Button>
                 </Stack>

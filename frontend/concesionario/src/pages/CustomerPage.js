@@ -121,11 +121,11 @@ export default function CustomerPage() {
 
                         <TableCell align="center" width={"5%"}>
                           <div style={{ display: 'flex' }}>
-                            <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
+                            <IconButton id={`editar-cliente-${cedula}`} color="inherit" onClick={(event)=>handleOpenForm(event, cedula)}>
                               <EditIcon />
                             </IconButton>
 
-                            {(user.tipoUsuario !== "Vendedor" && user.tipoUsuario !== "Jefe de Taller" ) && <IconButton color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
+                                {(user.tipoUsuario !== "Vendedor" && user.tipoUsuario !== "Jefe de Taller" ) && <IconButton id={`eliminar-cliente-${cedula}`}  color="error" onClick={(event)=> handleOpenDelete(event, cedula)}>
                               <DeleteIcon />
                             </IconButton>}
                           </div>

@@ -124,6 +124,7 @@ export default function EmployeeForm() {
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"primerNombre"}
                                 error={employeeError.primerNombre !== ""}
                                 fullWidth
                                 required
@@ -138,6 +139,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"segundoNombre"}
                                 error={employeeError.segundoNombre !== ''}
                                 fullWidth
                                 name="segundoNombre"
@@ -151,6 +153,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"primerApellido"}
                                 error={employeeError.primerApellido !== ''}
                                 fullWidth
                                 required
@@ -165,6 +168,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"segundoApellido"}
                                 error={employeeError.segundoApellido !== ''}
                                 fullWidth
                                 name={"segundoApellido"}
@@ -178,6 +182,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"cedula"}
                                 error={employeeError.cedula !== ''}
                                 fullWidth
                                 required
@@ -193,6 +198,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"telefono"}
                                 error={employeeError.telefono !== ''}
                                 fullWidth
                                 required
@@ -207,6 +213,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"celular"}
                                 error={employeeError.celular !== ''}
                                 fullWidth
                                 required
@@ -221,6 +228,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"ciudad"}
                                 error={employeeError.ciudad !== ''}
                                 fullWidth
                                 required
@@ -235,6 +243,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"direccion"}
                                 error={employeeError.direccion !== ''}
                                 fullWidth
                                 required
@@ -249,6 +258,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"fechaNacimiento"}
                                 error={employeeError.fechaNacimiento !== ''}
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
@@ -265,6 +275,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"genero"}
                                 error={employeeError.genero !== ''}
                                 select
                                 fullWidth
@@ -278,7 +289,7 @@ export default function EmployeeForm() {
                                 style={textFieldStyle}
                             >
                                 {genders.map((option) => (
-                                    <MenuItem key={option.id} value={option.label}>
+                                    <MenuItem id={option.id} key={option.id} value={option.label}>
                                         {t(`generos.${option.label}`)}
                                     </MenuItem>
                                 ))}
@@ -286,6 +297,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"fechaIngreso"}
                                 error={employeeError.fechaIngreso !== ''}
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
@@ -302,6 +314,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={3}>
                             <TextField
+                                id={"fechaRetiro"}
                                 error={employeeError.fechaRetiro !== ''}
                                 InputLabelProps={{ shrink: true }}
                                 fullWidth
@@ -317,6 +330,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={2}>
                             <TextField
+                                id={"tipoSangre"}
                                 error={employeeError.tipoSangre !== ''}
                                 select
                                 fullWidth
@@ -333,7 +347,7 @@ export default function EmployeeForm() {
                                 }}
                             >
                                 {bloodTypes.map((option) => (
-                                    <MenuItem key={option.id} value={option.label}>
+                                    <MenuItem id={option.id} key={option.id} value={option.label}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
@@ -341,6 +355,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
+                                id={"salario"}
                                 error={employeeError.salario !== ''}
                                 fullWidth
                                 name={"salario"}
@@ -355,6 +370,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={2}>
                             <TextField
+                                id={"eps"}
                                 error={employeeError.eps !== ''}
                                 select
                                 fullWidth
@@ -371,7 +387,7 @@ export default function EmployeeForm() {
                                 }}
                             >
                                 {epss.map((option) => (
-                                    <MenuItem key={option.id} value={option.label}>
+                                    <MenuItem id={option.id} key={option.id} value={option.label}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
@@ -379,6 +395,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={2}>
                             <TextField
+                                id={"arl"}
                                 error={employeeError.arl !== ''}
                                 select
                                 fullWidth
@@ -395,7 +412,7 @@ export default function EmployeeForm() {
                                 }}
                             >
                                 {arls.map((option) => (
-                                    <MenuItem key={option.id} value={option.label}>
+                                    <MenuItem id={option.id} key={option.id} value={option.label}>
                                         {option.label}
                                     </MenuItem>
                                 ))}
@@ -403,6 +420,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
+                                id={"sucursal"}
                                 error={employeeError.sucursal !== ''}
                                 select
                                 fullWidth
@@ -422,7 +440,7 @@ export default function EmployeeForm() {
                                     const { sucursal, nombreSucursal } = option;
                                     return (
 
-                                        <MenuItem key={sucursal} value={sucursal}>
+                                        <MenuItem id={sucursal} key={sucursal} value={sucursal}>
                                             {nombreSucursal}
                                         </MenuItem>
                                     ); })}
@@ -430,6 +448,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
+                                id={"cargo"}
                                 error={employeeError.cargo !== ''}
                                 select
                                 fullWidth
@@ -454,6 +473,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"correo"}
                                 error={employeeError.correo !== ''}
                                 fullWidth
                                 required
@@ -468,6 +488,7 @@ export default function EmployeeForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
+                                id={"clave"}
                                 type={showPassword ? 'text' : 'password'}
                                 error={employeeError.clave !== ''}
                                 fullWidth
@@ -496,7 +517,7 @@ export default function EmployeeForm() {
                     </Grid>
                     <Divider sx={{ my: 2 }} />
                     <Stack direction="row" alignItems="center" justifyContent="space-between" >
-                        <Button variant="contained" type="submit">
+                        <Button id={"agregar-editar-empleado"} variant="contained" type="submit">
                             {t(`general.botones.${edit? "editar" : "agregar"}`)}
                         </Button>
                         <Button variant="contained" onClick={handleCloseForm}>

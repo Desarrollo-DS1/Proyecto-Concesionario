@@ -63,7 +63,11 @@
       "error": "Erro ao adicionar cliente",
       "errorEditar": "Erro ao editar cliente",
       "errorEliminar": "Erro ao excluir cliente",
-      "confirmacionEliminar": "Tem certeza de que deseja excluir o cliente com o número de identificação {{cedula}}?"
+      "confirmacionEliminar": "Tem certeza de que deseja excluir o cliente com o número de identificação {{cedula}}?",
+      "errorCedula": "Já existe um cliente com o ID inserido",
+      "errorEmail": "Já existe um cliente com o email inserido",
+      "errorListando": "Erro ao listar clientes",
+      "errorCargando": "Erro ao carregar cliente"
     },
     "label": {
       "cedula": "Cédula",
