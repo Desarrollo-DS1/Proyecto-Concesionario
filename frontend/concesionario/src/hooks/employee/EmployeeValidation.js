@@ -223,7 +223,7 @@ function checkBornDate(employee) {
 
 function checkCedula(employee) {
 
-    if (employee.cedula === null || toString(employee.cedula).trim() === '' || customer.cedula  === '') {
+    if (employee.cedula === null || toString(employee.cedula).trim() === '' || employee.cedula  === '') {
         return "errores.requerido";
     }
     if (!employee.cedula.match(/^[0-9]+$/))
