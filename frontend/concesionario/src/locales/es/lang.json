@@ -203,6 +203,36 @@
       "numeroPasajeros": "Capacidad"
     }
   },
+
+  "repuestos": {
+    "encabezado": {
+      "tituloPlural": "Repuestos",
+      "tituloSingular": "Repuesto",
+      "agregar": "Agregar Repuesto",
+      "eliminar": "Eliminar Repuesto",
+      "editar": "Editar Repuesto"
+    },
+    "mensaje": {
+      "agregado": "Repuesto agregado correctamente",
+      "editado": "Repuesto editado correctamente",
+      "eliminado": "Repuesto eliminado correctamente",
+      "error": "Error al agregar repuesto",
+      "errorEditar": "Error al editar repuesto",
+      "errorEliminar": "Error al eliminar repuesto",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar el repuesto de nombre {{nombre}}?",
+      "errorNombre": "Ya existe un repuesto con el nombre ingresado",
+      "errorListando": "Error al listar nombres",
+      "errorCargando": "Error al cargar nombre"
+    },
+    "label": {
+      "id": "ID",
+      "nombre": "Repuesto",
+      "precio": "Precio",
+      "modelos": "Modelos",
+      "undefined" : ""
+    }
+  },
+
   "vehiculos": {
     "encabezado": {
       "tituloPlural": "Vehiculos",
@@ -239,6 +269,7 @@
       "vendido": "Vendido"
     }
   },
+
   "errores": {
     "requerido": "Este campo es requerido",
     "numerico": "Solo se permiten numeros",
@@ -259,6 +290,7 @@
         "alfabetico": "Debe tener al menos una letra"
     }
   },
+
   "404": {
     "titulo": "404 Pagina no encontrada",
     "subtitulo": "Lo sentimos, pagina no encontrada!",
@@ -293,6 +325,7 @@
     "ventasMensuales": "Ventas Mensuales",
     "ventasPorModelo": "Ventas por Modelo"
   },
+
   "colores": {
     "Amarillo": "Amarillo",
     "Azul": "Azul",
@@ -303,6 +336,7 @@
     "Rojo": "Rojo",
     "Verde": "Verde"
   },
+
   "combustibles": {
     "Gasolina": "Gasolina",
     "Diesel": "Diesel",
@@ -312,6 +346,7 @@
     "Gas Natural": "Gas Natural",
     "Gas Licuado": "Gas Licuado"
   },
+
   "carrocerias": {
     "Sedan": "Sedan",
     "Hatchback": "Hatchback",
@@ -331,11 +366,13 @@
     "Tracto Camion": "Tractocamión",
     "Trailer": "Remolque"
   },
+
   "generos": {
     "Masculino": "Masculino",
     "Femenino": "Femenino",
     "Otro": "Otro"
   },
+  
   "cargos": {
     "Vendedor": "Vendedor",
     "Jefe de Taller": "Jefe de Taller",

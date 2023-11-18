@@ -19,6 +19,8 @@ import VehiclePage from "./pages/VehiclePage";
 import AuthContext  from "./hooks/auth/AuthContext";
 import {SaleState} from "./hooks/sales/SaleState";
 import SalePage from "./pages/SalePage";
+import SparePartPage from "./pages/SparePartPage";
+import {SparePartState} from "./hooks/sparePart/SparePartState";
 
 // ----------------------------------------------------------------------
 
@@ -44,7 +46,8 @@ export default function Router() {
         { path: 'empleados', element: <EmployeeState><EmployeePage /></EmployeeState> },
         { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
         { path: 'vehiculos', element: <VehicleState><VehiclePage /></VehicleState>},
-        { path: 'ventas', element: <SaleState><SalePage /></SaleState>}
+        { path: 'ventas', element: <SaleState><SalePage /></SaleState>},
+        { path: 'repuestos', element: <SparePartState><SparePartPage /></SparePartState>}
       ],
     },
     {element: <LoadLayout />,

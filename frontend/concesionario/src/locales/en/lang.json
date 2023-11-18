@@ -199,6 +199,35 @@
       "numeroPasajeros": "Capacity"
     }
   },
+  "repuestos": {
+    "encabezado": {
+      "tituloPlural": "Spare Parts",
+      "tituloSingular": "Spare Part",
+      "agregar": "Add Spare Part",
+      "eliminar": "Delete Spare Part",
+      "editar": "Edit Spare Part"
+    },
+    "mensaje": {
+      "agregado": "Spare part added successfully",
+      "editado": "Spare part edited successfully",
+      "eliminado": "Spare part deleted successfully",
+      "error": "Error adding spare part",
+      "errorEditar": "Error editing spare part",
+      "errorEliminar": "Error deleting spare part",
+      "confirmacionEliminar": "Are you sure you want to delete the spare part named {{nombre}}?",
+      "errorNombre": "A spare part with the entered name already exists",
+      "errorListando": "Error listing names",
+      "errorCargando": "Error loading name"
+    },
+    "label": {
+      "id": "ID",
+      "nombre": "Spare Part",
+      "precio": "Price",
+      "modelos": "Models",
+      "undefined" : ""
+    }
+  },
+
   "vehiculos": {
     "encabezado": {
       "tituloPlural": "Vehicles",
@@ -235,6 +264,7 @@
       "vendido": "Sold"
     }
   },
+
   "errores": {
     "requerido": "Required field",
     "numerico": "Only numbers are allowed",
@@ -255,6 +285,7 @@
       "alfabetico": "Must have at least one letter"
     }
   },
+
   "404": {
     "titulo": "404 Page Not Found",
     "subtitulo": "Sorry, page not found!",
@@ -271,6 +302,7 @@
     "error": "ID or password incorrect",
     "captcha": "Please accept the captcha"
   },
+
   "dashBoardVenta": {
     "titulo": "Sales Panel",
     "ventas": "Sales",
@@ -286,6 +318,7 @@
     "ventasMensuales": "Monthly Sales",
     "ventasPorModelo": "Sales by Model"
   },
+
   "colores": {
     "Amarillo": "Yellow",
     "Azul": "Blue",
@@ -296,6 +329,7 @@
     "Rojo": "Red",
     "Verde": "Green"
   },
+
   "combustibles": {
     "Gasolina": "Gasoline",
     "Diesel": "Diesel",
@@ -305,6 +339,7 @@
     "Gas Natural": "Natural Gas",
     "Gas Licuado": "Liquefied Gas"
   },
+
   "carrocerias": {
     "Sedan": "Sedan",
     "Hatchback": "Hatchback",
@@ -324,11 +359,13 @@
     "Tracto Camion": "Semi-truck",
     "Trailer": "Trailer"
   },
+
   "generos": {
     "Masculino": "Male",
     "Femenino": "Female",
     "Otro": "Other"
   },
+
   "cargos": {
     "Vendedor": "Salesperson",
     "Jefe de Taller": "Workshop Manager",

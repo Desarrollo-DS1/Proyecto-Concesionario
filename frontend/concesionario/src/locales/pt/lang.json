@@ -48,6 +48,7 @@
     },
     "buscar": "Buscar..."
   },
+
   "clientes": {
     "encabezado": {
       "tituloPlural": "Clientes",
@@ -87,6 +88,7 @@
       "undefined": ""
     }
   },
+
   "empleados": {
     "encabezado": {
       "tituloPlural": "Funcionários",
@@ -128,6 +130,7 @@
       "undefined": ""
     }
   },
+
   "ventas": {
     "encabezado": {
       "tituloPlural": "Vendas",
@@ -159,6 +162,7 @@
       "fechaVenta": "Data"
     }
   },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
@@ -189,6 +193,36 @@
       "numeroPasajeros": "Capacidade"
     }
   },
+
+  "repuestos": {
+    "encabezado": {
+      "tituloPlural": "Peças de Reposição",
+      "tituloSingular": "Peça de Reposição",
+      "agregar": "Adicionar Peça de Reposição",
+      "eliminar": "Excluir Peça de Reposição",
+      "editar": "Editar Peça de Reposição"
+    },
+    "mensaje": {
+      "agregado": "Peça de reposição adicionada com sucesso",
+      "editado": "Peça de reposição editada com sucesso",
+      "eliminado": "Peça de reposição excluída com sucesso",
+      "error": "Erro ao adicionar peça de reposição",
+      "errorEditar": "Erro ao editar peça de reposição",
+      "errorEliminar": "Erro ao excluir peça de reposição",
+      "confirmacionEliminar": "Você tem certeza de que deseja excluir a peça de reposição chamada {{nome}}?",
+      "errorNome": "Já existe uma peça de reposição com o nome inserido",
+      "errorListando": "Erro ao listar nomes",
+      "errorCarregando": "Erro ao carregar nome"
+    },
+    "label": {
+      "id": "ID",
+      "nome": "Peça de Reposição",
+      "preco": "Preço",
+      "modelos": "Modelos",
+      "undefined" : ""
+    }
+  },
+
   "vehiculos": {
     "encabezado": {
       "tituloPlural": "Veículos",
@@ -225,6 +259,7 @@
       "vendido": "Vendido"
     }
   },
+
   "errores": {
     "requerido": "Este campo é obrigatório",
     "numerico": "Apenas números são permitidos",
@@ -245,6 +280,7 @@
       "alfabetico": "Deve conter pelo menos um letra"
     }
   },
+
   "404": {
     "titulo": "404 Página não encontrada",
     "subtitulo": "Desculpe, página não encontrada!",
@@ -261,6 +297,7 @@
     "error": "Cédula ou senha incorretos",
     "captcha": "Por favor, aceite o captcha"
   },
+
   "dashBoardVenta": {
     "titulo": "Painel de Vendas",
     "ventas": "Vendas",
@@ -276,6 +313,7 @@
     "ventasMensuales": "Vendas Mensais",
     "ventasPorModelo": "Vendas por Modelo"
   },
+
   "colores": {
     "Amarillo": "Amarelo",
     "Azul": "Azul",
@@ -286,6 +324,7 @@
     "Rojo": "Vermelho",
     "Verde": "Verde"
   },
+
   "combustibles": {
     "Gasolina": "Gasolina",
     "Diesel": "Diesel",
@@ -295,6 +334,7 @@
     "Gas Natural": "Gás Natural",
     "Gas Licuado": "Gás Liquefeito"
   },
+
   "carrocerias": {
     "Sedan": "Sedan",
     "Hatchback": "Hatchback",
@@ -314,11 +354,13 @@
     "Tracto Camion": "Caminhão-trator",
     "Trailer": "Reboque"
   },
+
   "generos": {
     "Masculino": "Masculino",
     "Femenino": "Feminino",
     "Otro": "Outro"
   },
+
   "cargos": {
     "Vendedor": "Vendedor",
     "Jefe de Taller": "Chefe de Oficina",
