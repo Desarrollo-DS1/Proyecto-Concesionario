@@ -31,7 +31,7 @@ const scrollBarStyle = {
     },
 }
 
-const createRows = (array, t) => (
+const createRows = (array, t, onChange) => (
     array.map(el => (
         <TableRow key={el.id}>
             <TableCell align="left" width={"50%"}>
@@ -44,7 +44,11 @@ const createRows = (array, t) => (
                     name="cantidad"
                     value={el.cantidad}
                     variant="outlined"
-                    type={"number"}
+
+                    onChange={(event)=>onChange(event, el.id)}
+                    InputProps={{
+                        inputProps: { min: 0 }
+                    }}
                 />
             </TableCell>
         </TableRow>
@@ -57,11 +61,9 @@ export default function SparePartInventoryForm() {
          inventory,
          subtitle,
          openInventoryForm,
-         handleInputChange,
-         handleOnBlur,
+         handleInputChangeInventory,
          handleCloseInventoryForm,
-         handleOnSubmitInventory,
-         vehicleError} = useContext(SparePartContext);
+         handleOnSubmitInventory} = useContext(SparePartContext);
 
 
     const theme = useTheme()
@@ -118,7 +120,7 @@ export default function SparePartInventoryForm() {
 
                 <Table size="small">
                     <TableBody>
-                        {createRows(inventory, t)}
+                        {createRows(inventory, t, handleInputChangeInventory)}
                     </TableBody>
                 </Table>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>

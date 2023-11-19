@@ -231,6 +231,7 @@
       "precio": "Precio",
       "modelos": "Modelos",
       "cantidad": "Cantidad",
+      "descripcion": "Descripcion",
       "undefined" : ""
     }
   },
