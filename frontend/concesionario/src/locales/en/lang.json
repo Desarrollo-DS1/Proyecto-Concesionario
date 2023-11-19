@@ -205,7 +205,8 @@
       "tituloSingular": "Spare Part",
       "agregar": "Add Spare Part",
       "eliminar": "Delete Spare Part",
-      "editar": "Edit Spare Part"
+      "editar": "Edit Spare Part",
+      "inventario": "Inventory"
     },
     "mensaje": {
       "agregado": "Spare part added successfully",
@@ -224,6 +225,7 @@
       "nombre": "Spare Part",
       "precio": "Price",
       "modelos": "Models",
+      "cantidad": "Stock",
       "undefined" : ""
     }
   },

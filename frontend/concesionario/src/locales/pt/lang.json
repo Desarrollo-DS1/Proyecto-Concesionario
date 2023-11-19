@@ -200,7 +200,8 @@
       "tituloSingular": "Peça de Reposição",
       "agregar": "Adicionar Peça de Reposição",
       "eliminar": "Excluir Peça de Reposição",
-      "editar": "Editar Peça de Reposição"
+      "editar": "Editar Peça de Reposição",
+      "inventario": "Inventário"
     },
     "mensaje": {
       "agregado": "Peça de reposição adicionada com sucesso",
@@ -210,15 +211,16 @@
       "errorEditar": "Erro ao editar peça de reposição",
       "errorEliminar": "Erro ao excluir peça de reposição",
       "confirmacionEliminar": "Você tem certeza de que deseja excluir a peça de reposição chamada {{nome}}?",
-      "errorNome": "Já existe uma peça de reposição com o nome inserido",
+      "errorNombre": "Já existe uma peça de reposição com o nome inserido",
       "errorListando": "Erro ao listar nomes",
-      "errorCarregando": "Erro ao carregar nome"
+      "errorCargando": "Erro ao carregar nome"
     },
     "label": {
       "id": "ID",
-      "nome": "Peça de Reposição",
-      "preco": "Preço",
+      "nombre": "Peça de Reposição",
+      "precio": "Preço",
       "modelos": "Modelos",
+      "cantidad": "Quantidade",
       "undefined" : ""
     }
   },

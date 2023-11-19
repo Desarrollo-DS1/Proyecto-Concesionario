@@ -51,7 +51,6 @@ export function SparePartState(props) {
     const [models, setModels] = useState([]);
 
     const getModels = async () => {
-
         try
         {
             const response = await getAllModelos(authTokens.access);
@@ -333,9 +332,49 @@ export function SparePartState(props) {
 
     const [openInventoryForm, setOpenInventoryForm] = useState(false);
     const [inventory, setInventory] = useState([]);
+    const [subtitle, setSubtitle] = useState('');
 
+    const getInventory = async () => {
+        setInventory([
+            {
+                id: 1,
+                sucursal: "Sucursal 1",
+                cantidad: 10,
+            },
+            {
+                id: 2,
+                sucursal: "Sucursal 2",
+                cantidad: 20,
+            },
+            {
+                id: 3,
+                sucursal: "Sucursal 3",
+                cantidad: 30,
+            },
+            {
+                id: 4,
+                sucursal: "Sucursal 4",
+                cantidad: 40,
+            },
+            {
+                id: 5,
+                sucursal: "Sucursal 5",
+                cantidad: 50,
+            }])
+    }
 
-    const handleChangeInventory = (id, event) => {
+    const handleOpenInventoryForm = (e, id, name) => {
+        getInventory().then(() => setOpenInventoryForm(true));
+        setSubtitle(name)
+    }
+
+    const handleCloseInventoryForm = () => {
+        setSubtitle('')
+        setInventory([])
+        setOpenInventoryForm(false);
+    }
+
+    const handleInputChangeInventory = (id, event) => {
         const { name, value } = event.target;
 
         setInventory((prevFilas) =>
@@ -345,7 +384,7 @@ export function SparePartState(props) {
         );
     };
 
-    const handleOnSubmitInventory = (event) => {
+    const handleSubmitInventory = (event) => {
         event.preventDefault();
     }
 
@@ -393,7 +432,14 @@ export function SparePartState(props) {
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
-                handleCloseFilter}}>
+                handleCloseFilter,
+                inventory,
+                subtitle,
+                openInventoryForm,
+                handleInputChangeInventory,
+                handleSubmitInventory,
+                handleCloseInventoryForm,
+                handleOpenInventoryForm}}>
             {props.children}
         </SparePartContext.Provider>
     )

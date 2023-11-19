@@ -17,12 +17,11 @@ import {
     TableContainer,
     TablePagination, Box, Snackbar, List, ListItem,
 } from '@mui/material';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import SellIcon from '@mui/icons-material/Sell';
 // components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
@@ -31,7 +30,6 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 // import SparePartDelete from "../sections/@dashboard/vehicle/VehicleDelete";
 // context
 import SparePartContext from "../hooks/sparePart/SparePartContext";
-import Label from "../components/label";
 import AuthContext from "../hooks/auth/AuthContext";
 import SparePartInventoryForm from "../sections/@dashboard/sparePart/InventoryForm";
 
@@ -57,7 +55,8 @@ export default function SparePartPage() {
         handleChangeRowsPerPage,
         filteredSpareParts,
         emptyRows,
-        isNotFound} = useContext(SparePartContext);
+        isNotFound,
+        handleOpenInventoryForm} = useContext(SparePartContext);
 
     const {
         user} = useContext(AuthContext);
@@ -122,7 +121,6 @@ export default function SparePartPage() {
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-
                                                         {user.tipoUsuario !== "Jefe de Taller" &&
                                                             <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                                                                 <EditIcon />
@@ -131,6 +129,11 @@ export default function SparePartPage() {
                                                         {user.tipoUsuario !== "Jefe de Taller" &&
                                                             <IconButton color="error" onClick={(event)=> handleOpenDelete(event, id)}>
                                                                 <DeleteIcon />
+                                                            </IconButton>}
+
+                                                        {user.tipoUsuario !== "Jefe de Taller" &&
+                                                            <IconButton color="primary" onClick={(event)=>handleOpenInventoryForm(event, id, nombre)}>
+                                                                <Inventory2RoundedIcon />
                                                             </IconButton>}
                                                     </div>
                                                 </TableCell>

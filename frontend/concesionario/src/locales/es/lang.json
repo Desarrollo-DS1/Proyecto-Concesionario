@@ -210,7 +210,8 @@
       "tituloSingular": "Repuesto",
       "agregar": "Agregar Repuesto",
       "eliminar": "Eliminar Repuesto",
-      "editar": "Editar Repuesto"
+      "editar": "Editar Repuesto",
+      "inventario": "Inventario"
     },
     "mensaje": {
       "agregado": "Repuesto agregado correctamente",
@@ -229,6 +230,7 @@
       "nombre": "Repuesto",
       "precio": "Precio",
       "modelos": "Modelos",
+      "cantidad": "Cantidad",
       "undefined" : ""
     }
   },
