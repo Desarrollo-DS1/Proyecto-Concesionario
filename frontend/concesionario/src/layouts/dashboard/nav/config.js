@@ -56,7 +56,7 @@ const navConfig = [
       },
       {
         title: 'repuestos',
-        path: '/dashboard/respuestos',
+        path: '/dashboard/repuestos',
         icon: <PlumbingIcon/>,
       },
     ]
