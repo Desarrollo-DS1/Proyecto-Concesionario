@@ -226,6 +226,7 @@
       "precio": "Price",
       "modelos": "Models",
       "cantidad": "Stock",
+      "descripcion": "Description",
       "undefined" : ""
     }
   },

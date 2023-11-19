@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
 import SparePartContext from './SparePartContext';
-import {checkVehicle} from "./SparePartValidation";
+import {checkSparePart} from "./SparePartValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
@@ -31,8 +31,10 @@ export function SparePartState(props) {
     ];
 
     const emptySparePart = {
+        id: "",
         nombre: "",
         precio: "",
+        descripcion: "",
         modelos: [],
     }
     const emptyError = {
@@ -49,6 +51,7 @@ export function SparePartState(props) {
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [models, setModels] = useState([]);
+    const [searchModel, setSearchModel] = useState('');
 
     const getModels = async () => {
         try
@@ -64,6 +67,13 @@ export function SparePartState(props) {
         }
     }
 
+    const handleSearchModel = (event) => {;
+        setSearchModel(event.target.value);
+    };
+
+    const filteredModels = models.filter((option) =>
+        option.nombre.toLowerCase().includes(searchModel.toLowerCase())
+    );
 
     const getSpareParts = async () => {
 
@@ -98,26 +108,36 @@ export function SparePartState(props) {
 
     const getSparePart = async (vin) => {
 
-        if (vin === null)
-        {
-            setEdit(false);
-            setSparePart(emptySparePart);
+        const a = {
+            id: 1,
+            nombre: "Tuerca",
+            precio: "2000",
+            descripcion: "Tuerca para rueda",
+            modelos: [1,2,7,3,4,5],
         }
-        else
-        {
-            setEdit(true);
-            try
-            {
-                const response = await getVehiculo(vin, authTokens.access);
-                setSparePart(response.data);
-            }
-            catch (error)
-            {
-                setTypeSnackbar('error');
-                setMessageSnackbar('vehiculos.mensaje.errorCargando');
-                handleOpenSnackbar();
-            }
-        }
+
+        setSparePart(a);
+
+        // if (vin === null)
+        // {
+        //     setEdit(false);
+        //     setSparePart(emptySparePart);
+        // }
+        // else
+        // {
+        //     setEdit(true);
+        //     try
+        //     {
+        //         const response = await getVehiculo(vin, authTokens.access);
+        //         setSparePart(response.data);
+        //     }
+        //     catch (error)
+        //     {
+        //         setTypeSnackbar('error');
+        //         setMessageSnackbar('vehiculos.mensaje.errorCargando');
+        //         handleOpenSnackbar();
+        //     }
+        // }
     }
 
     const addSparePart = async (vehicle) => {
@@ -218,8 +238,12 @@ export function SparePartState(props) {
             }
         }
     }
-    const handleOnBlur = (event) => {
-        const {name} = event.target;
+    const handleOnBlur = (event, name) => {
+        if (name === undefined || name === null)
+        {
+            const {name} = event.target;
+            validateVehicleOnBlur(sparePart, name);
+        }
         validateVehicleOnBlur(sparePart, name);
     }
 
@@ -235,6 +259,7 @@ export function SparePartState(props) {
         setOpenForm(true)
     };
     const handleCloseForm = () => {
+        setSearchModel('');
         setOpenForm(false);
     };
     const handleOpenDelete = (event, vin) => {
@@ -252,6 +277,12 @@ export function SparePartState(props) {
     const handleOpenSnackbar = () => {
         setOpenSnackbar(true);
     }
+
+    const handleDeleteChip = (id) => {
+        const auxSparePart = {...sparePart, modelos: sparePart.modelos.filter((modelId) => modelId !== id)};
+        setSparePart(auxSparePart);
+        validateVehicleOnBlur(auxSparePart, 'modelos')
+    };
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
@@ -321,13 +352,13 @@ export function SparePartState(props) {
     const validateVehicleOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(sparePartError).forEach((name) => {
-            updatedErrors[name] = checkVehicle(sparePart, name);
+            updatedErrors[name] = checkSparePart(sparePart, name);
         });
         setSparePartError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateVehicleOnBlur = (vehicle, name) => {
-        setSparePartError({...sparePartError, [name]: checkVehicle(vehicle, name)});
+        setSparePartError({...sparePartError, [name]: checkSparePart(vehicle, name)});
     };
 
     const [openInventoryForm, setOpenInventoryForm] = useState(false);
@@ -374,14 +405,18 @@ export function SparePartState(props) {
         setOpenInventoryForm(false);
     }
 
-    const handleInputChangeInventory = (id, event) => {
+    const handleInputChangeInventory = (event, id) => {
         const { name, value } = event.target;
 
-        setInventory((prevFilas) =>
-            prevFilas.map((fila) =>
-                fila.id === id ? { ...fila, [name]: value } : fila
-            )
-        );
+        const isValidNumber = (/^[0-9]+$/.test(value) || value === '') && value !== 'e' && value !== 'E' && value !== '-' && value !== '+';
+
+        if (isValidNumber) {
+            setInventory((prevFilas) =>
+                prevFilas.map((fila) =>
+                    fila.id === id ? { ...fila, [name]: value } : fila
+                )
+            );
+        }
     };
 
     const handleSubmitInventory = (event) => {
@@ -439,7 +474,11 @@ export function SparePartState(props) {
                 handleInputChangeInventory,
                 handleSubmitInventory,
                 handleCloseInventoryForm,
-                handleOpenInventoryForm}}>
+                handleOpenInventoryForm,
+                handleDeleteChip,
+                searchModel,
+                handleSearchModel,
+                filteredModels}}>
             {props.children}
         </SparePartContext.Provider>
     )

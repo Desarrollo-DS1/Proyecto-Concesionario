@@ -1,54 +1,44 @@
-function checkVin(vehicle) {
-    if (vehicle.vin === null || vehicle.vin.trim() === '') {
+function checkNombre(sparePart) {
+    if (sparePart.nombre === null || sparePart.nombre.trim() === '') {
         return "errores.requerido";
     }
-    if (vehicle.vin.length > 17 || vehicle.vin.length < 5)
+    if (sparePart.nombre.length > 50 || sparePart.nombre.length < 2)
     {
         return "errores.longitudMaxMin";
     }
-    if (/[ioq]/i.test(vehicle.vin)) {
-        return "errores.vinCaracteresNoPermitidos";
-    }
     return "";
 }
 
 
-function checkBranch(vehicle) {
-    if (vehicle.sucursal === null || vehicle.sucursal === '') {
+function checkPrecio(sparePart) {
+    const checkPrecio = sparePart.precio.toString();
+    if (checkPrecio === null || checkPrecio.trim() === '') {
+        return "errores.requerido";
+    }
+    if (!checkPrecio.match(/^[0-9]+$/))
+    {
+        return "errores.numerico";
+    }
+    return "";
+}
+
+function checkModels(vehicle) {
+    if (vehicle.modelos.length === 0) {
         return "errores.requerido";
     }
     return "";
 }
 
-function checkModel(vehicle) {
-    if (vehicle.modelo === null || vehicle.modelo === '') {
-        return "errores.requerido";
-    }
-    return "";
-}
 
-function checkColor(vehicle) {
-    if (vehicle.color === null || vehicle.color === '') {
-        return "errores.requerido";
+export function checkSparePart(sparePart, name) {
+    if (name === 'nombre') {
+        return checkNombre(sparePart);
     }
-    return "";
-}
-
-
-export function checkVehicle(vehicle, name) {
-    if (name === 'vin') {
-        return checkVin(vehicle);
+    if (name === 'precio') {
+        return checkPrecio(sparePart);
     }
-    if (name === 'sucursal') {
-        return checkBranch(vehicle);
+    if (name === 'modelos') {
+        return checkModels(sparePart);
     }
-    if (name === 'modelo') {
-        return checkModel(vehicle);
-    }
-    if (name === 'color') {
-        return checkColor(vehicle);
-    }
-
-
     return "";
 }
