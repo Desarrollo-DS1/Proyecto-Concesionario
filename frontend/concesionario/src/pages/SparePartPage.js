@@ -33,6 +33,7 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import SparePartContext from "../hooks/sparePart/SparePartContext";
 import Label from "../components/label";
 import AuthContext from "../hooks/auth/AuthContext";
+import SparePartInventoryForm from "../sections/@dashboard/sparePart/InventoryForm";
 
 // ----------------------------------------------------------------------
 
@@ -83,6 +84,8 @@ export default function SparePartPage() {
                             {t('repuestos.encabezado.tituloSingular')}
                         </Button>}
                 </Stack>
+
+                <SparePartInventoryForm />
 
                 <Card>
                     <ListToolbar context={SparePartContext} name={t('repuestos.encabezado.tituloSingular')} title={'repuestos'}/>

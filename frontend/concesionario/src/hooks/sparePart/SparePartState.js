@@ -331,6 +331,25 @@ export function SparePartState(props) {
         setSparePartError({...sparePartError, [name]: checkVehicle(vehicle, name)});
     };
 
+    const [openInventoryForm, setOpenInventoryForm] = useState(false);
+    const [inventory, setInventory] = useState([]);
+
+
+    const handleChangeInventory = (id, event) => {
+        const { name, value } = event.target;
+
+        setInventory((prevFilas) =>
+            prevFilas.map((fila) =>
+                fila.id === id ? { ...fila, [name]: value } : fila
+            )
+        );
+    };
+
+    const handleOnSubmitInventory = (event) => {
+        event.preventDefault();
+    }
+
+
     return (
         <SparePartContext.Provider value={
             {
