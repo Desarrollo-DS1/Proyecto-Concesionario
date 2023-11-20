@@ -71,7 +71,7 @@ export default function ModelPage() {
                     <Typography variant="h4" gutterBottom>
                         {t('modelos.encabezado.tituloPlural')}
                     </Typography>
-                    <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
+                    <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={handleOpenForm}>
                         {t('modelos.encabezado.tituloSingular')}
                     </Button>
                 </Stack>

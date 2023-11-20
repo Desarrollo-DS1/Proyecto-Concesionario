@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
-import SparePartContext from './SparePartContext';
-import {checkSparePart} from "./SparePartValidation";
+import WorkOrderContext from './WorkOrderContext';
+import {checkSparePart} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
@@ -9,48 +9,73 @@ import { getAllSucursales} from "../../api/Sucursal.api";
 import AuthContext from "../auth/AuthContext";
 
 
-SparePartState.propTypes = {
+WorkOrderState.propTypes = {
     children: propTypes.node,
 }
 
-export function SparePartState(props) {
+export function WorkOrderState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
-        { id: 'id', label: 'id', alignRight: false },
-        { id: 'nombre', label: 'nombre', alignRight: false },
-        { id: 'precio', label: 'precio', alignRight: false },
-        { id: 'modelos', label: 'modelos', alignRight: false },
-        { id: '' },
+        { id: "id", label: "id", alignRight: false },
+        { id: "cedulaCliente", label: "cliente", alignRight: false },
+        { id: "nombreCliente", label: "nombreCliente", alignRight: false },
+        { id: "fechaInicio", label: "fechaInicio", alignRight: false },
+        { id: "fechaEsperada", label: "fechaEsperada", alignRight: false },
+        { id: "modelo", label: "modelo", alignRight: false },
+        { id: "placa", label: "placa", alignRight: false },
+        { id: "estado", label: "estado", alignRight: false },
+        { id: ""}
     ];
 
     const FILTER_OPTIONS = [
-        { id: 'id', label: 'id'},
-        { id: 'nombre', label: 'nombre'},
-        { id: 'precio', label: 'precio'},
+        { id: "id", label: "id"},
+        { id: "cedulaCliente", label: "cliente"},
+        { id: "cedulaVendedor", label: "vendedor"},
+        { id: "fechaInicio", label: "fechaInicio"},
+        { id: "fechaEsperada", label: "fechaEsperada"},
+        { id: "modelo", label: "modelo"},
+        { id: "placa", label: "modelo"},
+        { id: "estado", label: "estado"},
     ];
 
-    const emptySparePart = {
+    const emptyWorkOrder = {
         id: "",
-        nombre: "",
-        precio: "",
-        descripcion: "",
-        modelos: [],
+        cedulaCliente: "",
+        cedulaVendedor: "",
+        modelo: "",
+        fechaInicio: "",
+        fechaEsperada: "",
+        fechaEntrega: "",
+        placa: "",
+        estado: "",
+        servicios: [],
+        repuestos: [],
+        comentario: "",
     }
     const emptyError = {
-        nombre: "",
-        precio: "",
-        modelos: "",
+        id: "",
+        cedulaCliente: "",
+        cedulaVendedor: "",
+        modelo: "",
+        fechaInicio: "",
+        fechaEsperada: "",
+        fechaEntrega: "",
+        placa: "",
+        estado: "",
+        comentario: "",
     }
 
-    const [sparePart, setSparePart] = React.useState(emptySparePart);
-    const [spareParts, setSpareParts] = React.useState([]);
+    const [workOrder, setWorkOrder] = React.useState(emptyWorkOrder);
+    const [workOrders, setWorkOrders] = React.useState([]);
     const [openForm, setOpenForm] = useState(false);
     const [openDelete, setOpenDelete] = useState(false);
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [models, setModels] = useState([]);
+    const [spareParts, setSpareParts] = useState([]);
+    const [services, setServices] = useState([]);
     const [searchModel, setSearchModel] = useState('');
 
     const getModels = async () => {
@@ -67,14 +92,6 @@ export function SparePartState(props) {
         }
     }
 
-    const handleSearchModel = (event) => {;
-        setSearchModel(event.target.value);
-    };
-
-    const filteredModels = models.filter((option) =>
-        option.nombre.toLowerCase().includes(searchModel.toLowerCase())
-    );
-
     const getSpareParts = async () => {
 
         const a = [{
@@ -90,7 +107,7 @@ export function SparePartState(props) {
                 modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
             }]
 
-        setSpareParts(a);
+        setWorkOrders(a);
 
         // try
         // {
@@ -106,7 +123,54 @@ export function SparePartState(props) {
         // }
     }
 
-    const getSparePart = async (id) => {
+    const handleSearchModel = (event) => {;
+        setSearchModel(event.target.value);
+    };
+
+    const filteredModels = models.filter((option) =>
+        option.nombre.toLowerCase().includes(searchModel.toLowerCase())
+    );
+
+    const getWorkOrders = async () => {
+
+        const a = [{
+            id: 1,
+            cedulaCliente: 1110363276,
+            nombreCliente: "Nicolas Herrera",
+            fechaInicio: "2021-10-10",
+            fechaEsperada: "2021-15-10",
+            modelo: "Chevrolet Spark",
+            placa: "ABC123",
+            estado: false,
+        },
+            {
+                id: 2,
+                cedulaCliente: 1110345276,
+                nombreCliente: "Julian Gomez",
+                fechaInicio: "2021-10-10",
+                fechaEsperada: "2021-18-10",
+                modelo: "Chevrolet Rio",
+                placa: "CDE456",
+                estado: true,
+            }]
+
+        setWorkOrders(a);
+
+        // try
+        // {
+        //     const response = await getAllVehiculos(authTokens.access);
+        //     setSpareParts(response.data);
+        //
+        // }
+        // catch (error)
+        // {
+        //     setTypeSnackbar('error');
+        //     setMessageSnackbar('empleados.mensaje.errorListando');
+        //     handleOpenSnackbar();
+        // }
+    }
+
+    const getWorkOrder = async (id) => {
 
         const a = {
             id: 1,
@@ -116,7 +180,7 @@ export function SparePartState(props) {
             modelos: [1,2,7,3,4,5],
         }
 
-        setSparePart(a);
+        setWorkOrder(a);
 
         // if (vin === null)
         // {
@@ -140,12 +204,12 @@ export function SparePartState(props) {
         // }
     }
 
-    const addSparePart = async (sparePart) => {
+    const addWorkOrder = async (workOrder) => {
 
         try
         {
-            const response = await createVehiculo(sparePart, authTokens.access);
-            setSpareParts([...spareParts, response.data]);
+            const response = await createVehiculo(workOrder, authTokens.access);
+            setWorkOrders([...workOrders, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.agregado');
             handleOpenSnackbar();
@@ -159,7 +223,7 @@ export function SparePartState(props) {
             {
                 setTypeSnackbar('error');
                 setMessageSnackbar('vehiculos.mensaje.errorCedula');
-                setSparePartError({...sparePartError, vin: 'Vin ya existe'});
+                setWoekOrderError({...woekOrderError, vin: 'Vin ya existe'});
                 handleOpenSnackbar();
 
             }
@@ -172,11 +236,11 @@ export function SparePartState(props) {
         }
     }
 
-    const updateSparePart = async (sparePart) => {
+    const updateWorkOrder = async (workOrder) => {
 
         try
         {
-            await updateVehiculo(sparePart.vin, sparePart, authTokens.access);
+            await updateVehiculo(workOrder.vin, workOrder, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.editado');
             handleOpenSnackbar();
@@ -190,11 +254,11 @@ export function SparePartState(props) {
         }
     }
 
-    const deleteSparePart = async (sparePart) => {
+    const deleteWorkOrder = async (workOrder) => {
 
         try
         {
-            await deleteVehiculo(sparePart.vin, authTokens.access);
+            await deleteVehiculo(workOrder.vin, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('vehiculos.mensaje.eliminado');
             handleOpenSnackbar();
@@ -220,21 +284,21 @@ export function SparePartState(props) {
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
-        setSparePart({
-            ...sparePart,
+        setWorkOrder({
+            ...workOrder,
             [name]: value
         });
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (!validateSparePartOnSubmit()) {
+        if (!validateWorkOrderOnSubmit()) {
             if(edit)
             {
-                updateSparePart(sparePart).then(() => getSpareParts());
+                updateWorkOrder(workOrder).then(() => getWorkOrders());
             }
             else
             {
-                addSparePart(sparePart).then(() => getSpareParts());
+                addWorkOrder(workOrder).then(() => getWorkOrders());
             }
         }
     }
@@ -242,20 +306,20 @@ export function SparePartState(props) {
         if (name === undefined || name === null)
         {
             const {name} = event.target;
-            validateSparePartOnBlur(sparePart, name);
+            validateWorkOrderOnBlur(workOrder, name);
         }
-        validateSparePartOnBlur(sparePart, name);
+        validateWorkOrderOnBlur(workOrder, name);
     }
 
     const handleDelete = (event) => {
         event.preventDefault();
-        deleteSparePart(sparePart).then(() => getSpareParts());
+        deleteWorkOrder(workOrder).then(() => getWorkOrders());
         handleCloseDelete();
     }
     const handleOpenForm = async (event, vin) => {
-        getSparePartError();
+        getWorkOrderError();
         await getModels();
-        await getSparePart(vin);
+        await getWorkOrder(vin);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
@@ -263,7 +327,7 @@ export function SparePartState(props) {
         setOpenForm(false);
     };
     const handleOpenDelete = (event, vin) => {
-        getSparePart(vin).then(() => setOpenDelete(true));
+        getWorkOrder(vin).then(() => setOpenDelete(true));
     }
     const handleCloseDelete = () => {
         setOpenDelete(false);
@@ -279,9 +343,9 @@ export function SparePartState(props) {
     }
 
     const handleDeleteChip = (id) => {
-        const auxSparePart = {...sparePart, modelos: sparePart.modelos.filter((modelId) => modelId !== id)};
-        setSparePart(auxSparePart);
-        validateSparePartOnBlur(auxSparePart, 'modelos')
+        const auxSparePart = {...workOrder, modelos: workOrder.modelos.filter((modelId) => modelId !== id)};
+        setWorkOrder(auxSparePart);
+        validateWorkOrderOnBlur(auxSparePart, 'modelos')
     };
 
     const [filterName, setFilterName] = useState('');
@@ -324,7 +388,7 @@ export function SparePartState(props) {
     };
 
     const [openFilter, setOpenFilter] = React.useState(null);
-    const [filterField, setFilterField] = React.useState('nombre');
+    const [filterField, setFilterField] = React.useState('id');
 
     const handleOpenFilter = (event) => {
         setOpenFilter(event.currentTarget);
@@ -339,34 +403,34 @@ export function SparePartState(props) {
         handleCloseFilter();
     }
 
-    const filteredSpareParts = applySortFilter(spareParts, getComparator(order, orderBy), filterName, filterField);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - spareParts.length) : 0;
-    const isNotFound = !filteredSpareParts.length && !!filterName;
+    const filteredWorkOrders = applySortFilter(workOrders, getComparator(order, orderBy), filterName, filterField);
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - workOrders.length) : 0;
+    const isNotFound = !filteredWorkOrders.length && !!filterName;
 
-    const [sparePartError, setSparePartError] = React.useState(emptyError);
+    const [woekOrderError, setWoekOrderError] = React.useState(emptyError);
 
-    const getSparePartError = () => {
-        setSparePartError(emptyError)
+    const getWorkOrderError = () => {
+        setWoekOrderError(emptyError)
     }
 
-    const validateSparePartOnSubmit = () => {
+    const validateWorkOrderOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(sparePartError).forEach((name) => {
-            updatedErrors[name] = checkSparePart(sparePart, name);
+        Object.keys(woekOrderError).forEach((name) => {
+            updatedErrors[name] = checkSparePart(workOrder, name);
         });
-        setSparePartError(updatedErrors);
+        setWoekOrderError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
-    const validateSparePartOnBlur = (sparePart, name) => {
-        setSparePartError({...sparePartError, [name]: checkSparePart(sparePart, name)});
+    const validateWorkOrderOnBlur = (workOrder, name) => {
+        setWoekOrderError({...woekOrderError, [name]: checkSparePart(workOrder, name)});
     };
 
-    const [openInventoryForm, setOpenInventoryForm] = useState(false);
-    const [inventory, setInventory] = useState([]);
+    const [openServiceForm, setOpenServiceForm] = useState(false);
+    const [service, setService] = useState([]);
     const [subtitle, setSubtitle] = useState('');
 
-    const getInventory = async () => {
-        setInventory([
+    const getService = async () => {
+        setService([
             {
                 id: 1,
                 sucursal: "Sucursal 1",
@@ -394,24 +458,24 @@ export function SparePartState(props) {
             }])
     }
 
-    const handleOpenInventoryForm = (e, id, name) => {
-        getInventory().then(() => setOpenInventoryForm(true));
+    const handleOpenServiceForm = (e, id, name) => {
+        getService().then(() => setOpenServiceForm(true));
         setSubtitle(name)
     }
 
-    const handleCloseInventoryForm = () => {
+    const handleCloseServiceForm = () => {
         setSubtitle('')
-        setInventory([])
-        setOpenInventoryForm(false);
+        setService([])
+        setOpenServiceForm(false);
     }
 
-    const handleInputChangeInventory = (event, id) => {
+    const handleInputChangeService = (event, id) => {
         const { name, value } = event.target;
 
         const isValidNumber = (/^[0-9]+$/.test(value) || value === '') && value !== 'e' && value !== 'E' && value !== '-' && value !== '+';
 
         if (isValidNumber) {
-            setInventory((prevFilas) =>
+            setService((prevFilas) =>
                 prevFilas.map((fila) =>
                     fila.id === id ? { ...fila, [name]: value } : fila
                 )
@@ -419,18 +483,18 @@ export function SparePartState(props) {
         }
     };
 
-    const handleSubmitInventory = (event) => {
+    const handleSubmitService = (event) => {
         event.preventDefault();
     }
 
 
     return (
-        <SparePartContext.Provider value={
+        <WorkOrderContext.Provider value={
             {
                 TABLE_HEAD,
                 FILTER_OPTIONS,
-                sparePart,
-                spareParts,
+                workOrder,
+                workOrders,
                 models,
                 openForm,
                 edit,
@@ -438,7 +502,7 @@ export function SparePartState(props) {
                 messageSnackbar,
                 typeSnackbar,
                 openDelete,
-                getSpareParts,
+                getWorkOrders,
                 handleInputChange,
                 handleSubmit,
                 handleDelete,
@@ -454,7 +518,7 @@ export function SparePartState(props) {
                 page,
                 rowsPerPage,
                 selected,
-                filteredSpareParts,
+                filteredWorkOrders,
                 emptyRows,
                 isNotFound,
                 handleRequestSort,
@@ -462,25 +526,25 @@ export function SparePartState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                sparePartError,
+                woekOrderError,
                 filterField,
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
                 handleCloseFilter,
-                inventory,
+                service,
                 subtitle,
-                openInventoryForm,
-                handleInputChangeInventory,
-                handleSubmitInventory,
-                handleCloseInventoryForm,
-                handleOpenInventoryForm,
+                openServiceForm,
+                handleInputChangeService,
+                handleSubmitService,
+                handleCloseServiceForm,
+                handleOpenServiceForm,
                 handleDeleteChip,
                 searchModel,
                 handleSearchModel,
                 filteredModels}}>
             {props.children}
-        </SparePartContext.Provider>
+        </WorkOrderContext.Provider>
     )
 }
 

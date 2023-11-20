@@ -71,7 +71,7 @@ export default function EmployeePage() {
                     <Typography variant="h4" gutterBottom>
                         {t('empleados.encabezado.tituloPlural')}
                     </Typography>
-                    <Button id={'agregar-empleado'} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                    <Button sx={{textTransform: "none"}} id={'agregar-empleado'} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                         {t('empleados.encabezado.tituloSingular')}
                     </Button>
                 </Stack>

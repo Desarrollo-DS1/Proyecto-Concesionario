@@ -79,7 +79,7 @@ export default function SparePartPage() {
                         {t('repuestos.encabezado.tituloPlural')}
                     </Typography>
                     {user.tipoUsuario !== "Vendedor" &&
-                        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                        <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
                             {t('repuestos.encabezado.tituloSingular')}
                         </Button>}
                 </Stack>

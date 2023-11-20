@@ -231,6 +231,50 @@
     }
   },
 
+  "ordenesTrabajo": {
+    "encabezado": {
+      "tituloPlural": "Work Orders",
+      "tituloSingular": "Work Order",
+      "agregar": "Add Work Order",
+      "eliminar": "Delete Work Order",
+      "editar": "Edit Work Order",
+      "servicios": "Services"
+    },
+    "mensaje": {
+      "agregado": "Work order added successfully",
+      "editado": "Work order edited successfully",
+      "eliminado": "Work order deleted successfully",
+      "error": "Error adding work order",
+      "errorEditar": "Error editing work order",
+      "errorEliminar": "Error deleting work order",
+      "confirmacionEliminar": "Are you sure you want to delete the work order with ID {{id}}?",
+      "errorPlaca": "There is already an active work order with the entered plate",
+      "errorListando": "Error listing work orders",
+      "errorCargando": "Error loading work order"
+    },
+    "label": {
+      "id": "ID",
+      "nombreCliente": "Name",
+      "nombreVendedor": "Name",
+      "cliente": "Client",
+      "vendedor": "Seller",
+      "fechaInicio": "Start Date",
+      "fechaEsperada": "Expected Date",
+      "fechaEntrega": "Delivery Date",
+      "modelo": "Model",
+      "placa": "Plate",
+      "servicios": "Services",
+      "repuestos": "Spare Parts",
+      "estado": "Status",
+      "undefined": ""
+    },
+    "estado": {
+      "taller": "Workshop",
+      "entregado": "Delivered",
+      "atrazado": "Delayed"
+    }
+  },
+
   "vehiculos": {
     "encabezado": {
       "tituloPlural": "Vehicles",
