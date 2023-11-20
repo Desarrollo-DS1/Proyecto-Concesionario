@@ -222,8 +222,8 @@
       "errorEliminar": "Error al eliminar repuesto",
       "confirmacionEliminar": "¿Estas seguro que deseas eliminar el repuesto de nombre {{nombre}}?",
       "errorNombre": "Ya existe un repuesto con el nombre ingresado",
-      "errorListando": "Error al listar nombres",
-      "errorCargando": "Error al cargar nombre"
+      "errorListando": "Error al listar repuestos",
+      "errorCargando": "Error al cargar repuesto"
     },
     "label": {
       "id": "ID",
@@ -233,6 +233,50 @@
       "cantidad": "Cantidad",
       "descripcion": "Descripcion",
       "undefined" : ""
+    }
+  },
+
+  "ordenesTrabajo": {
+    "encabezado": {
+      "tituloPlural": "Ordenes de Trabajo",
+      "tituloSingular": "Orden de Trabajo",
+      "agregar": "Agregar Orden de Trabajo",
+      "eliminar": "Eliminar Orden de Trabajo",
+      "editar": "Editar Orden de Trabajo",
+      "servicios": "Servicios"
+    },
+    "mensaje": {
+      "agregado": "Orden de trabajo agregado correctamente",
+      "editado": "Orden de trabajo editado correctamente",
+      "eliminado": "Orden de trabajo eliminado correctamente",
+      "error": "Error al agregar orden de trabajo",
+      "errorEditar": "Error al editar orden de trabajo",
+      "errorEliminar": "Error al eliminar orden de trabajo",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo de id {{id}}?",
+      "errorPlaca": "Ya existe una orden de trabajo activa con la placa ingresada",
+      "errorListando": "Error al listar ordenes de trabajo",
+      "errorCargando": "Error al cargar orden de trabajo"
+    },
+    "label": {
+      "id": "ID",
+      "nombreCliente": "Nombre",
+      "nombreVendedor": "Nombre",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fechaInicio": "Fecha de inicio",
+      "fechaEsperada": "Fecha esperada",
+      "fechaEntrega": "Fecha de entrega",
+      "modelo": "Modelo",
+      "placa": "Placa",
+      "servicios": "Servicios",
+      "repuestos": "Repuestos",
+      "estado": "Estado",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "En Taller",
+      "entregado": "Entregado",
+      "atrazado": "Atrazado"
     }
   },
 

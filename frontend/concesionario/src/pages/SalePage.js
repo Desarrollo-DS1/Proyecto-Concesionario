@@ -73,7 +73,7 @@ export default function SalePage() {
         <Typography variant="h4" gutterBottom>
             {t('ventas.encabezado.tituloPlural')}
         </Typography>
-        <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
+        <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
             {t('ventas.encabezado.tituloSingular')}
         </Button>
         </Stack>

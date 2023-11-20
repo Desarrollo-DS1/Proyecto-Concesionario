@@ -77,7 +77,7 @@ export default function CustomerPage() {
           <Typography variant="h4" gutterBottom>
             {t('clientes.encabezado.tituloPlural')}
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
+          <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
             {t('clientes.encabezado.tituloSingular')}
           </Button>
         </Stack>

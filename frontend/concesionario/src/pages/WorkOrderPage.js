@@ -15,35 +15,38 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, Snackbar,
+    TablePagination, Box, Snackbar, List, ListItem,
 } from '@mui/material';
-import InventoryIcon from '@mui/icons-material/Inventory';
-import SellIcon from '@mui/icons-material/Sell';
 // components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Iconify from '../components/iconify';
+import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
+import HomeRepairServiceRoundedIcon from '@mui/icons-material/HomeRepairServiceRounded';
+import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousServicesRounded';
 import Scrollbar from '../components/scrollbar';
+import Iconify from '../components/iconify';
+import Label from "../components/label";
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import VehicleForm from "../sections/@dashboard/vehicle/VehicleForm";
-import VehicleDelete from "../sections/@dashboard/vehicle/VehicleDelete";
+// import ServiceWorkOrderForm from "../sections/@dashboard/workOrder/ServiceWorkOrderForm";
+// import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
+// import WorkOrderDelete from "../sections/@dashboard/workOrder/WorkOrderDelete";
 // context
-import VehicleContext from "../hooks/vehicle/VehicleContext";
-import Label from "../components/label";
+import WorkOrderContext from "../hooks/workOrder/WorkOrderContext";
 import AuthContext from "../hooks/auth/AuthContext";
+
 
 // ----------------------------------------------------------------------
 
-export default function VehiclePage() {
+export default function WorkOrderPage() {
 
     const {
-        vehicles,
+        workOrders,
         openSnackbar,
         messageSnackbar,
         typeSnackbar,
-        getVehicles,
+        getWorkOrders,
         handleOpenForm,
         handleOpenDelete,
         handleCloseSnackbar,
@@ -54,15 +57,16 @@ export default function VehiclePage() {
         handleClick,
         handleChangePage,
         handleChangeRowsPerPage,
-        filteredVehicles,
+        filteredWorkOrders,
         emptyRows,
-        isNotFound} = useContext(VehicleContext);
+        isNotFound,
+        handleOpenInventoryForm} = useContext(WorkOrderContext);
 
     const {
         user} = useContext(AuthContext);
 
     useEffect(() => {
-         getVehicles();
+        getWorkOrders();
     }, []);
 
     const { t } = useTranslation("lang");
@@ -70,80 +74,70 @@ export default function VehiclePage() {
     return (
         <>
             <Helmet>
-                <title>{t('vehiculos.encabezado.tituloPlural')}</title>
+                <title>{t('ordenesTrabajo.encabezado.tituloPlural')}</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        {t('vehiculos.encabezado.tituloPlural')}
+                        {t('ordenesTrabajo.encabezado.tituloPlural')}
                     </Typography>
-                    {user.tipoUsuario !== "Vendedor" &&
-                        <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
-                            {t('vehiculos.encabezado.tituloSingular')}
-                        </Button>}
+                    <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=> handleOpenForm(event, null)}>
+                        {t('ordenesTrabajo.encabezado.tituloSingular')}
+                    </Button>
                 </Stack>
 
-                <VehicleForm />
-
-                <VehicleDelete />
-
                 <Card>
-                    <ListToolbar context={VehicleContext} name={t('vehiculos.encabezado.tituloSingular')} title={'vehiculos'}/>
+                    <ListToolbar context={WorkOrderContext} name={t('ordenesTrabajo.encabezado.tituloSingular')} title={'ordenesTrabajo'}/>
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={VehicleContext} name={'vehiculos'}/>
+                                <ListHead context={WorkOrderContext} name={'ordenesTrabajo'}/>
                                 <TableBody>
-                                    {filteredVehicles.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const { vin, nombreModelo, nombreSucursal, nombreColor, disponibleVenta, hexadecimalColor} = row;
-                                        const selectedVehicle = selected.indexOf(vin) !== -1;
+                                    {filteredWorkOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                                        const {id, cedulaCliente, nombreCliente, fechaInicio, fechaEsperada, modelo, placa, estado} = row;
+                                        const selectedWorkOrder = selected.indexOf(id) !== -1;
 
                                         return (
-                                            <TableRow hover key={vin} tabIndex={-1} role="checkbox" selected={selectedVehicle}>
+                                            <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedWorkOrder}>
                                                 <TableCell padding="checkbox">
-                                                    <Checkbox checked={selectedVehicle} onChange={(event) => handleClick(event, vin)} />
+                                                    <Checkbox checked={selectedWorkOrder} onChange={(event) => handleClick(event, id)} />
                                                 </TableCell>
 
-                                                <TableCell align="left">{vin}</TableCell>
+                                                <TableCell align="left">{id}</TableCell>
 
-                                                <TableCell align="left">{nombreModelo}</TableCell>
+                                                <TableCell align="left">{cedulaCliente}</TableCell>
 
-                                                <TableCell align="left">{nombreSucursal}</TableCell>
+                                                <TableCell align="left">{nombreCliente}</TableCell>
+
+                                                <TableCell align="left">{fechaInicio}</TableCell>
+
+                                                <TableCell align="left">{fechaEsperada}</TableCell>
+
+                                                <TableCell align="left">{modelo}</TableCell>
+
+                                                <TableCell align="left">{placa}</TableCell>
 
                                                 <TableCell align="left">
-                                                    <Stack direction={"row"}>
-                                                        <div
-                                                            style={{
-                                                                width: '20px',
-                                                                height: '20px',
-                                                                backgroundColor: hexadecimalColor,
-                                                                display: 'flex',
-                                                                justifyContent: 'center',
-                                                                alignItems: 'center',
-                                                                borderRadius: '30%',
-                                                                marginRight: '10px',
-                                                                border: '1px solid #E6E6E6'
-                                                            }}
-                                                        />
-                                                        {t(`colores.${nombreColor}`)}
-                                                    </Stack>
+                                                    <Label
+                                                        startIcon={estado ? <DoneRoundedIcon /> : <MiscellaneousServicesRoundedIcon/> }
+                                                        color={estado ? 'success' : 'warning'}
+                                                    >
+                                                        {estado ? t('ordenesTrabajo.estado.entregado') : t('ordenesTrabajo.estado.taller')}
+                                                    </Label>
                                                 </TableCell>
-
-                                                <TableCell align="left"><Label startIcon={disponibleVenta ? <InventoryIcon /> : <SellIcon/> } color={disponibleVenta ? 'success' : 'error'}>{disponibleVenta ? t('vehiculos.disponible.enStock') : t('vehiculos.disponible.vendido')}</Label></TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-
-                                                        {user.tipoUsuario !== "Vendedor" &&
-                                                            <IconButton disabled={!disponibleVenta} color="inherit" onClick={(event)=>handleOpenForm(event, vin)}>
-                                                                <EditIcon />
-                                                            </IconButton>}
-
-                                                        {user.tipoUsuario !== "Vendedor" &&
-                                                            <IconButton disabled={!disponibleVenta} color="error" onClick={(event)=> handleOpenDelete(event, vin)}>
-                                                                <DeleteIcon />
-                                                            </IconButton>}
+                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                                                            <EditIcon />
+                                                        </IconButton>
+                                                        <IconButton disabled={!estado} color="error" onClick={(event)=> handleOpenDelete(event, id)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                        <IconButton color="primary" onClick={(event)=>handleOpenInventoryForm(event, id, id)}>
+                                                            <HomeRepairServiceRoundedIcon />
+                                                        </IconButton>
                                                     </div>
                                                 </TableCell>
 
@@ -187,7 +181,7 @@ export default function VehiclePage() {
                     <TablePagination
                         rowsPerPageOptions={[5, 10, 25]}
                         component="div"
-                        count={vehicles.length}
+                        count={workOrders.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

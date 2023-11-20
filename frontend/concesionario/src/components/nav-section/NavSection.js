@@ -61,7 +61,7 @@ function NavItem({ item }) {
 
       <StyledNavItemIcon>{icon && icon}</StyledNavItemIcon>
 
-      <ListItemText disableTypography primary={t(`general.barraNavegacion.${title}`)} />
+      <ListItemText sx={{textTransform: "none"}} disableTypography primary={t(`general.barraNavegacion.${title}`)} />
 
       {info && info}
     </StyledNavItem>

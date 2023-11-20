@@ -226,6 +226,50 @@
     }
   },
 
+  "ordenesTrabajo": {
+    "encabezado": {
+      "tituloPlural": "Ordens de Serviço",
+      "tituloSingular": "Ordem de Serviço",
+      "agregar": "Adicionar Ordem de Serviço",
+      "eliminar": "Excluir Ordem de Serviço",
+      "editar": "Editar Ordem de Serviço",
+      "servicios": "Serviços"
+    },
+    "mensaje": {
+      "agregado": "Ordem de serviço adicionada com sucesso",
+      "editado": "Ordem de serviço editada com sucesso",
+      "eliminado": "Ordem de serviço excluída com sucesso",
+      "error": "Erro ao adicionar ordem de serviço",
+      "errorEditar": "Erro ao editar ordem de serviço",
+      "errorEliminar": "Erro ao excluir ordem de serviço",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir a ordem de serviço com ID {{id}}?",
+      "errorPlaca": "Já existe uma ordem de serviço ativa com a placa informada",
+      "errorListando": "Erro ao listar ordens de serviço",
+      "errorCargando": "Erro ao carregar ordem de serviço"
+    },
+    "label": {
+      "id": "ID",
+      "nombreCliente": "Nome",
+      "nombreVendedor": "Nome",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fechaInicio": "Data de Início",
+      "fechaEsperada": "Data Esperada",
+      "fechaEntrega": "Data de Entrega",
+      "modelo": "Modelo",
+      "placa": "Placa",
+      "servicios": "Serviços",
+      "repuestos": "Peças de Reposição",
+      "estado": "Estado",
+      "undefined": ""
+    },
+    "estado": {
+      "taller": "Oficina",
+      "entregado": "Entregue",
+      "atrazado": "Atrasado"
+    }
+  },
+
   "vehiculos": {
     "encabezado": {
       "tituloPlural": "Veículos",
