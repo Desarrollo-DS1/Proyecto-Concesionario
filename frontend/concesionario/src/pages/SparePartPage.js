@@ -26,13 +26,12 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-// import SparePartForm from "../sections/@dashboard/vehicle/VehicleForm";
-// import SparePartDelete from "../sections/@dashboard/vehicle/VehicleDelete";
+import SparePartInventoryForm from "../sections/@dashboard/sparePart/InventoryForm";
+import SparePartForm from "../sections/@dashboard/sparePart/SparePartForm";
+import SparePartDelete from "../sections/@dashboard/sparePart/SparePartDelete";
 // context
 import SparePartContext from "../hooks/sparePart/SparePartContext";
 import AuthContext from "../hooks/auth/AuthContext";
-import SparePartInventoryForm from "../sections/@dashboard/sparePart/InventoryForm";
-import SparePartForm from "../sections/@dashboard/sparePart/SparePartForm";
 
 // ----------------------------------------------------------------------
 
@@ -86,6 +85,8 @@ export default function SparePartPage() {
                 </Stack>
 
                 <SparePartForm />
+
+                <SparePartDelete />
 
                 <SparePartInventoryForm />
 
