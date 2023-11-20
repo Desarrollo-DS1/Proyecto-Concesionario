@@ -15,7 +15,7 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, Snackbar, List, ListItem,
+    TablePagination, Box, Snackbar, List, ListItem, Chip,
 } from '@mui/material';
 // components
 import Alert from '@mui/material/Alert';
@@ -27,6 +27,7 @@ import MiscellaneousServicesRoundedIcon from '@mui/icons-material/MiscellaneousS
 import Scrollbar from '../components/scrollbar';
 import Iconify from '../components/iconify';
 import Label from "../components/label";
+import LabelPlate from "../components/label-plate";
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 // import ServiceWorkOrderForm from "../sections/@dashboard/workOrder/ServiceWorkOrderForm";
@@ -35,7 +36,6 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 // context
 import WorkOrderContext from "../hooks/workOrder/WorkOrderContext";
 import AuthContext from "../hooks/auth/AuthContext";
-
 
 // ----------------------------------------------------------------------
 
@@ -116,7 +116,7 @@ export default function WorkOrderPage() {
 
                                                 <TableCell align="left">{modelo}</TableCell>
 
-                                                <TableCell align="left">{placa}</TableCell>
+                                                <TableCell align="left"><LabelPlate plate={placa} /></TableCell>
 
                                                 <TableCell align="left">
                                                     <Label
