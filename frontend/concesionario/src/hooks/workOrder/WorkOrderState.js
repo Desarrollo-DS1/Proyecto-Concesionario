@@ -247,22 +247,52 @@ export function WorkOrderState(props) {
             setActivateSparePart(false)
             setEdit(true);
 
-            const a = {
-                id: 1,
-                cedulaCliente: "1110363276",
-                nombreCliente: "Nicolas Herrera",
-                fechaInicio: "2021-10-10",
-                fechaEsperada: "2021-10-15",
-                modelo: "1",
-                placa: "ABC123",
-                estado: false,
-                servicios: [1,2],
-                repuestos: [3,4],
-                comentario: "Comentario de prueba",
+            if (id === 1)
+            {
+                const a = {
+                    id: 1,
+                    cedulaJefeTaller: "100000000",
+                    cedulaCliente: "1110363276",
+                    nombreCliente: "Nicolas Herrera",
+                    fechaInicio: "2021-10-10",
+                    fechaEsperada: "2021-10-15",
+                    modelo: "1",
+                    placa: "ABC123",
+                    estado: false,
+                    servicios: [1,2],
+                    repuestos: [3,4],
+                    comentario: "Comentario de prueba",
+
+
+                }
+                getSpareParts(a.modelo);
+                setWorkOrder(a);
+            }
+            else
+            {
+                const a = {
+                    id: 1,
+                    cedulaJefeTaller: "100000000",
+                    cedulaCliente: "1110363276",
+                    nombreCliente: "Nicolas Herrera",
+                    fechaInicio: "2021-10-10",
+                    fechaEsperada: "2021-10-15",
+                    modelo: "1",
+                    placa: "ABC123",
+                    estado: true,
+                    servicios: [1,2],
+                    repuestos: [3,4],
+                    comentario: "Comentario de prueba",
+
+
+                }
+                getSpareParts(a.modelo);
+                setWorkOrder(a);
+
             }
 
-            getSpareParts(a.modelo);
-            setWorkOrder(a);
+
+
         }
 
 
@@ -535,32 +565,24 @@ export function WorkOrderState(props) {
         setService([
             {
                 id: 1,
-                sucursal: "Sucursal 1",
-                cantidad: 10,
+                servicio: "Reparacion motor",
+                estado: true,
             },
             {
                 id: 2,
-                sucursal: "Sucursal 2",
-                cantidad: 20,
+                servicio: "Reparacion parabrisas",
+                estado: true,
             },
             {
                 id: 3,
-                sucursal: "Sucursal 3",
-                cantidad: 30,
-            },
-            {
-                id: 4,
-                sucursal: "Sucursal 4",
-                cantidad: 40,
-            },
-            {
-                id: 5,
-                sucursal: "Sucursal 5",
-                cantidad: 50,
-            }])
+                servicio: "Reparacion llantas",
+                estado: false,
+            }
+            ])
     }
 
     const handleOpenServiceForm = (e, id, name) => {
+        getWorkOrder(id)
         getService().then(() => setOpenServiceForm(true));
         setSubtitle(name)
     }
@@ -572,17 +594,13 @@ export function WorkOrderState(props) {
     }
 
     const handleInputChangeService = (event, id) => {
-        const { name, value } = event.target;
+        const { checked } = event.target;
 
-        const isValidNumber = (/^[0-9]+$/.test(value) || value === '') && value !== 'e' && value !== 'E' && value !== '-' && value !== '+';
-
-        if (isValidNumber) {
-            setService((prevFilas) =>
-                prevFilas.map((fila) =>
-                    fila.id === id ? { ...fila, [name]: value } : fila
-                )
-            );
-        }
+        setService((prevFilas) =>
+            prevFilas.map((fila) =>
+                fila.id === id ? { ...fila, estado: checked } : fila
+            )
+        );
     };
 
     const handleSubmitService = (event) => {

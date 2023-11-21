@@ -103,8 +103,6 @@ export default function WorkOrderForm() {
         ...(isSmallScreen ? {} : {scrollBarStyle}),
     };
 
-    console.log(workOrder)
-
     const textFieldStyle = { minHeight: "5rem" };
 
     const { t } = useTranslation("lang");
