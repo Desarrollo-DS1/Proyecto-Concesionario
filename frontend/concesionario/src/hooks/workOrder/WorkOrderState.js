@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
 import WorkOrderContext from './WorkOrderContext';
-import {checkSparePart} from "./WorkOrderValidation";
+import {checkWorkOrder} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
@@ -35,7 +35,7 @@ export function WorkOrderState(props) {
         { id: "fechaInicio", label: "fechaInicio"},
         { id: "fechaEsperada", label: "fechaEsperada"},
         { id: "modelo", label: "modelo"},
-        { id: "placa", label: "modelo"},
+        { id: "placa", label: "placa"},
         { id: "estado", label: "estado"},
     ];
 
@@ -249,10 +249,10 @@ export function WorkOrderState(props) {
 
             const a = {
                 id: 1,
-                cedulaCliente: 1110363276,
+                cedulaCliente: "1110363276",
                 nombreCliente: "Nicolas Herrera",
                 fechaInicio: "2021-10-10",
-                fechaEsperada: "2021-15-10",
+                fechaEsperada: "2021-10-15",
                 modelo: "1",
                 placa: "ABC123",
                 estado: false,
@@ -518,13 +518,13 @@ export function WorkOrderState(props) {
     const validateWorkOrderOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(workOrderError).forEach((name) => {
-            updatedErrors[name] = checkSparePart(workOrder, name);
+            updatedErrors[name] = checkWorkOrder(workOrder, name);
         });
         setWorkOrderError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateWorkOrderOnBlur = (workOrder, name) => {
-        setWorkOrderError({...workOrderError, [name]: checkSparePart(workOrder, name)});
+        setWorkOrderError({...workOrderError, [name]: checkWorkOrder(workOrder, name)});
     };
 
     const [openServiceForm, setOpenServiceForm] = useState(false);

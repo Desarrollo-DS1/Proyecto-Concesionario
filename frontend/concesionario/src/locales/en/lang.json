@@ -326,6 +326,7 @@
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
     "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
+    "placa": "Enter a valid plate",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",

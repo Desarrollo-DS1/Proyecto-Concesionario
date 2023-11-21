@@ -321,6 +321,7 @@
     "correo": "Insira um endereço de e-mail válido",
     "fecha": "Insira uma data válida",
     "vinCaracteresNoPermitidos": "Os caracteres I, O, Q não são permitidos",
+    "placa": "Insira uma placa válida",
     "contraseña": {
       "numerico": "Deve conter pelo menos um número",
       "minuscula": "Deve conter pelo menos uma letra minúscula",

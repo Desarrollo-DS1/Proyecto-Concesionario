@@ -166,8 +166,9 @@ export default function WorkOrderForm() {
                           onChange={handleInputChange}
                           onBlur={(event) => handleOnBlur(event, "placa")}
                           label={t("ordenesTrabajo.label.placa")} variant="outlined"
-                          helperText={t(workOrderError.cedulaCliente)}
+                          helperText={t(workOrderError.placa, {exacto: 6})}
                           style={textFieldStyle}
+                          inputProps={{style: {textTransform: 'uppercase'}}}
                       />
                   </Grid>
                   <Grid item xs={12} sm={6}>
@@ -180,7 +181,7 @@ export default function WorkOrderForm() {
                           name={"modelo"}
                           value={workOrder.modelo}
                           onChange={handleInputChangeModel}
-                          onBlur={handleOnBlur}
+                          onBlur={(event) => handleOnBlur(event, "modelo")}
                           label={t("ordenesTrabajo.label.modelo")} variant="outlined"
                           helperText={t(workOrderError.modelo)}
                           style={textFieldStyle}
@@ -222,7 +223,7 @@ export default function WorkOrderForm() {
                           name={"fechaEsperada"}
                           value={workOrder.fechaEsperada}
                           onChange={handleInputChange}
-                          onBlur={handleOnBlur}
+                          onBlur={(event) => handleOnBlur(event, "fechaEsperada")}
                           label={t("ordenesTrabajo.label.fechaEsperada")} variant="outlined"
                           helperText={t(workOrderError.fechaEsperada)}
                           style={textFieldStyle}
