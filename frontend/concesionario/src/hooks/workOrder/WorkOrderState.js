@@ -119,6 +119,11 @@ export function WorkOrderState(props) {
         else
         {
             const a = [{
+                id: 1,
+                nombre: "Tuerca",
+                precio: "2000",
+                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
+            },{
                 id: 4,
                 nombre: "Llanta",
                 precio: "2000",
@@ -364,12 +369,11 @@ export function WorkOrderState(props) {
 
     const handleInputChangeModel = (event) => {
 
-        setSpareParts([]);
-
         const { value } = event.target;
         setWorkOrder({
             ...workOrder,
-            modelo: value
+            modelo: value,
+            repuestos: []
         });
 
         getSpareParts(value);
@@ -442,7 +446,7 @@ export function WorkOrderState(props) {
     const handleDeleteChip = (id, name) => {
         const auxSparePart = {...workOrder, [name]: workOrder[name].filter((modelId) => modelId !== id)};
         setWorkOrder(auxSparePart);
-        validateWorkOrderOnBlur(auxSparePart, 'modelos')
+        validateWorkOrderOnBlur(auxSparePart, name)
     };
 
 

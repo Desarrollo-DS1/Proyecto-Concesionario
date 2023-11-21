@@ -292,7 +292,7 @@ export default function WorkOrderForm() {
                               error={workOrderError.repuestos !== ""}
                               disabled={activateSparePart}
 
-                              renderValue={(selected) => ( !activateSparePart &&
+                              renderValue={(selected) => (
                                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, maxHeight: '100px', overflowY: 'auto', ...scrollBarStyle}}>
                                       {selected.map((id) => {
                                           const selectedSparePart = spareParts.find((sparePart) => sparePart.id === id);
