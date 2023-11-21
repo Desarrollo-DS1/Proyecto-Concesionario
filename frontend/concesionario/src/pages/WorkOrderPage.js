@@ -36,6 +36,7 @@ import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
 // context
 import WorkOrderContext from "../hooks/workOrder/WorkOrderContext";
 import AuthContext from "../hooks/auth/AuthContext";
+import WorkOrderDelete from "../sections/@dashboard/workOrder/WorkOrderDelete";
 
 
 // ----------------------------------------------------------------------
@@ -88,10 +89,11 @@ export default function WorkOrderPage() {
                     </Button>
                 </Stack>
 
-
                 <WorkOrderForm/>
 
                 <ServiceWorkOrderForm/>
+
+                <WorkOrderDelete/>
 
                 <Card>
                     <ListToolbar context={WorkOrderContext} name={t('ordenesTrabajo.encabezado.tituloSingular')} title={'ordenesTrabajo'}/>
