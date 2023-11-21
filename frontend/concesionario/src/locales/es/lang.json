@@ -259,6 +259,9 @@
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaJefeTaller": "Jefe de Taller",
+      "comentario": "Comentario",
       "nombreCliente": "Nombre",
       "nombreVendedor": "Nombre",
       "cliente": "Cliente",
@@ -328,6 +331,7 @@
     "correo": "Ingrese un correo valido",
     "fecha": "Ingrese una fecha valida",
     "vinCaracteresNoPermitidos": "No se permiten los caracteres I, O, Q",
+    "placa": "Ingrese una placa valida",
     "contraseña": {
         "numerico": "Debe tener al menos un numero",
         "minuscula": "Debe tener al menos una minuscula",

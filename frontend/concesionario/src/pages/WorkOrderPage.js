@@ -30,12 +30,13 @@ import Label from "../components/label";
 import LabelPlate from "../components/label-plate";
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-// import ServiceWorkOrderForm from "../sections/@dashboard/workOrder/ServiceWorkOrderForm";
-// import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
+import ServiceWorkOrderForm from "../sections/@dashboard/workOrder/ServiceWorkOrderForm";
+import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
 // import WorkOrderDelete from "../sections/@dashboard/workOrder/WorkOrderDelete";
 // context
 import WorkOrderContext from "../hooks/workOrder/WorkOrderContext";
 import AuthContext from "../hooks/auth/AuthContext";
+
 
 // ----------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ export default function WorkOrderPage() {
         filteredWorkOrders,
         emptyRows,
         isNotFound,
-        handleOpenInventoryForm} = useContext(WorkOrderContext);
+        handleOpenServiceForm} = useContext(WorkOrderContext);
 
     const {
         user} = useContext(AuthContext);
@@ -86,6 +87,11 @@ export default function WorkOrderPage() {
                         {t('ordenesTrabajo.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
+
+
+                <WorkOrderForm/>
+
+                <ServiceWorkOrderForm/>
 
                 <Card>
                     <ListToolbar context={WorkOrderContext} name={t('ordenesTrabajo.encabezado.tituloSingular')} title={'ordenesTrabajo'}/>
@@ -135,7 +141,7 @@ export default function WorkOrderPage() {
                                                         <IconButton disabled={!estado} color="error" onClick={(event)=> handleOpenDelete(event, id)}>
                                                             <DeleteIcon />
                                                         </IconButton>
-                                                        <IconButton color="primary" onClick={(event)=>handleOpenInventoryForm(event, id, id)}>
+                                                        <IconButton color="primary" onClick={(event)=>handleOpenServiceForm(event, id, modelo)}>
                                                             <HomeRepairServiceRoundedIcon />
                                                         </IconButton>
                                                     </div>

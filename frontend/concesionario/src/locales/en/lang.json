@@ -254,6 +254,9 @@
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Customer",
+      "cedulaJefeTaller": "Workshop Manager",
+      "comentario": "Comment",
       "nombreCliente": "Name",
       "nombreVendedor": "Name",
       "cliente": "Client",
@@ -323,6 +326,7 @@
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
     "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
+    "placa": "Enter a valid plate",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",
