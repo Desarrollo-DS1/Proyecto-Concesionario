@@ -582,8 +582,7 @@ export function WorkOrderState(props) {
     }
 
     const handleOpenServiceForm = (e, id, name) => {
-        getWorkOrder(id)
-        getService().then(() => setOpenServiceForm(true));
+        getWorkOrder(id).then(()=>getService().then(() => setOpenServiceForm(true)))
         setSubtitle(name)
     }
 

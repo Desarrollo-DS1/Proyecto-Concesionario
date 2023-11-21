@@ -110,7 +110,7 @@ export default function ServiceWorkOrderForm() {
                 <Divider/>
                 {createRows(service, t, handleInputChangeService, workOrder)}
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
-                    <IconButton color="success" >
+                    <IconButton color="success" disabled={workOrder.estado}>
                         <DoneRoundedIcon />
                     </IconButton>
                     <IconButton color="error" onClick={(event)=>handleCloseServiceForm(event)}>
