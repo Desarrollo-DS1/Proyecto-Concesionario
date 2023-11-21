@@ -254,6 +254,9 @@
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Customer",
+      "cedulaJefeTaller": "Workshop Manager",
+      "comentario": "Comment",
       "nombreCliente": "Name",
       "nombreVendedor": "Name",
       "cliente": "Client",

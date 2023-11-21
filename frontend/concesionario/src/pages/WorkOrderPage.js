@@ -31,11 +31,12 @@ import LabelPlate from "../components/label-plate";
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 // import ServiceWorkOrderForm from "../sections/@dashboard/workOrder/ServiceWorkOrderForm";
-// import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
+import WorkOrderForm from "../sections/@dashboard/workOrder/WorkOrderForm";
 // import WorkOrderDelete from "../sections/@dashboard/workOrder/WorkOrderDelete";
 // context
 import WorkOrderContext from "../hooks/workOrder/WorkOrderContext";
 import AuthContext from "../hooks/auth/AuthContext";
+
 
 // ----------------------------------------------------------------------
 
@@ -86,6 +87,9 @@ export default function WorkOrderPage() {
                         {t('ordenesTrabajo.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
+
+
+                <WorkOrderForm/>
 
                 <Card>
                     <ListToolbar context={WorkOrderContext} name={t('ordenesTrabajo.encabezado.tituloSingular')} title={'ordenesTrabajo'}/>

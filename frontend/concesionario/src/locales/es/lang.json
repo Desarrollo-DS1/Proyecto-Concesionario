@@ -259,6 +259,9 @@
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaJefeTaller": "Jefe de Taller",
+      "comentario": "Comentario",
       "nombreCliente": "Nombre",
       "nombreVendedor": "Nombre",
       "cliente": "Cliente",
