@@ -242,7 +242,7 @@
       "error": "Erro ao adicionar ordem de serviço",
       "errorEditar": "Erro ao editar ordem de serviço",
       "errorEliminar": "Erro ao excluir ordem de serviço",
-      "confirmacionEliminar": "Tem certeza de que deseja excluir a ordem de serviço com ID {{id}}?",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir a ordem de serviço do veículo {{placa}}?",
       "errorPlaca": "Já existe uma ordem de serviço ativa com a placa informada",
       "errorListando": "Erro ao listar ordens de serviço",
       "errorCargando": "Erro ao carregar ordem de serviço"

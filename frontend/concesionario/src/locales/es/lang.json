@@ -252,7 +252,7 @@
       "error": "Error al agregar orden de trabajo",
       "errorEditar": "Error al editar orden de trabajo",
       "errorEliminar": "Error al eliminar orden de trabajo",
-      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo de id {{id}}?",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo del vehiculo {{placa}}?",
       "errorPlaca": "Ya existe una orden de trabajo activa con la placa ingresada",
       "errorListando": "Error al listar ordenes de trabajo",
       "errorCargando": "Error al cargar orden de trabajo"

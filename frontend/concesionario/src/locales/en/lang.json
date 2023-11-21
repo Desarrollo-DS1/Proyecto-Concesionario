@@ -247,7 +247,7 @@
       "error": "Error adding work order",
       "errorEditar": "Error editing work order",
       "errorEliminar": "Error deleting work order",
-      "confirmacionEliminar": "Are you sure you want to delete the work order with ID {{id}}?",
+      "confirmacionEliminar": "Are you sure you want to delete the work order for vehicle {{placa}}?",
       "errorPlaca": "There is already an active work order with the entered plate",
       "errorListando": "Error listing work orders",
       "errorCargando": "Error loading work order"
