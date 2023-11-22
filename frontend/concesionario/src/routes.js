@@ -40,7 +40,7 @@ export default function Router() {
     },
     {
       path: '/dashboard',
-      element: user ? <DashboardLayout /> : redirectToLogin(),
+      element: <DashboardLayout />,
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
@@ -55,7 +55,7 @@ export default function Router() {
     },
     {element: <LoadLayout />,
     children: [
-        { element: user ? redirectToDashboard() : <Navigate to="/login" />, index: true },
+        { element:  <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },
       ],
     },

@@ -26,7 +26,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-// import SaleForm from "../sections/@dashboard/sale/SaleForm";
+import SaleForm from "../sections/@dashboard/sale/SaleForm";
 // import SaleDelete from "../sections/@dashboard/sale/SaleDelete";
 // mock
 import SaleContext from "../hooks/sales/SaleContext";
@@ -77,6 +77,8 @@ export default function SalePage() {
             {t('ventas.encabezado.tituloSingular')}
         </Button>
         </Stack>
+
+        <SaleForm />
                                                             
 
         <Card>
@@ -155,7 +157,6 @@ export default function SalePage() {
 
                         <Typography variant="body2">
                             {t('general.dataTable.noResultados')}&nbsp;
-                            {t(`ventas.label.${filterField}`)}&nbsp;
                             <strong>&quot;{filterName}&quot;</strong>.
                             <br /> {t('general.dataTable.mensajeNoResultados')}
                         </Typography>

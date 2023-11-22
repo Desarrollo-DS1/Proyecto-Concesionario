@@ -173,6 +173,7 @@ export function SaleState(props) {
         getSaleError();
         await getSale(id);
         setOpenForm(true);
+        console.log("si");
     }
 
     const handleCloseForm = () => {
@@ -301,6 +302,20 @@ export function SaleState(props) {
             handleOpenSnackbar();
         }
     }
+
+
+    const [cart, setCart] = React.useState([]);
+
+    const handleInputChangeCart = (event) => {
+        const { name, value } = event.target;
+        setCart({
+            ...cart,
+            [name]: value
+        });
+    }
+
+    // const handleSubmitCart = (event) => {
+        
 
 
     return (
