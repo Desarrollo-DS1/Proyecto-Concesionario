@@ -33,6 +33,8 @@ export default function Router() {
   const redirectToLogin = () => <Navigate to="/login" replace />;
   const redirectToDashboard = () => <Navigate to="/dashboard" replace />;
 
+  const redirectToCustomer = () => <Navigate to="/cliente" replace />;
+
   const routes = useRoutes([
     {
       path: '/login',
@@ -40,7 +42,7 @@ export default function Router() {
     },
     {
       path: '/dashboard',
-      element: <DashboardLayout />,
+      element: user && user.tipoUsuario !== 'Cliente'  ? <DashboardLayout /> : redirectToLogin(),
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
@@ -54,8 +56,9 @@ export default function Router() {
       ],
     },
     {element: <LoadLayout />,
-    children: [
-        { element:  <Navigate to="/login" />, index: true },
+      children: [
+        { element: user && user.tipoUsuario !== 'Cliente' ? redirectToDashboard() : <Navigate to="/login" />, index: true },
+        { element: user && user.tipoUsuario === 'Cliente' ? redirectToCustomer() : <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },
       ],
     },

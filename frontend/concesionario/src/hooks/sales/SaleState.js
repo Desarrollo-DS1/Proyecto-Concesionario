@@ -5,6 +5,7 @@ import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllEmpleados } from "../../api/Empleado.api";
+import { getAllVehiculos } from "../../api/Vehiculo.api";
 // import { setEmployeeError } from "../employee/EmployeeState";
 // import { setCustomers } from "../customer/CustomerState";
 // import { setEmployees } from "../employee/EmployeeState";
@@ -17,7 +18,7 @@ SaleState.propTypes = {
 
 export function SaleState(props) {
 
-    const {authTokens} = useContext(AuthContext);
+    const {authTokens, user} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: "id", label: "ID", alignRight: false },
@@ -41,7 +42,7 @@ export function SaleState(props) {
     const emptySale = {
         id: "",
         cedulaCliente: "",
-        cedulaVendedor: "",
+        cedulaVendedor: user.user_id,
         fechaVenta: "",
         valorVenta: "",
         vehiculos: [],
@@ -63,6 +64,7 @@ export function SaleState(props) {
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
+    const [vehicles, setVehicles] = React.useState([]);
 
     
     const getSales = async () => {
@@ -171,12 +173,14 @@ export function SaleState(props) {
 
     const handleOpenForm = async (event, id) => {
         getSaleError();
+        await getVehicles();
         await getSale(id);
         setOpenForm(true);
         console.log("si");
     }
 
     const handleCloseForm = () => {
+        setCart([]);
         setOpenForm(false);
     }
 
@@ -303,15 +307,80 @@ export function SaleState(props) {
         }
     }
 
+    const getVehicles = async () => {
+        try {
+            const response = await getAllVehiculos(authTokens.access);
+            console.log(response.data)
+            setVehicles(response.data);
 
-    const [cart, setCart] = React.useState([]);
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
+    const emptyCartVehicle = {
+        id: "",
+        vehiculo: "",
+        descuento: "",
+        extra: "",
+    }
+
+    const [cartVehicle, setCartVehicle] = React.useState(emptyCartVehicle);
+    const [cart, setCart] = React.useState([{id:1281432, idVehiculo: 1281432, nombreVehiculo: "Chevrolet Spark", descuento: 0.9, idExtra: 1, nombreExtra: "Vidrios Polarizados"}]);
 
     const handleInputChangeCart = (event) => {
         const { name, value } = event.target;
-        setCart({
-            ...cart,
+        setCartVehicle({
+            ...cartVehicle,
             [name]: value
         });
+    }
+
+    const handleAddCart = (event) => {
+        event.preventDefault();
+
+        if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorVehiculo');
+            handleOpenSnackbar();
+            return;
+        }
+        {
+            const cartVehicle1 = {
+                id: cartVehicle.vehiculo.vin,
+                vin: cartVehicle.vehiculo.vin,
+                nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
+                descuento: cartVehicle.descuento,
+                hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
+                idExtra: 1,
+                nombreExtra: "Vidrios Polarizados"
+            };
+
+            setCart([...cart, cartVehicle1]);
+            setCartVehicle(emptyCartVehicle);
+        }
+    }
+
+    const handleDeleteCart = async (event, vin) => {
+        event.preventDefault();
+
+        setCart(cart.filter((item) => item.id !== vin));
+    }
+
+
+    const getCart = async () => {
+        try {
+            const response = await getAllVehiculos(authTokens.access);
+            setVehicles(response.data);
+
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     // const handleSubmitCart = (event) => {
@@ -365,6 +434,12 @@ export function SaleState(props) {
             validateSaleOnSubmit,
             validateSaleOnBlur,
             openFilter,
+            cart,
+            handleInputChangeCart,
+            handleAddCart,
+            cartVehicle,
+            vehicles,
+            handleDeleteCart
         }}>
             {props.children}
         </SaleContext.Provider>

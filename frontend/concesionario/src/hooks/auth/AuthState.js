@@ -42,12 +42,20 @@ export function AuthState(props) {
         try{
             const response = await login(formData)
 
+            const user = jwtDecode(response.data.access)
             setAuthTokens(response.data)
-            setUser(jwtDecode(response.data.access))
+            setUser(user)
             localStorage.setItem('authTokens', JSON.stringify(response.data))
             setFormData(emptyData)
-            history('/dashboard', { replace: true })
-        
+            if (user.tipoUsuario === 'Cliente')
+            {
+                history('/cliente', { replace: true })
+            }
+            else
+            {
+                history('/dashboard', { replace: true })
+            }
+
         } catch(error){
             setErrorMessage('login.error')
             setSnackbarOpen(true);
@@ -98,7 +106,7 @@ export function AuthState(props) {
     }
 
 
-    const updateToken = async ()=> {       
+    const updateToken = async ()=> {
         try{
             const response = await refresh(authTokens.refresh)
             setAuthTokens(response.data)
@@ -106,35 +114,7 @@ export function AuthState(props) {
             localStorage.setItem('authTokens', JSON.stringify(response.data))
 
         }catch(error){
-
-            setUser({email
-                    :
-                    "herreran903@gmail.com",
-                exp
-                    :
-                    1700604434,
-                iat
-                    :
-                    1700604134,
-                jti
-                    :
-                    "c7491a1cd6a94f72a024976fb3bce523",
-                primerApellido
-                    :
-                    "Herrera",
-                primerNombre
-                    :
-                    "Nicolas",
-                tipoUsuario
-                    :
-                    "Superusuario",
-                token_type
-                    :
-                    "access",
-                user_id
-                    :
-                    "1110363276"})
-
+            logoutUser()
         }
 
         if(loading){
@@ -189,10 +169,3 @@ export function AuthState(props) {
         </AuthContext.Provider>
     )
 }
-
-
-
-
-
-
-

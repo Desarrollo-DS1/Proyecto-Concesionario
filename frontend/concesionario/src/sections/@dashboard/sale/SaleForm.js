@@ -4,19 +4,21 @@ import { useTranslation } from 'react-i18next';
 import {
     Backdrop,
     Box,
-    Button, CircularProgress,
+    Button, Card, CircularProgress,
     Divider,
     Grid, IconButton, InputAdornment,
     MenuItem,
-    Stack,
+    Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
     TextField,
     Typography
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
+import DeleteIcon from "@mui/icons-material/Delete";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
-import SaleContext from '../../../hooks/sales/SaleContext'; 
+import SaleContext from '../../../hooks/sales/SaleContext';
+import Scrollbar from "../../../components/scrollbar";
 
 const selectMenuProps = {
     anchorOrigin: {
@@ -55,6 +57,44 @@ const scrollBarStyle = {
     },
 }
 
+const crearFila = (cart, deleteCart) => {
+    return cart.map(el => {
+        return <TableRow key={el.id}>
+            <TableCell align="center">
+                {el.nombreVehiculo}
+            </TableCell>
+            <TableCell align="center">
+                <Stack alignItems={"center"} >
+                    <div
+                        style={{
+                            width: '20px',
+                            height: '20px',
+                            backgroundColor: el.hexadecimalColor,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            borderRadius: '30%',
+                            marginRight: '10px',
+                            border: '1px solid #E6E6E6'
+                        }}
+                    />
+                </Stack>
+            </TableCell >
+            <TableCell align="center">
+                {el.descuento}
+            </TableCell>
+            <TableCell align="center" >
+                {el.nombreExtra}
+            </TableCell>
+            <TableCell align="center" width={"1%"}>
+                <IconButton onClick={(event)=>deleteCart(event, el.id)}>
+                    <DeleteIcon/>
+                </IconButton>
+            </TableCell>
+        </TableRow>
+    })
+}
+
 export default function SaleForm() {
 
     const {
@@ -71,7 +111,13 @@ export default function SaleForm() {
         handleSubmit,
         saleError,
         edit,
-        isLoading
+        isLoading,
+        cart,
+        handleInputChangeCart,
+        handleAddCart,
+        cartVehicle,
+        vehicles,
+        handleDeleteCart
     } = useContext(SaleContext);
 
     const theme = useTheme()
@@ -82,8 +128,11 @@ export default function SaleForm() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : '93%',
+        width: "auto",
+        height: "auto",
+        maxWidth: isSmallScreen ? "80%" : "40%",
+        maxHeight: isSmallScreen ? "80%" : "80%",
+        minWidth: isSmallScreen ? "80%" : "80%",
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
@@ -129,7 +178,7 @@ export default function SaleForm() {
                                 name="cedulaCliente"
                                 value={sale.cedulaCliente}
                                 onChange={handleInputChange}
-                                onBlur={handleOnBlur}
+                                // onBlur={handleOnBlur}
                                 label={t('ventas.label.cedulaCliente')} variant="outlined"
                                 helperText={t(saleError.cedulaCliente, {maximo: '10', minimo: '8'})}
                                 style={textFieldStyle}
@@ -144,10 +193,11 @@ export default function SaleForm() {
                             name="cedulaVendedor"
                             value={sale.cedulaVendedor}
                             onChange={handleInputChange}
-                            onBlur={handleOnBlur}
+                            // onBlur={handleOnBlur}
                             label={t('ventas.label.cedulaVendedor')} variant="outlined"
                             helperText={t(saleError.cedulaVendedor, {maximo: '10', minimo: '8'})}
                             style={textFieldStyle}
+                            disabled
                         />
                         </Grid>
                         <Grid item xs={12} sm={4}>
@@ -161,14 +211,129 @@ export default function SaleForm() {
                                 name={"fechaVenta"}
                                 value={sale.fechaVenta}
                                 onChange={handleInputChange}
-                                onBlur={handleOnBlur}
+                                // onBlur={handleOnBlur}
                                 label={t("ventas.label.fechaVenta")} variant="outlined"
                                 helperText={t(saleError.fechaVenta)}
                                 style={textFieldStyle}
                             />
                         </Grid>
                     </Grid>
+
+                    <Divider sx={{ mb: 3 }} />
+
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+                                select
+                                id ={"vehiculo"}
+                                // error={saleError.vehiculo !== ""}
+                                fullWidth
+                                required
+                                name="vehiculo"
+                                value={cartVehicle.vehiculo}
+                                onChange={handleInputChangeCart}
+                                // onBlur={handleOnBlur}
+                                label={t('ventas.label.vehiculo')} variant="outlined"
+                                // helperText={t(saleError.cedulaCliente, {maximo: '10', minimo: '8'})}
+                                style={textFieldStyle}
+                                SelectProps={{
+                                    MenuProps: selectMenuProps
+                                }}
+                            >
+                            {vehicles.map((option) => (
+                                <MenuItem key={option.vin} value={option}>
+                                    <Stack direction={"row"}>
+                                        <div
+                                            style={{
+                                                width: '20px',
+                                                height: '20px',
+                                                backgroundColor: option.hexadecimalColor,
+                                                display: 'flex',
+                                                justifyContent: 'center',
+                                                alignItems: 'center',
+                                                borderRadius: '30%',
+                                                marginRight: '10px',
+                                                border: '1px solid #E6E6E6'
+                                            }}
+                                        />
+                                        {option.nombreModelo}
+                                    </Stack>
+                                </MenuItem>
+                            ))}
+                            </TextField>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+                                id={"descuento"}
+                                // error={saleError.descuento !== ""}
+                                fullWidth
+                                required
+                                name="descuento"
+                                value={cartVehicle.descuento}
+                                onChange={handleInputChangeCart}
+                                // onBlur={handleOnBlur}
+                                label={t('ventas.label.descuento')} variant="outlined"
+                                // helperText={t(saleError.descuento, {maximo: '10', minimo: '8'})}
+                                style={textFieldStyle}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <TextField
+
+                                id={"extra"}
+                                // error={saleError.extra !== ''}
+                                fullWidth
+                                required
+                                name={"extra"}
+                                value={cartVehicle.extra}
+                                onChange={handleInputChangeCart}
+                                // onBlur={handleOnBlur}
+                                label={t("ventas.label.extra")} variant="outlined"
+                                // helperText={t(saleError.extra)}
+                                style={textFieldStyle}
+                            />
+                        </Grid>
+                    </Grid>
+
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+                        <Button variant="contained" color="primary" onClick={handleAddCart}>
+                            +
+                        </Button>
+                    </Stack>
+
+                    <Card>
+                        <Scrollbar sx={{ height: 200 }}>
+                            <TableContainer sx={{ height: 200 }}>
+                                <Table size={"small"}>
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell align="center">{t('ventas.label.vehiculo')}</TableCell>
+                                            <TableCell align="center">{t('ventas.label.color')}</TableCell>
+                                            <TableCell align="center">{t('ventas.label.descuento')}</TableCell>
+                                            <TableCell align="center">{t('ventas.label.extra')}</TableCell>
+                                            <TableCell align="center" width={"1%"}>{""}</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {crearFila(cart, handleDeleteCart)}
+                                    </TableBody>
+                                </Table>
+                            </TableContainer>
+                        </Scrollbar>
+                    </Card>
+
+                    <Divider sx={{ my: 2 }} />
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" >
+                        <Button variant="contained" type="submit">
+                            {t(`general.botones.${edit? "editar" : "agregar"}`)}
+                        </Button>
+                        <Button variant="contained" onClick={handleCloseForm}>
+                            {t("general.botones.cancelar")}
+                        </Button>
+                    </Stack>
+
                 </Box>
+
             </Modal>
             <Backdrop
                 sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 5000, position: 'absolute'}}
