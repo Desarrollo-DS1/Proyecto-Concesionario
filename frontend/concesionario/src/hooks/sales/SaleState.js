@@ -328,7 +328,7 @@ export function SaleState(props) {
     }
 
     const [cartVehicle, setCartVehicle] = React.useState(emptyCartVehicle);
-    const [cart, setCart] = React.useState([{id:1281432, idVehiculo: 1281432, nombreVehiculo: "Chevrolet Spark", descuento: 0.9, idExtra: 1, nombreExtra: "Vidrios Polarizados"}]);
+    const [cart, setCart] = React.useState([]);
 
     const handleInputChangeCart = (event) => {
         const { name, value } = event.target;
@@ -361,6 +361,7 @@ export function SaleState(props) {
 
             setCart([...cart, cartVehicle1]);
             setCartVehicle(emptyCartVehicle);
+            setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
         }
     }
 
