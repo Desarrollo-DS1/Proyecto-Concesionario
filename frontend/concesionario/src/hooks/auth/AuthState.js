@@ -42,11 +42,19 @@ export function AuthState(props) {
         try{
             const response = await login(formData)
 
+            const user = jwtDecode(response.data.access)
             setAuthTokens(response.data)
-            setUser(jwtDecode(response.data.access))
+            setUser(user)
             localStorage.setItem('authTokens', JSON.stringify(response.data))
             setFormData(emptyData)
-            history('/dashboard', { replace: true })
+            if (user.tipoUsuario === 'Cliente')
+            {
+                history('/cliente', { replace: true })
+            }
+            else
+            {
+                history('/dashboard', { replace: true })
+            }
         
         } catch(error){
             setErrorMessage('login.error')
