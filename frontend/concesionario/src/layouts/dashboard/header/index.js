@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {useContext} from "react";
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -11,6 +12,7 @@ import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
 import LanguagePopover from './LanguagePopover';
 import ModeViewSwitch from "./ModeViewSwitch";
+import AuthContext from "../../../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -20,10 +22,10 @@ const HEADER_MOBILE = 64;
 
 const HEADER_DESKTOP = 92;
 
-const StyledRoot = styled(AppBar)(({ theme }) => ({
+const StyledRoot = styled(AppBar)(({ theme, role }) => ({
   ...bgBlur({ color: theme.palette.background.default }),
   boxShadow: 'none',
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up('lg') && role !== 'Cliente']: {
     width: `calc(100% - ${NAV_WIDTH + 1}px)`,
   },
 }));
@@ -43,19 +45,23 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+
+
+  const {user} = useContext(AuthContext);
+
   return (
-    <StyledRoot>
+    <StyledRoot role={user.tipoUsuario}>
       <StyledToolbar>
-        <IconButton
-          onClick={onOpenNav}
-          sx={{
-            mr: 1,
-            color: 'text.primary',
-            display: { lg: 'none' },
-          }}
-        >
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
+          {user.tipoUsuario !== 'Cliente' && <IconButton
+              onClick={onOpenNav}
+              sx={{
+                  mr: 1,
+                  color: 'text.primary',
+                  display: { lg: 'none' },
+              }}
+          >
+              <Iconify icon="eva:menu-2-fill" />
+          </IconButton>}
 
         <Box sx={{ flexGrow: 1 }} />
 

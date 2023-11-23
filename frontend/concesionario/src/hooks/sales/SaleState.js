@@ -6,7 +6,7 @@ import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllEmpleados } from "../../api/Empleado.api";
 // import { setEmployeeError } from "../employee/EmployeeState";
-// import { setCustomers } from "../customer/CustomerState";
+// import { setCustomers } from "../customer/CustomerOrderState";
 // import { setEmployees } from "../employee/EmployeeState";
 import { getAllClientes } from "../../api/Cliente.api";
 import AuthContext from "../auth/AuthContext";

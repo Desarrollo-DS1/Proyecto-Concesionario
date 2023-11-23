@@ -24,7 +24,7 @@ import SparePartPage from "./pages/SparePartPage";
 import {SparePartState} from "./hooks/sparePart/SparePartState";
 import WorkOrderPage from "./pages/WorkOrderPage";
 import {WorkOrderState} from "./hooks/workOrder/WorkOrderState";
-import OrderCustomerPage from "./pages/OrderCustomerPage";
+import CustomerOrderPage from "./pages/CustomerOrderPage";
 
 // ----------------------------------------------------------------------
 
@@ -62,7 +62,7 @@ export default function Router() {
       element: user && user.tipoUsuario === 'Cliente'  ? <CustomerLayout /> : redirectToLogin(),
       children: [
         { element: <Navigate to="/cliente/ordenes" />, index: true },
-        { path: 'ordenes', element: <OrderCustomerPage /> },
+        { path: 'ordenes', element: <CustomerOrderPage /> },
       ],
     },
     {element: <LoadLayout />,
