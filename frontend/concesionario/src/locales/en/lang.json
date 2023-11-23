@@ -315,6 +315,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Orders",
+      "detalles": "Details",
+      "servicios": "Services",
+      "repuestos": "Spare Parts"
+    },
+    "mensaje": {
+      "errorListando": "Error listing orders"
+    },
+    "label": {
+      "fechaInicio": "Start Date",
+      "fechaEsperada": "Expected Date",
+      "fechaFin": "Delivery Date",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "In Workshop",
+      "entregado": "Delivered",
+      "atrazado": "Delayed"
+    }
+  },
+
   "errores": {
     "requerido": "Required field",
     "numerico": "Only numbers are allowed",

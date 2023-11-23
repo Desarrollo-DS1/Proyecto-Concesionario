@@ -104,7 +104,7 @@ export default function CustomerOrderPage() {
 
     const theme = useTheme();
 
-    const { t } = useTranslation();
+    const { t } = useTranslation("lang");
 
     useEffect(() => {
         getCustomerOrders();
@@ -119,7 +119,7 @@ export default function CustomerOrderPage() {
 
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        Ordenes
+                        {t('ordenesCliente.encabezado.tituloPlural')}
                     </Typography>
                 </Stack>
                 {filteredCustomerOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
@@ -142,7 +142,7 @@ export default function CustomerOrderPage() {
                                                 <HourglassTopRoundedIcon sx={{ fontSize: 50 }} color={"primary"}/>
                                                 <Stack alignItems="center" justifyContent="space-between">
                                                     <Typography variant="subtitle1">
-                                                        Fecha de inicio
+                                                        {t('ordenesCliente.label.fechaInicio')}
                                                     </Typography>
                                                     <Typography variant="subtitle2" fontWeight={1}>
                                                         {fechaInicio}
@@ -153,7 +153,7 @@ export default function CustomerOrderPage() {
                                                 <HourglassBottomRoundedIcon sx={{ fontSize: 50 }} color={"warning"}/>
                                                 <Stack alignItems="center" justifyContent="space-between">
                                                     <Typography variant="subtitle1">
-                                                        Fecha esperada
+                                                        {t('ordenesCliente.label.fechaEsperada')}
                                                     </Typography>
                                                     <Typography variant="subtitle2" fontWeight={1}>
                                                         {fechaEsperada}
@@ -164,7 +164,7 @@ export default function CustomerOrderPage() {
                                                 <EventAvailableRoundedIcon sx={{ fontSize: 50, color:"#115923" }}/>
                                                 <Stack alignItems="center" justifyContent="space-between">
                                                     <Typography variant="subtitle1">
-                                                        Fecha de entrega
+                                                        {t('ordenesCliente.label.fechaFin')}
                                                     </Typography>
                                                     <Typography variant="subtitle2" fontWeight={1}>
                                                         {fechaFin}
@@ -190,7 +190,7 @@ export default function CustomerOrderPage() {
                                                 <Stack direction="row" alignItems="center">
                                                     <FormatListBulletedRoundedIcon sx={{ fontSize: 20 }} />
                                                     <Typography variant="subtitle1" ml={1}>
-                                                        Detalles
+                                                        {t('ordenesCliente.encabezado.detalles')}
                                                     </Typography>
                                                 </Stack>
 
@@ -210,7 +210,7 @@ export default function CustomerOrderPage() {
                                                             <Stack direction="row" alignItems="center">
                                                                 <HomeRepairServiceRoundedIcon sx={{ fontSize: 20 }} />
                                                                 <Typography variant="subtitle1" ml={1}>
-                                                                    Servicios
+                                                                    {t('ordenesCliente.encabezado.servicios')}
                                                                 </Typography>
                                                             </Stack>
 
@@ -234,7 +234,7 @@ export default function CustomerOrderPage() {
                                                             <Stack direction="row" alignItems="center">
                                                                 <PlumbingIcon sx={{ fontSize: 20 }} />
                                                                 <Typography variant="subtitle1" ml={1}>
-                                                                    Repuestos
+                                                                    {t('ordenesCliente.encabezado.repuestos')}
                                                                 </Typography>
                                                             </Stack>
                                                             <List sx={{ listStyleType: 'disc', paddingLeft: 2}}>
