@@ -310,6 +310,30 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Ordens",
+      "detalles": "Detalhes",
+      "servicos": "Serviços",
+      "repuestos": "Peças de Reposição"
+    },
+    "mensaje": {
+      "errorListando": "Erro ao listar ordens"
+    },
+    "label": {
+      "fechaInicio": "Data de Início",
+      "fechaEsperada": "Data Esperada",
+      "fechaFin": "Data de Entrega",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "Em Oficina",
+      "entregado": "Entregue",
+      "atrazado": "Atrasado"
+    }
+  },
+
+
   "errores": {
     "requerido": "Este campo é obrigatório",
     "numerico": "Apenas números são permitidos",

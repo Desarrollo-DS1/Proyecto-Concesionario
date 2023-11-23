@@ -320,6 +320,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Ordenes",
+      "detalles": "Detalles",
+      "servicios": "Servicios",
+      "repuestos": "Repuestos"
+    },
+    "mensaje": {
+      "errorListando": "Error al listar ordenes"
+    },
+    "label": {
+      "fechaInicio": "Fecha de inicio",
+      "fechaEsperada": "Fecha esperada",
+      "fechaFin": "Fecha de entrega",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "En Taller",
+      "entregado": "Entregado",
+      "atrazado": "Atrazado"
+    }
+  },
+
   "errores": {
     "requerido": "Este campo es requerido",
     "numerico": "Solo se permiten numeros",

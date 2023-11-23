@@ -2,6 +2,7 @@ import {useContext} from "react";
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
+import CustomerLayout from './layouts/customer';
 import SimpleLayout from './layouts/simple';
 import LoadLayout from "./layouts/load/LoadLayout";
 //
@@ -23,6 +24,8 @@ import SparePartPage from "./pages/SparePartPage";
 import {SparePartState} from "./hooks/sparePart/SparePartState";
 import WorkOrderPage from "./pages/WorkOrderPage";
 import {WorkOrderState} from "./hooks/workOrder/WorkOrderState";
+import CustomerOrderPage from "./pages/CustomerOrderPage";
+import {CustomerOrderState} from "./hooks/customerOrder/CustomerOrderState";
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +36,8 @@ export default function Router() {
   const redirectToLogin = () => <Navigate to="/login" replace />;
   const redirectToDashboard = () => <Navigate to="/dashboard" replace />;
 
+  const redirectToCustomer = () => <Navigate to="/cliente" replace />;
+
   const routes = useRoutes([
     {
       path: '/login',
@@ -40,7 +45,7 @@ export default function Router() {
     },
     {
       path: '/dashboard',
-      element: user ? <DashboardLayout /> : redirectToLogin(),
+      element: user && user.tipoUsuario !== 'Cliente'  ? <DashboardLayout /> : redirectToLogin(),
       children: [
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
@@ -53,9 +58,18 @@ export default function Router() {
         { path: 'ordenes-trabajo', element: <WorkOrderState><WorkOrderPage /> </WorkOrderState>},
       ],
     },
+    {
+      path: '/cliente',
+      element: user && user.tipoUsuario === 'Cliente'  ? <CustomerLayout /> : redirectToLogin(),
+      children: [
+        { element: <Navigate to="/cliente/ordenes" />, index: true },
+        { path: 'ordenes', element: <CustomerOrderState><CustomerOrderPage /></CustomerOrderState>},
+      ],
+    },
     {element: <LoadLayout />,
     children: [
-        { element: user ? redirectToDashboard() : <Navigate to="/login" />, index: true },
+        { element: user && user.tipoUsuario !== 'Cliente' ? redirectToDashboard() : <Navigate to="/login" />, index: true },
+        { element: user && user.tipoUsuario === 'Cliente' ? redirectToCustomer() : <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },
       ],
     },
