@@ -206,7 +206,7 @@ export default function CustomerOrderPage() {
                                             <Scrollbar sx={{ maxHeight: 500 }}>
                                                 <CardContent >
                                                     <Grid container spacing={5}>
-                                                        <Grid item sm={6} sx={12} >
+                                                        <Grid item sm={6} xs={12} >
                                                             <Stack direction="row" alignItems="center">
                                                                 <HomeRepairServiceRoundedIcon sx={{ fontSize: 20 }} />
                                                                 <Typography variant="subtitle1" ml={1}>
@@ -230,7 +230,7 @@ export default function CustomerOrderPage() {
 
                                                         <Divider orientation={"vertical"} flexItem sx={{ mr: "-1px",mt: 5 }}/>
 
-                                                        <Grid item sm={6} sx={12} >
+                                                        <Grid item sm={6} xs={12} >
                                                             <Stack direction="row" alignItems="center">
                                                                 <PlumbingIcon sx={{ fontSize: 20 }} />
                                                                 <Typography variant="subtitle1" ml={1}>
