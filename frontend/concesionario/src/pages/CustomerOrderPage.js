@@ -1,12 +1,13 @@
 import { Helmet } from 'react-helmet-async';
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
+import {useTranslation} from "react-i18next";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {alpha, styled, useTheme} from "@mui/material/styles";
 import {
     Box,
     Card, CardContent, Collapse,
-    Divider, Grid, IconButton, lighten, LinearProgress, linearProgressClasses, List, ListItem,
-    Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    Divider, Grid, IconButton, lighten, LinearProgress, linearProgressClasses, List, ListItem, Snackbar,
+    Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
     Typography
 } from "@mui/material";
 // @mui
@@ -20,14 +21,16 @@ import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBullete
 import HomeRepairServiceRoundedIcon from '@mui/icons-material/HomeRepairServiceRounded';
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
-
 import PlumbingIcon from '@mui/icons-material/Plumbing';
+import Alert from "@mui/material/Alert";
 
 
 
 // components
 import LabelPlate from "../components/label-plate";
 import Scrollbar from "../components/scrollbar";
+import CustomerOrderContext from "../hooks/customerOrder/CustomerOrderContext";
+
 
 
 
@@ -35,24 +38,6 @@ import Scrollbar from "../components/scrollbar";
 
 // context
 
-
-const crearFila = (a, b) => {
-
-    const combinacion = [...a, ...b];
-
-    console.log(combinacion)
-
-    return a.map(el => {
-        return <TableRow key={el.id}>
-            <TableCell align="center">
-                {el.nombreServicio}
-            </TableCell>
-            <TableCell align="center">
-                {el.nombreRepuesto}
-            </TableCell >
-        </TableRow>
-    })
-}
 
 const chooseColor = (value, date, theme) => {
     if (value === 100) {
@@ -71,7 +56,6 @@ const chooseColor = (value, date, theme) => {
 }
 
 const calculateValue = (service) => {
-    console.log(service)
     const total = service.length;
     let count = 0;
     service.forEach(el => {
@@ -83,7 +67,7 @@ const calculateValue = (service) => {
     return Math.round((count / total) * 100);
 }
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme, value, colorChoose}) => ({
+const BorderLinearProgress = styled(LinearProgress)(({ theme, value, colorchoose}) => ({
     height: 30,
     borderRadius: 5,
     [`&.${linearProgressClasses.colorPrimary}`]: {
@@ -91,7 +75,7 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme, value, colorChoose
     },
     [`& .${linearProgressClasses.bar}`]: {
         borderRadius: 5,
-        backgroundImage: `linear-gradient(45deg, ${colorChoose} 25%, ${lighten(colorChoose, 0.2)} 25%, ${lighten(colorChoose, 0.2)} 50%, ${colorChoose} 50%, ${colorChoose} 75%, ${lighten(colorChoose, 0.2)} 75%, ${lighten(colorChoose, 0.2)})`,
+        backgroundImage: `linear-gradient(45deg, ${colorchoose} 25%, ${lighten(colorchoose, 0.2)} 25%, ${lighten(colorchoose, 0.2)} 50%, ${colorchoose} 50%, ${colorchoose} 75%, ${lighten(colorchoose, 0.2)} 75%, ${lighten(colorchoose, 0.2)})`,
         transition: 'width 0.3s ease-out',
     },
     '&:hover': {
@@ -100,58 +84,31 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme, value, colorChoose
         },}
 }));
 
-const a =
-    [{
-        id: 1,
-        cedulaEmpleado: 1110363276,
-        nombreEmpleado: "Nicolas Herrera",
-        fechaInicio: "2023-11-10",
-        fechaEsperada: "2023-11-15",
-        fechaFin: "2023-11-15",
-        modelo: "Chevrolet Spark",
-        placa: "ABC123",
-        estado: false,
-        servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: true}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-        repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}, {id: 3, nombreRepuesto: "Filtro de aceite"}],
-    },
-    {
-        id: 2,
-        cedulaEmpleado: 1110363276,
-        nombreEmpleado: "Nicolas Herrera",
-        fechaInicio: "2021-11-10",
-        fechaEsperada: "2021-11-15",
-        fechaFin: "",
-        modelo: "Chevrolet Spark",
-        placa: "ABC123",
-        estado: false,
-        servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: false}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-        repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}],
-    },
-    {
-        id: 3,
-        cedulaEmpleado: 1110363276,
-        nombreEmpleado: "Nicolas Herrera",
-        fechaInicio: "2023-11-15",
-        fechaEsperada: "2023-11-28",
-        fechaFin: "",
-        modelo: "Chevrolet Spark",
-        placa: "ABC123",
-        estado: false,
-        servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-        repuesto: [{id: 1, nombreRepuesto: "Aceite"}],
-    }]
-
 // ----------------------------------------------------------------------
 
 export default function CustomerOrderPage() {
 
+    const {filteredCustomerOrders,
+        customerOrders,
+        expandedCardId,
+        handleExpandClick,
+        getCustomerOrders,
+        openSnackbar,
+        messageSnackbar,
+        typeSnackbar,
+        handleCloseSnackbar,
+        page,
+        rowsPerPage,
+        handleChangePage,
+        handleChangeRowsPerPage} = useContext(CustomerOrderContext);
+
     const theme = useTheme();
 
-    const [expanded, setExpanded] = useState(false);
+    const { t } = useTranslation();
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+    useEffect(() => {
+        getCustomerOrders();
+    }, []);
 
     return (
         <>
@@ -165,11 +122,11 @@ export default function CustomerOrderPage() {
                         Ordenes
                     </Typography>
                 </Stack>
-                {a.map((row) => {
+                {filteredCustomerOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                     const { id, cedulaEmpleado, nombreEmpleado, fechaInicio, fechaEsperada, fechaFin, modelo, placa, estado, servicio, repuesto} = row;
                     const color = chooseColor(calculateValue(servicio), fechaEsperada, theme);
                     return (
-                        <Box mb={4}>
+                        <Box mb={4} key={id}>
                             <Card key={id} >
                                 <Stack direction="row" alignItems="center" m={4}>
                                     <Stack sx={{width:"20%"}} alignItems="center">
@@ -179,7 +136,7 @@ export default function CustomerOrderPage() {
                                         </Typography>
                                         <LabelPlate plate={placa}/>
                                     </Stack>
-                                    <Stack sx={{width:"80%"}} mx={5} useFlexGap flexWrap="wrap">
+                                    <Stack sx={{width:"80%"}} mx={5}  >
                                         <Stack direction="row" alignItems="center" justifyContent="space-between">
                                             <Stack alignItems="center" direction="row">
                                                 <HourglassTopRoundedIcon sx={{ fontSize: 50 }} color={"primary"}/>
@@ -216,7 +173,7 @@ export default function CustomerOrderPage() {
                                             </Stack>
                                         </Stack>
                                         <Stack mt={5} direction="row">
-                                            <BorderLinearProgress variant="determinate" value={calculateValue(servicio)} sx={{ width: '90%', mr: 3 }} colorChoose={color}/>
+                                            <BorderLinearProgress variant="determinate" value={calculateValue(servicio)} sx={{ width: '90%', mr: 3 }} colorchoose={color}/>
                                             <Typography variant="subtitle1" align={"center"}>
                                                 {calculateValue(servicio)} %
                                             </Typography>
@@ -238,14 +195,14 @@ export default function CustomerOrderPage() {
                                                 </Stack>
 
                                                 <IconButton
-                                                    onClick={handleExpandClick}
-                                                    aria-expanded={expanded}
+                                                    onClick={()=>handleExpandClick(id)}
+                                                    aria-expanded={expandedCardId === id}
                                                 >
-                                                    {expanded ? <ExpandLessRoundedIcon/> : <ExpandMoreRoundedIcon />}
+                                                    {expandedCardId === id ? <ExpandLessRoundedIcon/> : <ExpandMoreRoundedIcon />}
                                                 </IconButton>
                                             </Stack>
                                         </CardContent>
-                                        <Collapse in={expanded} timeout="auto" unmountOnExit>
+                                        <Collapse in={expandedCardId === id} timeout="auto" unmountOnExit>
                                             <Scrollbar sx={{ maxHeight: 500 }}>
                                                 <CardContent >
                                                     <Grid container spacing={5}>
@@ -302,6 +259,23 @@ export default function CustomerOrderPage() {
                     );
                 })}
             </Box>
+
+            <TablePagination
+                rowsPerPageOptions={[2, 4, 8]}
+                component="div"
+                count={customerOrders.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+                labelRowsPerPage = {t('general.dataTable.filasPorPagina')}
+            />
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
+                    {t(messageSnackbar)}
+                </Alert>
+            </Snackbar>
 
         </>
     );

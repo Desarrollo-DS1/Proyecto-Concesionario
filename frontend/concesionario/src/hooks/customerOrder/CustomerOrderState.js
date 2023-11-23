@@ -1,7 +1,6 @@
 import propTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import CustomerOrderContext from './CustomerOrderContext';
-import { checkCustomer } from "./CustomerValidation";
 import { applySortFilter, getComparator } from "../filter/Filter";
 import { getAllClientes, getCliente, createCliente, updateCliente, deleteCliente } from "../../api/Cliente.api";
 import { createUsuario } from "../../api/Usuario.api";
@@ -26,22 +25,70 @@ export function CustomerOrderState(props) {
         { id: 'ciudad', label: 'ciudad' },
     ];
 
-
     const [customerOrders, setCustomerOrders] = React.useState([]);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
+    const [expandedCardId, setExpandedCardId] = useState(null);
 
-    const getCustomers = async () => {
+    const handleExpandClick = (id) => {
+        setExpandedCardId((prevId) => (prevId === id ? null : id));
+    };
 
-        try {
-            const response = await getAllClientes(authTokens.access);
-            setCustomerOrders(response.data);
+    const getCustomerOrders = async () => {
 
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('clientes.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
+        const a =
+            [{
+                id: 1,
+                cedulaEmpleado: 1110363276,
+                nombreEmpleado: "Nicolas Herrera",
+                fechaInicio: "2023-11-10",
+                fechaEsperada: "2023-11-15",
+                fechaFin: "2023-11-15",
+                modelo: "Chevrolet Spark",
+                placa: "ABC123",
+                estado: false,
+                servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: true}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
+                repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}, {id: 3, nombreRepuesto: "Filtro de aceite"}],
+            },
+                {
+                    id: 2,
+                    cedulaEmpleado: 1110363276,
+                    nombreEmpleado: "Nicolas Herrera",
+                    fechaInicio: "2021-11-10",
+                    fechaEsperada: "2021-11-15",
+                    fechaFin: "",
+                    modelo: "Chevrolet Spark",
+                    placa: "ABC123",
+                    estado: false,
+                    servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: false}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
+                    repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}],
+                },
+                {
+                    id: 3,
+                    cedulaEmpleado: 1110363276,
+                    nombreEmpleado: "Nicolas Herrera",
+                    fechaInicio: "2023-11-15",
+                    fechaEsperada: "2023-11-28",
+                    fechaFin: "",
+                    modelo: "Chevrolet Spark",
+                    placa: "ABC123",
+                    estado: false,
+                    servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
+                    repuesto: [{id: 1, nombreRepuesto: "Aceite"}],
+                }]
+
+        setCustomerOrders(a);
+
+        // try {
+        //     const response = await getAllClientes(authTokens.access);
+        //     setCustomerOrders(response.data);
+        //
+        // } catch (error) {
+        //     setTypeSnackbar('error');
+        //     setMessageSnackbar('clientes.mensaje.errorListando');
+        //     handleOpenSnackbar();
+        // }
     }
 
     const handleCloseSnackbar = (event, reason) => {
@@ -54,12 +101,11 @@ export function CustomerOrderState(props) {
         setOpenSnackbar(true);
     }
 
-
     const [filterName, setFilterName] = useState('');
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('cedula');
+    const [order, setOrder] = useState('desc');
+    const [orderBy, setOrderBy] = useState('fechaInicio');
     const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [rowsPerPage, setRowsPerPage] = useState(2);
     const [edit, setEdit] = React.useState(false);
     const [selected, setSelected] = React.useState([]);
 
@@ -110,35 +156,22 @@ export function CustomerOrderState(props) {
         handleCloseFilter();
     }
 
-    const filteredCustomers = applySortFilter(customerOrders, getComparator(order, orderBy), filterName, filterField, 'usuarios');
+    const filteredCustomerOrders = applySortFilter(customerOrders, getComparator(order, orderBy), filterName, filterField);
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customerOrders.length) : 0;
-    const isNotFound = !filteredCustomers.length && !!filterName;
+    const isNotFound = !filteredCustomerOrders.length && !!filterName;
+
 
     const [isLoading, setIsLoading] = useState(false);
 
     return (
         <CustomerOrderContext.Provider value={
             {
-                TABLE_HEAD,
                 FILTER_OPTIONS,
-                customer,
-                customers: customerOrders,
-                genders,
-                openForm,
-                edit,
+                customerOrders,
                 openSnackbar,
                 messageSnackbar,
                 typeSnackbar,
-                openDelete,
-                getCustomers,
-                handleInputChange,
-                handleSubmit,
-                handleDelete,
-                handleOnBlur,
-                handleOpenForm,
-                handleCloseForm,
-                handleOpenDelete,
-                handleCloseDelete,
+                getCustomerOrders,
                 handleCloseSnackbar,
                 filterName,
                 order,
@@ -146,7 +179,7 @@ export function CustomerOrderState(props) {
                 page,
                 rowsPerPage,
                 selected,
-                filteredCustomers,
+                filteredCustomerOrders,
                 emptyRows,
                 isNotFound,
                 handleRequestSort,
@@ -154,15 +187,14 @@ export function CustomerOrderState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                customerError,
-                showPassword,
-                handleTogglePassword,
                 filterField,
                 handleFilterField,
                 openFilter,
                 handleOpenFilter,
                 handleCloseFilter,
-                isLoading
+                isLoading,
+                expandedCardId,
+                handleExpandClick
             }}>
             {props.children}
         </CustomerOrderContext.Provider>
