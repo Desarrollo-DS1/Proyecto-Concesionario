@@ -61,8 +61,18 @@ export function SaleState(props) {
         cedulaVendedor: "",
         fechaVenta: "",
         valorVenta: "",
-        vehiculos: [],
+        vehiculos: "",
+        vehiculo: "",
+        descuento: "",
+        extra: "",
     };
+
+    const emptyErrorCartVehicle = {
+        id: "",
+        vehiculo: "",
+        descuento: "",
+        extra: "",
+    }
 
     const [sale, setSale] = React.useState(emptySale);
     const [sales, setSales] = React.useState([]);
@@ -194,6 +204,7 @@ export function SaleState(props) {
     }
 
     const handleOpenForm = async (event, id) => {
+        getCartVehicleError();
         getSaleError();
         await getVehicles();
         await getSale(id);
@@ -223,33 +234,40 @@ export function SaleState(props) {
 
     }
 
-    const addCartVehicle = (cartVehicle) => {
+    const addCartVehicle = (event) => {
 
-        if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
-        {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorVehiculo');
-            handleOpenSnackbar();
-            return;
-        }
-        {
-            const cartVehicle1 = {
-                id: cartVehicle.vehiculo.vin,
-                vin: cartVehicle.vehiculo.vin,
-                nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
-                descuento: cartVehicle.descuento,
-                hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
-                idExtra: 1,
-                nombreExtra: "Vidrios Polarizados"
-            };
+        event.preventDefault();
 
-            setCart([...cart, cartVehicle1]);
-            setCartVehicle(emptyCartVehicle);
-            setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+        if (!validateCartVehicleOnSubmit())
+        {
+            if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorVehiculo');
+                handleOpenSnackbar();
+                return;
+            }
+            {
+                const cartVehicle1 = {
+                    id: cartVehicle.vehiculo.vin,
+                    vin: cartVehicle.vehiculo.vin,
+                    nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
+                    descuento: cartVehicle.descuento,
+                    hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
+                    idExtra: 1,
+                    nombreExtra: "Vidrios Polarizados"
+                };
+
+                setCart([...cart, cartVehicle1]);
+                setCartVehicle(emptyCartVehicle);
+                setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+            }
         }
     }
 
-    const handleDeleteCart = async (vin) => {
+    const deleteCartVehicle = async (event, vin) => {
+        event.preventDefault();
+
         setCart(cart.filter((item) => item.id !== vin));
     }
 
@@ -259,6 +277,11 @@ export function SaleState(props) {
             ...cartVehicle,
             [name]: value
         });
+    }
+
+    const handleOnBlurCartVehicle = (event) => {
+        const { name } = event.target;
+        validateCartVehicleOnBlur(cartVehicle, name);
     }
 
     const [filterName, setFilterName] = useState('');
@@ -291,7 +314,6 @@ export function SaleState(props) {
                 selected.slice(selectedIndex + 1)
             );
         }
-
         setSelected(newSelected);
     }
 
@@ -330,6 +352,7 @@ export function SaleState(props) {
     const isNotFound = !filteredSales.length && !!filterName;
 
     const [saleError, setSaleError] = React.useState(emptyError);
+    const [cartVehicleError, setCartVehicleError] = React.useState(emptyErrorCartVehicle);
 
     const getSaleError = () => {
         setSaleError(emptyError)
@@ -338,14 +361,31 @@ export function SaleState(props) {
     const validateSaleOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(saleError).forEach((name) => {
-            updatedErrors[name] = checkSale(sale, name, edit);
+            updatedErrors[name] = checkSale(sale, name);
         });
         setSaleError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     }
 
     const validateSaleOnBlur = (sale, name) => {
-        setSaleError({...saleError, [name]: checkSale(sale, name, edit)});
+        setSaleError({...saleError, [name]: checkSale(sale, name)});
+    }
+
+    const getCartVehicleError = () => {
+        setCartVehicleError(emptyErrorCartVehicle)
+    }
+
+    const validateCartVehicleOnSubmit = () => {
+        const updatedErrors = {};
+        Object.keys(cartVehicleError).forEach((name) => {
+            updatedErrors[name] = checkSale(cartVehicle, name);
+        });
+        setCartVehicleError(updatedErrors);
+        return Object.values(updatedErrors).some((error) => error !== '');
+    }
+
+    const validateCartVehicleOnBlur = (cartVehicle, name) => {
+        setCartVehicleError({...cartVehicleError, [name]: checkSale(cartVehicle, name)});
     }
 
     return (
@@ -396,10 +436,13 @@ export function SaleState(props) {
             openFilter,
             cart,
             handleInputChangeCart,
-            handleAddCart: addCartVehicle,
+            addCartVehicle,
             cartVehicle,
             vehicles,
-            handleDeleteCart
+            deleteCartVehicle,
+            handleOnBlurCartVehicle,
+            cartVehicleError,
+            getCartVehicleError,
         }}>
             {props.children}
         </SaleContext.Provider>

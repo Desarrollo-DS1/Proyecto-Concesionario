@@ -113,10 +113,12 @@ export default function SaleForm() {
         edit,
         cart,
         handleInputChangeCart,
-        handleAddCart,
+        addCartVehicle,
         cartVehicle,
         vehicles,
-        handleDeleteCart
+        deleteCartVehicle,
+        cartVehicleError,
+        handleOnBlurCartVehicle
     } = useContext(SaleContext);
 
     const theme = useTheme()
@@ -175,7 +177,7 @@ export default function SaleForm() {
                                 name="cedulaCliente"
                                 value={sale.cedulaCliente}
                                 onChange={handleInputChange}
-                                // onBlur={handleOnBlur}
+                                onBlur={handleOnBlur}
                                 label={t('ventas.label.cedulaCliente')} variant="outlined"
                                 helperText={t(saleError.cedulaCliente, {maximo: '10', minimo: '8'})}
                                 style={textFieldStyle}
@@ -190,7 +192,6 @@ export default function SaleForm() {
                             name="cedulaVendedor"
                             value={sale.cedulaVendedor}
                             onChange={handleInputChange}
-                            // onBlur={handleOnBlur}
                             label={t('ventas.label.cedulaVendedor')} variant="outlined"
                             helperText={t(saleError.cedulaVendedor, {maximo: '10', minimo: '8'})}
                             style={textFieldStyle}
@@ -208,7 +209,7 @@ export default function SaleForm() {
                                 name={"fechaVenta"}
                                 value={sale.fechaVenta}
                                 onChange={handleInputChange}
-                                // onBlur={handleOnBlur}
+                                onBlur={handleOnBlur}
                                 label={t("ventas.label.fechaVenta")} variant="outlined"
                                 helperText={t(saleError.fechaVenta)}
                                 style={textFieldStyle}
@@ -221,15 +222,15 @@ export default function SaleForm() {
                             <TextField
                                 select
                                 id ={"vehiculo"}
-                                // error={saleError.vehiculo !== ""}
+                                error={cartVehicleError.vehiculo !== ""}
                                 fullWidth
                                 required
                                 name="vehiculo"
                                 value={cartVehicle.vehiculo}
                                 onChange={handleInputChangeCart}
-                                // onBlur={handleOnBlur}
+                                onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.vehiculo')} variant="outlined"
-                                // helperText={t(saleError.cedulaCliente, {maximo: '10', minimo: '8'})}
+                                helperText={t(cartVehicleError.vehiculo)}
                                 style={textFieldStyle}
                                 SelectProps={{
                                     MenuProps: selectMenuProps
@@ -260,36 +261,31 @@ export default function SaleForm() {
                         <Grid item xs={12} sm={4}>
                             <TextField
                                 id={"descuento"}
-                                // error={saleError.descuento !== ""}
+                                error={cartVehicleError.descuento !== ""}
                                 fullWidth
-                                required
                                 name="descuento"
                                 value={cartVehicle.descuento}
                                 onChange={handleInputChangeCart}
-                                // onBlur={handleOnBlur}
+                                onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.descuento')} variant="outlined"
-                                // helperText={t(saleError.descuento, {maximo: '10', minimo: '8'})}
+                                helperText={t(cartVehicleError.descuento)}
                                 style={textFieldStyle}
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
                                 id={"extra"}
-                                // error={saleError.extra !== ''}
                                 fullWidth
-                                required
                                 name={"extra"}
                                 value={cartVehicle.extra}
                                 onChange={handleInputChangeCart}
-                                // onBlur={handleOnBlur}
                                 label={t("ventas.label.extra")} variant="outlined"
-                                // helperText={t(saleError.extra)}
                                 style={textFieldStyle}
                             />
                         </Grid>
                     </Grid>
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-                        <Button variant="contained" color="primary" onClick={handleAddCart}>
+                        <Button variant="contained" color="primary" onClick={addCartVehicle}>
                             +
                         </Button>
                     </Stack>
@@ -307,7 +303,7 @@ export default function SaleForm() {
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {crearFila(cart, handleDeleteCart)}
+                                        {crearFila(cart, deleteCartVehicle)}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
