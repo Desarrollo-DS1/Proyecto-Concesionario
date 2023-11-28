@@ -176,7 +176,6 @@ export function SaleState(props) {
         await getVehicles();
         await getSale(id);
         setOpenForm(true);
-        console.log("si");
     }
 
     const handleCloseForm = () => {
@@ -310,7 +309,6 @@ export function SaleState(props) {
     const getVehicles = async () => {
         try {
             const response = await getAllVehiculos(authTokens.access);
-            console.log(response.data)
             setVehicles(response.data);
 
         } catch (error) {

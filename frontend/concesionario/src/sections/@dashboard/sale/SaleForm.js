@@ -111,7 +111,6 @@ export default function SaleForm() {
         handleSubmit,
         saleError,
         edit,
-        isLoading,
         cart,
         handleInputChangeCart,
         handleAddCart,
@@ -154,7 +153,6 @@ export default function SaleForm() {
                 aria-labelledby="modal-modal-title"
                 aria-describedby="modal-modal-description"
             >
-
                 <Box
                     component="form"
                     sx={modalStyle}
@@ -167,7 +165,6 @@ export default function SaleForm() {
                             {t(`ventas.encabezado.${edit? "editar" : "agregar"}`)}
                         </Typography>
                     </Stack>
-
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4}>
                             <TextField
@@ -218,9 +215,7 @@ export default function SaleForm() {
                             />
                         </Grid>
                     </Grid>
-
                     <Divider sx={{ mb: 3 }} />
-
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={4}>
                             <TextField
@@ -279,7 +274,6 @@ export default function SaleForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
-
                                 id={"extra"}
                                 // error={saleError.extra !== ''}
                                 fullWidth
@@ -294,13 +288,11 @@ export default function SaleForm() {
                             />
                         </Grid>
                     </Grid>
-
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                         <Button variant="contained" color="primary" onClick={handleAddCart}>
                             +
                         </Button>
                     </Stack>
-
                     <Card>
                         <Scrollbar sx={{ height: 200 }}>
                             <TableContainer sx={{ height: 200 }}>
@@ -321,7 +313,6 @@ export default function SaleForm() {
                             </TableContainer>
                         </Scrollbar>
                     </Card>
-
                     <Divider sx={{ my: 2 }} />
                     <Stack direction="row" alignItems="center" justifyContent="space-between" >
                         <Button variant="contained" type="submit">
@@ -331,17 +322,8 @@ export default function SaleForm() {
                             {t("general.botones.cancelar")}
                         </Button>
                     </Stack>
-
                 </Box>
-
             </Modal>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 5000, position: 'absolute'}}
-                open = {isLoading}
-            >
-                <CircularProgress color="inherit" />
-            </Backdrop>
-
         </>
     );
 }

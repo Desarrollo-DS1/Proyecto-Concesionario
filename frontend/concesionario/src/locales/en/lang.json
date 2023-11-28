@@ -165,7 +165,11 @@
       "id": "ID",
       "cedulaCliente": "Customer",
       "cedulaVendedor": "Salesperson",
-      "fechaVenta": "Date"
+      "fechaVenta": "Date",
+      "vehiculo": "Vehicle",
+      "descuento": "Discount",
+      "extra": "Extra",
+      "color": "Color"
     }
   },
 
