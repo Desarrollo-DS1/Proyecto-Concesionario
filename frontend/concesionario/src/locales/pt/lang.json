@@ -163,6 +163,35 @@
     }
   },
 
+  "sucursales": {
+    "encabezado": {
+      "tituloPlural": "Filiais",
+      "tituloSingular": "Filial",
+      "agregar": "Adicionar Filial",
+      "eliminar": "Excluir Filial",
+      "editar": "Editar Filial"
+    },
+    "mensaje": {
+      "agregado": "Filial adicionada com sucesso",
+      "editado": "Filial editada com sucesso",
+      "eliminado": "Filial excluída com sucesso",
+      "error": "Erro ao adicionar filial",
+      "errorEditar": "Erro ao editar filial",
+      "errorEliminar": "Erro ao excluir filial",
+      "confirmacionEliminar": "Tem certeza de que deseja excluir a filial com o nome {{nombre}}?",
+      "errorNombre": "Já existe uma filial com o nome inserido",
+      "errorListando": "Erro ao listar filiais",
+      "errorCargando": "Erro ao carregar filial"
+    },
+    "label": {
+      "nombre": "Nome",
+      "direccion": "Endereço",
+      "ciudad": "Cidade",
+      "telefono": "Telefone",
+      "undefined": ""
+    }
+  },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",

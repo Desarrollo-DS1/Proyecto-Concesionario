@@ -170,6 +170,38 @@
             "errorListando": "Error al listar sucursales"
         }
     },
+
+    "sucursales": {
+      "encabezado": {
+        "tituloPlural": "Sucursales",
+        "tituloSingular": "Sucursal",
+        "agregar": "Agregar sucursal",
+        "eliminar": "Eliminar sucursal",
+        "editar": "Editar sucursal"
+      },
+  
+      "mensaje": {
+        "agregado": "Sucursal agregada correctamente",
+        "editado": "Sucursal editada correctamente",
+        "eliminado": "Sucursal eliminada correctamente",
+        "error": "Error al agregar sucursal",
+        "errorEditar": "Error al editar sucursal",
+        "errorEliminar": "Error al eliminar sucursal",
+        "confirmacionEliminar": "¿Estas seguro que deseas eliminar la sucursal de nombre {{nombre}}?",
+        "errorNombre": "Ya existe una sucursal con el nombre ingresado",
+        "errorListando": "Error al listar sucursales",
+        "errorCargando": "Error al cargar sucursal"
+      },
+  
+      "label": {
+        "nombre": "Nombre",
+        "direccion": "Direccion",
+        "ciudad": "Ciudad",
+        "telefono": "Telefono",
+        "undefined": ""
+      }
+    },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
