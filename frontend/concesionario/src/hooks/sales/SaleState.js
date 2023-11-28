@@ -5,6 +5,7 @@ import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllEmpleados } from "../../api/Empleado.api";
+import { getAllVehiculos } from "../../api/Vehiculo.api";
 // import { setEmployeeError } from "../employee/EmployeeState";
 // import { setCustomers } from "../customer/CustomerOrderState";
 // import { setEmployees } from "../employee/EmployeeState";
@@ -17,7 +18,7 @@ SaleState.propTypes = {
 
 export function SaleState(props) {
 
-    const {authTokens} = useContext(AuthContext);
+    const {authTokens, user} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: "id", label: "ID", alignRight: false },
@@ -41,11 +42,17 @@ export function SaleState(props) {
     const emptySale = {
         id: "",
         cedulaCliente: "",
-        cedulaVendedor: "",
+        cedulaVendedor: user.user_id,
         fechaVenta: "",
-        valorVenta: "",
         vehiculos: [],
     };
+
+    const emptyCartVehicle = {
+        id: "",
+        vehiculo: "",
+        descuento: "0",
+        extra: "",
+    }
 
     const emptyError = {
         id: "",
@@ -53,8 +60,15 @@ export function SaleState(props) {
         cedulaVendedor: "",
         fechaVenta: "",
         valorVenta: "",
-        vehiculos: [],
+        vehiculos: ""
     };
+
+    const emptyErrorCartVehicle = {
+        id: "",
+        vehiculo: "",
+        descuento: "",
+        extra: "",
+    }
 
     const [sale, setSale] = React.useState(emptySale);
     const [sales, setSales] = React.useState([]);
@@ -63,8 +77,26 @@ export function SaleState(props) {
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
+    const [vehicles, setVehicles] = React.useState([]);
+    const [extras, setExtras] = React.useState([]);
+    const [total, setTotal] = React.useState(100000000);
 
-    
+    const getExtras = async () => {
+
+    }
+
+    const getVehicles = async () => {
+        try {
+            const response = await getAllVehiculos(authTokens.access);
+            setVehicles(response.data);
+
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
     const getSales = async () => {
         try {
             const response = await getAllVentas(authTokens.access);
@@ -97,10 +129,10 @@ export function SaleState(props) {
         }
     }
 
-    const addVenta = async (venta) => {
+    const addSale = async (sale) => {
 
         try {
-            const response = await createVenta(venta);
+            const response = await createVenta(sale);
             setSales([...sales, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('ventas.mensaje.agregada');
@@ -114,11 +146,11 @@ export function SaleState(props) {
         }
     }
 
-    const updateVenta = async (venta) => {
+    const updateSale = async (sale) => {
             
         try
         {
-            await updateVenta(venta.id, venta);
+            await updateSale(sale.id, sale);
             setTypeSnackbar('success');
             setMessageSnackbar('venta.mensaje.editado');
             handleOpenSnackbar();
@@ -143,6 +175,10 @@ export function SaleState(props) {
         }
     }
 
+    const calculateTotal = () => {
+        console.log(cartVehicle)
+    }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setSale({
@@ -154,11 +190,19 @@ export function SaleState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateSaleOnSubmit()) {
+            if(sale.vehiculos.length === 0)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorVehiculos');
+                handleOpenSnackbar();
+                return;
+            }
+
             if (edit) {
-                updateVenta(sale).then(() => getSales());
+                updateSale(sale).then(() => getSales());
             }
             else {
-                addVenta(sale).then(() => getSales());
+                addSale(sale).then(() => getSales());
             }
         }
     }
@@ -168,14 +212,16 @@ export function SaleState(props) {
         validateSaleOnBlur(sale, name);
     }
 
-
     const handleOpenForm = async (event, id) => {
+        getCartVehicleError();
         getSaleError();
+        await getVehicles();
         await getSale(id);
         setOpenForm(true);
     }
 
     const handleCloseForm = () => {
+        setCart([]);
         setOpenForm(false);
     }
 
@@ -188,6 +234,64 @@ export function SaleState(props) {
 
     const handleOpenSnackbar = () => {
         setOpenSnackbar(true);
+    }
+
+    const [cart, setCart] = React.useState([]);
+    const [cartVehicle, setCartVehicle] = React.useState(emptyCartVehicle);
+
+    const getCart = async () => {
+
+    }
+
+    const addCartVehicle = (event) => {
+
+        event.preventDefault();
+
+        if (!validateCartVehicleOnSubmit())
+        {
+            if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorVehiculo');
+                handleOpenSnackbar();
+                return;
+            }
+            {
+                const cartVehicle1 = {
+                    id: cartVehicle.vehiculo.vin,
+                    vin: cartVehicle.vehiculo.vin,
+                    nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
+                    descuento: cartVehicle.descuento,
+                    hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
+                    idExtra: 1,
+                    nombreExtra: "Vidrios Polarizados"
+                };
+
+                setCart([...cart, cartVehicle1]);
+                setCartVehicle(emptyCartVehicle);
+                setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+                calculateTotal();
+            }
+        }
+    }
+
+    const deleteCartVehicle = async (event, vin) => {
+        event.preventDefault();
+
+        setCart(cart.filter((item) => item.id !== vin));
+    }
+
+    const handleInputChangeCart = (event) => {
+        const { name, value } = event.target;
+        setCartVehicle({
+            ...cartVehicle,
+            [name]: value
+        });
+    }
+
+    const handleOnBlurCartVehicle = (event) => {
+        const { name } = event.target;
+        validateCartVehicleOnBlur(cartVehicle, name);
     }
 
     const [filterName, setFilterName] = useState('');
@@ -220,7 +324,6 @@ export function SaleState(props) {
                 selected.slice(selectedIndex + 1)
             );
         }
-
         setSelected(newSelected);
     }
 
@@ -259,6 +362,7 @@ export function SaleState(props) {
     const isNotFound = !filteredSales.length && !!filterName;
 
     const [saleError, setSaleError] = React.useState(emptyError);
+    const [cartVehicleError, setCartVehicleError] = React.useState(emptyErrorCartVehicle);
 
     const getSaleError = () => {
         setSaleError(emptyError)
@@ -267,41 +371,32 @@ export function SaleState(props) {
     const validateSaleOnSubmit = () => {
         const updatedErrors = {};
         Object.keys(saleError).forEach((name) => {
-            updatedErrors[name] = checkSale(sale, name, edit);
+            updatedErrors[name] = checkSale(sale, name);
         });
         setSaleError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     }
 
     const validateSaleOnBlur = (sale, name) => {
-        setSaleError({...saleError, [name]: checkSale(sale, name, edit)});
+        setSaleError({...saleError, [name]: checkSale(sale, name)});
     }
 
-
-    const clientesVenta = async () => {
-        try {
-            const response = await getAllClientes();
-//            setCustomers(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
+    const getCartVehicleError = () => {
+        setCartVehicleError(emptyErrorCartVehicle)
     }
 
-    const empleadosVenta = async () => {
-        try {
-            const response = await getAllEmpleados();
-            // setEmployees(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
+    const validateCartVehicleOnSubmit = () => {
+        const updatedErrors = {};
+        Object.keys(cartVehicleError).forEach((name) => {
+            updatedErrors[name] = checkSale(cartVehicle, name);
+        });
+        setCartVehicleError(updatedErrors);
+        return Object.values(updatedErrors).some((error) => error !== '');
     }
 
+    const validateCartVehicleOnBlur = (cartVehicle, name) => {
+        setCartVehicleError({...cartVehicleError, [name]: checkSale(cartVehicle, name)});
+    }
 
     return (
         <SaleContext.Provider value={{
@@ -331,7 +426,6 @@ export function SaleState(props) {
             handleInputChange,
             handleSubmit,
             handleOnBlur,
-            // handleDelete,
             handleOpenForm,
             handleCloseForm,
             handleCloseSnackbar,
@@ -350,6 +444,17 @@ export function SaleState(props) {
             validateSaleOnSubmit,
             validateSaleOnBlur,
             openFilter,
+            cart,
+            handleInputChangeCart,
+            addCartVehicle,
+            cartVehicle,
+            vehicles,
+            deleteCartVehicle,
+            handleOnBlurCartVehicle,
+            cartVehicleError,
+            getCartVehicleError,
+            total,
+            extras
         }}>
             {props.children}
         </SaleContext.Provider>

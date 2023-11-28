@@ -55,7 +55,6 @@ export function AuthState(props) {
             {
                 history('/dashboard', { replace: true })
             }
-        
         } catch(error){
             setErrorMessage('login.error')
             setSnackbarOpen(true);
@@ -106,7 +105,7 @@ export function AuthState(props) {
     }
 
 
-    const updateToken = async ()=> {       
+    const updateToken = async ()=> {
         try{
             const response = await refresh(authTokens.refresh)
             setAuthTokens(response.data)
@@ -169,10 +168,3 @@ export function AuthState(props) {
         </AuthContext.Provider>
     )
 }
-
-
-
-
-
-
-
