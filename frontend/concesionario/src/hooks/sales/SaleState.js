@@ -48,6 +48,13 @@ export function SaleState(props) {
         vehiculos: [],
     };
 
+    const emptyCartVehicle = {
+        id: "",
+        vehiculo: "",
+        descuento: "",
+        extra: "",
+    }
+
     const emptyError = {
         id: "",
         cedulaCliente: "",
@@ -65,8 +72,24 @@ export function SaleState(props) {
     const [messageSnackbar, setMessageSnackbar] = useState('');
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [vehicles, setVehicles] = React.useState([]);
+    const [extras, setExtras] = React.useState([]);
 
-    
+    const getExtras = async () => {
+
+    }
+
+    const getVehicles = async () => {
+        try {
+            const response = await getAllVehiculos(authTokens.access);
+            setVehicles(response.data);
+
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+    }
+
     const getSales = async () => {
         try {
             const response = await getAllVentas(authTokens.access);
@@ -99,10 +122,10 @@ export function SaleState(props) {
         }
     }
 
-    const addVenta = async (venta) => {
+    const addSale = async (sale) => {
 
         try {
-            const response = await createVenta(venta);
+            const response = await createVenta(sale);
             setSales([...sales, response.data]);
             setTypeSnackbar('success');
             setMessageSnackbar('ventas.mensaje.agregada');
@@ -116,11 +139,11 @@ export function SaleState(props) {
         }
     }
 
-    const updateVenta = async (venta) => {
+    const updateSale = async (sale) => {
             
         try
         {
-            await updateVenta(venta.id, venta);
+            await updateSale(sale.id, sale);
             setTypeSnackbar('success');
             setMessageSnackbar('venta.mensaje.editado');
             handleOpenSnackbar();
@@ -157,10 +180,10 @@ export function SaleState(props) {
         event.preventDefault();
         if (!validateSaleOnSubmit()) {
             if (edit) {
-                updateVenta(sale).then(() => getSales());
+                updateSale(sale).then(() => getSales());
             }
             else {
-                addVenta(sale).then(() => getSales());
+                addSale(sale).then(() => getSales());
             }
         }
     }
@@ -169,7 +192,6 @@ export function SaleState(props) {
         const { name } = event.target;
         validateSaleOnBlur(sale, name);
     }
-
 
     const handleOpenForm = async (event, id) => {
         getSaleError();
@@ -192,6 +214,51 @@ export function SaleState(props) {
 
     const handleOpenSnackbar = () => {
         setOpenSnackbar(true);
+    }
+
+    const [cart, setCart] = React.useState([]);
+    const [cartVehicle, setCartVehicle] = React.useState(emptyCartVehicle);
+
+    const getCart = async () => {
+
+    }
+
+    const addCartVehicle = (cartVehicle) => {
+
+        if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ventas.mensaje.errorVehiculo');
+            handleOpenSnackbar();
+            return;
+        }
+        {
+            const cartVehicle1 = {
+                id: cartVehicle.vehiculo.vin,
+                vin: cartVehicle.vehiculo.vin,
+                nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
+                descuento: cartVehicle.descuento,
+                hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
+                idExtra: 1,
+                nombreExtra: "Vidrios Polarizados"
+            };
+
+            setCart([...cart, cartVehicle1]);
+            setCartVehicle(emptyCartVehicle);
+            setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+        }
+    }
+
+    const handleDeleteCart = async (vin) => {
+        setCart(cart.filter((item) => item.id !== vin));
+    }
+
+    const handleInputChangeCart = (event) => {
+        const { name, value } = event.target;
+        setCartVehicle({
+            ...cartVehicle,
+            [name]: value
+        });
     }
 
     const [filterName, setFilterName] = useState('');
@@ -281,111 +348,6 @@ export function SaleState(props) {
         setSaleError({...saleError, [name]: checkSale(sale, name, edit)});
     }
 
-
-    const clientesVenta = async () => {
-        try {
-            const response = await getAllClientes();
-//            setCustomers(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
-    }
-
-    const empleadosVenta = async () => {
-        try {
-            const response = await getAllEmpleados();
-            // setEmployees(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
-    }
-
-    const getVehicles = async () => {
-        try {
-            const response = await getAllVehiculos(authTokens.access);
-            setVehicles(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
-    }
-
-    const emptyCartVehicle = {
-        id: "",
-        vehiculo: "",
-        descuento: "",
-        extra: "",
-    }
-
-    const [cartVehicle, setCartVehicle] = React.useState(emptyCartVehicle);
-    const [cart, setCart] = React.useState([]);
-
-    const handleInputChangeCart = (event) => {
-        const { name, value } = event.target;
-        setCartVehicle({
-            ...cartVehicle,
-            [name]: value
-        });
-    }
-
-    const handleAddCart = (event) => {
-        event.preventDefault();
-
-        if (cart.map((item) => item.id).includes(cartVehicle.vehiculo.vin))
-        {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorVehiculo');
-            handleOpenSnackbar();
-            return;
-        }
-        {
-            const cartVehicle1 = {
-                id: cartVehicle.vehiculo.vin,
-                vin: cartVehicle.vehiculo.vin,
-                nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
-                descuento: cartVehicle.descuento,
-                hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
-                idExtra: 1,
-                nombreExtra: "Vidrios Polarizados"
-            };
-
-            setCart([...cart, cartVehicle1]);
-            setCartVehicle(emptyCartVehicle);
-            setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
-        }
-    }
-
-    const handleDeleteCart = async (event, vin) => {
-        event.preventDefault();
-
-        setCart(cart.filter((item) => item.id !== vin));
-    }
-
-
-    const getCart = async () => {
-        try {
-            const response = await getAllVehiculos(authTokens.access);
-            setVehicles(response.data);
-
-        } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
-    }
-
-    // const handleSubmitCart = (event) => {
-        
-
-
     return (
         <SaleContext.Provider value={{
             TABLE_HEAD,
@@ -414,7 +376,6 @@ export function SaleState(props) {
             handleInputChange,
             handleSubmit,
             handleOnBlur,
-            // handleDelete,
             handleOpenForm,
             handleCloseForm,
             handleCloseSnackbar,
@@ -435,7 +396,7 @@ export function SaleState(props) {
             openFilter,
             cart,
             handleInputChangeCart,
-            handleAddCart,
+            handleAddCart: addCartVehicle,
             cartVehicle,
             vehicles,
             handleDeleteCart
