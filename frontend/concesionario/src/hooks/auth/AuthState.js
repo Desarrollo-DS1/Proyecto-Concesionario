@@ -55,7 +55,6 @@ export function AuthState(props) {
             {
                 history('/dashboard', { replace: true })
             }
-
         } catch(error){
             setErrorMessage('login.error')
             setSnackbarOpen(true);

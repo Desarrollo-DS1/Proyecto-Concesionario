@@ -2,9 +2,9 @@ import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {useTranslation} from "react-i18next";
 import {
-    Box, Divider,
+    Box, Checkbox, Divider, FormControlLabel,
     IconButton,
-    Stack,
+    Stack, Table, TableBody, TableCell, TableRow,
     TextField,
     Typography
 } from "@mui/material";
@@ -12,8 +12,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
-import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
-import SparePartContext from "../../../hooks/sparePart/SparePartContext";
+import HomeRepairServiceRoundedIcon from '@mui/icons-material/HomeRepairServiceRounded';
+import WorkOrderContext from "../../../hooks/workOrder/WorkOrderContext";
+import LabelPlate from "../../../components/label-plate/LabelPlate";
 
 const scrollBarStyle = {
     scrollbarWidth: 'thin',
@@ -31,38 +32,26 @@ const scrollBarStyle = {
     },
 }
 
-const createRows = (array, t, onChange) => (
+const createRows = (array, t, onChange, workOrder) => (
     array.map(el => (
-
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between" key={el.id} mb={2}>
+        <Stack direction="row" alignItems="center" justifyContent="space-between" key={el.id}>
             <Typography variant="subtitle1">
-                {el.sucursal}
+                {el.servicio}
             </Typography>
-            <TextField
-                label={t('repuestos.label.cantidad')}
-                name="cantidad"
-                value={el.cantidad}
-                variant="outlined"
-                onChange={(event)=>onChange(event, el.id)}
-                InputProps={{
-                    inputProps: { min: 0 }
-                }}
-            />
+            <Checkbox disabled={workOrder.estado} checked={el.estado} onChange={(event)=>onChange(event, el.id)}/>
         </Stack>
     ))
 );
 
-
-export default function SparePartInventoryForm() {
+export default function ServiceWorkOrderForm() {
 
     const {
-         inventory,
+         workOrder,
+         service,
          subtitle,
-         openInventoryForm,
-         handleInputChangeInventory,
-         handleCloseInventoryForm,
-         handleOnSubmitInventory} = useContext(SparePartContext);
+         openServiceForm,
+         handleInputChangeService,
+         handleCloseServiceForm} = useContext(WorkOrderContext);
 
 
     const theme = useTheme()
@@ -75,9 +64,9 @@ export default function SparePartInventoryForm() {
         transform: 'translate(-50%, -50%)',
         width: "auto",
         height: "auto",
-        maxWidth: isSmallScreen ? "80%" : "27%",
+        maxWidth: isSmallScreen ? "80%" : "40%",
         maxHeight: isSmallScreen ? "80%" : "80%",
-        minWidth: isSmallScreen ? "80%" : "27%",
+        minWidth: isSmallScreen ? "80%" : "30%",
         minHeight: "20%",
         overflowY: 'auto',
         bgcolor: 'background.paper',
@@ -92,8 +81,8 @@ export default function SparePartInventoryForm() {
 
     return (
         <Modal
-            open = {openInventoryForm}
-            onClose={handleCloseInventoryForm}
+            open = {openServiceForm}
+            onClose={handleCloseServiceForm}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
         >
@@ -104,24 +93,27 @@ export default function SparePartInventoryForm() {
                 autoComplete="off"
                 // onSubmit={handleSubmit}
             >
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} >
+                <Stack direction="row" alignItems="center" justifyContent="space-between" >
                     <Stack>
                         <Typography variant="h4" gutterBottom>
-                            {t('repuestos.encabezado.inventario')}
+                            {t('ordenesTrabajo.encabezado.servicios')}
                         </Typography>
-                        <Typography variant="subtitle1">
-                            {subtitle}
-                        </Typography>
-                    </Stack >
-                    <Inventory2RoundedIcon />
+                    </Stack>
+                    <HomeRepairServiceRoundedIcon />
                 </Stack>
-                <Divider sx={{ mb: 2}} />
-                {createRows(inventory, t, handleInputChangeInventory)}
+                <Stack direction="row" alignItems="center" mb={2} >
+                    <LabelPlate plate={workOrder.placa} />
+                    <Typography variant="subtitle2" ml={1}>
+                        {subtitle}
+                    </Typography>
+                </Stack>
+                <Divider/>
+                {createRows(service, t, handleInputChangeService, workOrder)}
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
-                    <IconButton color="success" >
+                    <IconButton color="success" disabled={workOrder.estado}>
                         <DoneRoundedIcon />
                     </IconButton>
-                    <IconButton color="error" onClick={(event)=>handleCloseInventoryForm(event)}>
+                    <IconButton color="error" onClick={(event)=>handleCloseServiceForm(event)}>
                         <ClearRoundedIcon />
                     </IconButton>
                 </Stack>

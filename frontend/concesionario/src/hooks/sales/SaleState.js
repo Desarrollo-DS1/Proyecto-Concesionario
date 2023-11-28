@@ -7,7 +7,7 @@ import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Vent
 import { getAllEmpleados } from "../../api/Empleado.api";
 import { getAllVehiculos } from "../../api/Vehiculo.api";
 // import { setEmployeeError } from "../employee/EmployeeState";
-// import { setCustomers } from "../customer/CustomerState";
+// import { setCustomers } from "../customer/CustomerOrderState";
 // import { setEmployees } from "../employee/EmployeeState";
 import { getAllClientes } from "../../api/Cliente.api";
 import AuthContext from "../auth/AuthContext";

@@ -256,13 +256,16 @@
       "error": "Error adding work order",
       "errorEditar": "Error editing work order",
       "errorEliminar": "Error deleting work order",
-      "confirmacionEliminar": "Are you sure you want to delete the work order with ID {{id}}?",
+      "confirmacionEliminar": "Are you sure you want to delete the work order for vehicle {{placa}}?",
       "errorPlaca": "There is already an active work order with the entered plate",
       "errorListando": "Error listing work orders",
       "errorCargando": "Error loading work order"
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Customer",
+      "cedulaJefeTaller": "Workshop Manager",
+      "comentario": "Comment",
       "nombreCliente": "Name",
       "nombreVendedor": "Name",
       "cliente": "Client",
@@ -321,6 +324,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Orders",
+      "detalles": "Details",
+      "servicios": "Services",
+      "repuestos": "Spare Parts"
+    },
+    "mensaje": {
+      "errorListando": "Error listing orders"
+    },
+    "label": {
+      "fechaInicio": "Start Date",
+      "fechaEsperada": "Expected Date",
+      "fechaFin": "Delivery Date",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "In Workshop",
+      "entregado": "Delivered",
+      "atrazado": "Delayed"
+    }
+  },
+
   "errores": {
     "requerido": "Required field",
     "numerico": "Only numbers are allowed",
@@ -332,6 +358,7 @@
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
     "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
+    "placa": "Enter a valid plate",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",

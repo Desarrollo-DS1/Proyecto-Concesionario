@@ -2,6 +2,7 @@ import {useContext} from "react";
 import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
+import CustomerLayout from './layouts/customer';
 import SimpleLayout from './layouts/simple';
 import LoadLayout from "./layouts/load/LoadLayout";
 //
@@ -23,6 +24,8 @@ import SparePartPage from "./pages/SparePartPage";
 import {SparePartState} from "./hooks/sparePart/SparePartState";
 import WorkOrderPage from "./pages/WorkOrderPage";
 import {WorkOrderState} from "./hooks/workOrder/WorkOrderState";
+import CustomerOrderPage from "./pages/CustomerOrderPage";
+import {CustomerOrderState} from "./hooks/customerOrder/CustomerOrderState";
 
 // ----------------------------------------------------------------------
 
@@ -55,8 +58,16 @@ export default function Router() {
         { path: 'ordenes-trabajo', element: <WorkOrderState><WorkOrderPage /> </WorkOrderState>},
       ],
     },
-    {element: <LoadLayout />,
+    {
+      path: '/cliente',
+      element: user && user.tipoUsuario === 'Cliente'  ? <CustomerLayout /> : redirectToLogin(),
       children: [
+        { element: <Navigate to="/cliente/ordenes" />, index: true },
+        { path: 'ordenes', element: <CustomerOrderState><CustomerOrderPage /></CustomerOrderState>},
+      ],
+    },
+    {element: <LoadLayout />,
+    children: [
         { element: user && user.tipoUsuario !== 'Cliente' ? redirectToDashboard() : <Navigate to="/login" />, index: true },
         { element: user && user.tipoUsuario === 'Cliente' ? redirectToCustomer() : <Navigate to="/login" />, index: true },
         { path: 'load', element: <LoadLayout /> },

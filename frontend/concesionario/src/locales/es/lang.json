@@ -259,13 +259,16 @@
       "error": "Error al agregar orden de trabajo",
       "errorEditar": "Error al editar orden de trabajo",
       "errorEliminar": "Error al eliminar orden de trabajo",
-      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo de id {{id}}?",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo del vehiculo {{placa}}?",
       "errorPlaca": "Ya existe una orden de trabajo activa con la placa ingresada",
       "errorListando": "Error al listar ordenes de trabajo",
       "errorCargando": "Error al cargar orden de trabajo"
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaJefeTaller": "Jefe de Taller",
+      "comentario": "Comentario",
       "nombreCliente": "Nombre",
       "nombreVendedor": "Nombre",
       "cliente": "Cliente",
@@ -324,6 +327,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Ordenes",
+      "detalles": "Detalles",
+      "servicios": "Servicios",
+      "repuestos": "Repuestos"
+    },
+    "mensaje": {
+      "errorListando": "Error al listar ordenes"
+    },
+    "label": {
+      "fechaInicio": "Fecha de inicio",
+      "fechaEsperada": "Fecha esperada",
+      "fechaFin": "Fecha de entrega",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "En Taller",
+      "entregado": "Entregado",
+      "atrazado": "Atrazado"
+    }
+  },
+
   "errores": {
     "requerido": "Este campo es requerido",
     "numerico": "Solo se permiten numeros",
@@ -335,6 +361,7 @@
     "correo": "Ingrese un correo valido",
     "fecha": "Ingrese una fecha valida",
     "vinCaracteresNoPermitidos": "No se permiten los caracteres I, O, Q",
+    "placa": "Ingrese una placa valida",
     "contraseña": {
         "numerico": "Debe tener al menos un numero",
         "minuscula": "Debe tener al menos una minuscula",
