@@ -146,7 +146,9 @@
         "error": "Error al agregar venta",
         "errorEditar": "Error al editar venta",
         "errorListando": "Error al listar ventas",
-        "errorCargando": "Error al cargar venta"
+        "errorCargando": "Error al cargar venta",
+        "errorVehiculo": "El vehiculo ya fue agregado a la venta",
+        "errorVehiculos": "Es necesario agregar al menos un vehiculo a la venta"
       },
   
       "label": {
@@ -166,7 +168,8 @@
         "vehiculo": "Vehiculo",
         "descuento": "Descuento",
         "extra": "Extra",
-        "color": "Color"
+        "color": "Color",
+        "total": "Total"
       }
     },
     "sucursal": {

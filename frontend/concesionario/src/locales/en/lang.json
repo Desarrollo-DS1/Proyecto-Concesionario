@@ -149,7 +149,9 @@
       "error": "Error adding sale",
       "errorEditar": "Error editing sale",
       "errorListando": "Error when listing sales",
-      "errorCargando": "Error loading sale"
+      "errorCargando": "Error loading sale",
+      "errorVehiculo": "The vehicle has already been added to the sale",
+      "errorVehiculos": "It is necessary to add at least one vehicle for sale"
     },
 
     "label": {
@@ -169,7 +171,8 @@
       "vehiculo": "Vehicle",
       "descuento": "Discount",
       "extra": "Extra",
-      "color": "Color"
+      "color": "Color",
+      "total": "Total"
     }
   },
 

@@ -44,14 +44,13 @@ export function SaleState(props) {
         cedulaCliente: "",
         cedulaVendedor: user.user_id,
         fechaVenta: "",
-        valorVenta: "",
         vehiculos: [],
     };
 
     const emptyCartVehicle = {
         id: "",
         vehiculo: "",
-        descuento: "",
+        descuento: "0",
         extra: "",
     }
 
@@ -61,10 +60,7 @@ export function SaleState(props) {
         cedulaVendedor: "",
         fechaVenta: "",
         valorVenta: "",
-        vehiculos: "",
-        vehiculo: "",
-        descuento: "",
-        extra: "",
+        vehiculos: ""
     };
 
     const emptyErrorCartVehicle = {
@@ -83,6 +79,7 @@ export function SaleState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [vehicles, setVehicles] = React.useState([]);
     const [extras, setExtras] = React.useState([]);
+    const [total, setTotal] = React.useState(100000000);
 
     const getExtras = async () => {
 
@@ -178,6 +175,10 @@ export function SaleState(props) {
         }
     }
 
+    const calculateTotal = () => {
+        console.log(cartVehicle)
+    }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setSale({
@@ -189,6 +190,14 @@ export function SaleState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateSaleOnSubmit()) {
+            if(sale.vehiculos.length === 0)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorVehiculos');
+                handleOpenSnackbar();
+                return;
+            }
+
             if (edit) {
                 updateSale(sale).then(() => getSales());
             }
@@ -261,6 +270,7 @@ export function SaleState(props) {
                 setCart([...cart, cartVehicle1]);
                 setCartVehicle(emptyCartVehicle);
                 setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+                calculateTotal();
             }
         }
     }
@@ -443,6 +453,8 @@ export function SaleState(props) {
             handleOnBlurCartVehicle,
             cartVehicleError,
             getCartVehicleError,
+            total,
+            extras
         }}>
             {props.children}
         </SaleContext.Provider>

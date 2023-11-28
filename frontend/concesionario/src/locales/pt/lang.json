@@ -143,7 +143,11 @@
       "agregado": "Venda adicionada com sucesso",
       "editado": "Venta editada com sucesso",
       "error": "Erro ao adicionar venda",
-      "errorEditar": "Erro ao editar venda"
+      "errorEditar": "Erro ao editar venda",
+      "errorListando": "Erro ao listar vendas",
+      "errorCargando": "Erro ao carregar venda",
+      "errorVehiculo": "O veículo já foi adicionado à venda",
+      "errorVehiculos": "É necessário adicionar pelo menos um veículo à venda"
     },
 
     "label": {
@@ -163,7 +167,8 @@
       "vehiculo": "Veículo",
       "descuento": "Desconto",
       "extra": "Extra",
-      "color": "Cor"
+      "color": "Cor",
+      "total": "Total"
     }
   },
 

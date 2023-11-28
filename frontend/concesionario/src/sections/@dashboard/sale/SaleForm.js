@@ -2,9 +2,8 @@ import React, {useContext} from 'react';
 import Modal from '@mui/material/Modal';
 import { useTranslation } from 'react-i18next';
 import {
-    Backdrop,
     Box,
-    Button, Card, CircularProgress,
+    Button, Card,
     Divider,
     Grid, IconButton, InputAdornment,
     MenuItem,
@@ -12,13 +11,12 @@ import {
     TextField,
     Typography
 } from "@mui/material";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import DeleteIcon from "@mui/icons-material/Delete";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import SaleContext from '../../../hooks/sales/SaleContext';
 import Scrollbar from "../../../components/scrollbar";
+
 
 const selectMenuProps = {
     anchorOrigin: {
@@ -38,7 +36,7 @@ const selectMenuProps = {
 };
 
 const inputProps = {
-    startAdornment: <InputAdornment position="start">$</InputAdornment>,
+    startAdornment: <InputAdornment position="start">%</InputAdornment>,
 };
 
 const scrollBarStyle = {
@@ -81,7 +79,7 @@ const crearFila = (cart, deleteCart) => {
                 </Stack>
             </TableCell >
             <TableCell align="center">
-                {el.descuento}
+                % {el.descuento}
             </TableCell>
             <TableCell align="center" >
                 {el.nombreExtra}
@@ -99,11 +97,7 @@ export default function SaleForm() {
 
     const {
         sale,
-        // customers,
-        // salespersons,
-        // dates,
-        // values,
-        // vehicless,
+        extras,
         openForm,
         handleInputChange,
         handleOnBlur,
@@ -118,7 +112,8 @@ export default function SaleForm() {
         vehicles,
         deleteCartVehicle,
         cartVehicleError,
-        handleOnBlurCartVehicle
+        handleOnBlurCartVehicle,
+        total
     } = useContext(SaleContext);
 
     const theme = useTheme()
@@ -270,6 +265,7 @@ export default function SaleForm() {
                                 label={t('ventas.label.descuento')} variant="outlined"
                                 helperText={t(cartVehicleError.descuento)}
                                 style={textFieldStyle}
+                                InputProps={inputProps}
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
@@ -288,6 +284,9 @@ export default function SaleForm() {
                         <Button variant="contained" color="primary" onClick={addCartVehicle}>
                             +
                         </Button>
+                        <Typography variant="subtitle1" gutterBottom>
+                            {t('ventas.label.total')}: $ {total}
+                        </Typography>
                     </Stack>
                     <Card>
                         <Scrollbar sx={{ height: 200 }}>
