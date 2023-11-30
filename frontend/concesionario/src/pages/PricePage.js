@@ -65,26 +65,26 @@ export default function SalePage() {
     return (
         <>
             <Helmet>
-                <title>{t('ventas.encabezado.tituloPlural')}</title>
+                <title>{t('cotizaciones.encabezado.tituloPlural')}</title>
             </Helmet>
 
             <Box sx={{margin: 2}}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        {t('ventas.encabezado.tituloPlural')}
+                        {t('cotizaciones.encabezado.tituloPlural')}
                     </Typography>
                     <Button sx={{textTransform: "none"}} variant="contained" startIcon={<Iconify icon="eva:plus-fill" />} onClick={(event)=>handleOpenForm(event, null)}>
-                        {t('ventas.encabezado.tituloSingular')}
+                        {t('cotizaciones.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
 
                 <Card>
-                    <ListToolbar context={PriceContext} name={t('ventas.encabezado.tituloSingular')} title={"ventas"}/>
+                    <ListToolbar context={PriceContext} name={t('cotizaciones.encabezado.tituloSingular')} title={"cotizaciones"}/>
 
                     <Scrollbar>
                         <TableContainer sx={{ minWidth: 1000 }}>
                             <Table>
-                                <ListHead context={PriceContext} name={"ventas"} />
+                                <ListHead context={PriceContext} name={"cotizaciones"} />
                                 <TableBody>
                                     {filteredPrices.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                                         const {id, cedulaCliente, nombreCliente, cedulaVendedor, nombreVendedor, fechaCotizacion, valorCotizacion, modelos,cotizacionModelo} = row;

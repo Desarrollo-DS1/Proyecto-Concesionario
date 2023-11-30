@@ -172,11 +172,53 @@
         "total": "Total"
       }
     },
+
+  "cotizaciones": {
+    "encabezado": {
+      "tituloPlural": "Cotizaciones",
+      "tituloSingular": "Cotizacion",
+      "agregar": "Agregar cotizacion",
+      "editar": "Editar cotizacion"
+    },
+
+    "mensaje": {
+      "agregado": "Cotizacion agregada correctamente",
+      "editado": "Cotizacion editada correctamente",
+      "error": "Error al agregar cotizacion",
+      "errorEditar": "Error al editar cotizacion",
+      "errorListando": "Error al listar cotizaciones",
+      "errorCargando": "Error al cargar cotizacion",
+      "errorModelo": "El modelo ya fue agregado a la venta",
+      "errorModelos": "Es necesario agregar al menos un modelo a la cotizacion"
+    },
+
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Nombre",
+      "nombreVendedor": "Nombre",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fecha": "Fecha",
+      "valor": "Total",
+      "modelos": "Modelos",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaCotizacion": "Fecha",
+      "modelo": "Modelo",
+      "extra": "Extra",
+      "color": "Color",
+      "total": "Total"
+    }
+  },
+
     "sucursal": {
         "mensaje": {
             "errorListando": "Error al listar sucursales"
         }
     },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",

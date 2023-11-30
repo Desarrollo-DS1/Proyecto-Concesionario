@@ -172,6 +172,44 @@
     }
   },
 
+  "cotizaciones": {
+    "encabezado": {
+      "tituloPlural": "Cotações",
+      "tituloSingular": "Cotação",
+      "agregar": "Adicionar cotação",
+      "editar": "Editar cotação"
+    },
+    "mensaje": {
+      "agregado": "Cotação adicionada com sucesso",
+      "editado": "Cotação editada com sucesso",
+      "error": "Erro ao adicionar cotação",
+      "errorEditar": "Erro ao editar cotação",
+      "errorListando": "Erro ao listar cotações",
+      "errorCargando": "Erro ao carregar cotação",
+      "errorModelo": "O modelo já foi adicionado à cotação",
+      "errorModelos": "É necessário adicionar pelo menos um modelo à cotação"
+    },
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Nome",
+      "nombreVendedor": "Nome",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fecha": "Data",
+      "valor": "Total",
+      "modelos": "Modelos",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaCotizacion": "Data",
+      "modelo": "Modelo",
+      "extra": "Extra",
+      "color": "Cor",
+      "total": "Total"
+    }
+  },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Modelos",
