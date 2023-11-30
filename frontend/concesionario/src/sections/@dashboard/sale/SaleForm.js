@@ -14,7 +14,7 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
-import SaleContext from '../../../hooks/sales/SaleContext';
+import SaleContext from '../../../hooks/sale/SaleContext';
 import Scrollbar from "../../../components/scrollbar";
 
 

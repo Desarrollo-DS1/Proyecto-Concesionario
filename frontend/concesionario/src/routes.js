@@ -18,8 +18,10 @@ import ModelPage from "./pages/ModelPage";
 import {VehicleState} from "./hooks/vehicle/VehicleState";
 import VehiclePage from "./pages/VehiclePage";
 import AuthContext  from "./hooks/auth/AuthContext";
-import {SaleState} from "./hooks/sales/SaleState";
+import {SaleState} from "./hooks/sale/SaleState";
 import SalePage from "./pages/SalePage";
+import {PriceState} from "./hooks/price/PriceState";
+import PricePage from "./pages/PricePage";
 import SparePartPage from "./pages/SparePartPage";
 import {SparePartState} from "./hooks/sparePart/SparePartState";
 import WorkOrderPage from "./pages/WorkOrderPage";
@@ -54,6 +56,7 @@ export default function Router() {
         { path: 'modelos', element: <ModelState><ModelPage /></ModelState> },
         { path: 'vehiculos', element: <VehicleState><VehiclePage /></VehicleState>},
         { path: 'ventas', element: <SaleState><SalePage /></SaleState>},
+        { path: 'cotizaciones', element: <PriceState><PricePage /></PriceState>},
         { path: 'repuestos', element: <SparePartState><SparePartPage /></SparePartState>},
         { path: 'ordenes-trabajo', element: <WorkOrderState><WorkOrderPage /> </WorkOrderState>},
       ],
