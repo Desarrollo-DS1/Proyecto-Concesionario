@@ -29,6 +29,7 @@ import ModelForm from "../sections/@dashboard/model/ModelForm";
 import ModelDelete from "../sections/@dashboard/model/ModelDelete";
 // context
 import ModelContext from "../hooks/model/ModelContext";
+import {fCurrency} from "../utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -111,7 +112,7 @@ export default function ModelPage() {
 
                                                 <TableCell align="left">{numeroPasajeros}</TableCell>
 
-                                                <TableCell align="left">$ {precioBase}</TableCell>
+                                                <TableCell align="left">$ {fCurrency(precioBase)}</TableCell>
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>

@@ -18,7 +18,7 @@ PriceState.propTypes = {
     children: propTypes.node,
 };
 
-export function PriceState(props) {
+export default function PriceState(props) {
 
     const {authTokens, user} = useContext(AuthContext);
 
@@ -51,7 +51,7 @@ export function PriceState(props) {
 
     const emptyCartModel = {
         id: "",
-        vehiculo: "",
+        modelo: "",
         color: "",
         extra: "",
     }
@@ -67,7 +67,7 @@ export function PriceState(props) {
 
     const emptyErrorCartModel = {
         id: "",
-        model: "",
+        modelo: "",
         color: "",
         extra: "",
     }
@@ -214,7 +214,7 @@ export function PriceState(props) {
             if(price.modelos.length === 0)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('cotizaciones.mensaje.errorVehiculos');
+                setMessageSnackbar('cotizaciones.mensaje.errorModelos');
                 handleOpenSnackbar();
                 return;
             }
@@ -234,15 +234,17 @@ export function PriceState(props) {
     }
 
     const handleOpenForm = async (event, id) => {
-        getCartVehicleError();
+        getCartModelError();
         getPriceError();
         await getModels();
+        await getColors();
         await getPrice(id);
         setOpenForm(true);
     }
 
     const handleCloseForm = () => {
         setCart([]);
+        setCartModel(emptyCartModel);
         setOpenForm(false);
     }
 
@@ -258,7 +260,7 @@ export function PriceState(props) {
     }
 
     const [cart, setCart] = React.useState([]);
-    const [cartModelo, setCartModelo] = React.useState(emptyCartModel);
+    const [cartModel, setCartModel] = React.useState(emptyCartModel);
 
     const getCart = async () => {
 
@@ -268,28 +270,29 @@ export function PriceState(props) {
 
         event.preventDefault();
 
-        if (!validateCartPriceOnSubmit())
+        if (!validateCartModelOnSubmit())
         {
-            if (cart.map((item) => item.id).includes(cartModelo.model.vin))
+            if (cart.map((item) => item.id).includes(cartModel.modelo.id + cartModel.color.idColor))
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('ventas.mensaje.errorVehiculo');
+                setMessageSnackbar('cotizaciones.mensaje.errorModelo');
                 handleOpenSnackbar();
                 return;
             }
             {
                 const cartModel1 = {
-                    id: cartModelo.model.vin,
-                    vin: cartModelo.model.vin,
-                    nombreVehiculo: cartModelo.model.nombreModelo,
-                    color: cartModelo.color,
-                    hexadecimalColor: cartModelo.vehiculo.hexadecimalColor,
+                    id: cartModel.modelo.id + cartModel.color.idColor,
+                    idModelo: cartModel.modelo.id,
+                    nombreModelo: cartModel.modelo.nombre,
+                    idColor: cartModel.color.idColor,
+                    color: cartModel.color.colorNombre,
+                    hexadecimalColor: cartModel.color.hexadecimalColor,
                     idExtra: 1,
                     nombreExtra: "Vidrios Polarizados"
                 };
 
                 setCart([...cart, cartModel1]);
-                setCartModelo(emptyCartModel);
+                setCartModel(emptyCartModel);
                 setPrice({...price, modelos: [...price.modelos, cartModel1]})
                 calculateTotal();
             }
@@ -304,15 +307,15 @@ export function PriceState(props) {
 
     const handleInputChangeCart = (event) => {
         const { name, value } = event.target;
-        setCartModelo({
-            ...cartModelo,
+        setCartModel({
+            ...cartModel,
             [name]: value
         });
     }
 
     const handleOnBlurCartModel = (event) => {
         const { name } = event.target;
-        validateCartPriceOnBlur(cartModelo, name);
+        validateCartModelOnBlur(cartModel, name);
     }
 
     const [filterName, setFilterName] = useState('');
@@ -383,7 +386,7 @@ export function PriceState(props) {
     const isNotFound = !filteredPrices.length && !!filterName;
 
     const [priceError, setPriceError] = React.useState(emptyError);
-    const [cartPriceError, setCartPriceError] = React.useState(emptyErrorCartModel);
+    const [cartModelError, setCartModelError] = React.useState(emptyErrorCartModel);
 
     const getPriceError = () => {
         setPriceError(emptyError)
@@ -402,21 +405,21 @@ export function PriceState(props) {
         setPriceError({...priceError, [name]: checkSale(sale, name)});
     }
 
-    const getCartVehicleError = () => {
-        setCartPriceError(emptyErrorCartModel)
+    const getCartModelError = () => {
+        setCartModelError(emptyErrorCartModel)
     }
 
-    const validateCartPriceOnSubmit = () => {
+    const validateCartModelOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(cartPriceError).forEach((name) => {
-            updatedErrors[name] = checkSale(cartModelo, name);
+        Object.keys(cartModelError).forEach((name) => {
+            updatedErrors[name] = checkSale(cartModel, name);
         });
-        setCartPriceError(updatedErrors);
+        setCartModelError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     }
 
-    const validateCartPriceOnBlur = (cartVehicle, name) => {
-        setCartPriceError({...cartPriceError, [name]: checkSale(cartVehicle, name)});
+    const validateCartModelOnBlur = (cartVehicle, name) => {
+        setCartModelError({...cartModelError, [name]: checkSale(cartVehicle, name)});
     }
 
     return (
@@ -468,12 +471,14 @@ export function PriceState(props) {
             cart,
             handleInputChangeCart,
             addCartModel,
-            cartModelo,
+            cartModel,
             models,
+            colors,
             deleteCartModel,
             handleOnBlurCartModel,
-            cartPriceError,
-            getCartVehicleError,
+            cartModelError,
+            getCartModelError,
+            validateCartModelOnSubmit,
             total,
             extras
         }}>

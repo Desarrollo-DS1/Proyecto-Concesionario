@@ -10,7 +10,7 @@ AuthState.propTypes = {
     children: propTypes.node,
 }
 
-export function AuthState(props) {
+export default function AuthState(props) {
 
     const captchaRef = createRef(null);
 

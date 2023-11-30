@@ -26,7 +26,7 @@ import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
 // sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
-import SaleForm from "../sections/@dashboard/sale/SaleForm";
+import PriceForm from "../sections/@dashboard/price/PriceForm";
 // import SaleDelete from "../sections/@dashboard/sale/SaleDelete";
 // mock
 import PriceContext from "../hooks/price/PriceContext";
@@ -77,6 +77,8 @@ export default function SalePage() {
                         {t('cotizaciones.encabezado.tituloSingular')}
                     </Button>
                 </Stack>
+
+                <PriceForm/>
 
                 <Card>
                     <ListToolbar context={PriceContext} name={t('cotizaciones.encabezado.tituloSingular')} title={"cotizaciones"}/>

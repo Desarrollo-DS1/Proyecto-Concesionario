@@ -1,13 +1,13 @@
-function checkCedulaCliente(sale){
-    if (sale.cedulaCliente === null || toString(sale.cedulaCliente).trim() === '' || sale.cedulaCliente  === '') {
+function checkCedulaCliente(price){
+    if (price.cedulaCliente === null || toString(price.cedulaCliente).trim() === '' || price.cedulaCliente  === '') {
 
         return "errores.requerido";
     }
-    if (!sale.cedulaCliente.match(/^[0-9]+$/))
+    if (!price.cedulaCliente.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (sale.cedulaCliente.length > 10 || sale.cedulaCliente.length < 8)
+    if (price.cedulaCliente.length > 10 || price.cedulaCliente.length < 8)
     {
         return "errores.longitudMaxMin";
     }
@@ -15,56 +15,58 @@ function checkCedulaCliente(sale){
     return "";
 }
 
-function checkDate(sale){
-    if (sale.fechaVenta === null || sale.fechaVenta.trim() === '') {
+function checkDate(price){
+    if (price.fechaCotizacion === null || price.fechaCotizacion.trim() === '') {
         return "errores.requerido";
     }
-    const fechaVenta = new Date(sale.fechaVenta);
-    if (fechaVenta.getFullYear() < 1900)
+    const fechaCotizacion = new Date(price.fechaCotizacion);
+    if (fechaCotizacion.getFullYear() < 1900)
     {
         return "errores.fecha";
     }
     return "";
 }
 
-function checkVehicle(cartVehicle){
-    if (typeof cartVehicle.vehiculo === 'string')
+function checkModel(cartModel){
+    if (typeof cartModel.modelo === 'string')
     {
-        if (cartVehicle.vehiculo.trim() === '')
+        if (cartModel.modelo.trim() === '')
         {
             return  "errores.requerido";
         }
     }
-    if (cartVehicle.vehiculo === null) {
+    if (cartModel.modelo === null) {
         return "errores.requerido";
     }
     return "";
 }
 
-function checkDiscount(cartVehicle){
-    if (!cartVehicle.descuento.match(/^[0-9]+$/))
+function checkColor(cartModel){
+    if (typeof cartModel.color === 'string')
     {
-        return "errores.numerico";
+        if (cartModel.color.trim() === '')
+        {
+            return  "errores.requerido";
+        }
     }
-    if (cartVehicle.descuento.length > 2)
-    {
-        return "errores.longitudMax";
+    if (cartModel.color === null) {
+        return "errores.requerido";
     }
     return "";
 }
 
-export function checkSale(sale, name) {
+export function checkSale(price, name) {
     if (name === 'cedulaCliente') {
-        return checkCedulaCliente(sale);
+        return checkCedulaCliente(price);
     }
-    if (name === 'fechaVenta') {
-        return checkDate(sale);
+    if (name === 'fechaCotizacion') {
+        return checkDate(price);
     }
-    if (name === 'vehiculo') {
-        return checkVehicle(sale);
+    if (name === 'modelo') {
+        return checkModel(price);
     }
-    if (name === 'descuento') {
-        return checkDiscount(sale);
+    if (name === 'color') {
+        return checkColor(price);
     }
 
     return "";

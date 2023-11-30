@@ -13,7 +13,7 @@ SparePartState.propTypes = {
     children: propTypes.node,
 }
 
-export function SparePartState(props) {
+export default function SparePartState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [

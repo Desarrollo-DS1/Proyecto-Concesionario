@@ -14,7 +14,7 @@ VehicleState.propTypes = {
     children: propTypes.node,
 }
 
-export function VehicleState(props) {
+export default function VehicleState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
