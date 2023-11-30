@@ -13,7 +13,7 @@ WorkOrderState.propTypes = {
     children: propTypes.node,
 }
 
-export function WorkOrderState(props) {
+export default function WorkOrderState(props) {
     const {authTokens, user} = useContext(AuthContext);
 
     const TABLE_HEAD = [

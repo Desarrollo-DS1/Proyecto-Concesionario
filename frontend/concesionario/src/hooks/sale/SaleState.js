@@ -16,7 +16,7 @@ SaleState.propTypes = {
     children: propTypes.node,
 };
 
-export function SaleState(props) {
+export default function SaleState(props) {
 
     const {authTokens, user} = useContext(AuthContext);
 
@@ -222,6 +222,7 @@ export function SaleState(props) {
 
     const handleCloseForm = () => {
         setCart([]);
+        setCartVehicle(emptyCartVehicle);
         setOpenForm(false);
     }
 

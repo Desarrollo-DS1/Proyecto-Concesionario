@@ -11,7 +11,7 @@ ModelState.propTypes = {
     children: propTypes.node,
 }
 
-export function ModelState(props) {
+export default function ModelState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [

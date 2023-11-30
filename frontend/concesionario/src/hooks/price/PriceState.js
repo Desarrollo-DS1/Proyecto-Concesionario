@@ -18,7 +18,7 @@ PriceState.propTypes = {
     children: propTypes.node,
 };
 
-export function PriceState(props) {
+export default function PriceState(props) {
 
     const {authTokens, user} = useContext(AuthContext);
 
@@ -244,6 +244,7 @@ export function PriceState(props) {
 
     const handleCloseForm = () => {
         setCart([]);
+        setCartModel(emptyCartModel);
         setOpenForm(false);
     }
 
@@ -267,35 +268,35 @@ export function PriceState(props) {
 
     const addCartModel = (event) => {
 
-        // event.preventDefault();
-        //
-        // if (!validateCartModelOnSubmit())
-        // {
-        //     if (cart.map((item) => item.id).includes(cartModel.model.vin))
-        //     {
-        //     {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('ventas.mensaje.errorModelo');
-        //         handleOpenSnackbar();
-        //         return;
-        //     }
-        //     {
-        //         const cartModel1 = {
-        //             id: cartModel.model.vin,
-        //             vin: cartModel.model.vin,
-        //             nombreModelo: cartModel.model.nombreModelo,
-        //             color: cartModel.color.nombre,
-        //             hexadecimalColor: cartModel.color.hexadecimalColor,
-        //             idExtra: 1,
-        //             nombreExtra: "Vidrios Polarizados"
-        //         };
-        //
-        //         setCart([...cart, cartModel1]);
-        //         setCartModel(emptyCartModel);
-        //         setPrice({...price, modelos: [...price.modelos, cartModel1]})
-        //         calculateTotal();
-        //     }
-        // }
+        event.preventDefault();
+
+        if (!validateCartModelOnSubmit())
+        {
+            if (cart.map((item) => item.id).includes(cartModel.modelo.id + cartModel.color.idColor))
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorModelo');
+                handleOpenSnackbar();
+                return;
+            }
+            {
+                const cartModel1 = {
+                    id: cartModel.modelo.id + cartModel.color.idColor,
+                    idModelo: cartModel.modelo.id,
+                    nombreModelo: cartModel.modelo.nombre,
+                    idColor: cartModel.color.idColor,
+                    color: cartModel.color.colorNombre,
+                    hexadecimalColor: cartModel.color.hexadecimalColor,
+                    idExtra: 1,
+                    nombreExtra: "Vidrios Polarizados"
+                };
+
+                setCart([...cart, cartModel1]);
+                setCartModel(emptyCartModel);
+                setPrice({...price, modelos: [...price.modelos, cartModel1]})
+                calculateTotal();
+            }
+        }
     }
 
     const deleteCartModel = async (event, vin) => {

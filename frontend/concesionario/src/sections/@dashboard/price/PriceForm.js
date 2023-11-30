@@ -62,7 +62,7 @@ const crearFila = (cart, deleteCart) => {
                 {el.nombreModelo}
             </TableCell>
             <TableCell align="center">
-                <Stack alignItems={"center"} >
+                <Stack alignItems={"center"} direction={"row"} >
                     <div
                         style={{
                             width: '20px',
@@ -76,6 +76,7 @@ const crearFila = (cart, deleteCart) => {
                             border: '1px solid #E6E6E6'
                         }}
                     />
+                    {el.color}
                 </Stack>
             </TableCell >
             <TableCell align="center" >
@@ -306,7 +307,7 @@ export default function PriceForm() {
                                     <TableHead>
                                         <TableRow>
                                             <TableCell align="center">{t('cotizaciones.label.modelo')}</TableCell>
-                                            <TableCell align="center">{t('cotizaciones.label.color')}</TableCell>
+                                            <TableCell align="left">{t('cotizaciones.label.color')}</TableCell>
                                             <TableCell align="center">{t('cotizaciones.label.extra')}</TableCell>
                                             <TableCell align="center" width={"1%"}>{""}</TableCell>
                                         </TableRow>
