@@ -29,7 +29,7 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import SaleForm from "../sections/@dashboard/sale/SaleForm";
 // import SaleDelete from "../sections/@dashboard/sale/SaleDelete";
 // mock
-import SaleContext from "../hooks/sales/SaleContext";
+import SaleContext from "../hooks/sale/SaleContext";
 
 // ----------------------------------------------------------------------
 

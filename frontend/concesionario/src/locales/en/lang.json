@@ -134,7 +134,6 @@
       "undefined" : ""
     }
   },
-
   "ventas": {
     "encabezado": {
       "tituloPlural": "Sales",
@@ -170,6 +169,44 @@
       "fechaVenta": "Date",
       "vehiculo": "Vehicle",
       "descuento": "Discount",
+      "extra": "Extra",
+      "color": "Color",
+      "total": "Total"
+    }
+  },
+
+  "cotizaciones": {
+    "encabezado": {
+      "tituloPlural": "Prices",
+      "tituloSingular": "Price",
+      "agregar": "Add Price",
+      "editar": "Edit Price"
+    },
+    "mensaje": {
+      "agregado": "Price added successfully",
+      "editado": "Price edited successfully",
+      "error": "Error adding price",
+      "errorEditar": "Error editing price",
+      "errorListando": "Error listing prices",
+      "errorCargando": "Error loading price",
+      "errorModelo": "The model has already been added to the price",
+      "errorModelos": "At least one model must be added to the price"
+    },
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Name",
+      "nombreVendedor": "Name",
+      "cliente": "Client",
+      "vendedor": "Salesperson",
+      "fecha": "Date",
+      "valor": "Total",
+      "modelos": "Models",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Client ID",
+      "cedulaVendedor": "Salesperson ID",
+      "fechaCotizacion": "Price Date",
+      "modelo": "Model",
       "extra": "Extra",
       "color": "Color",
       "total": "Total"
