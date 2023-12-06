@@ -16,20 +16,26 @@ import Scrollbar from '../components/scrollbar';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import BranchContext from '../../branch/BranchContext';
+import BranchDelete from '../../branch/BranchDelete';
+import BranchForm from '../../branch/BranchForm';
+
+
+const colorPalette = ['#ff9999', '#66b3ff', '#99ff99', '#ffcc99', '#c2c2f0', "#ffd700", "#4caf50", "#ff69b4"];
 
 
 
-export default function BranchCard(name, address, city, phone) {
+export default function BranchCard(id, name, address, city, phone) {
     
     const { t } = useTranslation("lang");
+    
+    const selectedColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];    
 
     return (
         <Grid item xs={12} sm={6}>
             <Card sx={{ maxWidth: 345 }}>
             <CardMedia
-                sx={{ height: 140 }}
-                image="/static/images/cards/contemplative-reptile.jpg"
-                title="green iguana"
+                sx={{ height: 140, backgroundColor: selectedColor }}
+                title="color-background"
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -46,8 +52,12 @@ export default function BranchCard(name, address, city, phone) {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Button size="small">Edit</Button>
-                <Button size="small">Delete</Button>
+                <IconButton id={'editar-sucursal-${id}'} color="inherit" onClick={(event)=>handleOpenForm(event, id)}>                    
+                    <EditIcon/>
+                </IconButton>
+                <IconButton id={'eliminar-sucursal-${id}'} color="error" onClick={(event)=>handleOpenDelete(event, id)}>
+                    <DeleteIcon/>
+                </IconButton>
             </CardActions>
             </Card>
         </Grid>
