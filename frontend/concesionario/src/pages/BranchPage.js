@@ -34,6 +34,7 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 //import BranchForm from "../sections/@dashboard/branch/BranchForm";
 //import BranchDelete from "../sections/@dashboard/branch/BranchDelete";
 import BranchContext from "../hooks/branch/BranchContext";
+import BranchCard from '../../card/BranchCard';
 import AuthContext from "../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
@@ -67,35 +68,6 @@ export default function BranchPage() {
         }, []);
 
 
-        const SucursalCard = ({sucursal}) => {
-            const {id, nombre, direccion, ciudad, telefono} = sucursal;
-
-            return (
-                <Grid item xs={12} sm={6} md={4} lg={3}>
-                    <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea>
-
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="div">
-                        <strong>{t('sucursales.label.nombre')}:</strong> {nombre}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                        <strong>{t('sucursales.label.direccion')}:</strong> {direccion}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                        <strong>{t('sucursales.label.ciudad')}:</strong> {ciudad}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                        <strong>{t('sucursales.label.telefono')}:</strong> {telefono}
-                        </Typography>
-
-                    </CardContent>
-                    </CardActionArea>
-                    </Card>
-                </Grid>
-            );
-        }
-
     return (
         <>
             <Helmet>
@@ -116,3 +88,17 @@ export default function BranchPage() {
             <BranchDelete />
 
             <Grid container spacing={3}>
+                {branches.map((branch) => (
+                    <BranchCard
+                        id={branch.id}
+                        name={branch.nombre}
+                        address={branch.direccion}
+                        city={branch.ciudad}
+                        phone={branch.telefono}
+                    />
+                ))}
+            </Grid>
+            </Box>
+        </>
+    );
+}
