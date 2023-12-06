@@ -85,7 +85,6 @@ export default function BranchPage() {
             </Stack>
 
             <BranchForm />
-            <BranchDelete />
 
             <Grid container spacing={3}>
                 {branches.map((branch) => (
