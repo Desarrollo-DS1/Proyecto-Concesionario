@@ -124,6 +124,7 @@ export default function SaleState(props) {
                 const response = await getVenta(id, authTokens.access);
                 if (response.status === 200) {
                     setSale(response.data);
+                    setCart(response.data.ventaVehiculo.map((item) => {return {...item, id: item.vehiculo}}));
                 }
             } catch (error) {
                 setTypeSnackbar('error');
@@ -172,42 +173,60 @@ export default function SaleState(props) {
     }
 
     const updateSale = async (sale) => {
-            
         try
         {
-            await updateSale(sale.id, sale);
+            await updateVenta(sale.id, sale, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('venta.mensaje.editado');
+            setMessageSnackbar('ventas.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
-            const errors = error.response.data;
-            if(errors.id)
+            if(error.response.data.cedulaCliente)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('ventas.mensaje.errorID');
+                setMessageSnackbar('ventas.mensaje.errorCliente');
                 handleOpenSnackbar();
-//                setEmployeeError({...employeeError, correo: 'ID de venta no identificado'});
-
-            } else
-            {
+            
+            } else if(error.response.data.cedulaVendedor){
                 setTypeSnackbar('error');
-                setMessageSnackbar('ventas.mensaje.error');
+                setMessageSnackbar('ventas.mensaje.errorVendedor');
+                handleOpenSnackbar();
+
+            } else if(error.response.data.vehiculo){
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.vehiculo);
+                handleOpenSnackbar();
+
+            } else if(error.response.data.fechaVenta){
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.fechaVenta);
+                handleOpenSnackbar();
+            } else {
+                console.log(error.response.data);
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorEditar');
                 handleOpenSnackbar();
             }
         }
     }
 
     const calculateTotalCart = () => {
-        const total = cart.reduce((acc, item) => acc + parseFloat(item.vehiculo.precio), 0);
+        console.log(cart);
+        const total = cart.reduce((acc, item) => acc + (parseFloat(item.vehiculo.precio) * (1 - parseFloat(item.porcentajeDescuento))), 0);
+        console.log(total);
         setTotal(total);
     };
 
-    const calculateTotal = () => {
-        const totalAux = parseFloat(total) + parseFloat(cartVehicle.vehiculo.precio);
-        setTotal(totalAux);
+    const updateTotal = (vehiclePrice, discount, operation) => {
+        if (operation === 'add') {
+            const totalAux = parseFloat(total) + (parseFloat(vehiclePrice) * (1 - parseFloat(discount)));
+            setTotal(totalAux);
+        } else if (operation === 'subtract') {
+            const totalAux = parseFloat(total) - (parseFloat(vehiclePrice) * (1 - parseFloat(discount)));
+            setTotal(totalAux);
+        }
     }
 
     const handleInputChange = (event) => {
@@ -294,8 +313,9 @@ export default function SaleState(props) {
                 const cartVehicle1 = {
                     id: cartVehicle.vehiculo.vin,
                     vehiculo: cartVehicle.vehiculo.vin,
+                    precio: cartVehicle.vehiculo.precio,
                     porcentajeDescuento: cartVehicle.porcentajeDescuento,
-                    extra: 1,
+                    extra: cartVehicle.extra.id,
                     nombreExtra: cartVehicle.extra.nombreExtra,
                     nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
                     hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor
@@ -304,17 +324,19 @@ export default function SaleState(props) {
                 setCart([...cart, cartVehicle1]);
                 setCartVehicle(emptyCartVehicle);
                 setSale({...sale, ventaVehiculo: [...sale.ventaVehiculo, cartVehicle1]})
-                calculateTotal();
+                updateTotal(cartVehicle.vehiculo.precio, cartVehicle.porcentajeDescuento, 'add');
             }
         }
     }
 
     const deleteCartVehicle = async (event, vin) => {
         event.preventDefault();
-
         const cartAux = cart.filter((item) => item.id !== vin);
         setCart(cartAux);
         setSale({...sale, ventaVehiculo: cartAux});
+        
+        const deletedVehicle = cart.find((item) => item.id === vin);
+        updateTotal(deletedVehicle.precio, deletedVehicle.porcentajeDescuento, 'subtract');
     }
 
     const handleInputChangeCart = (event) => {

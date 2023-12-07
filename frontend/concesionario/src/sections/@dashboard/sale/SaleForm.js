@@ -264,7 +264,7 @@ export default function SaleForm() {
                                 onChange={handleInputChangeCart}
                                 onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.descuento')} variant="outlined"
-                                helperText={t(cartVehicleError.porcentajeDescuento, {maximo: '20', minimo: '0'})}
+                                helperText={t(cartVehicleError.porcentajeDescuento, {maximo: '0.2', minimo: '0.0'})}
                                 style={textFieldStyle}
                                 InputProps={inputProps}
                             />

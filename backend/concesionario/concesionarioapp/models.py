@@ -318,17 +318,20 @@ class Venta_Vehiculo(models.Model):
 
     def nombre_color(self):
         return self.vehiculo.nombre_color
+    
+    def hexadecimal_color(self):
+        return self.vehiculo.hexadecimal_color()
+    
+    def nombre_extra(self):
+        return self.extra.nombre_extra
 
     def precio(self):
-        return (self.vehiculo.modelo_vehiculo.precio_base * (
-                1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
-                        1 - (self.porcentaje_descuento)))
+        return (self.vehiculo.precio() * (1 - (self.porcentaje_descuento)))
 
     def precio_str(self):
-        return str(self.vehiculo.modelo_vehiculo.precio_base * (
-                    1 + (self.vehiculo.color_vehiculo.porcentanje_incremento_por_color)) * (
-                               1 - (self.porcentaje_descuento)))
+        return str(self.vehiculo.precio() * (1 - (self.porcentaje_descuento)))
     
+
 class Cotizacion_Modelo(models.Model):
 	id_cotizacion_modelo = models.AutoField('ID de la Cotización del Modelo', primary_key=True)
 	cotizacion = models.ForeignKey('Cotizacion', on_delete=models.CASCADE)
