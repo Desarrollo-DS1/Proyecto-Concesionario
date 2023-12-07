@@ -301,15 +301,19 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
     nombreVehiculo = serializers.CharField(source='nombre_modelo', read_only=True)
     hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
-    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
-    nombreExtra = serializers.CharField(source='nombre_extra', read_only=True)
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all(), required=False, allow_null=True)
+    nombreExtra = serializers.SerializerMethodField()
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
     venta_id = serializers.IntegerField(read_only=True)
     modelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    precio = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'nombreVehiculo', 'hexadecimalColor', 'extra', 'nombreExtra', 'porcentajeDescuento', 'venta_id', 'modelo'
+        fields = 'vehiculo', 'nombreVehiculo', 'hexadecimalColor', 'extra', 'nombreExtra', 'porcentajeDescuento', 'venta_id', 'modelo', 'precio'
+
+    def get_nombreExtra(self, obj):
+        return obj.extra.nombre_extra if obj.extra else None
 
 
 class ExtraSerializer(serializers.ModelSerializer):
@@ -395,9 +399,13 @@ class CotizacionModeloSerializer(serializers.ModelSerializer):
     cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
     modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
     color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
-    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all(), required=False, allow_null=True)
+    nombreExtra = serializers.SerializerMethodField()
     cantidad = serializers.IntegerField()
 
     class Meta:
         model = Cotizacion_Modelo
         fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'
+
+    def get_nombreExtra(self, obj):
+        return obj.extra.nombre_extra if obj.extra else None

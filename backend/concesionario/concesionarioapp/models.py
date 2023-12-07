@@ -289,7 +289,7 @@ class Venta_Vehiculo(models.Model):
     id_venta_vehiculo = models.AutoField('ID de la Venta del Vehiculo', primary_key=True)
     venta = models.ForeignKey('Venta', on_delete=models.CASCADE)
     vehiculo = models.OneToOneField('Vehiculo', on_delete=models.PROTECT)
-    extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
+    extra = models.ForeignKey('Extra', on_delete=models.PROTECT, blank=True, null=True)
     porcentaje_descuento = models.DecimalField('Porcentaje de Descuento', default=0, max_digits=4, decimal_places=2)
 
     class Meta:
@@ -337,7 +337,7 @@ class Cotizacion_Modelo(models.Model):
 	cotizacion = models.ForeignKey('Cotizacion', on_delete=models.CASCADE)
 	modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
 	color = models.ForeignKey('Color', on_delete=models.PROTECT)
-	extra = models.ForeignKey('Extra', on_delete=models.PROTECT)
+	extra = models.ForeignKey('Extra', on_delete=models.PROTECT, blank=True, null=True)
 	cantidad = models.IntegerField('Cantidad', default=1)
 
 	class Meta:
