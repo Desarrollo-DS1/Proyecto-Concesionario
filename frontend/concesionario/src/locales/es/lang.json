@@ -147,6 +147,7 @@
         "errorEditar": "Error al editar venta",
         "errorListando": "Error al listar ventas",
         "errorCargando": "Error al cargar venta",
+        "errorCargandoVehiculosEnVenta": "Error al cargar los vehiculos en venta",
         "errorVehiculo": "El vehiculo ya fue agregado a la venta",
         "errorVehiculos": "Es necesario agregar al menos un vehiculo a la venta",
         "errorCliente": "La cédula ingresada no corresponde a ningún cliente",

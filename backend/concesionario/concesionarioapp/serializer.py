@@ -299,14 +299,17 @@ class ColorSerializer(serializers.ModelSerializer):
 
 class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
+    nombreVehiculo = serializers.CharField(source='nombre_modelo', read_only=True)
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    nombreExtra = serializers.CharField(source='nombre_extra', read_only=True)
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
     venta_id = serializers.IntegerField(read_only=True)
     modelo = serializers.CharField(source='nombre_modelo', read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id', 'modelo'
+        fields = 'vehiculo', 'nombreVehiculo', 'hexadecimalColor', 'extra', 'nombreExtra', 'porcentajeDescuento', 'venta_id', 'modelo'
 
 
 class ExtraSerializer(serializers.ModelSerializer):
@@ -358,6 +361,9 @@ class VentaSerializer(serializers.ModelSerializer):
             Vehiculo.objects.filter(vin=venta_vehiculo_anterior.vehiculo.vin).update(disponible_para_venta=True)
 
             venta_vehiculo_anterior.delete()
+
+        if validated_data['fecha_venta'] > now().date():
+            raise serializers.ValidationError({'fechaVenta': 'La fecha de venta no puede ser mayor a la fecha actual'})
         
         Venta.objects.filter(id_venta=instance.id_venta).update(**validated_data)
 
