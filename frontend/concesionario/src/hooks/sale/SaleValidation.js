@@ -42,13 +42,15 @@ function checkVehicle(cartVehicle){
 }
 
 function checkDiscount(cartVehicle){
-    if (!cartVehicle.descuento.match(/^[0-9]+$/))
+
+    if (!cartVehicle.porcentajeDescuento.match(/^[0-9]+$/))
     {
         return "errores.numerico";
     }
-    if (cartVehicle.descuento.length > 2)
+    if (cartVehicle.porcentajeDescuento > 20 || cartVehicle.porcentajeDescuento < 0)
     {
-        return "errores.longitudMax";
+        console.log(cartVehicle.descuento);
+        return "errores.rango";
     }
     return "";
 }
@@ -63,7 +65,7 @@ export function checkSale(sale, name) {
     if (name === 'vehiculo') {
         return checkVehicle(sale);
     }
-    if (name === 'descuento') {
+    if (name === 'porcentajeDescuento') {
         return checkDiscount(sale);
     }
 

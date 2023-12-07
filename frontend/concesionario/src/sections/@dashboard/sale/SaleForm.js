@@ -16,6 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import SaleContext from '../../../hooks/sale/SaleContext';
 import Scrollbar from "../../../components/scrollbar";
+import {fCurrency} from "../../../utils/formatNumber";
 
 
 const selectMenuProps = {
@@ -263,13 +264,14 @@ export default function SaleForm() {
                                 onChange={handleInputChangeCart}
                                 onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.descuento')} variant="outlined"
-                                helperText={t(cartVehicleError.porcentajeDescuento)}
+                                helperText={t(cartVehicleError.porcentajeDescuento, {maximo: '20', minimo: '0'})}
                                 style={textFieldStyle}
                                 InputProps={inputProps}
                             />
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
+                                select
                                 id={"extra"}
                                 fullWidth
                                 name={"extra"}
@@ -277,7 +279,16 @@ export default function SaleForm() {
                                 onChange={handleInputChangeCart}
                                 label={t("ventas.label.extra")} variant="outlined"
                                 style={textFieldStyle}
-                            />
+                                SelectProps={{
+                                    MenuProps: selectMenuProps
+                                }}
+                            >
+                                {extras.map((option) => (
+                                    <MenuItem key={option.id} value={option}>
+                                        {option.nombreExtra}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                     </Grid>
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
@@ -285,7 +296,7 @@ export default function SaleForm() {
                             +
                         </Button>
                         <Typography variant="subtitle1" gutterBottom>
-                            {t('ventas.label.total')}: $ {total}
+                            {t('ventas.label.total')}: $ {fCurrency(total)}
                         </Typography>
                     </Stack>
                     <Card>
