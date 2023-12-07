@@ -7,6 +7,8 @@ const vehiculoApi = (token) => axios.create({
 
 export const getAllVehiculos = (token) => vehiculoApi(token).get('');
 
+export const getAllAvailableVehiculos = (token) => vehiculoApi(token).get('disponibles/');
+
 export const getVehiculo = (vin, token) => vehiculoApi(token).get(`${vin}/`);
 
 export const createVehiculo = (vehiculo, token) => vehiculoApi(token).post('', vehiculo);

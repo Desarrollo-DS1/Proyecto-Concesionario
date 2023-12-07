@@ -148,7 +148,9 @@
         "errorListando": "Error al listar ventas",
         "errorCargando": "Error al cargar venta",
         "errorVehiculo": "El vehiculo ya fue agregado a la venta",
-        "errorVehiculos": "Es necesario agregar al menos un vehiculo a la venta"
+        "errorVehiculos": "Es necesario agregar al menos un vehiculo a la venta",
+        "errorCliente": "La cédula ingresada no corresponde a ningún cliente",
+        "errorVendedor": "La cédula ingresada no corresponde a ningún vendedor"
       },
   
       "label": {
@@ -350,7 +352,8 @@
       "confirmacionEliminar": "¿Estas seguro que deseas eliminar el vehiculo de vin {{vin}}?",
       "errorVin": "Error al agregar vehiculo, el vin ya existe",
       "errorListando": "Error al listar vehiculos",
-      "errorCargando": "Error al cargar vehiculo"
+      "errorCargando": "Error al cargar vehiculo",
+      "errorListandoExtras": "Error al listar extras"
     },
     "label": {
       "vin": "VIN",

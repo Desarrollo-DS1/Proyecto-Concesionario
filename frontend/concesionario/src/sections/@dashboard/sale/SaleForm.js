@@ -79,7 +79,7 @@ const crearFila = (cart, deleteCart) => {
                 </Stack>
             </TableCell >
             <TableCell align="center">
-                % {el.descuento}
+                % {el.porcentajeDescuento}
             </TableCell>
             <TableCell align="center" >
                 {el.nombreExtra}
@@ -255,15 +255,15 @@ export default function SaleForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
-                                id={"descuento"}
-                                error={cartVehicleError.descuento !== ""}
+                                id={"porcentajeDescuento"}
+                                error={cartVehicleError.porcentajeDescuento !== ""}
                                 fullWidth
-                                name="descuento"
-                                value={cartVehicle.descuento}
+                                name="porcentajeDescuento"
+                                value={cartVehicle.porcentajeDescuento}
                                 onChange={handleInputChangeCart}
                                 onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.descuento')} variant="outlined"
-                                helperText={t(cartVehicleError.descuento)}
+                                helperText={t(cartVehicleError.porcentajeDescuento)}
                                 style={textFieldStyle}
                                 InputProps={inputProps}
                             />

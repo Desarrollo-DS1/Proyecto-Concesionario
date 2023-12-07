@@ -1,16 +1,16 @@
 import propTypes, { func } from "prop-types";
 import React, { useContext, useState } from "react";
+import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
-import { getAllEmpleados } from "../../api/Empleado.api";
-import { getAllVehiculos } from "../../api/Vehiculo.api";
+import { getAllAvailableVehiculos } from "../../api/Vehiculo.api";
 // import { setEmployeeError } from "../employee/EmployeeState";
 // import { setCustomers } from "../customer/CustomerOrderState";
 // import { setEmployees } from "../employee/EmployeeState";
-import { getAllClientes } from "../../api/Cliente.api";
 import AuthContext from "../auth/AuthContext";
+import {fCurrency} from "../../utils/formatNumber";
 
 SaleState.propTypes = {
     children: propTypes.node,
@@ -44,13 +44,13 @@ export default function SaleState(props) {
         cedulaCliente: "",
         cedulaVendedor: user.user_id,
         fechaVenta: "",
-        vehiculos: [],
+        ventaVehiculo: [],
     };
 
     const emptyCartVehicle = {
         id: "",
         vehiculo: "",
-        descuento: "0",
+        porcentajeDescuento: "0",
         extra: "",
     }
 
@@ -60,13 +60,13 @@ export default function SaleState(props) {
         cedulaVendedor: "",
         fechaVenta: "",
         valorVenta: "",
-        vehiculos: ""
+        ventaVehiculo: ""
     };
 
     const emptyErrorCartVehicle = {
         id: "",
         vehiculo: "",
-        descuento: "",
+        porcentajeDescuento: "",
         extra: "",
     }
 
@@ -79,20 +79,28 @@ export default function SaleState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
     const [vehicles, setVehicles] = React.useState([]);
     const [extras, setExtras] = React.useState([]);
-    const [total, setTotal] = React.useState(100000000);
+    const [total, setTotal] = React.useState(0);
+
 
     const getExtras = async () => {
+        try {
+            const response = await getAllExtras(authTokens.access);
+            console.log(response.data);
 
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('vehiculos.mensaje.errorListandoExtras');
+            handleOpenSnackbar();
+        }
     }
 
     const getVehicles = async () => {
         try {
-            const response = await getAllVehiculos(authTokens.access);
-            setVehicles(response.data);
+            const response = await getAllAvailableVehiculos(authTokens.access);
 
         } catch (error) {
             setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorListando');
+            setMessageSnackbar('vehiculos.mensaje.errorListando');
             handleOpenSnackbar();
         }
     }
@@ -117,7 +125,7 @@ export default function SaleState(props) {
         else {
             setEdit(true);
             try {
-                const response = await getVenta(id);
+                const response = await getVenta(id, authTokens.access);
                 if (response.status === 200) {
                     setSale(response.data);
                 }
@@ -130,19 +138,40 @@ export default function SaleState(props) {
     }
 
     const addSale = async (sale) => {
-
         try {
-            const response = await createVenta(sale);
+            const response = await createVenta(sale, authTokens.access);
             setSales([...sales, response.data]);
             setTypeSnackbar('success');
-            setMessageSnackbar('ventas.mensaje.agregada');
+            setMessageSnackbar('ventas.mensaje.agregado');
             handleOpenSnackbar();
             handleCloseForm();
 
         } catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ventas.mensaje.errorCreando');
-            handleOpenSnackbar();
+            if (error.response.data.cedulaCliente) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorCliente');
+                handleOpenSnackbar();
+
+            } else if (error.response.data.cedulaVendedor) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.errorVendedor');
+                handleOpenSnackbar();
+
+            } else if (error.response.data.vehiculo) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.vehiculo);
+                handleOpenSnackbar();
+            
+            } else if (error.response.data.fechaVenta) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.fechaVenta);
+                handleOpenSnackbar();
+            
+            } else {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ventas.mensaje.error');
+                handleOpenSnackbar();
+            }
         }
     }
 
@@ -175,8 +204,21 @@ export default function SaleState(props) {
         }
     }
 
+    const calculateTotalCart = () => {
+        let total = 0;
+        
+        if (cart.length > 0)
+        {
+            cart.forEach((item) => {
+                total += item.vehiculo.precio;
+            });
+        }
+        setTotal(fCurrency(total));
+    }
+
     const calculateTotal = () => {
-        console.log(cartVehicle)
+        const totalAux = total + cartVehicle.vehiculo.precio;
+        setTotal(fCurrency(totalAux));
     }
 
     const handleInputChange = (event) => {
@@ -190,7 +232,7 @@ export default function SaleState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateSaleOnSubmit()) {
-            if(sale.vehiculos.length === 0)
+            if(sale.ventaVehiculo.length === 0)
             {
                 setTypeSnackbar('error');
                 setMessageSnackbar('ventas.mensaje.errorVehiculos');
@@ -216,7 +258,9 @@ export default function SaleState(props) {
         getCartVehicleError();
         getSaleError();
         await getVehicles();
+        await getExtras();
         await getSale(id);
+        calculateTotalCart();
         setOpenForm(true);
     }
 
@@ -260,17 +304,17 @@ export default function SaleState(props) {
             {
                 const cartVehicle1 = {
                     id: cartVehicle.vehiculo.vin,
-                    vin: cartVehicle.vehiculo.vin,
+                    vehiculo: cartVehicle.vehiculo.vin,
+                    porcentajeDescuento: cartVehicle.porcentajeDescuento,
+                    extra: 1,
+                    nombreExtra: "Vidrios Polarizados",
                     nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
-                    descuento: cartVehicle.descuento,
-                    hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor,
-                    idExtra: 1,
-                    nombreExtra: "Vidrios Polarizados"
+                    hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor
                 };
 
                 setCart([...cart, cartVehicle1]);
                 setCartVehicle(emptyCartVehicle);
-                setSale({...sale, vehiculos: [...sale.vehiculos, cartVehicle1]})
+                setSale({...sale, ventaVehiculo: [...sale.ventaVehiculo, cartVehicle1]})
                 calculateTotal();
             }
         }
@@ -279,7 +323,9 @@ export default function SaleState(props) {
     const deleteCartVehicle = async (event, vin) => {
         event.preventDefault();
 
-        setCart(cart.filter((item) => item.id !== vin));
+        const cartAux = cart.filter((item) => item.id !== vin);
+        setCart(cartAux);
+        setSale({...sale, ventaVehiculo: cartAux});
     }
 
     const handleInputChangeCart = (event) => {
