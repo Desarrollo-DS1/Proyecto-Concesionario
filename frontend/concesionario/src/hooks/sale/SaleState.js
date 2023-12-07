@@ -117,6 +117,7 @@ export default function SaleState(props) {
         if (id === null) {
             setEdit(false);
             setSale(emptySale);
+            setTotal(0);
         }
         else {
             setEdit(true);
@@ -124,7 +125,11 @@ export default function SaleState(props) {
                 const response = await getVenta(id, authTokens.access);
                 if (response.status === 200) {
                     setSale(response.data);
-                    setCart(response.data.ventaVehiculo.map((item) => {return {...item, id: item.vehiculo}}));
+                    const vehiclesInSale = response.data.ventaVehiculo.map((item) => {return {...item, id: item.vehiculo}});
+                    setCart(vehiclesInSale);
+                    const total = vehiclesInSale.reduce((acc, item) => acc + (parseFloat(item.precio) * (1 - parseFloat(item.porcentajeDescuento))), 0);
+                    setTotal(total);
+
                 }
             } catch (error) {
                 setTypeSnackbar('error');
@@ -165,6 +170,7 @@ export default function SaleState(props) {
                 handleOpenSnackbar();
             
             } else {
+                console.log(error);
                 setTypeSnackbar('error');
                 setMessageSnackbar('ventas.mensaje.error');
                 handleOpenSnackbar();
@@ -204,20 +210,12 @@ export default function SaleState(props) {
                 setMessageSnackbar(error.response.data.fechaVenta);
                 handleOpenSnackbar();
             } else {
-                console.log(error.response.data);
                 setTypeSnackbar('error');
                 setMessageSnackbar('ventas.mensaje.errorEditar');
                 handleOpenSnackbar();
             }
         }
     }
-
-    const calculateTotalCart = () => {
-        console.log(cart);
-        const total = cart.reduce((acc, item) => acc + (parseFloat(item.vehiculo.precio) * (1 - parseFloat(item.porcentajeDescuento))), 0);
-        console.log(total);
-        setTotal(total);
-    };
 
     const updateTotal = (vehiclePrice, discount, operation) => {
         if (operation === 'add') {
@@ -268,7 +266,6 @@ export default function SaleState(props) {
         await getVehicles();
         await getExtras();
         await getSale(id);
-        calculateTotalCart();
         setOpenForm(true);
     }
 
