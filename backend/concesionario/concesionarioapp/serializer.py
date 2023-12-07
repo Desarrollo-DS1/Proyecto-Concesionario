@@ -268,11 +268,12 @@ class VehiculoSerializer(serializers.ModelSerializer):
     sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
     disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
+    precio = serializers.IntegerField(read_only=True)
 
 
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta'
+        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta', 'precio'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -295,6 +296,7 @@ class ColorSerializer(serializers.ModelSerializer):
         model = Color
         fields = "__all__"
 
+
 class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
@@ -306,6 +308,15 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
         model = Venta_Vehiculo
         fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id', 'modelo'
 
+
+class ExtraSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_extra', read_only=True)
+    nombreExtra = serializers.CharField(source='nombre_extra')
+    descripcionExtra = serializers.CharField(source='descripcion_extra')
+
+    class Meta:
+        model = Extra
+        fields = 'id', 'nombreExtra', 'descripcionExtra'
     
 
 class VentaSerializer(serializers.ModelSerializer):
@@ -327,16 +338,15 @@ class VentaSerializer(serializers.ModelSerializer):
         venta_vehiculo_data = validated_data.pop('venta_vehiculo_set')
         venta = Venta.objects.create(**validated_data)
 
+        if venta.fecha_venta > now().date():
+            raise serializers.ValidationError({'fechaVenta': 'La fecha de venta no puede ser mayor a la fecha actual'})
+
         for venta_vehiculo in venta_vehiculo_data:
-            try:
-                if not venta_vehiculo['vehiculo'].disponible_para_venta:
-                    raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'].vin)})
-                
-                Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
-                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            if not venta_vehiculo['vehiculo'].disponible_para_venta:
+                raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'])})
             
-            except Exception as e:
-                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+            Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
+            Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
         
         return venta
 
@@ -352,15 +362,11 @@ class VentaSerializer(serializers.ModelSerializer):
         Venta.objects.filter(id_venta=instance.id_venta).update(**validated_data)
 
         for venta_vehiculo in venta_vehiculo_data:
-            try:
-                if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
-                    raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
-                
-                Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
-                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
+                raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'])})
             
-            except Exception as e:
-                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+            Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
+            Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
         
         return instance
 

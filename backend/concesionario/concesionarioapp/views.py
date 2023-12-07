@@ -1,6 +1,6 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
 from django.db.models.deletion import ProtectedError
@@ -151,6 +151,13 @@ class VehiculoView(viewsets.ModelViewSet):
         
         except Exception as e:
             raise serializers.ValidationError({'error': e})
+    
+
+    @action(detail=False, methods=['get'])
+    def disponibles(self, request):
+        vehiculos = Vehiculo.objects.filter(disponible_para_venta=True)
+        serializer = self.get_serializer(vehiculos, many=True)
+        return Response(serializer.data)
 
 class ColorView(viewsets.ModelViewSet):
     serializer_class = ColorSerializer
@@ -183,6 +190,12 @@ class CotizacionView(viewsets.ModelViewSet):
     serializer_class = CotizacionSerializer
     queryset = Cotizacion.objects.all()
     permission_classes = [IsAuthenticated, EsVendedorOGerente]
+
+
+class ExtraView(viewsets.ModelViewSet):
+    serializer_class = ExtraSerializer
+    queryset = Extra.objects.all()
+    permission_classes = [IsAuthenticated, EsEmpleado]
 
 
 @api_view(['POST'])

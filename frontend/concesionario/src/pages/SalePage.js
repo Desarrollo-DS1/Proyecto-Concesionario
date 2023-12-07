@@ -113,7 +113,7 @@ export default function SalePage() {
 
                         <TableCell align="left">{fechaVenta}</TableCell>
 
-                        <TableCell align="left">$ {fCurrency(valorVenta)}</TableCell>
+                        <TableCell align="left"> {fCurrency(valorVenta)}</TableCell>
 
                         <TableCell align="left">
                             <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>

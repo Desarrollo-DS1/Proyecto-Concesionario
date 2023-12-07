@@ -255,7 +255,7 @@ class Venta(models.Model):
     id_venta = models.AutoField('ID de la Venta', primary_key=True)
     vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
     cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
-    fecha_venta = models.DateField('Fecha de Creación', auto_now_add=True)
+    fecha_venta = models.DateField('Fecha de Creación')
 
     class Meta:
         verbose_name = 'Venta'
