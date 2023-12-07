@@ -407,6 +407,7 @@
     "fecha": "Ingrese una fecha valida",
     "vinCaracteresNoPermitidos": "No se permiten los caracteres I, O, Q",
     "placa": "Ingrese una placa valida",
+    "rango": "Min: {{minimo}}, Max: {{maximo}}",
     "contraseña": {
         "numerico": "Debe tener al menos un numero",
         "minuscula": "Debe tener al menos una minuscula",

@@ -1,4 +1,4 @@
-import propTypes, { func } from "prop-types";
+import propTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";
@@ -6,11 +6,7 @@ import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllAvailableVehiculos } from "../../api/Vehiculo.api";
-// import { setEmployeeError } from "../employee/EmployeeState";
-// import { setCustomers } from "../customer/CustomerOrderState";
-// import { setEmployees } from "../employee/EmployeeState";
 import AuthContext from "../auth/AuthContext";
-import {fCurrency} from "../../utils/formatNumber";
 
 SaleState.propTypes = {
     children: propTypes.node,
@@ -85,7 +81,7 @@ export default function SaleState(props) {
     const getExtras = async () => {
         try {
             const response = await getAllExtras(authTokens.access);
-            console.log(response.data);
+            setExtras(response.data);
 
         } catch (error) {
             setTypeSnackbar('error');
@@ -97,7 +93,7 @@ export default function SaleState(props) {
     const getVehicles = async () => {
         try {
             const response = await getAllAvailableVehiculos(authTokens.access);
-
+            setVehicles(response.data);
         } catch (error) {
             setTypeSnackbar('error');
             setMessageSnackbar('vehiculos.mensaje.errorListando');
@@ -205,20 +201,13 @@ export default function SaleState(props) {
     }
 
     const calculateTotalCart = () => {
-        let total = 0;
-        
-        if (cart.length > 0)
-        {
-            cart.forEach((item) => {
-                total += item.vehiculo.precio;
-            });
-        }
-        setTotal(fCurrency(total));
-    }
+        const total = cart.reduce((acc, item) => acc + parseFloat(item.vehiculo.precio), 0);
+        setTotal(total);
+    };
 
     const calculateTotal = () => {
-        const totalAux = total + cartVehicle.vehiculo.precio;
-        setTotal(fCurrency(totalAux));
+        const totalAux = parseFloat(total) + parseFloat(cartVehicle.vehiculo.precio);
+        setTotal(totalAux);
     }
 
     const handleInputChange = (event) => {
@@ -307,7 +296,7 @@ export default function SaleState(props) {
                     vehiculo: cartVehicle.vehiculo.vin,
                     porcentajeDescuento: cartVehicle.porcentajeDescuento,
                     extra: 1,
-                    nombreExtra: "Vidrios Polarizados",
+                    nombreExtra: cartVehicle.extra.nombreExtra,
                     nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
                     hexadecimalColor: cartVehicle.vehiculo.hexadecimalColor
                 };

@@ -393,6 +393,7 @@
     "fecha": "Insira uma data válida",
     "vinCaracteresNoPermitidos": "Os caracteres I, O, Q não são permitidos",
     "placa": "Insira uma placa válida",
+    "rango": "Mínimo: {{minimo}}, Máximo: {{maximo}}",
     "contraseña": {
       "numerico": "Deve conter pelo menos um número",
       "minuscula": "Deve conter pelo menos uma letra minúscula",
