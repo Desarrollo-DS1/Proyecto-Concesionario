@@ -161,49 +161,42 @@ export default function PriceState(props) {
     }
 
     const addPrice = async (price) => {
+        try {
+            const response = await createCotizacion(price, authTokens.access);
+            setPrices([...prices, response.data]);
+            setTypeSnackbar('success');
+            setMessageSnackbar('cotizaciones.mensaje.agregado');
+            handleOpenSnackbar();
+            handleCloseForm();
+    
+        } catch (error) {
+            if (error.response.data.cedulaCliente) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorCliente');
+                handleOpenSnackbar();
 
-        // try {
-        //     const response = await createVenta(sale);
-        //     setPrices([...prices, response.data]);
-        //     setTypeSnackbar('success');
-        //     setMessageSnackbar('ventas.mensaje.agregada');
-        //     handleOpenSnackbar();
-        //     handleCloseForm();
-        //
-        // } catch (error) {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('ventas.mensaje.errorCreando');
-        //     handleOpenSnackbar();
-        // }
+            } else if (error.response.data.cedulaVendedor) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorVendedor');
+                handleOpenSnackbar();
+            }
+
+            else if (error.response.data.fechaCotizacion) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.fechaCotizacion);
+                handleOpenSnackbar();
+            
+            } else {
+            console.log(error);
+            setTypeSnackbar('error');
+            setMessageSnackbar('cotizaciones.mensaje.error');
+            handleOpenSnackbar();
+            }
+        }
     }
 
     const updatePrice = async (price) => {
             
-//         try
-//         {
-//             await updatePrice(price.id, price);
-//             setTypeSnackbar('success');
-//             setMessageSnackbar('venta.mensaje.editado');
-//             handleOpenSnackbar();
-//             handleCloseForm();
-//         }
-//         catch (error)
-//         {
-//             const errors = error.response.data;
-//             if(errors.id)
-//             {
-//                 setTypeSnackbar('error');
-//                 setMessageSnackbar('ventas.mensaje.errorID');
-//                 handleOpenSnackbar();
-// //                setEmployeeError({...employeeError, correo: 'ID de venta no identificado'});
-//
-//             } else
-//             {
-//                 setTypeSnackbar('error');
-//                 setMessageSnackbar('ventas.mensaje.error');
-//                 handleOpenSnackbar();
-//             }
-//         }
     }
 
     const updateTotal = (vehiclePrice, colorIncrement, operation) => {

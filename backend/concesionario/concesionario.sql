@@ -386,50 +386,52 @@ ON CONFLICT (id_venta_vehiculo) DO NOTHING;
 
 SELECT setval('concesionarioapp_venta_vehiculo_id_venta_vehiculo_seq', (SELECT MAX(id_venta_vehiculo) FROM concesionarioapp_venta_vehiculo));
 
-INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, porcentaje_descuento, fecha_vencimiento)
+INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)
 VALUES 
-(1, '371234567', '131234567', '2023-11-08', 0.1234, '2023-11-28'),
-(2, '371234567', '131234567', '2023-11-08', 0.5678, '2023-11-28'),
-(3, '371234567', '131234567', '2023-11-08', 0.9876, '2023-11-28'),
-(4, '371234567', '131234567', '2023-11-08', 0.2345, '2023-11-28'),
-(5, '371234567', '131234567', '2023-11-08', 0.8765, '2023-11-28'),
-(6, '371234567', '131234567', '2023-11-08', 0.5432, '2023-11-28'),
-(7, '371234567', '131234567', '2023-11-08', 0.7654, '2023-11-28'),
-(8, '371234567', '131234567', '2023-11-08', 0.3210, '2023-11-28'),
-(9, '371234567', '131234567', '2023-11-08', 0.1098, '2023-11-28'),
-(10, '371234567', '131234567', '2023-11-08', 0.8765, '2023-11-28')
-
+(1, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(2, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(3, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(4, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(5, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(6, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(7, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(8, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(9, '371234567', '131234567', '2023-11-08', '2023-11-28'),
+(10, '371234567', '131234567', '2023-11-08', '2023-11-28')
 ON CONFLICT (id_cotizacion) DO NOTHING;
+
+SELECT setval('concesionarioapp_cotizacion_id_cotizacion_seq', (SELECT MAX(id_cotizacion) FROM concesionarioapp_cotizacion));
 
 INSERT INTO concesionarioapp_cotizacion_modelo(id_cotizacion_modelo, cotizacion_id, modelo_id, color_id, extra_id, cantidad)
 VALUES
 (1, 1, 1, 1, 1, 1),
-(2, 2, 2, 2, 2, 2),
-(3, 3, 3, 3, 3, 3),
-(4, 4, 4, 4, 4, 4),
-(5, 5, 5, 5, 5, 5),
-(6, 6, 6, 6, 6, 6),
-(7, 7, 7, 7, 7, 7),
-(8, 8, 8, 8, 1, 8),
-(9, 9, 9, 2, 2, 9),
+(2, 2, 2, 2, 2, 1),
+(3, 3, 3, 3, 3, 1),
+(4, 4, 4, 4, 4, 1),
+(5, 5, 5, 5, 5, 1),
+(6, 6, 6, 6, 6, 1),
+(7, 7, 7, 7, 7, 1),
+(8, 8, 8, 8, 1, 1),
+(9, 9, 9, 2, 2, 1),
 (10, 10, 1, 3, 1, 1),
-(11, 1, 2, 3, 4, 5),
-(12, 6, 7, 8, 5, 10),
-(13, 1, 3, 5, 7, 9),
-(14, 2, 4, 6, 6, 10),
-(15, 10, 8, 6, 4, 2),
-(16, 5, 2, 8, 1, 7),
-(17, 9, 6, 3, 3, 4),
-(18, 1, 5, 3, 2, 9),
-(19, 7, 3, 8, 4, 6),
-(20, 2, 9, 4, 7, 3),
-(21, 10, 1, 7, 5, 8),
-(22, 6, 10, 3, 2, 2),
-(23, 4, 7, 1, 5, 5),
-(24, 8, 2, 6, 3, 10),
-(25, 5, 8, 4, 1, 9)
-
+(11, 1, 2, 3, 4, 1),
+(12, 6, 7, 8, 5, 1),
+(13, 1, 3, 5, 7, 1),
+(14, 2, 4, 6, 6, 1),
+(15, 10, 8, 6, 4, 1),
+(16, 5, 2, 8, 1, 1),
+(17, 9, 6, 3, 3, 1),
+(18, 1, 5, 3, 2, 1),
+(19, 7, 3, 8, 4, 1),
+(20, 2, 9, 4, 7, 1),
+(21, 10, 1, 7, 5, 1),
+(22, 6, 10, 3, 2, 1),
+(23, 4, 7, 1, 5, 1),
+(24, 8, 2, 6, 3, 1),
+(25, 5, 8, 4, 1, 1)
 ON CONFLICT (id_cotizacion_modelo) DO NOTHING;
+
+SELECT setval('concesionarioapp_cotizacion_modelo_id_cotizacion_modelo_seq', (SELECT MAX(id_cotizacion_modelo) FROM concesionarioapp_cotizacion_modelo));
 
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';

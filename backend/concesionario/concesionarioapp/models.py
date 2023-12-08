@@ -280,7 +280,7 @@ class Venta(models.Model):
 		precio_total = 0
 
 		for venta_vehiculo in Venta_Vehiculo.objects.filter(venta=self):
-			precio_total += venta_vehiculo.precio()
+			precio_total += (venta_vehiculo.precio() * (1 - (venta_vehiculo.porcentaje_descuento)))
 
 		return precio_total
 
@@ -326,10 +326,10 @@ class Venta_Vehiculo(models.Model):
 		return self.extra.nombre_extra
 
 	def precio(self):
-		return (self.vehiculo.precio() * (1 - (self.porcentaje_descuento)))
+		return (self.vehiculo.precio())
 
 	def precio_str(self):
-		return str(self.vehiculo.precio() * (1 - (self.porcentaje_descuento)))
+		return str(self.vehiculo.precio())
 	
 
 class Cotizacion_Modelo(models.Model):
@@ -374,14 +374,14 @@ class Cotizacion(models.Model):
 	vendedor = models.ForeignKey('Empleado', on_delete=models.PROTECT)
 	cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
 	fecha_creacion = models.DateField('Fecha de Creación')
-	fecha_vencimiento = models.DateField('Fecha de Vencimiento', default=date.today()+timedelta(days=20))
+	fecha_vencimiento = models.DateField('Fecha de Vencimiento')
 	modelos = models.ManyToManyField('Modelo', through='Cotizacion_Modelo')
 
 	class Meta:
 		verbose_name = 'Cotización'
 		verbose_name_plural = 'Cotizaciones'
 		ordering = ['id_cotizacion']
-
+	
 	def __str__(self):
 		return 'Cotización: ' + self.id_cotizacion + ' Cliente: ' + self.cliente.usuario.primer_nombre + ' ' + self.cliente.usuario.primer_apellido + ' Vendedor: ' + self.vendedor.usuario.primer_nombre + ' ' + self.vendedor.usuario.primer_apellido + ', Fecha: ' + self.fecha_creacion
 	
@@ -398,6 +398,6 @@ class Cotizacion(models.Model):
 		precio_total = 0
 
 		for cotizacion_modelo in Cotizacion_Modelo.objects.filter(cotizacion=self):
-			precio_total += cotizacion_modelo.cantidad * (cotizacion_modelo.modelo.precio_base * (1 + (cotizacion_modelo.color.porcentaje_incremento_por_color)))
+			precio_total += cotizacion_modelo.precio()	
 
 		return precio_total
