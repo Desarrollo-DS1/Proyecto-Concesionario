@@ -286,10 +286,8 @@ export default function PriceState(props) {
     const addCartModel = (event) => {
 
         event.preventDefault();
-        console.log("!!!!");
         if (!validateCartModelOnSubmit())
         {
-            console.log("????");
             if (cart.map((item) => item.id).includes(cartModel.modelo.id + cartModel.color.idColor))
             {
                 setTypeSnackbar('error');
@@ -298,7 +296,6 @@ export default function PriceState(props) {
                 return;
             }
             {
-                console.log("-----");
                 const cartModel1 = {
                     id: cartModel.modelo.id + cartModel.color.idColor,
                     idModelo: cartModel.modelo.id,
@@ -314,11 +311,7 @@ export default function PriceState(props) {
 
                 setCart([...cart, cartModel1]);
                 setCartModel(emptyCartModel);
-                console.log(cartModel1);
-                console.log(price)
                 setPrice({...price, cotizacionModelo: [...price.cotizacionModelo, cartModel1]})
-                console.log("++++dd+");
-                console.log(cartModel);
                 updateTotal(cartModel.modelo.precioBase, cartModel.color.porcentajeIncrementoColor, 'add');
             }
         }
