@@ -3,16 +3,11 @@ import React, { useContext, useState } from "react";
 import PriceContext from "./PriceContext";
 import {checkSale} from "./PriceValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
-import { getAllEmpleados } from "../../api/Empleado.api";
-import { getAllVehiculos } from "../../api/Vehiculo.api";
-// import { setEmployeeError } from "../employee/EmployeeState";
-// import { setCustomers } from "../customer/CustomerOrderState";
-// import { setEmployees } from "../employee/EmployeeState";
-import { getAllClientes } from "../../api/Cliente.api";
+import { getAllExtras } from "../../api/Extra.api";
 import AuthContext from "../auth/AuthContext";
 import {getAllColors} from "../../api/Colors.api";
 import {getAllModelos} from "../../api/Modelo.api";
+import {createCotizacion, getAllCotizaciones, getCotizacion, updateCotizacion} from "../../api/Cotizacion.api";
 
 PriceState.propTypes = {
     children: propTypes.node,
@@ -30,7 +25,7 @@ export default function PriceState(props) {
         { id: "nombreVendedor", label: "nombreVendedor", alignRight: false },
         { id: "fechaCotizacion", label: "fecha", alignRight: false },
         { id: "valorCotizacion", label: "valor", alignRight: false },
-        { id: "modelos", label: "modelos", alignRight: false },
+        { id: "cotizacionModelo", label: "modelos", alignRight: false },
         { id: ""}
     ];
 
@@ -46,7 +41,7 @@ export default function PriceState(props) {
         cedulaCliente: "",
         cedulaVendedor: user.user_id,
         fechaCotizacion: "",
-        modelos: [],
+        cotizacionModelo: [],
     };
 
     const emptyCartModel = {
@@ -62,7 +57,7 @@ export default function PriceState(props) {
         cedulaVendedor: "",
         fechaVenta: "",
         fechaCotizacion: "",
-        modelos: ""
+        cotizacionModelo: ""
     };
 
     const emptyErrorCartModel = {
@@ -82,14 +77,21 @@ export default function PriceState(props) {
     const [models, setModels] = React.useState([]);
     const [extras, setExtras] = React.useState([]);
     const [colors, setColors] = React.useState([]);
-    const [total, setTotal] = React.useState(100000000);
+    const [total, setTotal] = React.useState(0);
 
     const getExtras = async () => {
+        try {
+            const response = await getAllExtras(authTokens.access);
+            setExtras(response.data);
 
+        } catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('cotizaciones.mensaje.errorListandoExtras');
+            handleOpenSnackbar();
+        }
     }
 
     const getColors = async () => {
-
         try
         {
             const response = await getAllColors(authTokens.access);
@@ -98,13 +100,12 @@ export default function PriceState(props) {
         catch (error)
         {
             setTypeSnackbar('error');
-            setMessageSnackbar('colores.mensaje.errorListando');
+            setMessageSnackbar('cotizaciones.mensaje.errorListandoColores');
             handleOpenSnackbar();
         }
     }
 
     const getModels = async () => {
-
         try
         {
             const response = await getAllModelos(authTokens.access);
@@ -113,41 +114,50 @@ export default function PriceState(props) {
         catch (error)
         {
             setTypeSnackbar('error');
-            setMessageSnackbar('modelos.mensaje.errorListando');
+            setMessageSnackbar('cotizaciones.mensaje.errorListandoModelos');
             handleOpenSnackbar();
         }
     }
 
     const getPrices = async () => {
-        // try {
-        //     const response = await getAllVentas(authTokens.access);
-        //     setPrices(response.data);
-        //
-        // } catch (error) {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('ventas.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
+        try {
+            const response = await getAllCotizaciones(authTokens.access);
+            setPrices(response.data);
+        
+        } catch (error) {
+            console.log(error);
+            setTypeSnackbar('error');
+            setMessageSnackbar('cotizaciones.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const getPrice = async (id) => {
-        // if (id === null) {
-        //     setEdit(false);
-        //     setPrice(emptyPrice);
-        // }
-        // else {
-        //     setEdit(true);
-        //     try {
-        //         const response = await getVenta(id);
-        //         if (response.status === 200) {
-        //             setPrice(response.data);
-        //         }
-        //     } catch (error) {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('ventas.mensaje.errorCargando');
-        //         handleOpenSnackbar();
-        //     }
-        // }
+        if (id === null) {
+            setEdit(false);
+            setPrice(emptyPrice);
+            setTotal(0);
+        }
+        else {
+            setEdit(true);
+            try {
+                const response = await getCotizacion(id, authTokens.access);
+                if (response.status === 200) {
+                    setPrice(response.data);
+                    const modelsInCart = response.data.cotizacionModelo.map((item) => { return {...item, id: item.idCotizacionModelo}});
+                    setCart(modelsInCart);
+                    const total = modelsInCart.reduce((acc, item) => acc + (parseFloat(item.precioBase) * (1 + parseFloat(item.porcentajeIncrementoColor))), 0);
+                    setTotal(total);
+                }
+
+            } catch (error) {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorCargando');
+                handleOpenSnackbar();
+            }
+        }
+
     }
 
     const addPrice = async (price) => {
@@ -196,8 +206,15 @@ export default function PriceState(props) {
 //         }
     }
 
-    const calculateTotal = () => {
-
+    const updateTotal = (vehiclePrice, colorIncrement, operation) => {
+        if (operation === 'add') {
+            const totalAux = parseFloat(total) + (parseFloat(vehiclePrice) * (1 + parseFloat(colorIncrement)));
+            setTotal(totalAux);
+        }
+        else if (operation === 'subtract') {
+            const totalAux = parseFloat(total) - (parseFloat(vehiclePrice) * (1 + parseFloat(colorIncrement)));
+            setTotal(totalAux);
+        }
     }
 
     const handleInputChange = (event) => {
@@ -211,7 +228,7 @@ export default function PriceState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validatePriceOnSubmit()) {
-            if(price.modelos.length === 0)
+            if(price.cotizacionModelo.length === 0)
             {
                 setTypeSnackbar('error');
                 setMessageSnackbar('cotizaciones.mensaje.errorModelos');
@@ -269,9 +286,10 @@ export default function PriceState(props) {
     const addCartModel = (event) => {
 
         event.preventDefault();
-
+        console.log("!!!!");
         if (!validateCartModelOnSubmit())
         {
+            console.log("????");
             if (cart.map((item) => item.id).includes(cartModel.modelo.id + cartModel.color.idColor))
             {
                 setTypeSnackbar('error');
@@ -280,21 +298,28 @@ export default function PriceState(props) {
                 return;
             }
             {
+                console.log("-----");
                 const cartModel1 = {
                     id: cartModel.modelo.id + cartModel.color.idColor,
                     idModelo: cartModel.modelo.id,
                     nombreModelo: cartModel.modelo.nombre,
+                    precioBase: cartModel.modelo.precioBase,
                     idColor: cartModel.color.idColor,
                     color: cartModel.color.colorNombre,
                     hexadecimalColor: cartModel.color.hexadecimalColor,
+                    porcentajeIncrementoColor: cartModel.color.porcentajeIncrementoColor,
                     idExtra: 1,
                     nombreExtra: "Vidrios Polarizados"
                 };
 
                 setCart([...cart, cartModel1]);
                 setCartModel(emptyCartModel);
-                setPrice({...price, modelos: [...price.modelos, cartModel1]})
-                calculateTotal();
+                console.log(cartModel1);
+                console.log(price)
+                setPrice({...price, cotizacionModelo: [...price.cotizacionModelo, cartModel1]})
+                console.log("++++dd+");
+                console.log(cartModel);
+                updateTotal(cartModel.modelo.precioBase, cartModel.color.porcentajeIncrementoColor, 'add');
             }
         }
     }
@@ -302,7 +327,12 @@ export default function PriceState(props) {
     const deleteCartModel = async (event, vin) => {
         event.preventDefault();
 
-        setCart(cart.filter((item) => item.id !== vin));
+        const cartAux = cart.filter((item) => item.id !== vin);
+        setCart(cartAux);
+        setPrice({...price, cotizacionModelo: cartAux});
+
+        const deletedModel = cart.find((item) => item.id === vin);
+        updateTotal(deletedModel.precioBase, deletedModel.porcentajeIncrementoColor, 'subtract');
     }
 
     const handleInputChangeCart = (event) => {

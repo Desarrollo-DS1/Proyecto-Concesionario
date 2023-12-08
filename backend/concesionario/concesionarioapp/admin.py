@@ -40,7 +40,7 @@ class ModeloAdmin(admin.ModelAdmin):
 
 @admin.register(Color)
 class ColorAdmin(admin.ModelAdmin):
-	atributos_a_mostrar = ('id_color', 'nombre_color', 'porcentanje_incremento_por_color')
+	atributos_a_mostrar = ('id_color', 'nombre_color', 'porcentaje_incremento_por_color')
 	list_display = atributos_a_mostrar
 
 
