@@ -105,7 +105,6 @@ export default function SaleState(props) {
     const getSales = async () => {
         try {
             const response = await getAllVentas(authTokens.access);
-            console.log(response.data);
             setSales(response.data);
 
         } catch (error) {
@@ -129,7 +128,7 @@ export default function SaleState(props) {
                     setSale(response.data);
                     const vehiclesInSale = response.data.ventaVehiculo.map((item) => {return {...item, id: item.vehiculo}});
                     setCart(vehiclesInSale);
-                    const total = vehiclesInSale.reduce((acc, item) => acc + (parseFloat(item.precio) * (1 - parseFloat(item.porcentajeDescuento/100))), 0);
+                    const total = vehiclesInSale.reduce((acc, item) => acc + (parseFloat(item.precio) * (1 - parseFloat(item.porcentajeDescuento))), 0);
                     setTotal(total);
 
                 }
@@ -335,7 +334,7 @@ export default function SaleState(props) {
         setSale({...sale, ventaVehiculo: cartAux});
         
         const deletedVehicle = cart.find((item) => item.id === vin);
-        updateTotal(deletedVehicle.precio, deletedVehicle.porcentajeDescuento/100, 'subtract');
+        updateTotal(deletedVehicle.precio, deletedVehicle.porcentajeDescuento, 'subtract');
     }
 
     const handleInputChangeCart = (event) => {
