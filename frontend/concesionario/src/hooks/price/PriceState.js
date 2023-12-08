@@ -40,7 +40,7 @@ export default function PriceState(props) {
         id: "",
         cedulaCliente: "",
         cedulaVendedor: user.user_id,
-        fechaCotizacion: "",
+        fechaCotizacion: new Date().toISOString().split('T')[0],
         cotizacionModelo: [],
     };
 
@@ -255,6 +255,7 @@ export default function PriceState(props) {
         getPriceError();
         await getModels();
         await getColors();
+        await getExtras();
         await getPrice(id);
         setOpenForm(true);
     }
@@ -305,8 +306,8 @@ export default function PriceState(props) {
                     color: cartModel.color.colorNombre,
                     hexadecimalColor: cartModel.color.hexadecimalColor,
                     porcentajeIncrementoColor: cartModel.color.porcentajeIncrementoColor,
-                    idExtra: 1,
-                    nombreExtra: "Vidrios Polarizados"
+                    idExtra: cartModel.extra.id,
+                    nombreExtra: cartModel.extra.nombreExtra,
                 };
 
                 setCart([...cart, cartModel1]);

@@ -80,7 +80,7 @@ const crearFila = (cart, deleteCart) => {
                 </Stack>
             </TableCell >
             <TableCell align="center">
-                % {el.porcentajeDescuento}
+                % {(el.porcentajeDescuento * 100).toFixed(0)}
             </TableCell>
             <TableCell align="center" >
                 {el.nombreExtra}
@@ -264,7 +264,7 @@ export default function SaleForm() {
                                 onChange={handleInputChangeCart}
                                 onBlur={handleOnBlurCartVehicle}
                                 label={t('ventas.label.descuento')} variant="outlined"
-                                helperText={t(cartVehicleError.porcentajeDescuento, {maximo: '0.2', minimo: '0.0'})}
+                                helperText={t(cartVehicleError.porcentajeDescuento, {maximo: '20', minimo: '0'})}
                                 style={textFieldStyle}
                                 InputProps={inputProps}
                             />

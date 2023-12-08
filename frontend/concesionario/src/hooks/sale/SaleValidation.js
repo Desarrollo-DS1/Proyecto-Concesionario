@@ -47,7 +47,7 @@ function checkDiscount(cartVehicle){
     {
         return "errores.numerico";
     }
-    if (cartVehicle.porcentajeDescuento > 0.2 || cartVehicle.porcentajeDescuento < 0)
+    if (cartVehicle.porcentajeDescuento > 20 || cartVehicle.porcentajeDescuento < 0)
     {
         console.log(cartVehicle.descuento);
         return "errores.rango";

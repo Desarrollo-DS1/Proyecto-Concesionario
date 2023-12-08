@@ -16,6 +16,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import {useTheme} from "@mui/material/styles";
 import PriceContext from '../../../hooks/price/PriceContext';
 import Scrollbar from "../../../components/scrollbar";
+import {fCurrency} from "../../../utils/formatNumber";
 
 
 const selectMenuProps = {
@@ -282,14 +283,24 @@ export default function PriceForm() {
                         </Grid>
                         <Grid item xs={12} sm={4}>
                             <TextField
+                                select
                                 id={"extra"}
                                 fullWidth
                                 name={"extra"}
                                 value={cartModel.extra}
                                 onChange={handleInputChangeCart}
-                                label={t("cotizaciones.label.extra")} variant="outlined"
+                                label={t("ventas.label.extra")} variant="outlined"
                                 style={textFieldStyle}
-                            />
+                                SelectProps={{
+                                    MenuProps: selectMenuProps
+                                }}
+                            >
+                                {extras.map((option) => (
+                                    <MenuItem key={option.id} value={option}>
+                                        {option.nombreExtra}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                     </Grid>
                     <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
@@ -297,7 +308,7 @@ export default function PriceForm() {
                             +
                         </Button>
                         <Typography variant="subtitle1" gutterBottom>
-                            {t('cotizaciones.label.total')}: $ {total}
+                            {t('cotizaciones.label.total')}: $ {fCurrency(total)}
                         </Typography>
                     </Stack>
                     <Card>

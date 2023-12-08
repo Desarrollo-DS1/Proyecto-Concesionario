@@ -1,4 +1,5 @@
 import propTypes from "prop-types";
+import {round} from "lodash";
 import React, { useContext, useState } from "react";
 import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";
@@ -39,7 +40,7 @@ export default function SaleState(props) {
         id: "",
         cedulaCliente: "",
         cedulaVendedor: user.user_id,
-        fechaVenta: "",
+        fechaVenta: new Date().toISOString().split('T')[0],
         ventaVehiculo: [],
     };
 
@@ -128,7 +129,7 @@ export default function SaleState(props) {
                     setSale(response.data);
                     const vehiclesInSale = response.data.ventaVehiculo.map((item) => {return {...item, id: item.vehiculo}});
                     setCart(vehiclesInSale);
-                    const total = vehiclesInSale.reduce((acc, item) => acc + (parseFloat(item.precio) * (1 - parseFloat(item.porcentajeDescuento))), 0);
+                    const total = vehiclesInSale.reduce((acc, item) => acc + (parseFloat(item.precio) * (1 - parseFloat(item.porcentajeDescuento/100))), 0);
                     setTotal(total);
 
                 }
@@ -312,7 +313,7 @@ export default function SaleState(props) {
                     id: cartVehicle.vehiculo.vin,
                     vehiculo: cartVehicle.vehiculo.vin,
                     precio: cartVehicle.vehiculo.precio,
-                    porcentajeDescuento: cartVehicle.porcentajeDescuento,
+                    porcentajeDescuento: (cartVehicle.porcentajeDescuento / 100).toFixed(2),
                     extra: cartVehicle.extra.id,
                     nombreExtra: cartVehicle.extra.nombreExtra,
                     nombreVehiculo: cartVehicle.vehiculo.nombreModelo,
@@ -322,7 +323,7 @@ export default function SaleState(props) {
                 setCart([...cart, cartVehicle1]);
                 setCartVehicle(emptyCartVehicle);
                 setSale({...sale, ventaVehiculo: [...sale.ventaVehiculo, cartVehicle1]})
-                updateTotal(cartVehicle.vehiculo.precio, cartVehicle.porcentajeDescuento, 'add');
+                updateTotal(cartVehicle.vehiculo.precio, cartVehicle.porcentajeDescuento/100, 'add');
             }
         }
     }
@@ -334,7 +335,7 @@ export default function SaleState(props) {
         setSale({...sale, ventaVehiculo: cartAux});
         
         const deletedVehicle = cart.find((item) => item.id === vin);
-        updateTotal(deletedVehicle.precio, deletedVehicle.porcentajeDescuento, 'subtract');
+        updateTotal(deletedVehicle.precio, deletedVehicle.porcentajeDescuento/100, 'subtract');
     }
 
     const handleInputChangeCart = (event) => {
