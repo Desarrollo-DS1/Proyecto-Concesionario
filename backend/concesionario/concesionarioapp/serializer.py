@@ -435,4 +435,24 @@ class CotizacionSerializer(serializers.ModelSerializer):
             Cotizacion_Modelo.objects.create(cotizacion=cotizacion, **cotizacion_modelo)
 
         return cotizacion
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        cotizacion_vehiculo = validated_data.pop('cotizacion_modelo_set')
+
+        if validated_data['fecha_creacion'] > now().date():
+            raise serializers.ValidationError({'fechaCotizacion': 'La fecha de cotizacion no puede ser mayor a la fecha actual'})
+
+        if 'fecha_vencimiento' not in validated_data:
+            validated_data['fecha_vencimiento'] = validated_data['fecha_creacion'] + timedelta(days=20)
+
+        Cotizacion.objects.filter(id_cotizacion=instance.id_cotizacion).update(**validated_data)
+
+        for cotizacion_modelo_anterior in instance.cotizacion_modelo_set.all():
+            cotizacion_modelo_anterior.delete()
+
+        for cotizacion_modelo in cotizacion_vehiculo:
+            Cotizacion_Modelo.objects.create(cotizacion=instance, **cotizacion_modelo)
+
+        return instance
     

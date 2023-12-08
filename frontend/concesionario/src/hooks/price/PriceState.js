@@ -196,7 +196,36 @@ export default function PriceState(props) {
     }
 
     const updatePrice = async (price) => {
-            
+        try {
+            const response = await updateCotizacion(price.id, price, authTokens.access);
+            setTypeSnackbar('success');
+            setMessageSnackbar('cotizaciones.mensaje.editado');
+            handleOpenSnackbar();
+            handleCloseForm();
+
+        } catch (error) {
+            if (error.response.data.cedulaCliente) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorCliente');
+                handleOpenSnackbar();
+
+            } else if (error.response.data.cedulaVendedor) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.errorVendedor');
+                handleOpenSnackbar();
+
+            } else if (error.response.data.fechaCotizacion) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.fechaCotizacion);
+                handleOpenSnackbar();
+
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('cotizaciones.mensaje.error');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const updateTotal = (vehiclePrice, colorIncrement, operation) => {

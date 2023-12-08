@@ -386,6 +386,19 @@ ON CONFLICT (id_venta_vehiculo) DO NOTHING;
 
 SELECT setval('concesionarioapp_venta_vehiculo_id_venta_vehiculo_seq', (SELECT MAX(id_venta_vehiculo) FROM concesionarioapp_venta_vehiculo));
 
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCGTBEN1L1234567';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314730';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509802';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509803';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314731';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314732';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNMNGED4KG123460';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GNCMDED0L1378096';
+UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNGKGED9KG123460';
+
+
 INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)
 VALUES 
 (1, '371234567', '131234567', '2023-11-08', '2023-11-28'),
@@ -401,6 +414,7 @@ VALUES
 ON CONFLICT (id_cotizacion) DO NOTHING;
 
 SELECT setval('concesionarioapp_cotizacion_id_cotizacion_seq', (SELECT MAX(id_cotizacion) FROM concesionarioapp_cotizacion));
+
 
 INSERT INTO concesionarioapp_cotizacion_modelo(id_cotizacion_modelo, cotizacion_id, modelo_id, color_id, extra_id, cantidad)
 VALUES
@@ -432,15 +446,3 @@ VALUES
 ON CONFLICT (id_cotizacion_modelo) DO NOTHING;
 
 SELECT setval('concesionarioapp_cotizacion_modelo_id_cotizacion_modelo_seq', (SELECT MAX(id_cotizacion_modelo) FROM concesionarioapp_cotizacion_modelo));
-
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCGTBEN1L1234567';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314730';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509802';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509803';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314731';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314732';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNMNGED4KG123460';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GNCMDED0L1378096';
-UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GNGKGED9KG123460';
