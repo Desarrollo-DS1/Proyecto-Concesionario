@@ -387,7 +387,7 @@ class CotizacionModeloSerializer(serializers.ModelSerializer):
     cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
     modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
     precioBase = serializers.IntegerField(source='precio_base_modelo', read_only=True)
-    nombreVehiculo = serializers.CharField(source='nombre_modelo', read_only=True)
+    nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
     color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
     hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
     porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2)
@@ -397,7 +397,7 @@ class CotizacionModeloSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Cotizacion_Modelo
-        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'precioBase', 'nombreVehiculo', 'color', 'hexadecimalColor', 'porcentajeIncrementoColor', 'extra', 'nombreExtra', 'cantidad'
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'precioBase', 'nombreModelo', 'color', 'hexadecimalColor', 'porcentajeIncrementoColor', 'extra', 'nombreExtra', 'cantidad'
 
     def get_nombreExtra(self, obj):
         return obj.extra.nombre_extra if obj.extra else None
