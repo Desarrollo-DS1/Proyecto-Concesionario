@@ -117,7 +117,7 @@ export default function SalePage() {
                                                     <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>
                                                         {cotizacionModelo.map((option) => (
                                                             <ListItem key={option.modelo} sx={{ display: 'list-item', paddingLeft: 0  }} dense>
-                                                                {option.modelo}
+                                                                {option.nombreVehiculo}
                                                             </ListItem>
                                                         ))}
                                                     </List>

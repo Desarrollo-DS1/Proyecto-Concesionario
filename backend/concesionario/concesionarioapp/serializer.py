@@ -291,10 +291,21 @@ class ColorSerializer(serializers.ModelSerializer):
     idColor = serializers.IntegerField(source='id_color')
     colorNombre = serializers.CharField(source='nombre_color')
     hexadecimalColor = serializers.CharField(source='hexadecimal_color')
+    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2)
     
     class Meta:
         model = Color
-        fields = "__all__"
+        fields = 'idColor', 'colorNombre', 'hexadecimalColor', 'porcentajeIncrementoColor'
+
+
+class ExtraSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_extra', read_only=True)
+    nombreExtra = serializers.CharField(source='nombre_extra')
+    descripcionExtra = serializers.CharField(source='descripcion_extra')
+
+    class Meta:
+        model = Extra
+        fields = 'id', 'nombreExtra', 'descripcionExtra'
 
 
 class VentaVehiculoSerializer(serializers.ModelSerializer):
@@ -314,16 +325,6 @@ class VentaVehiculoSerializer(serializers.ModelSerializer):
 
     def get_nombreExtra(self, obj):
         return obj.extra.nombre_extra if obj.extra else None
-
-
-class ExtraSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='id_extra', read_only=True)
-    nombreExtra = serializers.CharField(source='nombre_extra')
-    descripcionExtra = serializers.CharField(source='descripcion_extra')
-
-    class Meta:
-        model = Extra
-        fields = 'id', 'nombreExtra', 'descripcionExtra'
     
 
 class VentaSerializer(serializers.ModelSerializer):
@@ -380,32 +381,40 @@ class VentaSerializer(serializers.ModelSerializer):
         
         return instance
 
-class CotizacionSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
-    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
-    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
-    fechaCreacion = serializers.DateField()
-    porcentajeDescuento = serializers.DecimalField(max_digits=5, decimal_places=4)  
-    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
-    modelos = models.ManyToManyField(Modelo, through='Cotizacion_Modelo', related_name='modelos')
-
-    class Meta:
-        model = Cotizacion
-        fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
-    
 
 class CotizacionModeloSerializer(serializers.ModelSerializer):
     idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
     cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
     modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
+    precioBase = serializers.IntegerField(source='precio_base_modelo', read_only=True)
+    nombreVehiculo = serializers.CharField(source='nombre_modelo', read_only=True)
     color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2)
     extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all(), required=False, allow_null=True)
     nombreExtra = serializers.SerializerMethodField()
     cantidad = serializers.IntegerField()
 
     class Meta:
         model = Cotizacion_Modelo
-        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'precioBase', 'nombreVehiculo', 'color', 'hexadecimalColor', 'porcentajeIncrementoColor', 'extra', 'nombreExtra', 'cantidad'
 
     def get_nombreExtra(self, obj):
         return obj.extra.nombre_extra if obj.extra else None
+
+
+class CotizacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
+    cedulaVendedor = serializers.PrimaryKeyRelatedField(source='vendedor', queryset=Empleado.objects.all())
+    nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    fechaCotizacion = serializers.DateField(source='fecha_creacion')
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
+    cotizacionModelo = CotizacionModeloSerializer(many=True, source='cotizacion_modelo_set')
+    valorCotizacion = serializers.IntegerField(source='precio_total', read_only=True)
+
+    class Meta:
+        model = Cotizacion
+        fields = 'id', 'cedulaVendedor', 'nombreVendedor', 'cedulaCliente', 'nombreCliente', 'fechaCotizacion', 'fechaVencimiento', 'cotizacionModelo', 'valorCotizacion'
+    

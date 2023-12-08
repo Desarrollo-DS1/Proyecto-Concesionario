@@ -104,6 +104,7 @@ export default function SaleState(props) {
     const getSales = async () => {
         try {
             const response = await getAllVentas(authTokens.access);
+            console.log(response.data);
             setSales(response.data);
 
         } catch (error) {

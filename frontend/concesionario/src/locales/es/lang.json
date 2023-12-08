@@ -192,7 +192,10 @@
       "errorListando": "Error al listar cotizaciones",
       "errorCargando": "Error al cargar cotizacion",
       "errorModelo": "El modelo ya fue agregado a la venta",
-      "errorModelos": "Es necesario agregar al menos un modelo a la cotizacion"
+      "errorModelos": "Es necesario agregar al menos un modelo a la cotizacion",
+      "errorListandoExtras": "Error al listar extras",
+      "errorListandoColores": "Error al listar colores",
+      "errorListandoModelos": "Error al listar modelos"
     },
 
     "label": {

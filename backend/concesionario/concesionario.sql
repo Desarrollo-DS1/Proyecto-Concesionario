@@ -268,7 +268,7 @@ ON CONFLICT (id_modelo) DO NOTHING;
 SELECT setval('concesionarioapp_modelo_id_modelo_seq', (SELECT MAX(id_modelo) FROM concesionarioapp_modelo));
 
 
-INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentanje_incremento_por_color, hexadecimal_color)
+INSERT INTO concesionarioapp_color (id_color, nombre_color, porcentaje_incremento_por_color, hexadecimal_color)
 VALUES
 (1, 'Blanco', 0.1, '#FFFFFF'),
 (2, 'Negro', 0.08, '#000000'),
