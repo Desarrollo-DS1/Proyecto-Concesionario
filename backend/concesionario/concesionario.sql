@@ -398,8 +398,9 @@ VALUES
 (8, '371234567', '131234567', '2023-11-08', '2023-11-28'),
 (9, '371234567', '131234567', '2023-11-08', '2023-11-28'),
 (10, '371234567', '131234567', '2023-11-08', '2023-11-28')
-
 ON CONFLICT (id_cotizacion) DO NOTHING;
+
+SELECT setval('concesionarioapp_cotizacion_id_cotizacion_seq', (SELECT MAX(id_cotizacion) FROM concesionarioapp_cotizacion));
 
 INSERT INTO concesionarioapp_cotizacion_modelo(id_cotizacion_modelo, cotizacion_id, modelo_id, color_id, extra_id, cantidad)
 VALUES
@@ -428,8 +429,9 @@ VALUES
 (23, 4, 7, 1, 5, 1),
 (24, 8, 2, 6, 3, 1),
 (25, 5, 8, 4, 1, 1)
-
 ON CONFLICT (id_cotizacion_modelo) DO NOTHING;
+
+SELECT setval('concesionarioapp_cotizacion_modelo_id_cotizacion_modelo_seq', (SELECT MAX(id_cotizacion_modelo) FROM concesionarioapp_cotizacion_modelo));
 
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '1GCCS19W128314729';
 UPDATE concesionarioapp_vehiculo SET disponible_para_venta = FALSE WHERE vin = '3GCUKSEC3HG509801';

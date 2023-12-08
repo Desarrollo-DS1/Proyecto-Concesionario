@@ -384,20 +384,20 @@ class VentaSerializer(serializers.ModelSerializer):
 
 class CotizacionModeloSerializer(serializers.ModelSerializer):
     idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
-    cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
-    modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
+    cotizacion = serializers.PrimaryKeyRelatedField(read_only=True)
+    modelo = serializers.PrimaryKeyRelatedField(read_only=True)
+    idModelo = serializers.PrimaryKeyRelatedField(source='modelo', queryset=Modelo.objects.all())
     precioBase = serializers.IntegerField(source='precio_base_modelo', read_only=True)
     nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
-    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
+    idColor = serializers.PrimaryKeyRelatedField(source='color', queryset=Color.objects.all())
     hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
-    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2)
-    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all(), required=False, allow_null=True)
+    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2, read_only=True)
+    idExtra = serializers.PrimaryKeyRelatedField(source='extra', queryset=Extra.objects.all(), required=False, allow_null=True)
     nombreExtra = serializers.SerializerMethodField()
-    cantidad = serializers.IntegerField()
 
     class Meta:
         model = Cotizacion_Modelo
-        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'precioBase', 'nombreModelo', 'color', 'hexadecimalColor', 'porcentajeIncrementoColor', 'extra', 'nombreExtra', 'cantidad'
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'idModelo', 'precioBase', 'nombreModelo', 'idColor', 'hexadecimalColor', 'porcentajeIncrementoColor', 'idExtra', 'nombreExtra'
 
     def get_nombreExtra(self, obj):
         return obj.extra.nombre_extra if obj.extra else None
@@ -409,12 +409,30 @@ class CotizacionSerializer(serializers.ModelSerializer):
     nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
     cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
     nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
-    fechaCotizacion = serializers.DateField(source='fecha_creacion')
-    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
+    fechaCotizacion = serializers.DateField(source='fecha_creacion', required=True)
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento', required=False)
     cotizacionModelo = CotizacionModeloSerializer(many=True, source='cotizacion_modelo_set')
     valorCotizacion = serializers.IntegerField(source='precio_total', read_only=True)
 
     class Meta:
         model = Cotizacion
         fields = 'id', 'cedulaVendedor', 'nombreVendedor', 'cedulaCliente', 'nombreCliente', 'fechaCotizacion', 'fechaVencimiento', 'cotizacionModelo', 'valorCotizacion'
+    
+    
+    @transaction.atomic
+    def create(self, validated_data):
+        if validated_data['fecha_creacion'] > now().date():
+            raise serializers.ValidationError({'fechaCotizacion': 'La fecha de cotizacion no puede ser mayor a la fecha actual'})
+
+        if 'fecha_vencimiento' not in validated_data:
+            print('entro')
+            validated_data['fecha_vencimiento'] = validated_data['fecha_creacion'] + timedelta(days=20)
+        
+        cotizacion_vehiculo = validated_data.pop('cotizacion_modelo_set')
+        cotizacion = Cotizacion.objects.create(**validated_data)
+        
+        for cotizacion_modelo in cotizacion_vehiculo:
+            Cotizacion_Modelo.objects.create(cotizacion=cotizacion, **cotizacion_modelo)
+
+        return cotizacion
     
