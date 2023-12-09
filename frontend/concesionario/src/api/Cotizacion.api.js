@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const cotizacionApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cotizacion/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Cotizacion/`,
     headers: { Authorization: `Bearer ${token}` }
 });
 

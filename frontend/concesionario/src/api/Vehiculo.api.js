@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const vehiculoApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Vehiculo/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Vehiculo/`,
     headers: { Authorization: `Bearer ${token}` }
 })
 

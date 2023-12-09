@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const sucursalApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Sucursal/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Sucursal/`,
     headers: { Authorization: `Bearer ${token}` }
 })
 
