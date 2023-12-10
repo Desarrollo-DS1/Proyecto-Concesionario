@@ -7,6 +7,7 @@ from django.db.models.deletion import ProtectedError
 from .permissions import EsEmpleado, EsGerente, EsVendedorOGerente, EsJefeDeTallerOGerente
 from .serializer import *
 from .models import *
+from decouple import config
 import requests
 
 
@@ -205,9 +206,10 @@ def recaptcha(request):
     if not captcha_token:
         return Response({"missing_captcha": "El captcha es requerido"}, status=400)
     
-    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
-        'secret': '6LcaL_8oAAAAAKsq5c-ImF_wkAQdhX4Xb4xWKfYf',
-        'response': captcha_token
+    response = requests.post('https://www.google.com/recaptcha/api/siteverify',
+                             data={
+                                 'secret': config('RECAPTCHA_SECRET_KEY'),
+                                 'response': captcha_token
     })
 
     result = response.json()

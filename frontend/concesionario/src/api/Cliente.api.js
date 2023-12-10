@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const clienteApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Cliente/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Cliente/`,
     headers: { Authorization: `Bearer ${token}` }
 });
 

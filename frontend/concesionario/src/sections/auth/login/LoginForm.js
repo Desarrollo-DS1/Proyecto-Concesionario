@@ -73,7 +73,7 @@ export default function LoginForm() {
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
                 <ReCAPTCHA
                     ref={captchaRef}
-                    sitekey="6LcaL_8oAAAAAJeOInJCbKTOAjuxqAb_ajK49G4L"/>
+                    sitekey={process.env.REACT_APP_RECAPTCHA_PUBLIC_KEY}/>
             </Box>
 
 
