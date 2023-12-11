@@ -65,9 +65,6 @@ export default function LoginForm() {
 
           <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
             <ModeViewSwitch />
-            <Link variant="subtitle2" underline="hover">
-                {t('login.olvido')}
-            </Link>
           </Stack>
 
             <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>

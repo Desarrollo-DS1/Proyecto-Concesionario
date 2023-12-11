@@ -4,41 +4,26 @@ import {useTranslation} from "react-i18next";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
-import {Grid, Stack, TextField, Card, Button} from '@mui/material';
+import {Grid, Stack, Card, Button} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import SellIcon from '@mui/icons-material/Sell';
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 // components
 // sections
 import {
-    AppCurrentVisits,
-    AppWidgetSummary
+    AppMonthlyBranches,
+    AppWidgetSummary,
+    AppMonthlyExtras,
+    AppMonthlySalesModel
 } from '../sections/@dashboard/app';
 
 import AppMonthlySales from '../sections/@dashboard/app/AppMonthlySales';
 import SaleDashboardContext from "../hooks/dashboard/sale/SaleDashboardContext";
-
+import {fCurrency} from "../utils/formatNumber";
 
 // ----------------------------------------------------------------------
-
-const selectMenuProps = {
-    anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "left"
-    },
-    transformOrigin: {
-        vertical: "top",
-        horizontal: "left"
-    },
-    getcontentanchorel: null,
-    PaperProps: {
-        style: {
-            maxHeight: 125 // Establece la altura máxima del menú
-        }
-    }
-};
 
 const chooseLanguage = (lang) => {
     switch (lang) {
@@ -53,16 +38,27 @@ const chooseLanguage = (lang) => {
     }
 }
 
-export default function DashboardAppPage() {
+export default function SaleDashboard() {
     const theme = useTheme();
 
     const { t, i18n } = useTranslation("lang");
-
 
     const {SalesMonthly,
         getSalesMonthly,
         SalesModel,
         getSalesModel,
+        SalesBranch,
+        getSalesBranch,
+        SalesExtra,
+        getSalesExtra,
+        totalAnualSales,
+        getTotalAnualSales,
+        totalMonthlySales,
+        getTotalMonthlySales,
+        numberOfSalesAnual,
+        getNumberOfSalesAnual,
+        numberOfSalesMonthly,
+        getNumberOfSalesMonthly,
         month,
         handleMonthChange,
         year,
@@ -72,6 +68,12 @@ export default function DashboardAppPage() {
     useEffect(() => {
         getSalesMonthly();
         getSalesModel();
+        getSalesExtra();
+        getSalesBranch();
+        getTotalAnualSales();
+        getTotalMonthlySales();
+        getNumberOfSalesAnual();
+        getNumberOfSalesMonthly();
     }, []);
 
     return (
@@ -83,52 +85,27 @@ export default function DashboardAppPage() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={12} md={12}>
                         <Card >
-                            <Stack direction="row" spacing={2} margin={3}>
+                            <Stack direction="row" spacing={2} margin={3} justifyContent="space-between">
 
-                                <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                    <DatePicker views={["year"]}
-                                                label={t('dashBoardVenta.año')}
-                                                value={year}
-                                                onChange={(newValue) => handleYearChange(newValue)}
-                                                animateYearScrolling
-                                                slotProps={{ textField: { fullWidth: true } }}/>
-                                </LocalizationProvider>
+                                <Stack direction="row" spacing={2}>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                        <DatePicker views={["year"]}
+                                                    label={t('dashBoardVenta.año')}
+                                                    value={year}
+                                                    onChange={(newValue) => handleYearChange(newValue)}
+                                                    animateYearScrolling
+                                                    slotProps={{ textField: { fullWidth: true } }}/>
+                                    </LocalizationProvider>
 
-                                <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={chooseLanguage(i18n.language)}>
-                                    <DatePicker views={["month"]}
-                                                label={t('dashBoardVenta.mes')}
-                                                value={month}
-                                                onChange={(newValue) => handleMonthChange(newValue)}
-                                                slotProps={{ textField: { fullWidth: true } }}/>
-                                </LocalizationProvider>
-
-                                <TextField
-                                    select
-                                    fullWidth
-                                    name={"model"}
-                                    label={t('dashBoardVenta.modelo')} variant="outlined"
-                                >
-                                    {/* {genders.map((option) => ( */}
-                                    {/*    <MenuItem key={option.id} value={option.label}> */}
-                                    {/*        {option.label} */}
-                                    {/*    </MenuItem> */}
-                                    {/* ))} */}
-                                </TextField>
-
-                                <TextField
-                                    select
-                                    fullWidth
-                                    name={"model"}
-                                    label={t('dashBoardVenta.sucursal')} variant="outlined"
-                                >
-                                    {/* {genders.map((option) => ( */}
-                                    {/*    <MenuItem key={option.id} value={option.label}> */}
-                                    {/*        {option.label} */}
-                                    {/*    </MenuItem> */}
-                                    {/* ))} */}
-                                </TextField>
-
-                                <Button variant="contained" startIcon={<FilterAltIcon/>} sx={{width: "30%"}} onClick={handleFilter}>
+                                    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={chooseLanguage(i18n.language)}>
+                                        <DatePicker views={["month"]}
+                                                    label={t('dashBoardVenta.mes')}
+                                                    value={month}
+                                                    onChange={(newValue) => handleMonthChange(newValue)}
+                                                    slotProps={{ textField: { fullWidth: true } }}/>
+                                    </LocalizationProvider>
+                                </Stack>
+                                <Button variant="contained" startIcon={<FilterAltIcon/>} sx={{width: "15%"}} onClick={handleFilter}>
                                     {t('dashBoardVenta.filtro')}
                                 </Button>
                             </Stack>
@@ -136,19 +113,19 @@ export default function DashboardAppPage() {
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasAnuales')} total={714000} icon={<AttachMoneyIcon width={24} height={24}/>} />
+                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasAnuales')} total={`$ ${fCurrency(totalAnualSales)}`} icon={<ShoppingCartRoundedIcon fontSize={"large"}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasMensuales')} total={1352831} icon={<AttachMoneyIcon width={24} height={24}/>} />
+                        <AppWidgetSummary title={t('dashBoardVenta.totalVentasMensuales')} total={`$ ${fCurrency(totalMonthlySales)}`} icon={<ShoppingCartRoundedIcon fontSize={"large"}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasAnuales')} total={1723315} icon={<SellIcon width={24} height={24}/>} />
+                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasAnuales')} total={numberOfSalesAnual} icon={<SellIcon fontSize={"large"}/>} />
                     </Grid>
 
                     <Grid item xs={12} sm={6} md={3}>
-                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasMensuales')} total={234} icon={<SellIcon width={24} height={24}/>} />
+                        <AppWidgetSummary title={t('dashBoardVenta.numeroVentasMensuales')} total={numberOfSalesMonthly} icon={<SellIcon fontSize={"large"}/>} />
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={8}>
@@ -170,7 +147,7 @@ export default function DashboardAppPage() {
                                 'Dic',
                             ]}
                             chartData={[{
-                                name: 'Ventas',
+                                name: 'ventas',
                                 type: 'column',
                                 fill: 'solid',
                                 data: SalesMonthly,
@@ -179,15 +156,56 @@ export default function DashboardAppPage() {
                     </Grid>
 
                     <Grid item xs={12} md={6} lg={4}>
-                        <AppCurrentVisits
-                            title={t('dashBoardVenta.ventas')}
-                            chartData={SalesModel}
+                        <AppMonthlyBranches
+                            title={t('dashBoardVenta.ventasPorSucursal')}
+                            chartData={SalesBranch}
                             chartColors={[
                                 theme.palette.primary.main,
                                 theme.palette.info.main,
                                 theme.palette.warning.main,
                                 theme.palette.error.main,
                             ]}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={4}>
+                        <AppMonthlyExtras
+                            title={t('dashBoardVenta.ventasPorExtra')}
+                            chartData={SalesExtra}
+                            chartColors={[
+                                theme.palette.primary.main,
+                                theme.palette.info.main,
+                                theme.palette.warning.main,
+                                theme.palette.error.main,
+                            ]}
+                            type={"extras"}
+                        />
+                    </Grid>
+
+                    <Grid item xs={12} md={6} lg={8}>
+                        <AppMonthlySalesModel
+                            title={t('dashBoardVenta.ventasPorModelo')}
+                            subheader=""
+                            chartLabels={[
+                                'Ene',
+                                'Feb',
+                                'Mar',
+                                'Abr',
+                                'May',
+                                'Jun',
+                                'Jul',
+                                'Ago',
+                                'Sep',
+                                'Oct',
+                                'Nov',
+                                'Dic',
+                            ]}
+                            chartData={[{
+                                name: 'Ventas',
+                                type: 'bar',
+                                fill: 'solid',
+                                data: SalesModel,
+                            }]}
                         />
                     </Grid>
                 </Grid>
