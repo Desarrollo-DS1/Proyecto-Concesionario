@@ -30,6 +30,7 @@ import PriceForm from "../sections/@dashboard/price/PriceForm";
 // import SaleDelete from "../sections/@dashboard/sale/SaleDelete";
 // mock
 import PriceContext from "../hooks/price/PriceContext";
+import {fCurrency} from "../utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -111,7 +112,7 @@ export default function SalePage() {
 
                                                 <TableCell align="left">{fechaCotizacion}</TableCell>
 
-                                                <TableCell align="left">$ {valorCotizacion}</TableCell>
+                                                <TableCell align="left">$ {fCurrency(valorCotizacion)}</TableCell>
 
                                                 <TableCell align="left">
                                                     <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>
