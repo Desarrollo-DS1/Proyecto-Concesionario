@@ -11,7 +11,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import BranchContext from "../../../hooks/branch/BranchContext";
 
-export default function CustomerDelete() {
+export default function BranchDelete() {
 
     const { branch, openDelete, handleCloseDelete, handleDelete } = useContext(BranchContext);
 
