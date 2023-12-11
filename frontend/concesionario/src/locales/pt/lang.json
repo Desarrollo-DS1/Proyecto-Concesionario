@@ -434,7 +434,9 @@
     "numeroVentasAnuales": "Número Vendas Anuais",
     "numeroVentasMensuales": "Número Vendas Mensais",
     "ventasMensuales": "Vendas Mensais",
-    "ventasPorModelo": "Vendas por Modelo"
+    "ventasPorModelo": "Vendas Mensais por Modelo",
+    "ventasPorSucursal": "Vendas Mensais por Filial",
+    "ventasPorExtra": "Extras Mensais"
   },
 
   "colores": {

@@ -16,7 +16,7 @@ AppMonthlySales.propTypes = {
 
 export default function AppMonthlySales({ title, subheader, chartLabels, chartData, ...other }) {
     const chartOptions = useChart({
-        plotOptions: { bar: { columnWidth: '70%' } },
+        plotOptions: { bar: { columnWidth: '50%' } },
         fill: { type: chartData.map((i) => i.fill) },
         labels: chartLabels,
         tooltip: {
@@ -29,6 +29,10 @@ export default function AppMonthlySales({ title, subheader, chartLabels, chartDa
                     }
                     return y;
                 },
+            },
+            style: {
+                background: 'blue',
+                color: '#fff',
             },
         },
     });
