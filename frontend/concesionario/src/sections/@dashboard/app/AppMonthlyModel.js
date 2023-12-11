@@ -1,9 +1,12 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
+import {useTranslation} from "react-i18next";
+import {useTheme} from "@mui/material/styles";
 import ReactApexChart from 'react-apexcharts';
 // @mui
 import { Card, CardHeader, Box } from '@mui/material';
 // components
 import { useChart } from '../../../components/chart';
+
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +18,10 @@ AppMonthlySales.propTypes = {
 };
 
 export default function AppMonthlySales({ title, subheader, chartLabels, chartData, ...other }) {
+
+    const theme = useTheme();
+
+    const { t, i18n } = useTranslation("lang");
 
     const chartOptions = useChart({
         chart: {
@@ -57,7 +64,7 @@ export default function AppMonthlySales({ title, subheader, chartLabels, chartDa
             position: 'top',
             horizontalAlign: 'left',
             offsetX: 40
-        }
+        },
     });
 
     return (

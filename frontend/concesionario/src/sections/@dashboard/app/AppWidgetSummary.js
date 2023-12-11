@@ -24,9 +24,9 @@ const StyledIcon = styled('div')(({ theme }) => ({
 
 AppWidgetSummary.propTypes = {
   color: PropTypes.string,
-  icon: PropTypes.string,
+  icon: PropTypes.any,
   title: PropTypes.string.isRequired,
-  total: PropTypes.number.isRequired,
+  total: PropTypes.any.isRequired,
   sx: PropTypes.object,
 };
 

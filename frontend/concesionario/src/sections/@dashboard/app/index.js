@@ -9,3 +9,5 @@ export { default as AppCurrentSubject } from './AppCurrentSubject';
 export { default as AppConversionRates } from './AppConversionRates';
 export { default as AppMonthlyExtras } from './AppMonthlyExtras';
 export { default as AppMonthlySalesModel } from './AppMonthlyModel';
+export { default as AppMonthlySales } from './AppMonthlySales';
+export { default as AppMonthlyPrices } from './AppMonthlyPrices';

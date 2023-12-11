@@ -442,6 +442,25 @@
     "ventasPorExtra": "Monthly Extras"
   },
 
+  "dashBoardCotizacion": {
+    "titulo": "Prices Panel",
+    "cotizaciones": "Prices",
+    "año": "Year",
+    "mes": "Month",
+    "modelo": "Model",
+    "ventas": "Sales",
+    "sucursal": "Branch",
+    "filtro": "Filter",
+    "totalCotizacionesAnuales": "Total Annual Prices",
+    "totalCotizacionesMensuales": "Total Monthly Prices",
+    "numeroCotizacionesAnuales": "Number of Annual Prices",
+    "numeroCotizacionesMensuales": "Number of Monthly Prices",
+    "cotizacionesMensuales": "Monthly Prices",
+    "cotizacionesPorModelo": "Monthly Prices by Model",
+    "cotizacionesPorSucursal": "Monthly Prices by Branch",
+    "cotizacionesPorColor": "Monthly Colors"
+  },
+
   "colores": {
     "Amarillo": "Yellow",
     "Azul": "Blue",
@@ -495,5 +514,20 @@
     "Gerente": "Manager",
     "Cliente": "Customer",
     "Superusuario": "Superuser"
+  },
+
+  "meses": {
+    "Ene": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Abr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Ago": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dic": "Dec"
   }
 }

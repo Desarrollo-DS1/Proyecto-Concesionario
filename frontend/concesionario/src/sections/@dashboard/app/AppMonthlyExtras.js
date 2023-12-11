@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {useTranslation} from "react-i18next";
 import ReactApexChart from 'react-apexcharts';
 // @mui
 import { useTheme, styled } from '@mui/material/styles';
@@ -38,7 +39,10 @@ AppMonthlyExtras.propTypes = {
     chartData: PropTypes.array,
 };
 
-export default function AppMonthlyExtras({ title, subheader, chartColors, chartData, ...other }) {
+export default function AppMonthlyExtras({ title, subheader, chartColors, chartData, type, ...other }) {
+
+    const { t , i18n} = useTranslation("lang");
+
     const theme = useTheme();
 
     const chartLabels = chartData.map((i) => i.label);
@@ -49,7 +53,7 @@ export default function AppMonthlyExtras({ title, subheader, chartColors, chartD
         colors: chartColors,
         labels: chartLabels,
         stroke: { colors: [theme.palette.background.paper] },
-        legend: { floating: true, horizontalAlign: 'center' },
+
         dataLabels: { enabled: true, dropShadow: { enabled: false } },
         tooltip: {
             fillSeriesColor: false,
@@ -62,6 +66,8 @@ export default function AppMonthlyExtras({ title, subheader, chartColors, chartD
         },
         plotOptions: {
             pie: { donut: { labels: { show: false } } },
+        },
+        legend: { floating: true, horizontalAlign: 'center', formatter: (seriesName) => t(`colores.${seriesName}`)
         },
     });
 

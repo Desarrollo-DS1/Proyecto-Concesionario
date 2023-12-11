@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
-import {Grid, Stack, TextField, Card, Button, Box} from '@mui/material';
+import {Grid, Stack, Card, Button} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import SellIcon from '@mui/icons-material/Sell';
@@ -23,25 +23,7 @@ import AppMonthlySales from '../sections/@dashboard/app/AppMonthlySales';
 import SaleDashboardContext from "../hooks/dashboard/sale/SaleDashboardContext";
 import {fCurrency} from "../utils/formatNumber";
 
-
 // ----------------------------------------------------------------------
-
-const selectMenuProps = {
-    anchorOrigin: {
-        vertical: "bottom",
-        horizontal: "left"
-    },
-    transformOrigin: {
-        vertical: "top",
-        horizontal: "left"
-    },
-    getcontentanchorel: null,
-    PaperProps: {
-        style: {
-            maxHeight: 125 // Establece la altura máxima del menú
-        }
-    }
-};
 
 const chooseLanguage = (lang) => {
     switch (lang) {
@@ -56,7 +38,7 @@ const chooseLanguage = (lang) => {
     }
 }
 
-export default function DashboardAppPage() {
+export default function SaleDashboard() {
     const theme = useTheme();
 
     const { t, i18n } = useTranslation("lang");
@@ -165,7 +147,7 @@ export default function DashboardAppPage() {
                                 'Dic',
                             ]}
                             chartData={[{
-                                name: 'Ventas',
+                                name: 'ventas',
                                 type: 'column',
                                 fill: 'solid',
                                 data: SalesMonthly,
@@ -196,6 +178,7 @@ export default function DashboardAppPage() {
                                 theme.palette.warning.main,
                                 theme.palette.error.main,
                             ]}
+                            type={"extras"}
                         />
                     </Grid>
 

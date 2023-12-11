@@ -9,7 +9,9 @@ import { useTheme } from '@mui/material/styles';
 import {Container, Box, Tab, Tabs} from '@mui/material';
 // pages
 import SaleDashboard from "./SaleDashboard";
+import PriceDashboard from "./PriceDashboard";
 import {SaleDashboardState} from "../hooks/dashboard/sale/SaleDashboardState";
+import {PriceDashboardState} from "../hooks/dashboard/price/PriceDashboardState";
 import AuthContext from "../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
@@ -35,7 +37,7 @@ export default function DashboardAppPage() {
 
                  <Box mt={5} >
                     {tabIndex === 0 && <SaleDashboardState><SaleDashboard/></SaleDashboardState>}
-                    {tabIndex === 1 && <Box>Que tal</Box>}
+                    {tabIndex === 1 && <PriceDashboardState><PriceDashboard/></PriceDashboardState>}
                  </Box>
             </Container>
         </>

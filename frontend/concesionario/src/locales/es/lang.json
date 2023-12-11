@@ -461,6 +461,25 @@
     "ventasPorExtra": "Extras Mensuales"
   },
 
+  "dashBoardCotizacion": {
+    "titulo": "Panel Cotizaciones",
+    "cotizaciones": "Cotizaciones",
+    "ventas": "Ventas",
+    "año": "Año",
+    "mes": "Mes",
+    "modelo": "Modelo",
+    "sucursal": "Sucursal",
+    "filtro": "Filtrar",
+    "totalCotizacionesAnuales": "Total Cotizaciones Anuales",
+    "totalCotizacionesMensuales": "Total Cotizaciones Mensuales",
+    "numeroCotizacionesAnuales": "Numero Cotizaciones Anuales",
+    "numeroCotizacionesMensuales": "Numero Cotizaciones Mensuales",
+    "cotizacionesMensuales": "Cotizaciones Mensuales",
+    "cotizacionesPorModelo": "Cotizaciones Mensuales por Modelo",
+    "cotizacionesPorSucursal": "Cotizaciones Mensuales por Sucursal",
+    "cotizacionesPorColor": "Colores Mensuales"
+  },
+
   "colores": {
     "Amarillo": "Amarillo",
     "Azul": "Azul",
@@ -514,5 +533,19 @@
     "Gerente": "Gerente",
     "Cliente": "Cliente",
     "Superusuario": "Superusuario"
+  },
+  "meses": {
+    "Ene": "Ene",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Abr": "Abr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Ago": "Ago",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dic": "Dic"
   }
 }
