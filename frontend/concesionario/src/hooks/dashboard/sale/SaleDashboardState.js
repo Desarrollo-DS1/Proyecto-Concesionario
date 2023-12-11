@@ -11,26 +11,41 @@ SaleDashboardState.propTypes = {
 const initialSalesMonthly = [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70];
 
 const initialSalesModel = [
-    { label: 'Onix RS', value: 45 },
-    { label: 'Onix LT', value: 4 },
-    { label: 'Onix Premier', value: 34 },
-    { label: 'Montana', value: 10 },
-    { label: 'Tracker', value: 5 },
-    { label: 'Cruze', value: 15 },
+    { name: 'Onix RS', data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70] },
+    { name: 'Onix LT', data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 90, 88, 86] },
+    { name: 'Onix Premier', data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 44, 50, 51] },
+    { name: 'Onix RS', data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70] },
+    { name: 'Onix LT', data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 90, 88, 86] },
+    { name: 'Onix Premier', data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 44, 50, 51] },
+];
+
+const initialSalesBranch = [
+    { label: 'Bogotá', value: 45 },
+    { label: 'Medellín', value: 4 },
+    { label: 'Cali', value: 34 },
+    { label: 'Barranquilla', value: 10 },
+    { label: 'Cartagena', value: 5 },
+    { label: 'Santa Marta', value: 15 },
+];
+
+const initialSalesExtra = [
+    { label: 'Polarizado', value: 45 },
+    { label: 'Rines de lujo', value: 4 },
+    { label: 'Tapicería en cuero', value: 34 },
+    { label: 'Pintura especial', value: 10 },
+    { label: 'Polarizado', value: 5 },
+    { label: 'Rines de lujo', value: 15 },
 ];
 
 export function SaleDashboardState(props) {
 
     const [month, setMonth] = useState(new Date());
     const [year, setYear] = useState(new Date());
-    const [model, setModel] = useState(0);
-    const [branch, setBranch] = useState(0);
-
-    const [models, setModels] = useState([]);
-    const [branches, setBranches] = useState([]);
 
     const [SalesMonthly, setSalesMonthly] = useState([]);
     const [SalesModel, setSalesModel] = useState([]);
+    const [SalesBranch, setSalesBranch] = useState([]);
+    const [SalesExtra, setSalesExtra] = useState([]);
 
     const [totalAnualSales, setTotalAnualSales] = useState(0);
     const [totalMonthlySales, setTotalMonthlySales] = useState(0);
@@ -38,25 +53,35 @@ export function SaleDashboardState(props) {
     const [numberOfSalesMonthly, setNumberOfSalesMonthly] = useState(0);
 
     const getSalesMonthly = async () => {
-        // const response = await getSalesMonthly();
-        // setSalesMonthly(response);
         setSalesMonthly(initialSalesMonthly);
     }
 
     const getSalesModel = async () => {
-        // const response = await getSalesModel();
-        // setSalesModel(response);
         setSalesModel(initialSalesModel);
     }
 
-    const getModels = async () => {
-        // const response = await getModels();
-        // setModels(response);
+    const getSalesBranch = async () => {
+        setSalesBranch(initialSalesBranch);
     }
 
-    const getBranches = async () => {
-        // const response = await getBranches();
-        // setBranches(response);
+    const getSalesExtra = async () => {
+        setSalesExtra(initialSalesExtra);
+    }
+
+    const getTotalAnualSales = async () => {
+        setTotalAnualSales(0);
+    }
+
+    const getTotalMonthlySales = async () => {
+        setTotalMonthlySales(0);
+    }
+
+    const getNumberOfSalesAnual = async () => {
+        setNumberOfSalesAnual(0);
+    }
+
+    const getNumberOfSalesMonthly = async () => {
+        setNumberOfSalesMonthly(0);
     }
 
     const handleMonthChange = (value) => {
@@ -68,10 +93,10 @@ export function SaleDashboardState(props) {
     }
 
     const handleFilter = () => {
-        // const response = await getSalesMonthly();
-        // setSalesMonthly(response);
-        console.log(format(month, 'MM'));
-        console.log(format(year, 'yyyy'));
+        getSalesModel();
+        getSalesMonthly();
+        getSalesExtra();
+        getSalesBranch();
     }
 
     return (
@@ -80,6 +105,18 @@ export function SaleDashboardState(props) {
             getSalesMonthly,
             SalesModel,
             getSalesModel,
+            SalesBranch,
+            getSalesBranch,
+            SalesExtra,
+            getSalesExtra,
+            totalAnualSales,
+            getTotalAnualSales,
+            totalMonthlySales,
+            getTotalMonthlySales,
+            numberOfSalesAnual,
+            getNumberOfSalesAnual,
+            numberOfSalesMonthly,
+            getNumberOfSalesMonthly,
             month,
             handleMonthChange,
             year,
