@@ -78,7 +78,7 @@ const crearFila = (cart, deleteCart) => {
                         }}
                     />
                 </Stack>
-            </TableCell >
+            </TableCell>
             <TableCell align="center">
                 % {(el.porcentajeDescuento * 100).toFixed(0)}
             </TableCell>
