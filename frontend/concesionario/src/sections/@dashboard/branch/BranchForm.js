@@ -54,8 +54,8 @@ export default function BranchForm() {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: isSmallScreen ? '90%' : '70%',
-        height: isSmallScreen ? '80%' : '74%',
+        width: isSmallScreen ? '90%' : 'auto',
+        height: isSmallScreen ? '80%' : 'auto',
         overflowY: 'auto',
         bgcolor: 'background.paper',
         boxShadow: 24,
@@ -131,7 +131,7 @@ export default function BranchForm() {
                             onChange={handleInputChange}
                             onBlur={handleOnBlur}
                             label={t("sucursales.label.ciudad")} variant="outlined"
-                            helperText={t(branchError.ciudad, {maximo: '50', minimo: '5'})}
+                            helperText={t(branchError.ciudad, {maximo: '50', minimo: '2'})}
                             style={textFieldStyle}
                         />
                     </Grid>
@@ -146,7 +146,7 @@ export default function BranchForm() {
                             onChange={handleInputChange}
                             onBlur={handleOnBlur}
                             label={t("sucursales.label.telefono")} variant="outlined"
-                            helperText={t(branchError.telefono, {maximo: '10', minimo: '10'})}
+                            helperText={t(branchError.telefono, {maximo: '10', minimo: '7'})}
                             style={textFieldStyle}
                         />
                     </Grid>

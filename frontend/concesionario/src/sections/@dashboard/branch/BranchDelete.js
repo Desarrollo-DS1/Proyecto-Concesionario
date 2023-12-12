@@ -48,7 +48,7 @@ export default function BranchDelete() {
                     </Typography>
                 </Stack>
                 <Typography variant="body1" gutterBottom>
-                    {t('sucursales.mensaje.confirmacionEliminar', {nombre: branch.nombre})}
+                    {t('sucursales.mensaje.confirmacionEliminar', {nombre: branch.nombreSucursal})}
 
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">

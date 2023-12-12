@@ -22,6 +22,7 @@ const SalePage = lazy(() => import('./pages/SalePage'));
 const PricePage = lazy(() => import('./pages/PricePage'));
 const SparePartPage = lazy(() => import('./pages/SparePartPage'));
 const WorkOrderPage = lazy(() => import('./pages/WorkOrderPage'));
+const BranchPage = lazy(() => import('./pages/BranchPage'));
 const CustomerOrderPage = lazy(() => import('./pages/CustomerOrderPage'));
 
 // Importa estados con lazy
@@ -33,6 +34,7 @@ const SaleState = lazy(() => import('./hooks/sale/SaleState'));
 const PriceState = lazy(() => import('./hooks/price/PriceState'));
 const SparePartState = lazy(() => import('./hooks/sparePart/SparePartState'));
 const WorkOrderState = lazy(() => import('./hooks/workOrder/WorkOrderState'));
+const BranchState = lazy(() => import('./hooks/branch/BranchState'));
 const CustomerOrderState = lazy(() => import('./hooks/customerOrder/CustomerOrderState'));
 
 
@@ -81,6 +83,7 @@ export default function Router() {
         { path: 'cotizaciones', element: <AppSuspense><PriceState><PricePage /></PriceState></AppSuspense> },
         { path: 'repuestos', element: <AppSuspense><SparePartState><SparePartPage /></SparePartState></AppSuspense>},
         { path: 'ordenes-trabajo', element: <AppSuspense><WorkOrderState><WorkOrderPage /> </WorkOrderState></AppSuspense>},
+        { path: 'sucursales', element: <AppSuspense><BranchState><BranchPage /></BranchState></AppSuspense>},
       ],
     },
     {
