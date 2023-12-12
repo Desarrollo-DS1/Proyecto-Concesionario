@@ -401,3 +401,61 @@ class Cotizacion(models.Model):
 			precio_total += cotizacion_modelo.precio()	
 
 		return precio_total
+
+class Repuesto(models.Model):
+	id_repuesto = models.AutoField('ID del Repuesto', primary_key=True)
+	nombre_repuesto = models.CharField('Nombre del Repuesto', unique=True)
+	precio_repuesto = models.DecimalField('Precio del Repuesto', max_digits=10, decimal_places=2, blank=True, null=True)
+	descripcion_repuesto = models.CharField('Descripción del Repuesto', max_length=100, blank=True, null=True)
+
+	class Meta:
+		verbose_name = 'Repuesto'
+		verbose_name_plural = 'Repuestos'
+		ordering = ['nombre_repuesto']
+	
+	def __str__(self):
+		return 'Repuesto: ' + self.id_repuesto + 'nombre ' + self.nombre_repuesto + ' precio ' + self.precio_repuesto + ' descripcion ' + self.descripcion_repuesto
+	
+
+class UsoRepuesto(models.Model):
+	id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
+	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
+	id_modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+
+	class Meta:
+		verbose_name = 'Uso del Repuesto'
+		verbose_name_plural = 'Usos de los Repuestos'
+		ordering = ['id_uso_repuesto']
+		unique_together = ('id_repuesto', 'id_modelo') # esto no se que es
+	
+	def __str__(self):
+		return 'Uso del Repuesto: ' + self.id_uso_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo + ' con ' + self.cantidad + ' unidades.'
+	
+	def nombre_repuesto(self):
+		return self.id_repuesto.nombre_repuesto
+
+	def nombre_modelo(self):
+		return self.id_modelo.nombre_modelo
+
+
+class InventarioRepuesto(models.Model):
+	id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
+	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
+	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT)
+	cantidad = models.IntegerField('Cantidad de Repuestos en Inventario', default=0)
+
+	class Meta:
+		verbose_name = 'Inventario de Repuesto'
+		verbose_name_plural = 'Inventarios de Repuestos'
+		ordering = ['id_inventario_repuesto']
+		unique_together = ('id_repuesto', 'id_sucursal')
+	
+	def __str__(self):
+		return 'Inventario de Repuesto: ' + self.id_inventario_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_sucursal.nombre_sucursal + ' con ' + self.cantidad + ' unidades.'
+	
+	def nombre_sucursal(self):
+		return self.id_sucursal.nombre_sucursal
+
+	def nombre_repuesto(self):
+		return self.id_repuesto.nombre_repuesto
+	
