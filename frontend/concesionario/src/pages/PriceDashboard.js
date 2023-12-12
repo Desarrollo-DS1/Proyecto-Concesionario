@@ -4,7 +4,7 @@ import {useTranslation} from "react-i18next";
 // @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
-import {Grid, Stack, Card, Button} from '@mui/material';
+import {Grid, Stack, Card, Button, Snackbar} from '@mui/material';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import SellIcon from '@mui/icons-material/Sell';
@@ -12,6 +12,7 @@ import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
 // components
 // sections
+import Alert from "@mui/material/Alert";
 import {
     AppMonthlyBranches,
     AppWidgetSummary,
@@ -63,7 +64,12 @@ export default function PriceDashboard() {
         handleMonthChange,
         year,
         handleYearChange,
-        handleFilter} = useContext(PriceDashboardContext);
+        handleFilter,
+        openSnackbar,
+        messageSnackbar,
+        typeSnackbar,
+        handleOpenSnackbar,
+        handleCloseSnackbar} = useContext(PriceDashboardContext);
 
     useEffect(() => {
         getPricesMonthly();
@@ -218,6 +224,12 @@ export default function PriceDashboard() {
                 </Grid>
 
             </Grid>
+
+            <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity={typeSnackbar} sx={{ width: '100%' }}>
+                    {t(messageSnackbar)}
+                </Alert>
+            </Snackbar>
         </>
     );
 }

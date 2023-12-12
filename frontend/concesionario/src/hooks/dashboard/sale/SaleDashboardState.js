@@ -27,6 +27,21 @@ export function SaleDashboardState(props) {
     const [numberOfSalesAnual, setNumberOfSalesAnual] = useState(0);
     const [numberOfSalesMonthly, setNumberOfSalesMonthly] = useState(0);
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [messageSnackbar, setMessageSnackbar] = useState('');
+    const [typeSnackbar, setTypeSnackbar] = useState('success');
+
+    const handleOpenSnackbar = () => {
+        setOpenSnackbar(true);
+    }
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    }
+
 
     const getSalesMonthly = async () => {
         try{
@@ -36,15 +51,15 @@ export function SaleDashboardState(props) {
 
         } catch (error) {
             if (error.response.data.anho){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.anho);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
 
             } else {
-                // console.log(error);
-                // setTypeSnackbar("error");
-                // setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorMes');
-                // handleOpenSnackbar();
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorMes');
+                handleOpenSnackbar();
             }
         }
     }
@@ -72,15 +87,15 @@ export function SaleDashboardState(props) {
 
         } catch (error) {
             if (error.response.data.anho){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.anho);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
 
             } else {
-                // console.log(error);
-                // setTypeSnackbar("error");
-                // setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorModelo');
-                // handleOpenSnackbar();
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorModelo');
+                handleOpenSnackbar();
             }
         }
     }
@@ -92,20 +107,20 @@ export function SaleDashboardState(props) {
 
         } catch (error) {
             if (error.response.data.anho){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.anho);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
 
             } else if (error.response.data.mes){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.mes);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
 
             } else {
-                // console.log(error);
-                // setTypeSnackbar("error");
-                // setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorSucursal');
-                // handleOpenSnackbar();
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorSucursal');
+                handleOpenSnackbar();
             }
         }
     }
@@ -117,20 +132,20 @@ export function SaleDashboardState(props) {
 
         } catch (error) {
             if (error.response.data.anho){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.anho);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
 
             } else if (error.response.data.mes){
-                // setTypeSnackbar("error");
-                // setMessageSnackbar(error.response.data.mes);
-                // handleOpenSnackbar();
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
 
             } else {
-                // console.log(error);
-                // setTypeSnackbar("error");
-                // setMessageSnackbar('salesDashboard.mensaje.errorCargandoExtrasEnVentas');
-                // handleOpenSnackbar();
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('salesDashboard.mensaje.errorCargandoExtrasEnVentas');
+                handleOpenSnackbar();
             }
         }
     }
@@ -188,7 +203,12 @@ export function SaleDashboardState(props) {
             handleMonthChange,
             year,
             handleYearChange,
-            handleFilter}}>
+            handleFilter,
+            openSnackbar,
+            messageSnackbar,
+            typeSnackbar,
+            handleOpenSnackbar,
+            handleCloseSnackbar}}>
             {props.children}
         </SaleDashboardContext.Provider>
     )
