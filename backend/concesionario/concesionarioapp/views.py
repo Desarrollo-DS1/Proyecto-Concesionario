@@ -225,7 +225,6 @@ class VentaView(viewsets.ModelViewSet):
                 """, [fecha_inicio, fecha_fin])
 
             resultado = cursor.fetchall()
-            print(resultado)
 
             json_resultado = [{'mes': mes.month, 'total_Ventas': total_ventas} for mes, total_ventas in resultado]
 
@@ -278,7 +277,7 @@ class VentaView(viewsets.ModelViewSet):
                 """, [fecha_inicio, fecha_fin])
         
             resultado = cursor.fetchall()
-            json_resultado = [{'sucursal': sucursal, 'total_ventas': total_ventas} for sucursal, total_ventas in resultado]
+            json_resultado = [{'label': sucursal, 'value': total_ventas} for sucursal, total_ventas in resultado]
 
             return Response(json_resultado)
     
@@ -322,7 +321,7 @@ class VentaView(viewsets.ModelViewSet):
                 """, [fecha_inicio, fecha_fin])
         
             resultado = cursor.fetchall()
-            json_resultado = [{'extra': extra, 'total_ventas': total_ventas} for extra, total_ventas in resultado]
+            json_resultado = [{'label': extra, 'value': total_ventas} for extra, total_ventas in resultado]
 
             return Response(json_resultado)
     
@@ -346,7 +345,7 @@ class VentaView(viewsets.ModelViewSet):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT DATE_TRUNC('month', venta.fecha_venta) AS mes, modelo.nombre_modelo as modelo, COUNT(modelo.id_modelo) as cantidad_ventas_modelo 
+                SELECT DATE_TRUNC('month', venta.fecha_venta) AS mes, modelo.nombre_modelo as modelo, COUNT(modelo.id_modelo) as cantidad_ventas_modelo
                 FROM concesionarioapp_venta AS venta
                 INNER JOIN concesionarioapp_venta_vehiculo as venta_vehiculo ON venta.id_venta=venta_vehiculo.venta_id
                 INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
@@ -357,8 +356,8 @@ class VentaView(viewsets.ModelViewSet):
                 """, [fecha_inicio, fecha_fin])
             
             resultado = cursor.fetchall()
-            json_resultado = [{'mes': mes.month, 'modelo': modelo, 'cantidad_ventas_modelo': cantidad_ventas_modelo} for mes, modelo, cantidad_ventas_modelo in resultado]
-
+            json_resultado = [{'mes': mes.month, 'modelo': modelo, 'cantidadVentasModelo': cantidad_ventas_modelo} for mes, modelo, cantidad_ventas_modelo in resultado]
+            
             return Response(json_resultado)
         
 

@@ -665,7 +665,7 @@ VALUES
 ON CONFLICT (vin) DO NOTHING;
 
 UPDATE concesionarioapp_vehiculo
-SET modelo_vehiculo_id = FLOOR(RANDOM() * 25) + 1;
+SET modelo_vehiculo_id = FLOOR(RANDOM() * 8) + 1;
 
 
 INSERT INTO concesionarioapp_extra (id_extra, nombre_extra, descripcion_extra)

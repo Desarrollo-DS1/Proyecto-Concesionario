@@ -5,7 +5,7 @@ import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import { getAllVentas, getVentasPerMonth, getVentasPerBranch, getExtrasInVentas, getModelosInVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
+import { getAllVentas,  getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllAvailableVehiculos } from "../../api/Vehiculo.api";
 import AuthContext from "../auth/AuthContext";
 
@@ -106,14 +106,6 @@ export default function SaleState(props) {
         try {
             const response = await getAllVentas(authTokens.access);
             setSales(response.data);
-            const response2 = await getVentasPerMonth(authTokens.access, "2023");
-            console.log(response2.data);
-            const response3 = await getVentasPerBranch(authTokens.access, "2023", "1");
-            console.log(response3.data);
-            const response4 = await getExtrasInVentas(authTokens.access, "2023", "1");
-            console.log(response4.data);
-            const response5 = await getModelosInVentas(authTokens.access, "2023");
-            console.log(response5.data);
 
         } catch (error) {
             setTypeSnackbar('error');
