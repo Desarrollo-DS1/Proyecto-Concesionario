@@ -213,6 +213,37 @@
     }
   },
 
+  "sucursales": {
+    "encabezado": {
+      "tituloPlural": "Branches",
+      "tituloSingular": "Branch",
+      "agregar": "Add branch",
+      "eliminar": "Delete branch",
+      "editar": "Edit branch"
+    },
+
+    "mensaje": {
+      "agregado": "Branch added successfully",
+      "editado": "Branch edited successfully",
+      "eliminado": "Branch deleted successfully",
+      "error": "Error adding branch",
+      "errorEditar": "Error editing branch",
+      "errorEliminar": "Error deleting branch",
+      "confirmacionEliminar": "Are you sure you want to delete the branch {{nombre}}?",
+      "errorNombre": "There is already a branch with the entered name",
+      "errorListando": "Error listing branches",
+      "errorCargando": "Error loading branch"
+    },
+
+    "label": {
+      "nombre": "Name",
+      "direccion": "Address",
+      "ciudad": "City",
+      "telefono": "Phone",
+      "undefined" : ""
+    }
+  },
+
   "modelos": {
     "encabezado": {
       "tituloPlural": "Models",

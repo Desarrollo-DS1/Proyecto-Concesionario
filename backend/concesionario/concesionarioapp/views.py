@@ -342,8 +342,6 @@ class VentaView(viewsets.ModelViewSet):
         fecha_inicio = datetime(anho, 1, 1)
         fecha_fin = datetime(anho, 12, 31)
 
-        print(fecha_inicio, fecha_fin)
-
         with connection.cursor() as cursor:
             cursor.execute(
                 """
