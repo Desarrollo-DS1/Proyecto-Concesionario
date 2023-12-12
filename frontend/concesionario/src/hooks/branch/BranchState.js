@@ -11,8 +11,31 @@ BranchState.propTypes = {
 }
 
 
-export function BranchState(props) {
+export default function BranchState(props) {
     const {authTokens} = useContext(AuthContext);
+
+    const initialBranches = [{
+        id: 1,
+        nombre: "Sucursal 1",
+        direccion: "Calle 1",
+        ciudad: "Ciudad 1",
+        telefono: "Telefono 1",
+    },
+    {
+        id: 2,
+        nombre: "Sucursal 2",
+        direccion: "Calle 2",
+        ciudad: "Ciudad 2",
+        telefono: "Telefono 2",
+
+    },
+    {
+        id: 3,
+        nombre: "Sucursal 3",
+        direccion: "Calle 3",
+        ciudad: "Ciudad 3",
+        telefono: "Telefono 3",
+    }]
     
     const TABLE_HEAD = [
         { id: 'nombre', label: 'Nombre', alignRight: false },
@@ -45,15 +68,17 @@ export function BranchState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getBranches = async () => {
-        try {
-            const response = await getAllSucursales(authTokens.access);
-            setBranches(response.data);
-        }
-        catch (error) {
-            setTypeSnackbar('error');
-            setMessageSnackbar('sucursales.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
+        // try {
+        //     const response = await getAllSucursales(authTokens.access);
+        //     setBranches(response.data);
+        // }
+        // catch (error) {
+        //     setTypeSnackbar('error');
+        //     setMessageSnackbar('sucursales.mensaje.errorListando');
+        //     handleOpenSnackbar();
+        // }
+
+        setBranches(initialBranches);
     }
 
     const getBranch = async (id) => {
@@ -77,7 +102,6 @@ export function BranchState(props) {
 
     const addBranch = async (branch) => {
         try {
-            setIsLoading(true);
             const response = await createSucursal(branch, authTokens.access);
             setBranches([...branches, response.data]);
 
@@ -85,10 +109,8 @@ export function BranchState(props) {
             setMessageSnackbar('sucursales.mensaje.agregado');
             handleOpenSnackbar();
             handleCloseForm();
-            setIsLoading(false);
         }
         catch (error) {
-            setIsLoading(false);
             const errors = error.response.data;
 
             if (errors.nombre) {
@@ -126,17 +148,14 @@ export function BranchState(props) {
     const updateBranch = async (branch) => {
 
         try {
-            setIsLoading(true);
             await updateSucursal(branch.id, branch, authTokens.access);
             setTypeSnackbar('success');
             setMessageSnackbar('sucursales.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
-            setIsLoading(false);
         }
         catch (error) {
-            
-            setIsLoading(false);
+
             const errors = error.response.data;
             if (errors.nombre) {
                 setTypeSnackbar('error');
@@ -227,68 +246,14 @@ export function BranchState(props) {
         setOpenSnackbar(true);
     }
 
-    const [filterName, setFilterName] = useState('');
-    const [order, setOrder] = useState('asc');
-    const [orderBy, setOrderBy] = useState('id');
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [edit, setEdit] = React.useState(false);
-    const [selected, setSelected] = React.useState([]);
-
-    const handleRequestSort = (event, property) => {
-        const isAsc = orderBy === property && order === 'asc';
-        setOrder(isAsc ? 'desc' : 'asc');
-        setOrderBy(property);
-    };
-
-    const handleClick = (event, branch) => {
-        const selectedIndex = selected.indexOf(branch);
-        let newSelected = [];
-        if (selectedIndex === -1) {
-            newSelected = newSelected.concat(selected, name);
-        } else if (selectedIndex === 0) {
-            newSelected = newSelected.concat(selected.slice(1));
-        } else if (selectedIndex === selected.length - 1) {
-            newSelected = newSelected.concat(selected.slice(0, -1));
-        } else if (selectedIndex > 0) {
-            newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
         }
-        setSelected(newSelected);
-    };
-
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
-
-    const handleChangeRowsPerPage = (event) => {
-        setPage(0);
-        setRowsPerPage(parseInt(event.target.value), 10);
-    };
-
-    const handleFilterByName = (event) => {
-        setPage(0);
-        setFilterName(event.target.value);
-    };
-
-    const [openFilter, setOpenFilter] = useState(null);
-    const [filterField, setFilterField] = useState('nombre');
-
-    const handleOpenFilter = (event) => {
-        setOpenFilter(event.currentTarget);
-    };
-
-    const handleCloseFilter = () => {
-        setOpenFilter(null);
+        setOpenSnackbar(false);
     }
 
-    const handleFilterField = (event, field) => {
-        setFilterField(field);
-        handleCloseFilter();
-    }
-
-    const filteredBranches = applySortFilter(branches, getComparator(order, orderBy), filterName, filterField);
-    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - branches.length) : 0;
-    const isNotFound = !filteredBranches.length && !!filterName;
+    const [edit, setEdit] = React.useState(false);
 
     const [branchError, setBranchError] = useState(emptyError);
 
@@ -308,8 +273,6 @@ export function BranchState(props) {
     const validateBranchOnBlur = (branch, name) => {
         setBranchError({...branchError, [name]: checkBranch(branch, name, edit)});
     };
-
-    const [isLoading, setIsLoading] = useState(false);
 
     return (
         <BranchContext.Provider value={
@@ -333,27 +296,7 @@ export function BranchState(props) {
                 handleOpenDelete,
                 handleCloseDelete,
                 handleCloseSnackbar,
-                filterName,
-                order,
-                orderBy,
-                page,
-                rowsPerPage,
-                selected,
-                filteredBranches,
-                emptyRows,
-                isNotFound,
-                handleRequestSort,
-                handleClick,
-                handleChangePage,
-                handleChangeRowsPerPage,
-                handleFilterByName,
                 branchError,
-                filterField,
-                handleFilterField,
-                openFilter,
-                handleOpenFilter,
-                handleCloseFilter,
-                isLoading
             }}>
             {props.children}
         </BranchContext.Provider>

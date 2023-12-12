@@ -44,7 +44,7 @@ function checkPhone(branch) {
     return "";
 }
 
-function checkBranch(branch, name, edit) {
+export function checkBranch(branch, name, edit) {
     if (name === "nombre") {
         return checkName(branch);
     }
