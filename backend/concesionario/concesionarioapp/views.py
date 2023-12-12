@@ -342,6 +342,8 @@ class VentaView(viewsets.ModelViewSet):
         fecha_inicio = datetime(anho, 1, 1)
         fecha_fin = datetime(anho, 12, 31)
 
+        print(fecha_inicio, fecha_fin)
+
         with connection.cursor() as cursor:
             cursor.execute(
                 """
@@ -350,7 +352,7 @@ class VentaView(viewsets.ModelViewSet):
                 INNER JOIN concesionarioapp_venta_vehiculo as venta_vehiculo ON venta.id_venta=venta_vehiculo.venta_id
                 INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
                 INNER JOIN concesionarioapp_modelo as modelo ON vehiculo.modelo_vehiculo_id=modelo.id_modelo
-                WHERE venta.fecha_venta BETWEEN '2022-01-01' AND '2022-12-31'
+                WHERE venta.fecha_venta BETWEEN %s AND %s
                 GROUP BY mes, modelo
                 ORDER BY mes;
                 """, [fecha_inicio, fecha_fin])
