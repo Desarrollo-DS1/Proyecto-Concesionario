@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const ventaApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Venta/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Venta/`,
     headers: { Authorization: `Bearer ${token}` }
 });
 

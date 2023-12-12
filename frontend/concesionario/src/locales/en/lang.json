@@ -134,7 +134,6 @@
       "undefined" : ""
     }
   },
-
   "ventas": {
     "encabezado": {
       "tituloPlural": "Sales",
@@ -149,7 +148,9 @@
       "error": "Error adding sale",
       "errorEditar": "Error editing sale",
       "errorListando": "Error when listing sales",
-      "errorCargando": "Error loading sale"
+      "errorCargando": "Error loading sale",
+      "errorVehiculo": "The vehicle has already been added to the sale",
+      "errorVehiculos": "It is necessary to add at least one vehicle for sale"
     },
 
     "label": {
@@ -165,7 +166,50 @@
       "id": "ID",
       "cedulaCliente": "Customer",
       "cedulaVendedor": "Salesperson",
-      "fechaVenta": "Date"
+      "fechaVenta": "Date",
+      "vehiculo": "Vehicle",
+      "descuento": "Discount",
+      "extra": "Extra",
+      "color": "Color",
+      "total": "Total"
+    }
+  },
+
+  "cotizaciones": {
+    "encabezado": {
+      "tituloPlural": "Prices",
+      "tituloSingular": "Price",
+      "agregar": "Add Price",
+      "editar": "Edit Price"
+    },
+    "mensaje": {
+      "agregado": "Price added successfully",
+      "editado": "Price edited successfully",
+      "error": "Error adding price",
+      "errorEditar": "Error editing price",
+      "errorListando": "Error listing prices",
+      "errorCargando": "Error loading price",
+      "errorModelo": "The model has already been added to the price",
+      "errorModelos": "At least one model must be added to the price"
+    },
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Name",
+      "nombreVendedor": "Name",
+      "cliente": "Client",
+      "vendedor": "Salesperson",
+      "fecha": "Date",
+      "valor": "Total",
+      "modelos": "Models",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Client ID",
+      "cedulaVendedor": "Salesperson ID",
+      "fechaCotizacion": "Price Date",
+      "modelo": "Model",
+      "extra": "Extra",
+      "color": "Color",
+      "total": "Total"
     }
   },
 
@@ -280,13 +324,16 @@
       "error": "Error adding work order",
       "errorEditar": "Error editing work order",
       "errorEliminar": "Error deleting work order",
-      "confirmacionEliminar": "Are you sure you want to delete the work order with ID {{id}}?",
+      "confirmacionEliminar": "Are you sure you want to delete the work order for vehicle {{placa}}?",
       "errorPlaca": "There is already an active work order with the entered plate",
       "errorListando": "Error listing work orders",
       "errorCargando": "Error loading work order"
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Customer",
+      "cedulaJefeTaller": "Workshop Manager",
+      "comentario": "Comment",
       "nombreCliente": "Name",
       "nombreVendedor": "Name",
       "cliente": "Client",
@@ -345,6 +392,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Orders",
+      "detalles": "Details",
+      "servicios": "Services",
+      "repuestos": "Spare Parts"
+    },
+    "mensaje": {
+      "errorListando": "Error listing orders"
+    },
+    "label": {
+      "fechaInicio": "Start Date",
+      "fechaEsperada": "Expected Date",
+      "fechaFin": "Delivery Date",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "In Workshop",
+      "entregado": "Delivered",
+      "atrazado": "Delayed"
+    }
+  },
+
   "errores": {
     "requerido": "Required field",
     "numerico": "Only numbers are allowed",
@@ -356,6 +426,8 @@
     "correo": "Enter a valid email",
     "fecha": "Enter a valid date",
     "vinCaracteresNoPermitidos": "Characters I, O, Q are not allowed",
+    "placa": "Enter a valid plate",
+    "rango": "Min: {{minimo}}, Max: {{maximo}}",
     "contraseña": {
       "numerico": "Must have at least one number",
       "minuscula": "Must have at least one lowercase",
@@ -396,7 +468,28 @@
     "numeroVentasAnuales": "Number Annual Sales",
     "numeroVentasMensuales": "Number Monthly Sales",
     "ventasMensuales": "Monthly Sales",
-    "ventasPorModelo": "Sales by Model"
+    "ventasPorModelo": "Monthly Sales by Model",
+    "ventasPorSucursal": "Monthly Sales by Branch",
+    "ventasPorExtra": "Monthly Extras"
+  },
+
+  "dashBoardCotizacion": {
+    "titulo": "Prices Panel",
+    "cotizaciones": "Prices",
+    "año": "Year",
+    "mes": "Month",
+    "modelo": "Model",
+    "ventas": "Sales",
+    "sucursal": "Branch",
+    "filtro": "Filter",
+    "totalCotizacionesAnuales": "Total Annual Prices",
+    "totalCotizacionesMensuales": "Total Monthly Prices",
+    "numeroCotizacionesAnuales": "Number of Annual Prices",
+    "numeroCotizacionesMensuales": "Number of Monthly Prices",
+    "cotizacionesMensuales": "Monthly Prices",
+    "cotizacionesPorModelo": "Monthly Prices by Model",
+    "cotizacionesPorSucursal": "Monthly Prices by Branch",
+    "cotizacionesPorColor": "Monthly Colors"
   },
 
   "colores": {
@@ -452,5 +545,20 @@
     "Gerente": "Manager",
     "Cliente": "Customer",
     "Superusuario": "Superuser"
+  },
+
+  "meses": {
+    "Ene": "Jan",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Abr": "Apr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Ago": "Aug",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dic": "Dec"
   }
 }

@@ -2,9 +2,9 @@ import React, {useContext} from "react";
 import Modal from "@mui/material/Modal";
 import {useTranslation} from "react-i18next";
 import {
-    Box,
+    Box, Divider,
     IconButton,
-    Stack, Table, TableBody, TableCell, TableRow,
+    Stack,
     TextField,
     Typography
 } from "@mui/material";
@@ -33,27 +33,26 @@ const scrollBarStyle = {
 
 const createRows = (array, t, onChange) => (
     array.map(el => (
-        <TableRow key={el.id}>
-            <TableCell align="left" width={"50%"}>
-                {el.sucursal}
-            </TableCell>
-            <TableCell align="left" >
-                <TextField
-                    fullWidth
-                    label={t('repuestos.label.cantidad')}
-                    name="cantidad"
-                    value={el.cantidad}
-                    variant="outlined"
 
-                    onChange={(event)=>onChange(event, el.id)}
-                    InputProps={{
-                        inputProps: { min: 0 }
-                    }}
-                />
-            </TableCell>
-        </TableRow>
+
+        <Stack direction="row" alignItems="center" justifyContent="space-between" key={el.id} mb={2}>
+            <Typography variant="subtitle1">
+                {el.sucursal}
+            </Typography>
+            <TextField
+                label={t('repuestos.label.cantidad')}
+                name="cantidad"
+                value={el.cantidad}
+                variant="outlined"
+                onChange={(event)=>onChange(event, el.id)}
+                InputProps={{
+                    inputProps: { min: 0 }
+                }}
+            />
+        </Stack>
     ))
 );
+
 
 export default function SparePartInventoryForm() {
 
@@ -76,9 +75,9 @@ export default function SparePartInventoryForm() {
         transform: 'translate(-50%, -50%)',
         width: "auto",
         height: "auto",
-        maxWidth: isSmallScreen ? "80%" : "40%",
+        maxWidth: isSmallScreen ? "80%" : "27%",
         maxHeight: isSmallScreen ? "80%" : "80%",
-        minWidth: isSmallScreen ? "80%" : "30%",
+        minWidth: isSmallScreen ? "80%" : "27%",
         minHeight: "20%",
         overflowY: 'auto',
         bgcolor: 'background.paper',
@@ -110,24 +109,19 @@ export default function SparePartInventoryForm() {
                         <Typography variant="h4" gutterBottom>
                             {t('repuestos.encabezado.inventario')}
                         </Typography>
-                        {/* Agrega el subtítulo con el nombre del repuesto */}
                         <Typography variant="subtitle1">
                             {subtitle}
                         </Typography>
-                    </Stack>
+                    </Stack >
                     <Inventory2RoundedIcon />
                 </Stack>
-
-                <Table size="small">
-                    <TableBody>
-                        {createRows(inventory, t, handleInputChangeInventory)}
-                    </TableBody>
-                </Table>
+                <Divider sx={{ mb: 2}} />
+                {createRows(inventory, t, handleInputChangeInventory)}
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
                     <IconButton color="success" >
                         <DoneRoundedIcon />
                     </IconButton>
-                    <IconButton color="error" onClick={(event)=>handleCloseInventoryForm()}>
+                    <IconButton color="error" onClick={(event)=>handleCloseInventoryForm(event)}>
                         <ClearRoundedIcon />
                     </IconButton>
                 </Stack>

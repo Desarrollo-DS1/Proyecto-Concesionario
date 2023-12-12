@@ -29,6 +29,7 @@ import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
 import EmployeeDelete from "../sections/@dashboard/employee/EmployeeDelete";
 // context
 import EmployeeContext from "../hooks/employee/EmployeeContext";
+import {fCurrency} from "../utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +109,7 @@ export default function EmployeePage() {
 
                                                 <TableCell align="left">{celular}</TableCell>
 
-                                                <TableCell align="left">$ {salario}</TableCell>
+                                                <TableCell align="left">$ {fCurrency(salario)}</TableCell>
 
                                                 <TableCell align="left">{t(`cargos.${cargo}`)}</TableCell>
 

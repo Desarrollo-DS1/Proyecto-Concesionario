@@ -13,7 +13,7 @@ CustomerState.propTypes = {
     children: propTypes.node,
 }
 
-export function CustomerState(props) {
+export default function CustomerState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [

@@ -1,12 +1,13 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, action
 from rest_framework.exceptions import MethodNotAllowed
 from rest_framework.permissions import IsAuthenticated
 from django.db.models.deletion import ProtectedError
 from .permissions import EsEmpleado, EsGerente, EsVendedorOGerente, EsJefeDeTallerOGerente
 from .serializer import *
 from .models import *
+from decouple import config
 import requests
 
 
@@ -151,6 +152,13 @@ class VehiculoView(viewsets.ModelViewSet):
         
         except Exception as e:
             raise serializers.ValidationError({'error': e})
+    
+
+    @action(detail=False, methods=['get'])
+    def disponibles(self, request):
+        vehiculos = Vehiculo.objects.filter(disponible_para_venta=True)
+        serializer = self.get_serializer(vehiculos, many=True)
+        return Response(serializer.data)
 
 class ColorView(viewsets.ModelViewSet):
     serializer_class = ColorSerializer
@@ -185,6 +193,12 @@ class CotizacionView(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
 
+class ExtraView(viewsets.ModelViewSet):
+    serializer_class = ExtraSerializer
+    queryset = Extra.objects.all()
+    permission_classes = [IsAuthenticated, EsEmpleado]
+
+
 @api_view(['POST'])
 def recaptcha(request):
     captcha_token = request.data.get('captcha_token')
@@ -192,9 +206,10 @@ def recaptcha(request):
     if not captcha_token:
         return Response({"missing_captcha": "El captcha es requerido"}, status=400)
     
-    response = requests.post('https://www.google.com/recaptcha/api/siteverify', data={
-        'secret': '6LcaL_8oAAAAAKsq5c-ImF_wkAQdhX4Xb4xWKfYf',
-        'response': captcha_token
+    response = requests.post('https://www.google.com/recaptcha/api/siteverify',
+                             data={
+                                 'secret': config('RECAPTCHA_SECRET_KEY'),
+                                 'response': captcha_token
     })
 
     result = response.json()

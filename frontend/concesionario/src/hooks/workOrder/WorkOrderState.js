@@ -1,7 +1,7 @@
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
 import WorkOrderContext from './WorkOrderContext';
-import {checkSparePart} from "./WorkOrderValidation";
+import {checkWorkOrder} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
@@ -13,8 +13,8 @@ WorkOrderState.propTypes = {
     children: propTypes.node,
 }
 
-export function WorkOrderState(props) {
-    const {authTokens} = useContext(AuthContext);
+export default function WorkOrderState(props) {
+    const {authTokens, user} = useContext(AuthContext);
 
     const TABLE_HEAD = [
         { id: "id", label: "id", alignRight: false },
@@ -31,20 +31,20 @@ export function WorkOrderState(props) {
     const FILTER_OPTIONS = [
         { id: "id", label: "id"},
         { id: "cedulaCliente", label: "cliente"},
-        { id: "cedulaVendedor", label: "vendedor"},
+        { id: "cedulaJefeTaller", label: "vendedor"},
         { id: "fechaInicio", label: "fechaInicio"},
         { id: "fechaEsperada", label: "fechaEsperada"},
         { id: "modelo", label: "modelo"},
-        { id: "placa", label: "modelo"},
+        { id: "placa", label: "placa"},
         { id: "estado", label: "estado"},
     ];
 
     const emptyWorkOrder = {
         id: "",
         cedulaCliente: "",
-        cedulaVendedor: "",
+        cedulaJefeTaller: user.user_id,
         modelo: "",
-        fechaInicio: "",
+        fechaInicio: new Date().toISOString().split('T')[0],
         fechaEsperada: "",
         fechaEntrega: "",
         placa: "",
@@ -56,7 +56,7 @@ export function WorkOrderState(props) {
     const emptyError = {
         id: "",
         cedulaCliente: "",
-        cedulaVendedor: "",
+        cedulaJefeTaller: "",
         modelo: "",
         fechaInicio: "",
         fechaEsperada: "",
@@ -64,6 +64,8 @@ export function WorkOrderState(props) {
         placa: "",
         estado: "",
         comentario: "",
+        servicios: "",
+        repuestos: "",
     }
 
     const [workOrder, setWorkOrder] = React.useState(emptyWorkOrder);
@@ -76,7 +78,9 @@ export function WorkOrderState(props) {
     const [models, setModels] = useState([]);
     const [spareParts, setSpareParts] = useState([]);
     const [services, setServices] = useState([]);
-    const [searchModel, setSearchModel] = useState('');
+    const [searchService, setSearchService] = useState('');
+    const [searchSparePart, setSearchSparePart] = useState('');
+    const [activateSparePart, setActivateSparePart] = useState(true);
 
     const getModels = async () => {
         try
@@ -92,22 +96,48 @@ export function WorkOrderState(props) {
         }
     }
 
-    const getSpareParts = async () => {
+    const getSpareParts = async (sparePart) => {
 
-        const a = [{
-            id: 1,
-            nombre: "Tuerca",
-            precio: "2000",
-            modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-        },
-            {
-                id: 2,
-                nombre: "Capo",
-                precio: "30000",
+
+        if (sparePart === 1)
+        {
+            const a = [{
+                id: 1,
+                nombre: "Tuerca",
+                precio: "2000",
                 modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-            }]
+            },
+                {
+                    id: 2,
+                    nombre: "Capo",
+                    precio: "30000",
+                    modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
+                }]
 
-        setWorkOrders(a);
+            setSpareParts(a);
+        }
+        else
+        {
+            const a = [{
+                id: 1,
+                nombre: "Tuerca",
+                precio: "2000",
+                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
+            },{
+                id: 4,
+                nombre: "Llanta",
+                precio: "2000",
+                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
+            },
+                {
+                    id: 3,
+                    nombre: "Espejo",
+                    precio: "30000",
+                    modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
+                }]
+
+            setSpareParts(a);
+        }
 
         // try
         // {
@@ -123,12 +153,47 @@ export function WorkOrderState(props) {
         // }
     }
 
-    const handleSearchModel = (event) => {;
-        setSearchModel(event.target.value);
+    const getServices = async () => {
+
+        const a = [{
+            id: 1,
+            nombre: "Reparacion motor"
+        },
+        {
+            id: 2,
+            nombre: "Reparacion parabrisas"
+        }]
+
+        setServices(a);
+
+        // try
+        // {
+        //     const response = await getAllVehiculos(authTokens.access);
+        //     setSpareParts(response.data);
+        //
+        // }
+        // catch (error)
+        // {
+        //     setTypeSnackbar('error');
+        //     setMessageSnackbar('empleados.mensaje.errorListando');
+        //     handleOpenSnackbar();
+        // }
+    }
+
+    const handleSearchService = (event) => {;
+        setSearchService(event.target.value);
     };
 
-    const filteredModels = models.filter((option) =>
-        option.nombre.toLowerCase().includes(searchModel.toLowerCase())
+    const handleSearchSparePart = (event) => {;
+        setSearchSparePart(event.target.value);
+    };
+
+    const filteredServices = services.filter((option) =>
+        option.nombre.toLowerCase().includes(searchService.toLowerCase())
+    );
+
+    const filteredSpareParts = spareParts.filter((option) =>
+        option.nombre.toLowerCase().includes(searchSparePart.toLowerCase())
     );
 
     const getWorkOrders = async () => {
@@ -172,15 +237,65 @@ export function WorkOrderState(props) {
 
     const getWorkOrder = async (id) => {
 
-        const a = {
-            id: 1,
-            nombre: "Tuerca",
-            precio: "2000",
-            descripcion: "Tuerca para rueda",
-            modelos: [1,2,7,3,4,5],
+        if (id === null)
+        {
+            setEdit(false);
+            setWorkOrder(emptyWorkOrder);
+        }
+        else
+        {
+            setActivateSparePart(false)
+            setEdit(true);
+
+            if (id === 1)
+            {
+                const a = {
+                    id: 1,
+                    cedulaJefeTaller: "100000000",
+                    cedulaCliente: "1110363276",
+                    nombreCliente: "Nicolas Herrera",
+                    fechaInicio: "2021-10-10",
+                    fechaEsperada: "2021-10-15",
+                    modelo: "1",
+                    placa: "ABC123",
+                    estado: false,
+                    servicios: [1,2],
+                    repuestos: [3,4],
+                    comentario: "Comentario de prueba",
+
+
+                }
+                getSpareParts(a.modelo);
+                setWorkOrder(a);
+            }
+            else
+            {
+                const a = {
+                    id: 1,
+                    cedulaJefeTaller: "100000000",
+                    cedulaCliente: "1110363276",
+                    nombreCliente: "Nicolas Herrera",
+                    fechaInicio: "2021-10-10",
+                    fechaEsperada: "2021-10-15",
+                    modelo: "1",
+                    placa: "ABC123",
+                    estado: true,
+                    servicios: [1,2],
+                    repuestos: [3,4],
+                    comentario: "Comentario de prueba",
+
+
+                }
+                getSpareParts(a.modelo);
+                setWorkOrder(a);
+
+            }
+
+
+
         }
 
-        setWorkOrder(a);
+
 
         // if (vin === null)
         // {
@@ -223,7 +338,7 @@ export function WorkOrderState(props) {
             {
                 setTypeSnackbar('error');
                 setMessageSnackbar('vehiculos.mensaje.errorCedula');
-                setWoekOrderError({...woekOrderError, vin: 'Vin ya existe'});
+                setWorkOrderError({...workOrderError, vin: 'Vin ya existe'});
                 handleOpenSnackbar();
 
             }
@@ -282,6 +397,19 @@ export function WorkOrderState(props) {
         }
     }
 
+    const handleInputChangeModel = (event) => {
+
+        const { value } = event.target;
+        setWorkOrder({
+            ...workOrder,
+            modelo: value,
+            repuestos: []
+        });
+
+        getSpareParts(value);
+        setActivateSparePart(false);
+    }
+
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setWorkOrder({
@@ -316,14 +444,17 @@ export function WorkOrderState(props) {
         deleteWorkOrder(workOrder).then(() => getWorkOrders());
         handleCloseDelete();
     }
-    const handleOpenForm = async (event, vin) => {
+    const handleOpenForm = async (event, id) => {
         getWorkOrderError();
         await getModels();
-        await getWorkOrder(vin);
+        await getServices();
+        await getWorkOrder(id);
         setOpenForm(true)
     };
     const handleCloseForm = () => {
-        setSearchModel('');
+        setSearchService('');
+        setSearchSparePart('');
+        setActivateSparePart(true);
         setOpenForm(false);
     };
     const handleOpenDelete = (event, vin) => {
@@ -342,11 +473,12 @@ export function WorkOrderState(props) {
         setOpenSnackbar(true);
     }
 
-    const handleDeleteChip = (id) => {
-        const auxSparePart = {...workOrder, modelos: workOrder.modelos.filter((modelId) => modelId !== id)};
+    const handleDeleteChip = (id, name) => {
+        const auxSparePart = {...workOrder, [name]: workOrder[name].filter((modelId) => modelId !== id)};
         setWorkOrder(auxSparePart);
-        validateWorkOrderOnBlur(auxSparePart, 'modelos')
+        validateWorkOrderOnBlur(auxSparePart, name)
     };
+
 
     const [filterName, setFilterName] = useState('');
     const [order, setOrder] = useState('asc');
@@ -407,22 +539,22 @@ export function WorkOrderState(props) {
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - workOrders.length) : 0;
     const isNotFound = !filteredWorkOrders.length && !!filterName;
 
-    const [woekOrderError, setWoekOrderError] = React.useState(emptyError);
+    const [workOrderError, setWorkOrderError] = React.useState(emptyError);
 
     const getWorkOrderError = () => {
-        setWoekOrderError(emptyError)
+        setWorkOrderError(emptyError)
     }
 
     const validateWorkOrderOnSubmit = () => {
         const updatedErrors = {};
-        Object.keys(woekOrderError).forEach((name) => {
-            updatedErrors[name] = checkSparePart(workOrder, name);
+        Object.keys(workOrderError).forEach((name) => {
+            updatedErrors[name] = checkWorkOrder(workOrder, name);
         });
-        setWoekOrderError(updatedErrors);
+        setWorkOrderError(updatedErrors);
         return Object.values(updatedErrors).some((error) => error !== '');
     };
     const validateWorkOrderOnBlur = (workOrder, name) => {
-        setWoekOrderError({...woekOrderError, [name]: checkSparePart(workOrder, name)});
+        setWorkOrderError({...workOrderError, [name]: checkWorkOrder(workOrder, name)});
     };
 
     const [openServiceForm, setOpenServiceForm] = useState(false);
@@ -433,33 +565,24 @@ export function WorkOrderState(props) {
         setService([
             {
                 id: 1,
-                sucursal: "Sucursal 1",
-                cantidad: 10,
+                servicio: "Reparacion motor",
+                estado: true,
             },
             {
                 id: 2,
-                sucursal: "Sucursal 2",
-                cantidad: 20,
+                servicio: "Reparacion parabrisas",
+                estado: true,
             },
             {
                 id: 3,
-                sucursal: "Sucursal 3",
-                cantidad: 30,
-            },
-            {
-                id: 4,
-                sucursal: "Sucursal 4",
-                cantidad: 40,
-            },
-            {
-                id: 5,
-                sucursal: "Sucursal 5",
-                cantidad: 50,
-            }])
+                servicio: "Reparacion llantas",
+                estado: false,
+            }
+            ])
     }
 
     const handleOpenServiceForm = (e, id, name) => {
-        getService().then(() => setOpenServiceForm(true));
+        getWorkOrder(id).then(()=>getService().then(() => setOpenServiceForm(true)))
         setSubtitle(name)
     }
 
@@ -470,17 +593,13 @@ export function WorkOrderState(props) {
     }
 
     const handleInputChangeService = (event, id) => {
-        const { name, value } = event.target;
+        const { checked } = event.target;
 
-        const isValidNumber = (/^[0-9]+$/.test(value) || value === '') && value !== 'e' && value !== 'E' && value !== '-' && value !== '+';
-
-        if (isValidNumber) {
-            setService((prevFilas) =>
-                prevFilas.map((fila) =>
-                    fila.id === id ? { ...fila, [name]: value } : fila
-                )
-            );
-        }
+        setService((prevFilas) =>
+            prevFilas.map((fila) =>
+                fila.id === id ? { ...fila, estado: checked } : fila
+            )
+        );
     };
 
     const handleSubmitService = (event) => {
@@ -526,7 +645,7 @@ export function WorkOrderState(props) {
                 handleChangePage,
                 handleChangeRowsPerPage,
                 handleFilterByName,
-                woekOrderError,
+                workOrderError,
                 filterField,
                 handleFilterField,
                 openFilter,
@@ -540,9 +659,16 @@ export function WorkOrderState(props) {
                 handleCloseServiceForm,
                 handleOpenServiceForm,
                 handleDeleteChip,
-                searchModel,
-                handleSearchModel,
-                filteredModels}}>
+                searchService,
+                searchSparePart,
+                handleSearchService,
+                handleSearchSparePart,
+                filteredServices,
+                filteredSpareParts,
+                services,
+                spareParts,
+                handleInputChangeModel,
+                activateSparePart}}>
             {props.children}
         </WorkOrderContext.Provider>
     )

@@ -29,7 +29,8 @@ import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import SaleForm from "../sections/@dashboard/sale/SaleForm";
 // import SaleDelete from "../sections/@dashboard/sale/SaleDelete";
 // mock
-import SaleContext from "../hooks/sales/SaleContext";
+import SaleContext from "../hooks/sale/SaleContext";
+import {fCurrency} from "../utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ export default function SalePage() {
 
                         <TableCell align="left">{fechaVenta}</TableCell>
 
-                        <TableCell align="left">$ {valorVenta}</TableCell>
+                        <TableCell align="left">$ {fCurrency(valorVenta)}</TableCell>
 
                         <TableCell align="left">
                             <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>

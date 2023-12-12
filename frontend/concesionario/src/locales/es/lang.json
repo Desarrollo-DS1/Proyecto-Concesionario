@@ -146,7 +146,12 @@
         "error": "Error al agregar venta",
         "errorEditar": "Error al editar venta",
         "errorListando": "Error al listar ventas",
-        "errorCargando": "Error al cargar venta"
+        "errorCargando": "Error al cargar venta",
+        "errorCargandoVehiculosEnVenta": "Error al cargar los vehiculos en venta",
+        "errorVehiculo": "El vehiculo ya fue agregado a la venta",
+        "errorVehiculos": "Es necesario agregar al menos un vehiculo a la venta",
+        "errorCliente": "La cédula ingresada no corresponde a ningún cliente",
+        "errorVendedor": "La cédula ingresada no corresponde a ningún vendedor"
       },
   
       "label": {
@@ -162,9 +167,60 @@
         "id": "ID",
         "cedulaCliente": "Cliente",
         "cedulaVendedor": "Vendedor",
-        "fechaVenta": "Fecha"
+        "fechaVenta": "Fecha",
+        "vehiculo": "Vehiculo",
+        "descuento": "Descuento",
+        "extra": "Extra",
+        "color": "Color",
+        "total": "Total"
       }
     },
+
+  "cotizaciones": {
+    "encabezado": {
+      "tituloPlural": "Cotizaciones",
+      "tituloSingular": "Cotizacion",
+      "agregar": "Agregar cotizacion",
+      "editar": "Editar cotizacion"
+    },
+
+    "mensaje": {
+      "agregado": "Cotizacion agregada correctamente",
+      "editado": "Cotizacion editada correctamente",
+      "error": "Error al agregar cotizacion",
+      "errorEditar": "Error al editar cotizacion",
+      "errorListando": "Error al listar cotizaciones",
+      "errorCargando": "Error al cargar cotizacion",
+      "errorModelo": "El modelo ya fue agregado a la venta",
+      "errorModelos": "Es necesario agregar al menos un modelo a la cotizacion",
+      "errorCliente": "La cédula ingresada no corresponde a ningún cliente",
+      "errorVendedor": "La cédula ingresada no corresponde a ningún vendedor",
+      "errorListandoExtras": "Error al listar extras",
+      "errorListandoColores": "Error al listar colores",
+      "errorListandoModelos": "Error al listar modelos"
+    },
+
+    "label": {
+      "ID": "ID",
+      "nombreCliente": "Nombre",
+      "nombreVendedor": "Nombre",
+      "cliente": "Cliente",
+      "vendedor": "Vendedor",
+      "fecha": "Fecha",
+      "valor": "Total",
+      "modelos": "Modelos",
+      "undefined": "",
+      "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaVendedor": "Vendedor",
+      "fechaCotizacion": "Fecha",
+      "modelo": "Modelo",
+      "extra": "Extra",
+      "color": "Color",
+      "total": "Total"
+    }
+  },
+
     "sucursal": {
         "mensaje": {
             "errorListando": "Error al listar sucursales"
@@ -284,13 +340,16 @@
       "error": "Error al agregar orden de trabajo",
       "errorEditar": "Error al editar orden de trabajo",
       "errorEliminar": "Error al eliminar orden de trabajo",
-      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo de id {{id}}?",
+      "confirmacionEliminar": "¿Estas seguro que deseas eliminar la orden de trabajo del vehiculo {{placa}}?",
       "errorPlaca": "Ya existe una orden de trabajo activa con la placa ingresada",
       "errorListando": "Error al listar ordenes de trabajo",
       "errorCargando": "Error al cargar orden de trabajo"
     },
     "label": {
       "id": "ID",
+      "cedulaCliente": "Cliente",
+      "cedulaJefeTaller": "Jefe de Taller",
+      "comentario": "Comentario",
       "nombreCliente": "Nombre",
       "nombreVendedor": "Nombre",
       "cliente": "Cliente",
@@ -330,7 +389,8 @@
       "confirmacionEliminar": "¿Estas seguro que deseas eliminar el vehiculo de vin {{vin}}?",
       "errorVin": "Error al agregar vehiculo, el vin ya existe",
       "errorListando": "Error al listar vehiculos",
-      "errorCargando": "Error al cargar vehiculo"
+      "errorCargando": "Error al cargar vehiculo",
+      "errorListandoExtras": "Error al listar extras"
     },
     "label": {
       "vin": "VIN",
@@ -349,6 +409,29 @@
     }
   },
 
+  "ordenesCliente": {
+    "encabezado": {
+      "tituloPlural": "Ordenes",
+      "detalles": "Detalles",
+      "servicios": "Servicios",
+      "repuestos": "Repuestos"
+    },
+    "mensaje": {
+      "errorListando": "Error al listar ordenes"
+    },
+    "label": {
+      "fechaInicio": "Fecha de inicio",
+      "fechaEsperada": "Fecha esperada",
+      "fechaFin": "Fecha de entrega",
+      "undefined" : ""
+    },
+    "estado": {
+      "taller": "En Taller",
+      "entregado": "Entregado",
+      "atrazado": "Atrazado"
+    }
+  },
+
   "errores": {
     "requerido": "Este campo es requerido",
     "numerico": "Solo se permiten numeros",
@@ -360,6 +443,8 @@
     "correo": "Ingrese un correo valido",
     "fecha": "Ingrese una fecha valida",
     "vinCaracteresNoPermitidos": "No se permiten los caracteres I, O, Q",
+    "placa": "Ingrese una placa valida",
+    "rango": "Min: {{minimo}}, Max: {{maximo}}",
     "contraseña": {
         "numerico": "Debe tener al menos un numero",
         "minuscula": "Debe tener al menos una minuscula",
@@ -402,7 +487,28 @@
     "numeroVentasAnuales": "Numero Ventas Anuales",
     "numeroVentasMensuales": "Numero Ventas Mensuales",
     "ventasMensuales": "Ventas Mensuales",
-    "ventasPorModelo": "Ventas por Modelo"
+    "ventasPorModelo": "Ventas Mensuales por Modelo",
+    "ventasPorSucursal": "Ventas Mensuales por Sucursal",
+    "ventasPorExtra": "Extras Mensuales"
+  },
+
+  "dashBoardCotizacion": {
+    "titulo": "Panel Cotizaciones",
+    "cotizaciones": "Cotizaciones",
+    "ventas": "Ventas",
+    "año": "Año",
+    "mes": "Mes",
+    "modelo": "Modelo",
+    "sucursal": "Sucursal",
+    "filtro": "Filtrar",
+    "totalCotizacionesAnuales": "Total Cotizaciones Anuales",
+    "totalCotizacionesMensuales": "Total Cotizaciones Mensuales",
+    "numeroCotizacionesAnuales": "Numero Cotizaciones Anuales",
+    "numeroCotizacionesMensuales": "Numero Cotizaciones Mensuales",
+    "cotizacionesMensuales": "Cotizaciones Mensuales",
+    "cotizacionesPorModelo": "Cotizaciones Mensuales por Modelo",
+    "cotizacionesPorSucursal": "Cotizaciones Mensuales por Sucursal",
+    "cotizacionesPorColor": "Colores Mensuales"
   },
 
   "colores": {
@@ -458,5 +564,19 @@
     "Gerente": "Gerente",
     "Cliente": "Cliente",
     "Superusuario": "Superusuario"
+  },
+  "meses": {
+    "Ene": "Ene",
+    "Feb": "Feb",
+    "Mar": "Mar",
+    "Abr": "Abr",
+    "May": "May",
+    "Jun": "Jun",
+    "Jul": "Jul",
+    "Ago": "Ago",
+    "Sep": "Sep",
+    "Oct": "Oct",
+    "Nov": "Nov",
+    "Dic": "Dic"
   }
 }

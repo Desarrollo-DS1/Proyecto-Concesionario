@@ -31,14 +31,14 @@ const StyledChartWrapper = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-AppCurrentVisits.propTypes = {
+AppMonthlyBranches.propTypes = {
   title: PropTypes.string,
   subheader: PropTypes.string,
   chartColors: PropTypes.arrayOf(PropTypes.string),
   chartData: PropTypes.array,
 };
 
-export default function AppCurrentVisits({ title, subheader, chartColors, chartData, ...other }) {
+export default function AppMonthlyBranches({ title, subheader, chartColors, chartData, ...other }) {
   const theme = useTheme();
 
   const chartLabels = chartData.map((i) => i.label);
@@ -68,7 +68,6 @@ export default function AppCurrentVisits({ title, subheader, chartColors, chartD
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
-
       <StyledChartWrapper dir="ltr">
         <ReactApexChart type="pie" series={chartSeries} options={chartOptions} height={280} />
       </StyledChartWrapper>

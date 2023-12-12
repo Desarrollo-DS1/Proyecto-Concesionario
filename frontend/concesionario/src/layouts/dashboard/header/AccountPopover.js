@@ -6,7 +6,7 @@ import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
 // mocks_
 import account from '../../../_mock/account';
-import {AuthState} from "../../../hooks/auth/AuthState";
+import AuthState from "../../../hooks/auth/AuthState";
 import AuthContext from "../../../hooks/auth/AuthContext";
 
 

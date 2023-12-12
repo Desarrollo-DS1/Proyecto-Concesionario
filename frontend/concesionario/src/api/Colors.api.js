@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const colorsApi = (token) => axios.create({
-    baseURL: 'http://localhost:8000/concesionarioapp/api/v1/Color/',
+    baseURL: `${process.env.REACT_APP_BACKEND_URL}concesionarioapp/api/v1/Color/`,
     headers: { Authorization: `Bearer ${token}` }
 });
 

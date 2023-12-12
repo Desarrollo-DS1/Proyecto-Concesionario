@@ -12,7 +12,7 @@ EmployeeState.propTypes = {
     children: propTypes.node,
 }
 
-export function EmployeeState(props) {
+export default function EmployeeState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [

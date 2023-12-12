@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { AuthState } from "./hooks/auth/AuthState";
+import AuthState from "./hooks/auth/AuthState";
 // routes
 import Router from './routes';
 // theme

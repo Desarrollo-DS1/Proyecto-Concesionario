@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {useTranslation} from "react-i18next";
 import ReactApexChart from 'react-apexcharts';
 // @mui
 import { Card, CardHeader, Box } from '@mui/material';
@@ -15,10 +16,12 @@ AppMonthlySales.propTypes = {
 };
 
 export default function AppMonthlySales({ title, subheader, chartLabels, chartData, ...other }) {
+
+    const { t, i18n } = useTranslation("lang");
+
     const chartOptions = useChart({
-        plotOptions: { bar: { columnWidth: '70%' } },
+        plotOptions: { bar: { columnWidth: '50%' } },
         fill: { type: chartData.map((i) => i.fill) },
-        labels: chartLabels,
         tooltip: {
             shared: true,
             intersect: false,
@@ -29,8 +32,17 @@ export default function AppMonthlySales({ title, subheader, chartLabels, chartDa
                     }
                     return y;
                 },
+                title: {
+                    formatter: (seriesName) => t(`dashBoardVenta.${seriesName}`),
+                }
             },
         },
+        xaxis: {
+            categories: chartLabels,
+            labels: {
+                formatter: (value) => t(`meses.${value}`),
+            }
+        }
     });
 
     return (

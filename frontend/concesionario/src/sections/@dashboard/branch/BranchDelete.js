@@ -1,6 +1,6 @@
-import React, { useContext } from "react";
-import Modal from "@mui/material/Modal";
+import React, { useContext} from "react";
 import { useTranslation } from "react-i18next";
+import Modal from "@mui/material/Modal";
 import {
     Box,
     Button,
@@ -9,14 +9,16 @@ import {
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
-import SaleContext from "../../../hooks/sales/SaleContext";
+import BranchContext from "../../../hooks/branch/BranchContext";
 
-export default function SaleDelete() {
+export default function BranchDelete() {
 
-    const { sale, openDelete, handleCloseDelete, handleDelete } = useContext(SaleContext);
+    const { branch, openDelete, handleCloseDelete, handleDelete } = useContext(BranchContext);
 
     const theme = useTheme();
     const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const { t } = useTranslation("lang");
 
     const modalStyle = {
         position: "absolute",
@@ -32,11 +34,9 @@ export default function SaleDelete() {
         borderRadius: 2,
     };
 
-    const { t } = useTranslation("lang");
-
     return (
         <Modal
-            open={openDelete}
+            open = {openDelete}
             onClose={handleCloseDelete}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
@@ -44,17 +44,18 @@ export default function SaleDelete() {
             <Box sx={modalStyle}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
                     <Typography variant="h4" gutterBottom>
-                        {t('ventas.encabezado.eliminar')}
+                        {t('sucursales.encabezado.eliminar')}
                     </Typography>
                 </Stack>
                 <Typography variant="body1" gutterBottom>
-                    {t('ventas.mensaje.confirmacionEliminar', {id: sale.id})}
+                    {t('sucursales.mensaje.confirmacionEliminar', {nombre: branch.nombre})}
+
                 </Typography>
                 <Stack direction="row" spacing={2} justifyContent="flex-end">
                     <Button variant="contained" onClick={handleCloseDelete}>
                         {t('general.botones.no')}
                     </Button>
-                    <Button id={"confirmar-eliminar-venta"} variant="contained" color="error" onClick={handleDelete}>
+                    <Button id={"confirmar-eliminar-sucursal"} variant="contained" color="error" onClick={handleDelete}>
                         {t('general.botones.si')}
                     </Button>
                 </Stack>

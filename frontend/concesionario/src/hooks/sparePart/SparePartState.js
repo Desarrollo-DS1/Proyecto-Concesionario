@@ -13,7 +13,7 @@ SparePartState.propTypes = {
     children: propTypes.node,
 }
 
-export function SparePartState(props) {
+export default function SparePartState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const TABLE_HEAD = [
@@ -365,7 +365,7 @@ export function SparePartState(props) {
     const [inventory, setInventory] = useState([]);
     const [subtitle, setSubtitle] = useState('');
 
-    const getInventory = async () => {
+    const getInventory = async (id) => {
         setInventory([
             {
                 id: 1,
@@ -395,7 +395,7 @@ export function SparePartState(props) {
     }
 
     const handleOpenInventoryForm = (e, id, name) => {
-        getInventory().then(() => setOpenInventoryForm(true));
+        getSparePart(id).then(()=>getInventory(id).then(() => setOpenInventoryForm(true)))
         setSubtitle(name)
     }
 

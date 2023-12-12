@@ -268,11 +268,12 @@ class VehiculoSerializer(serializers.ModelSerializer):
     sucursal = serializers.PrimaryKeyRelatedField(source='sucursal_vehiculo', queryset=Sucursal.objects.all())
     nombreSucursal = serializers.CharField(source='sucursal', read_only=True)
     disponibleVenta = serializers.BooleanField(source='disponible_para_venta', read_only=True)
+    precio = serializers.IntegerField(read_only=True)
 
 
     class Meta:
         model = Vehiculo
-        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta'
+        fields = 'vin', 'modelo', 'nombreModelo', 'color', 'nombreColor', 'hexadecimalColor', 'sucursal', 'nombreSucursal', 'disponibleVenta', 'precio'
 
     def create(self, validated_data):
         if Vehiculo.objects.filter(vin=validated_data['vin']).exists():
@@ -290,22 +291,40 @@ class ColorSerializer(serializers.ModelSerializer):
     idColor = serializers.IntegerField(source='id_color')
     colorNombre = serializers.CharField(source='nombre_color')
     hexadecimalColor = serializers.CharField(source='hexadecimal_color')
+    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2)
     
     class Meta:
         model = Color
-        fields = "__all__"
+        fields = 'idColor', 'colorNombre', 'hexadecimalColor', 'porcentajeIncrementoColor'
+
+
+class ExtraSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_extra', read_only=True)
+    nombreExtra = serializers.CharField(source='nombre_extra')
+    descripcionExtra = serializers.CharField(source='descripcion_extra')
+
+    class Meta:
+        model = Extra
+        fields = 'id', 'nombreExtra', 'descripcionExtra'
+
 
 class VentaVehiculoSerializer(serializers.ModelSerializer):
     vehiculo = serializers.PrimaryKeyRelatedField(queryset=Vehiculo.objects.all())
-    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
+    nombreVehiculo = serializers.CharField(source='nombre_modelo', read_only=True)
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all(), required=False, allow_null=True)
+    nombreExtra = serializers.SerializerMethodField()
     porcentajeDescuento = serializers.DecimalField(source='porcentaje_descuento', max_digits=4, decimal_places=2)
     venta_id = serializers.IntegerField(read_only=True)
     modelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    precio = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Venta_Vehiculo
-        fields = 'vehiculo', 'extra', 'porcentajeDescuento', 'venta_id', 'modelo'
+        fields = 'vehiculo', 'nombreVehiculo', 'hexadecimalColor', 'extra', 'nombreExtra', 'porcentajeDescuento', 'venta_id', 'modelo', 'precio'
 
+    def get_nombreExtra(self, obj):
+        return obj.extra.nombre_extra if obj.extra else None
     
 
 class VentaSerializer(serializers.ModelSerializer):
@@ -327,16 +346,15 @@ class VentaSerializer(serializers.ModelSerializer):
         venta_vehiculo_data = validated_data.pop('venta_vehiculo_set')
         venta = Venta.objects.create(**validated_data)
 
+        if venta.fecha_venta > now().date():
+            raise serializers.ValidationError({'fechaVenta': 'La fecha de venta no puede ser mayor a la fecha actual'})
+
         for venta_vehiculo in venta_vehiculo_data:
-            try:
-                if not venta_vehiculo['vehiculo'].disponible_para_venta:
-                    raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'].vin)})
-                
-                Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
-                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            if not venta_vehiculo['vehiculo'].disponible_para_venta:
+                raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'])})
             
-            except Exception as e:
-                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+            Venta_Vehiculo.objects.create(venta=venta, **venta_vehiculo)
+            Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
         
         return venta
 
@@ -348,44 +366,90 @@ class VentaSerializer(serializers.ModelSerializer):
             Vehiculo.objects.filter(vin=venta_vehiculo_anterior.vehiculo.vin).update(disponible_para_venta=True)
 
             venta_vehiculo_anterior.delete()
+
+        if validated_data['fecha_venta'] > now().date():
+            raise serializers.ValidationError({'fechaVenta': 'La fecha de venta no puede ser mayor a la fecha actual'})
         
         Venta.objects.filter(id_venta=instance.id_venta).update(**validated_data)
 
         for venta_vehiculo in venta_vehiculo_data:
-            try:
-                if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
-                    raise serializers.ValidationError({'vehiculo': 'El vehiculo no esta disponible para la venta'})
-                
-                Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
-                Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
+            if not Vehiculo.objects.get(vin=venta_vehiculo['vehiculo'].vin).disponible_para_venta:
+                raise serializers.ValidationError({'vehiculo': 'El vehiculo {} no esta disponible para la venta'.format(venta_vehiculo['vehiculo'])})
             
-            except Exception as e:
-                raise serializers.ValidationError({'venta_vechiculo': 'Error creando instancia de venta_vehiculo: {}'.format(e)})
+            Venta_Vehiculo.objects.create(venta=instance, **venta_vehiculo)
+            Vehiculo.objects.filter(vin=venta_vehiculo['vehiculo'].vin).update(disponible_para_venta=False)
         
         return instance
 
-class CotizacionSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
-    vendedor = serializers.PrimaryKeyRelatedField(queryset=Empleado.objects.all())
-    cliente = serializers.PrimaryKeyRelatedField(queryset=Cliente.objects.all())
-    fechaCreacion = serializers.DateField()
-    porcentajeDescuento = serializers.DecimalField(max_digits=5, decimal_places=4)  
-    fechaVencimiento = serializers.DateField(source='fecha_vencimiento')
-    modelos = models.ManyToManyField(Modelo, through='Cotizacion_Modelo', related_name='modelos')
-
-    class Meta:
-        model = Cotizacion
-        fields = 'id', 'vendedor', 'cliente', 'fechaCreacion', 'porcentajeDescuento', 'fechaVencimiento', 'modelos'
-    
 
 class CotizacionModeloSerializer(serializers.ModelSerializer):
     idCotizacionModelo = serializers.PrimaryKeyRelatedField(source='id_cotizacion_modelo', read_only=True)
-    cotizacion = serializers.PrimaryKeyRelatedField(queryset=Cotizacion.objects.all())
-    modelo = serializers.PrimaryKeyRelatedField(queryset=Modelo.objects.all())
-    color = serializers.PrimaryKeyRelatedField(queryset=Color.objects.all())
-    extra = serializers.PrimaryKeyRelatedField(queryset=Extra.objects.all())
-    cantidad = serializers.IntegerField()
+    cotizacion = serializers.PrimaryKeyRelatedField(read_only=True)
+    modelo = serializers.PrimaryKeyRelatedField(read_only=True)
+    idModelo = serializers.PrimaryKeyRelatedField(source='modelo', queryset=Modelo.objects.all())
+    precioBase = serializers.IntegerField(source='precio_base_modelo', read_only=True)
+    nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
+    idColor = serializers.PrimaryKeyRelatedField(source='color', queryset=Color.objects.all())
+    hexadecimalColor = serializers.CharField(source='hexadecimal_color', read_only=True)
+    porcentajeIncrementoColor = serializers.DecimalField(source='porcentaje_incremento_por_color', max_digits=4, decimal_places=2, read_only=True)
+    idExtra = serializers.PrimaryKeyRelatedField(source='extra', queryset=Extra.objects.all(), required=False, allow_null=True)
+    nombreExtra = serializers.SerializerMethodField()
 
     class Meta:
         model = Cotizacion_Modelo
-        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'color', 'extra', 'cantidad'
+        fields = 'idCotizacionModelo', 'cotizacion', 'modelo', 'idModelo', 'precioBase', 'nombreModelo', 'idColor', 'hexadecimalColor', 'porcentajeIncrementoColor', 'idExtra', 'nombreExtra'
+
+    def get_nombreExtra(self, obj):
+        return obj.extra.nombre_extra if obj.extra else None
+
+
+class CotizacionSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_cotizacion', read_only=True)
+    cedulaVendedor = serializers.PrimaryKeyRelatedField(source='vendedor', queryset=Empleado.objects.all())
+    nombreVendedor = serializers.CharField(source='nombre_vendedor', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cliente', queryset=Cliente.objects.all())
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    fechaCotizacion = serializers.DateField(source='fecha_creacion', required=True)
+    fechaVencimiento = serializers.DateField(source='fecha_vencimiento', required=False)
+    cotizacionModelo = CotizacionModeloSerializer(many=True, source='cotizacion_modelo_set')
+    valorCotizacion = serializers.IntegerField(source='precio_total', read_only=True)
+
+    class Meta:
+        model = Cotizacion
+        fields = 'id', 'cedulaVendedor', 'nombreVendedor', 'cedulaCliente', 'nombreCliente', 'fechaCotizacion', 'fechaVencimiento', 'cotizacionModelo', 'valorCotizacion'
+    
+    
+    @transaction.atomic
+    def create(self, validated_data):
+        if validated_data['fecha_creacion'] > now().date():
+            raise serializers.ValidationError({'fechaCotizacion': 'La fecha de cotizacion no puede ser mayor a la fecha actual'})
+
+        validated_data['fecha_vencimiento'] = validated_data['fecha_creacion'] + timedelta(days=20)
+        
+        cotizacion_vehiculo = validated_data.pop('cotizacion_modelo_set')
+        cotizacion = Cotizacion.objects.create(**validated_data)
+        
+        for cotizacion_modelo in cotizacion_vehiculo:
+            Cotizacion_Modelo.objects.create(cotizacion=cotizacion, **cotizacion_modelo)
+
+        return cotizacion
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        cotizacion_vehiculo = validated_data.pop('cotizacion_modelo_set')
+
+        if validated_data['fecha_creacion'] > now().date():
+            raise serializers.ValidationError({'fechaCotizacion': 'La fecha de cotizacion no puede ser mayor a la fecha actual'})
+
+        validated_data['fecha_vencimiento'] = validated_data['fecha_creacion'] + timedelta(days=20)
+
+        Cotizacion.objects.filter(id_cotizacion=instance.id_cotizacion).update(**validated_data)
+
+        for cotizacion_modelo_anterior in instance.cotizacion_modelo_set.all():
+            cotizacion_modelo_anterior.delete()
+
+        for cotizacion_modelo in cotizacion_vehiculo:
+            Cotizacion_Modelo.objects.create(cotizacion=instance, **cotizacion_modelo)
+
+        return instance
+    
