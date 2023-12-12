@@ -5,7 +5,7 @@ import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";
 import {checkSale} from "./SaleValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import { getAllVentas, getVenta, createVenta, updateVenta } from "../../api/Venta.api";
+import { getAllVentas,  getVenta, createVenta, updateVenta } from "../../api/Venta.api";
 import { getAllAvailableVehiculos } from "../../api/Vehiculo.api";
 import AuthContext from "../auth/AuthContext";
 

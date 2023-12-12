@@ -67,7 +67,7 @@ export default function AppMonthlyExtras({ title, subheader, chartColors, chartD
         plotOptions: {
             pie: { donut: { labels: { show: false } } },
         },
-        legend: { floating: true, horizontalAlign: 'center', formatter: (seriesName) => t(`colores.${seriesName}`)
+        legend: { floating: true, horizontalAlign: 'center'
         },
     });
 
