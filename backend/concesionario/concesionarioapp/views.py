@@ -10,6 +10,7 @@ from datetime import timedelta, datetime
 from .permissions import EsEmpleado, EsGerente, EsVendedorOGerente, EsJefeDeTallerOGerente
 from .serializer import *
 from .models import *
+from .utils import *
 from decouple import config
 import requests
 import calendar
@@ -193,15 +194,8 @@ class VentaView(viewsets.ModelViewSet):
     @action(detail=False, methods=['get'])
     def ventas_por_mes(self, request):
         anho = request.query_params.get('anho', None)
-        
-        if not anho:
-            raise serializers.ValidationError({'anho': 'El parámetro anho es requerido.'})
-        try:
-            anho = int(anho)
-        except ValueError:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero.'})
-        if anho < 2000 or anho > datetime.now().year:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero entre 2000 y el año actual.'})
+        validar_anho(anho)
+        anho = int(anho)
         
         fecha_inicio = datetime(anho, 1, 1)
         fecha_fin = datetime(anho, 12, 31)
@@ -225,9 +219,36 @@ class VentaView(viewsets.ModelViewSet):
                 """, [fecha_inicio, fecha_fin])
 
             resultado = cursor.fetchall()
-
             json_resultado = [{'mes': mes.month, 'total_Ventas': total_ventas} for mes, total_ventas in resultado]
 
+            return Response(json_resultado)
+        
+    
+    @action(detail=False, methods=['get'])
+    def modelos_en_ventas(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+        
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT DATE_TRUNC('month', venta.fecha_venta) AS mes, modelo.nombre_modelo as modelo, COUNT(modelo.id_modelo) as cantidad_ventas_modelo
+                FROM concesionarioapp_venta AS venta
+                INNER JOIN concesionarioapp_venta_vehiculo as venta_vehiculo ON venta.id_venta=venta_vehiculo.venta_id
+                INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
+                INNER JOIN concesionarioapp_modelo as modelo ON vehiculo.modelo_vehiculo_id=modelo.id_modelo
+                WHERE venta.fecha_venta BETWEEN %s AND %s
+                GROUP BY mes, modelo
+                ORDER BY mes;
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchall()
+            json_resultado = [{'mes': mes.month, 'modelo': modelo, 'cantidadVentasModelo': cantidad_ventas_modelo} for mes, modelo, cantidad_ventas_modelo in resultado]
+            
             return Response(json_resultado)
     
 
@@ -235,24 +256,10 @@ class VentaView(viewsets.ModelViewSet):
     def ventas_por_sucursal(self, request):
         anho = request.query_params.get('anho', None)
         mes = request.query_params.get('mes', None)
-
-        if not anho:
-            raise serializers.ValidationError({'anho': 'El parámetro anho es requerido.'})
-        try:
-            anho = int(anho)
-        except ValueError:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero.'})
-        if anho < 2000 or anho > datetime.now().year:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero entre 2000 y el año actual.'})
-
-        if not mes:
-            raise serializers.ValidationError({'mes': 'El parámetro mes es requerido.'})
-        try:
-            mes = int(mes)
-        except ValueError:
-            raise serializers.ValidationError({'mes': 'El parámetro mes debe ser un número entero.'})
-        if mes < 1 or mes > 12:
-            raise serializers.ValidationError({'mes': 'El parámetro mes debe ser un número entero entre 1 y 12.'})
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
         
         fecha_inicio = datetime(anho, mes, 1)
         fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
@@ -286,24 +293,10 @@ class VentaView(viewsets.ModelViewSet):
     def extras_en_ventas(self, request):
         anho = request.query_params.get('anho', None)
         mes = request.query_params.get('mes', None)
-
-        if not anho:
-            raise serializers.ValidationError({'anho': 'El parámetro anho es requerido.'})
-        try:
-            anho = int(anho)
-        except ValueError:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero.'})
-        if anho < 2000 or anho > datetime.now().year:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero entre 2000 y el año actual.'})
-
-        if not mes:
-            raise serializers.ValidationError({'mes': 'El parámetro mes es requerido.'})
-        try:
-            mes = int(mes)
-        except ValueError:
-            raise serializers.ValidationError({'mes': 'El parámetro mes debe ser un número entero.'})
-        if mes < 1 or mes > 12:
-            raise serializers.ValidationError({'mes': 'El parámetro mes debe ser un número entero entre 1 y 12.'})
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
         
         fecha_inicio = datetime(anho, mes, 1)
         fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
@@ -325,19 +318,14 @@ class VentaView(viewsets.ModelViewSet):
 
             return Response(json_resultado)
     
-    
-    @action(detail=False, methods=['get'])
-    def modelos_en_ventas(self, request):
-        anho = request.query_params.get('anho', None)
 
-        if not anho:
-            raise serializers.ValidationError({'anho': 'El parámetro anho es requerido.'})
-        try:
-            anho = int(anho)
-        except ValueError:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero.'})
-        if anho < 2000 or anho > datetime.now().year:
-            raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero entre 2000 y el año actual.'})
+    
+
+    @action(detail=False, methods=['get'])
+    def ventas_anuales(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
         
         fecha_inicio = datetime(anho, 1, 1)
         fecha_fin = datetime(anho, 12, 31)
@@ -345,21 +333,105 @@ class VentaView(viewsets.ModelViewSet):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT DATE_TRUNC('month', venta.fecha_venta) AS mes, modelo.nombre_modelo as modelo, COUNT(modelo.id_modelo) as cantidad_ventas_modelo
-                FROM concesionarioapp_venta AS venta
-                INNER JOIN concesionarioapp_venta_vehiculo as venta_vehiculo ON venta.id_venta=venta_vehiculo.venta_id
-                INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
-                INNER JOIN concesionarioapp_modelo as modelo ON vehiculo.modelo_vehiculo_id=modelo.id_modelo
+                SELECT SUM(auxiliar.precio_total) as total FROM concesionarioapp_venta as venta
+                INNER JOIN (
+                    SELECT venta_id,
+                    SUM(modelo.precio_base * (1 - venta_vehiculo.porcentaje_descuento) * (1 + color.porcentaje_incremento_por_color)) as precio_total
+                    FROM concesionarioapp_venta_vehiculo as venta_vehiculo
+                    INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
+                    INNER JOIN concesionarioapp_modelo as modelo ON vehiculo.modelo_vehiculo_id=modelo.id_modelo
+                    INNER JOIN concesionarioapp_color as color ON vehiculo.color_vehiculo_id=color.id_color
+                    GROUP BY venta_id
+                ) AS auxiliar ON venta.id_venta=auxiliar.venta_id
                 WHERE venta.fecha_venta BETWEEN %s AND %s
-                GROUP BY mes, modelo
-                ORDER BY mes;
                 """, [fecha_inicio, fecha_fin])
             
-            resultado = cursor.fetchall()
-            json_resultado = [{'mes': mes.month, 'modelo': modelo, 'cantidadVentasModelo': cantidad_ventas_modelo} for mes, modelo, cantidad_ventas_modelo in resultado]
-            
+            resultado = cursor.fetchone()
+            json_resultado = {'totalVentas': resultado[0]}
+
             return Response(json_resultado)
+    
+    
+    @action(detail=False, methods=['get'])
+    def numero_ventas_anuales(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT COUNT(*) as numero_ventas FROM concesionarioapp_venta as venta
+                WHERE venta.fecha_venta BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+
+            resultado = cursor.fetchone()
+            json_resultado = {'numeroVentas': resultado[0]}
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def ventas_mensuales(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
         
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT SUM(auxiliar.precio_total) as total FROM concesionarioapp_venta as venta
+                INNER JOIN (
+                    SELECT venta_id,
+                    SUM(modelo.precio_base * (1 - venta_vehiculo.porcentaje_descuento) * (1 + color.porcentaje_incremento_por_color)) as precio_total
+                    FROM concesionarioapp_venta_vehiculo as venta_vehiculo
+                    INNER JOIN concesionarioapp_vehiculo as vehiculo ON venta_vehiculo.vehiculo_id=vehiculo.vin
+                    INNER JOIN concesionarioapp_modelo as modelo ON vehiculo.modelo_vehiculo_id=modelo.id_modelo
+                    INNER JOIN concesionarioapp_color as color ON vehiculo.color_vehiculo_id=color.id_color
+                    GROUP BY venta_id
+                ) AS auxiliar ON venta.id_venta=auxiliar.venta_id
+                WHERE venta.fecha_venta BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchone()
+            json_resultado = {'totalVentas': resultado[0]}
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def numero_ventas_mensuales(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
+        
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT COUNT(*) as numero_ventas FROM concesionarioapp_venta as venta
+                WHERE venta.fecha_venta BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+
+            resultado = cursor.fetchone()
+            json_resultado = {'numeroVentas': resultado[0]}
+
+            return Response(json_resultado)
+
 
     def destroy(self, request, *args, **kwargs):
         return MethodNotAllowed('DELETE', detail='No se puede eliminar una venta')
