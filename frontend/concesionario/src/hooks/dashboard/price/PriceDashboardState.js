@@ -55,6 +55,21 @@ export function PriceDashboardState(props) {
     const [numberOfPricesAnual, setNumberOfPricesAnual] = useState(0);
     const [numberOfPricesMonthly, setNumberOfPricesMonthly] = useState(0);
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [messageSnackbar, setMessageSnackbar] = useState('');
+    const [typeSnackbar, setTypeSnackbar] = useState('success');
+
+    const handleOpenSnackbar = () => {
+        setOpenSnackbar(true);
+    }
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setOpenSnackbar(false);
+    }
+
     const getPricesMonthly = async () => {
         setPricesMonthly(initialPricesMonthly);
     }
@@ -124,7 +139,12 @@ export function PriceDashboardState(props) {
             handleMonthChange,
             year,
             handleYearChange,
-            handleFilter}}>
+            handleFilter,
+            openSnackbar,
+            messageSnackbar,
+            typeSnackbar,
+            handleOpenSnackbar,
+            handleCloseSnackbar}}>
             {props.children}
         </PriceDashboardContext.Provider>
     )

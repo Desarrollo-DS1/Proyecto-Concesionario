@@ -5,6 +5,7 @@ import ReactApexChart from 'react-apexcharts';
 import { Card, CardHeader, Box } from '@mui/material';
 // components
 import { useChart } from '../../../components/chart';
+import {fCurrency} from "../../../utils/formatNumber";
 
 // ----------------------------------------------------------------------
 
@@ -27,10 +28,7 @@ export default function AppMonthlySales({ title, subheader, chartLabels, chartDa
             intersect: false,
             y: {
                 formatter: (y) => {
-                    if (typeof y !== 'undefined') {
-                        return `${y.toFixed(0)}`;
-                    }
-                    return y;
+                    return `$ ${fCurrency(y)}`;
                 },
                 title: {
                     formatter: (seriesName) => t(`dashBoardVenta.${seriesName}`),
@@ -41,6 +39,11 @@ export default function AppMonthlySales({ title, subheader, chartLabels, chartDa
             categories: chartLabels,
             labels: {
                 formatter: (value) => t(`meses.${value}`),
+            }
+        },
+        yaxis: {
+            labels: {
+                formatter: (value) => `$ ${fCurrency(value)}`,
             }
         }
     });

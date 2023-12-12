@@ -4,7 +4,7 @@ import ReactApexChart from 'react-apexcharts';
 import { useTheme, styled } from '@mui/material/styles';
 import { Card, CardHeader } from '@mui/material';
 // utils
-import { fNumber } from '../../../utils/formatNumber';
+import {fCurrency, fNumber} from '../../../utils/formatNumber';
 // components
 import { useChart } from '../../../components/chart';
 
@@ -54,7 +54,7 @@ export default function AppMonthlyBranches({ title, subheader, chartColors, char
     tooltip: {
       fillSeriesColor: false,
       y: {
-        formatter: (seriesName) => fNumber(seriesName),
+        formatter: (seriesName) => `$ ${fCurrency(seriesName)}`,
         title: {
           formatter: (seriesName) => `${seriesName}`,
         },
