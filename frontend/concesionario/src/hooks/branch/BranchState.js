@@ -87,28 +87,16 @@ export default function BranchState(props) {
         catch (error) {
             const errors = error.response.data;
 
-            if (errors.nombre) {
+            if (errors.nombreSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorNombre');
                 setBranchError({ ...branchError, nombre: 'Error con el nombre ingresado' });
                 handleOpenSnackbar();
 
-            } else if (errors.direccion) {
+            } else if (errors.direccionSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorDireccion');
                 setBranchError({ ...branchError, direccion: 'Error con la direccion ingresada' });
-                handleOpenSnackbar();
-
-            } else if (errors.ciudad) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.errorCiudad');
-                setBranchError({ ...branchError, ciudad: 'Error con la ciudad ingresada' });
-                handleOpenSnackbar();
-
-            } else if (errors.telefono) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.errorTelefono');
-                setBranchError({ ...branchError, telefono: 'Error con el telefono ingresado' });
                 handleOpenSnackbar();
 
             } else {

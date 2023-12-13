@@ -245,6 +245,7 @@
         "errorEliminar": "Error al eliminar sucursal",
         "confirmacionEliminar": "¿Estas seguro que deseas eliminar la sucursal de nombre {{nombre}}?",
         "errorNombre": "Ya existe una sucursal con el nombre ingresado",
+        "errorDireccion": "Ya existe una sucursal con la direccion ingresada",
         "errorListando": "Error al listar sucursales",
         "errorCargando": "Error al cargar sucursal"
       },
