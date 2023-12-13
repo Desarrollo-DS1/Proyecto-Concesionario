@@ -155,7 +155,6 @@ export default function BranchState(props) {
                 handleOpenSnackbar();
                 
             } else {
-                console.log(errors);
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorEliminar');
                 handleOpenSnackbar();
