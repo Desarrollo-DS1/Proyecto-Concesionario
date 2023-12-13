@@ -489,7 +489,18 @@
     "ventasMensuales": "Ventas Mensuales",
     "ventasPorModelo": "Ventas Mensuales por Modelo",
     "ventasPorSucursal": "Ventas Mensuales por Sucursal",
-    "ventasPorExtra": "Extras Mensuales"
+    "ventasPorExtra": "Extras Mensuales",
+
+    "mensaje": {
+        "errorCargandoVentasPorMes": "Error cargando ventas por mes a lo largo del año",
+        "errorCargandoVentasPorModelo": "Error cargando los modelos vendidos mes a mes a lo largo del año",
+        "errorCargandoVentasPorSucursal": "Error cargando las ventas de las sucursales en el mes",
+        "errorCargandoExtrasEnVentas": "Error cargando los extras incluidos en las ventas del mes",
+        "errorCargandoVentasAnuales": "Error cargando las ventas anuales",
+        "errorCargandoNumeroVentasAnuales": "Error cargando el número de ventas anuales",
+        "errorCargandoVentasMensuales": "Error cargando las ventas mensuales",
+        "errorCargandoNumeroVentasMensuales": "Error cargando el número de ventas mensuales"
+      }
   },
 
   "dashBoardCotizacion": {
@@ -508,7 +519,18 @@
     "cotizacionesMensuales": "Cotizaciones Mensuales",
     "cotizacionesPorModelo": "Cotizaciones Mensuales por Modelo",
     "cotizacionesPorSucursal": "Cotizaciones Mensuales por Sucursal",
-    "cotizacionesPorColor": "Colores Mensuales"
+    "cotizacionesPorColor": "Colores Mensuales",
+
+    "mensaje": {
+        "errorCargandoCotizacionesPorMes": "Error cargando cotizaciones por mes a lo largo del año",
+        "errorCargandoCotizacionesPorModelo": "Error cargando los modelos cotizados mes a mes a lo largo del año",
+        "errorCargandoCotizacionesPorSucursal": "Error cargando las cotizaciones de las sucursales en el mes",
+        "errorCargandoCotizacionesPorColor": "Error cargando los colores cotizados en el mes",
+        "errorCargandoCotizacionesAnuales": "Error cargando las cotizaciones anuales",
+        "errorCargandoNumeroCotizacionesAnuales": "Error cargando el número de cotizaciones anuales",
+        "errorCargandoCotizacionesMensuales": "Error cargando las cotizaciones mensuales",
+        "errorCargandoNumeroCotizacionesMensuales": "Error cargando el número de cotizaciones mensuales"
+    }
   },
 
   "colores": {

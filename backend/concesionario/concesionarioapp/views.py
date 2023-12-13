@@ -182,15 +182,6 @@ class VentaView(viewsets.ModelViewSet):
     queryset = Venta.objects.all()
     permission_classes = [IsAuthenticated, EsVendedorOGerente]
 
-
-    @action(detail=False, methods=['get'])
-    def ultimo_anho(self, request):
-        ultimo_anho = timezone.now() - timedelta(days=365)
-        queryset = Venta.objects.filter(fecha_venta__gte=ultimo_anho)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
-    
-
     @action(detail=False, methods=['get'])
     def ventas_por_mes(self, request):
         anho = request.query_params.get('anho', None)
@@ -447,6 +438,241 @@ class CotizacionView(viewsets.ModelViewSet):
     serializer_class = CotizacionSerializer
     queryset = Cotizacion.objects.all()
     permission_classes = [IsAuthenticated, EsVendedorOGerente]
+
+
+    @action(detail=False, methods=['get'])
+    def cotizaciones_por_mes(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+        
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT DATE_TRUNC('month', cotizacion.fecha_creacion) AS mes, COUNT(cotizacion.id_cotizacion) AS cantidad_cotizaciones
+                FROM concesionarioapp_cotizacion AS cotizacion
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                GROUP BY mes
+                ORDER BY mes;
+                """, [fecha_inicio, fecha_fin])
+
+            resultado = cursor.fetchall()
+            json_resultado = [{'mes': mes.month, 'cantidadCotizaciones': cantidad_cotizaciones} for mes, cantidad_cotizaciones in resultado]
+
+            cursor.execute(
+                """
+                SELECT DATE_TRUNC('month', venta.fecha_venta) AS mes, COUNT(venta.id_venta) AS cantidad_ventas
+                FROM concesionarioapp_venta AS venta
+                WHERE venta.fecha_venta BETWEEN %s AND %s
+                GROUP BY mes
+                ORDER BY mes;
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchall()
+            for res, json_res in zip(resultado, json_resultado):
+                mes, cantidad_ventas = res
+                if json_res['mes'] == mes.month:
+                    json_res['cantidadVentas'] = cantidad_ventas
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def modelos_en_cotizaciones(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+        
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT DATE_TRUNC('month', cotizacion.fecha_creacion) AS mes, modelo.nombre_modelo as modelo, COUNT(modelo.id_modelo) as cantidad_cotizaciones_modelo
+                FROM concesionarioapp_cotizacion AS cotizacion
+                INNER JOIN concesionarioapp_cotizacion_modelo as cotizacion_modelo ON cotizacion.id_cotizacion=cotizacion_modelo.cotizacion_id
+                INNER JOIN concesionarioapp_modelo as modelo ON cotizacion_modelo.modelo_id=modelo.id_modelo
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                GROUP BY mes, modelo
+                ORDER BY mes;
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchall()
+            json_resultado = [{'mes': mes.month, 'modelo': modelo, 'cantidadCotizacionesModelo': cantidad_cotizaciones_modelo} for mes, modelo, cantidad_cotizaciones_modelo in resultado]
+            
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def cotizaciones_por_sucursal(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
+        
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT sucursal.nombre_sucursal as sucursal, COUNT(cotizacion.id_cotizacion) as cantidad_cotizaciones
+                FROM concesionarioapp_cotizacion AS cotizacion
+                INNER JOIN concesionarioapp_empleado as empleado ON cotizacion.vendedor_id=empleado.usuario_id
+                INNER JOIN concesionarioapp_sucursal as sucursal ON empleado.sucursal_id=sucursal.id_sucursal
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                GROUP BY sucursal 
+                ORDER BY sucursal;
+                """, [fecha_inicio, fecha_fin])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'label': sucursal, 'value': cantidad_cotizaciones} for sucursal, cantidad_cotizaciones in resultado]
+
+            return Response(json_resultado)
+        
+    
+    @action(detail=False, methods=['get'])
+    def colores_en_cotizacion(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
+        
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT color.nombre_color as color, COUNT(color.id_color) as cantidad_colores
+                FROM concesionarioapp_cotizacion AS cotizacion
+                INNER JOIN concesionarioapp_cotizacion_modelo as cotizacion_modelo ON cotizacion.id_cotizacion=cotizacion_modelo.cotizacion_id
+                INNER JOIN concesionarioapp_color as color ON cotizacion_modelo.color_id=color.id_color
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                GROUP BY color.id_color
+                ORDER BY color.id_color;
+                """, [fecha_inicio, fecha_fin])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'label': color, 'value': cantidad_colores} for color, cantidad_colores in resultado]
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def cotizaciones_anuales(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT SUM(auxiliar.total_cotizacion) as total_cotizaciones FROM concesionarioapp_cotizacion as cotizacion
+                INNER JOIN (
+                    SELECT cotizacion_id, SUM(modelo.precio_base * (1 + color.porcentaje_incremento_por_color)) as total_cotizacion
+                    FROM concesionarioapp_cotizacion_modelo as cotizacion_modelo
+                    INNER JOIN concesionarioapp_modelo as modelo ON cotizacion_modelo.modelo_id=modelo.id_modelo
+                    INNER JOIN concesionarioapp_color as color ON cotizacion_modelo.color_id=color.id_color
+                    GROUP BY cotizacion_id
+                ) AS auxiliar ON cotizacion.id_cotizacion=auxiliar.cotizacion_id
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchone()
+            json_resultado = {'totalCotizaciones': resultado[0]}
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def numero_cotizaciones_anuales(self, request):
+        anho = request.query_params.get('anho', None)
+        validar_anho(anho)
+        anho = int(anho)
+
+        fecha_inicio = datetime(anho, 1, 1)
+        fecha_fin = datetime(anho, 12, 31)
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT COUNT(*) as numero_cotizaciones FROM concesionarioapp_cotizacion as cotizacion
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+
+            resultado = cursor.fetchone()
+            json_resultado = {'numeroCotizaciones': resultado[0]}
+
+            return Response(json_resultado)
+
+
+    @action(detail=False, methods=['get'])
+    def cotizaciones_mensuales(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
+        
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT SUM(auxiliar.total_cotizacion) as total_cotizaciones FROM concesionarioapp_cotizacion as cotizacion
+                INNER JOIN (
+                    SELECT cotizacion_id, SUM(modelo.precio_base * (1 + color.porcentaje_incremento_por_color)) as total_cotizacion
+                    FROM concesionarioapp_cotizacion_modelo as cotizacion_modelo
+                    INNER JOIN concesionarioapp_modelo as modelo ON cotizacion_modelo.modelo_id=modelo.id_modelo
+                    INNER JOIN concesionarioapp_color as color ON cotizacion_modelo.color_id=color.id_color
+                    GROUP BY cotizacion_id
+                ) AS auxiliar ON cotizacion.id_cotizacion=auxiliar.cotizacion_id
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+            
+            resultado = cursor.fetchone()
+            json_resultado = {'totalCotizaciones': resultado[0]}
+
+            return Response(json_resultado)
+    
+
+    @action(detail=False, methods=['get'])
+    def numero_cotizaciones_mensuales(self, request):
+        anho = request.query_params.get('anho', None)
+        mes = request.query_params.get('mes', None)
+        validar_anho(anho)
+        validar_mes(mes)
+        anho = int(anho)
+        mes = int(mes)
+        
+        fecha_inicio = datetime(anho, mes, 1)
+        fecha_fin = datetime(anho, mes, calendar.monthrange(anho, mes)[1])
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT COUNT(*) as numero_cotizaciones FROM concesionarioapp_cotizacion as cotizacion
+                WHERE cotizacion.fecha_creacion BETWEEN %s AND %s
+                """, [fecha_inicio, fecha_fin])
+
+            resultado = cursor.fetchone()
+            json_resultado = {'numeroCotizaciones': resultado[0]}
+
+            return Response(json_resultado)
 
 
 class ExtraView(viewsets.ModelViewSet):

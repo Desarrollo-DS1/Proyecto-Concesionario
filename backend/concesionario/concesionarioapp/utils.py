@@ -4,13 +4,13 @@ from rest_framework import serializers
 
 def validar_anho(anho):
     if not anho:
-        raise serializers.ValidationError({'anho': 'El parámetro anho es requerido.'})
+        raise serializers.ValidationError({'anho': 'El parámetro año es requerido.'})
     try:
         anho = int(anho)
     except ValueError:  
-        raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero.'})
+        raise serializers.ValidationError({'anho': 'El parámetro año debe ser un número entero.'})
     if anho < 2000 or anho > datetime.now().year:
-        raise serializers.ValidationError({'anho': 'El parámetro anho debe ser un número entero entre 2000 y el año actual.'})
+        raise serializers.ValidationError({'anho': 'El parámetro año debe ser un número entero entre 2000 y el año actual.'})
     
 
 def validar_mes(mes):

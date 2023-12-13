@@ -8,7 +8,11 @@ const ventaApi = (token) => axios.create({
 
 export const getAllVentas = (token) => ventaApi(token).get('');
 
-export const getVentasLastYear = (token) => ventaApi(token).get('ultimo_anho/');
+export const getVenta = (id, token) => ventaApi(token).get(`${id}/`);
+
+export const createVenta = (venta, token) => ventaApi(token).post('', venta);
+
+export const updateVenta = (id, venta, token) => ventaApi(token).put(`${id}/`, venta);
 
 export const getVentasPerMonth = (token, anho) => ventaApi(token).get(`ventas_por_mes/`, { params: { anho } });
 
@@ -25,9 +29,3 @@ export const getNumberOfAnnualVentas = (token, anho) => ventaApi(token).get(`num
 export const getMonthlyVentas = (token, anho, mes) => ventaApi(token).get(`ventas_mensuales/`, { params: { anho, mes } });
 
 export const getNumberOfMonthlyVentas = (token, anho, mes) => ventaApi(token).get(`numero_ventas_mensuales/`, { params: { anho, mes } });
-
-export const getVenta = (id, token) => ventaApi(token).get(`${id}/`);
-
-export const createVenta = (venta, token) => ventaApi(token).post('', venta);
-
-export const updateVenta = (id, venta, token) => ventaApi(token).put(`${id}/`, venta);
