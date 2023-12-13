@@ -462,57 +462,20 @@ class UsoRepuestoSerializer(serializers.ModelSerializer):
         model = Uso_Repuesto
         fields = 'id', 'idRepuesto', 'idModelo'
 
-    """
     def get_NombreModelo(self, obj):
         return obj.modelo.nombre_modelo if obj.modelo else None
-
     
-    def create(self, validated_data):
-        id_repuesto = validated_data['id_repuesto']
-        id_modelo = validated_data['id_modelo']
-
-        if Uso_Repuesto.objects.filter(id_repuesto=id_repuesto, id_modelo=id_modelo).exists():
-            raise serializers.ValidationError({'id_repuesto': 'Ya existe un uso de repuesto para este repuesto y modelo'})
-
-        usoRepuesto = Uso_Repuesto.objects.create(**validated_data)
-        return usoRepuesto
     
-    def update(self, instance, validated_data):
-        id_repuesto = validated_data.get('id_repuesto', instance.id_repuesto)
-        id_modelo = validated_data.get('id_modelo', instance.id_modelo)
-
-        if Uso_Repuesto.objects.exclude(id_uso_repuesto=instance.id_uso_repuesto).filter(id_repuesto=id_repuesto, id_modelo=id_modelo).exists():
-            raise serializers.ValidationError({'id_repuesto': 'Ya existe un uso de repuesto para este repuesto y modelo'})
-
-        instance.id_repuesto = id_repuesto
-        instance.id_modelo = id_modelo
-        instance.save()
-
-        return instance
-    """
     
 class InventarioRepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto_inventario', read_only=True)
-    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', queryset=Repuesto.objects.all())
+    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
     idSucursal = serializers.PrimaryKeyRelatedField(source='id_sucursal', queryset=Sucursal.objects.all())
     cantidad = serializers.IntegerField(source='cantidad_repuesto_inventario')
 
     class Meta:
         model = Inventario_Repuesto
         fields = 'id', 'idRepuesto', 'idSucursal', 'cantidad'
-
-    """
-    def create(self, validated_data):
-        id_repuesto = validated_data['id_repuesto']
-        id_sucursal = validated_data['id_sucursal']
-
-        if Inventario_Repuesto.objects.filter(id_repuesto=id_repuesto, id_sucursal=id_sucursal).exists():
-            raise serializers.ValidationError({'id_repuesto': 'Ya existe un inventario para este repuesto y sucursal'})
-        
-
-
-        repuestoInventario = Inventario_Repuesto.objects.create(**validated_data)
-        return repuestoInventario
     
     def update(self, instance, validated_data):
         id_repuesto = validated_data.get('id_repuesto', instance.id_repuesto)
@@ -526,7 +489,7 @@ class InventarioRepuestoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
-    """
+
 
 class RepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto', read_only=True)
@@ -538,24 +501,20 @@ class RepuestoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Repuesto
         fields = 'id', 'nombre', 'precio', 'descripcion', 'modelos'
-
-    """
-    def validate(self, attrs):
-        if(attrs['precio_repuesto'] < 0):
-            raise serializers.ValidationError("El precio no puede ser negativo")
-        return super().validate(attrs)
-    """
     
     @transaction.atomic
     def create(self, validated_data):
         modelos_data = validated_data.pop('uso_repuesto_set')
         print(validated_data)
+
+        if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists():
+            raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
+        
         repuesto = Repuesto.objects.create(**validated_data)
 
-        
-        if repuesto.precio_repuesto < 0:
+        if repuesto.precio_repuesto <= 0:
             raise serializers.ValidationError({'precio': 'El precio no puede ser negativo'})
-        
+
         for modelo in modelos_data:
             Uso_Repuesto.objects.create(id_repuesto=repuesto, **modelo)
         

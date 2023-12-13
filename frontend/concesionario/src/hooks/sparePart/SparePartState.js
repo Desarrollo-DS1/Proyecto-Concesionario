@@ -129,9 +129,27 @@ export default function SparePartState(props) {
         }
         catch (error)
         {
-            setTypeSnackbar('error');
-            setMessageSnackbar('repuestos.mensaje.errorAgregar');
-            handleOpenSnackbar();
+            const errors = error.response.data;
+            if(errors.nombre)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorNombre');
+                handleOpenSnackbar();
+                setSparePartError({...sparePartError, nombre: "Ya existe un repuesto con el nombre ingresado"});
+            }
+            else if(errors.precio)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorPrecio');
+                handleOpenSnackbar();
+                setSparePartError({...sparePartError, precio: "El precio del repuesto debe ser mayor a 0"});
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.error');
+                handleOpenSnackbar();
+            }
         }
     }
 
