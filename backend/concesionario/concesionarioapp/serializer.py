@@ -455,13 +455,18 @@ class CotizacionSerializer(serializers.ModelSerializer):
 
 class UsoRepuestoSerializer(serializers.ModelSerializer):   
     id = serializers.IntegerField(source='id_uso_repuesto', read_only=True)
-    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', queryset=Repuesto.objects.all())
-    idmodelo = serializers.PrimaryKeyRelatedField(source='id_modelo', queryset=Modelo.objects.all())
+    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
+    idModelo = serializers.PrimaryKeyRelatedField(source='id_modelo', queryset=Modelo.objects.all())
 
     class Meta:
         model = Uso_Repuesto
-        fields = 'id', 'idRepuesto', 'idmodelo'
+        fields = 'id', 'idRepuesto', 'idModelo'
 
+    """
+    def get_NombreModelo(self, obj):
+        return obj.modelo.nombre_modelo if obj.modelo else None
+
+    
     def create(self, validated_data):
         id_repuesto = validated_data['id_repuesto']
         id_modelo = validated_data['id_modelo']
@@ -484,6 +489,7 @@ class UsoRepuestoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    """
     
 class InventarioRepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto_inventario', read_only=True)
@@ -495,12 +501,15 @@ class InventarioRepuestoSerializer(serializers.ModelSerializer):
         model = Inventario_Repuesto
         fields = 'id', 'idRepuesto', 'idSucursal', 'cantidad'
 
+    """
     def create(self, validated_data):
         id_repuesto = validated_data['id_repuesto']
         id_sucursal = validated_data['id_sucursal']
 
         if Inventario_Repuesto.objects.filter(id_repuesto=id_repuesto, id_sucursal=id_sucursal).exists():
             raise serializers.ValidationError({'id_repuesto': 'Ya existe un inventario para este repuesto y sucursal'})
+        
+
 
         repuestoInventario = Inventario_Repuesto.objects.create(**validated_data)
         return repuestoInventario
@@ -517,22 +526,41 @@ class InventarioRepuestoSerializer(serializers.ModelSerializer):
         instance.save()
 
         return instance
+    """
 
 class RepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto', read_only=True)
     nombre = serializers.CharField(source='nombre_repuesto')
     precio = serializers.IntegerField(source='precio_repuesto')
     descripcion = serializers.CharField(source='descripcion_repuesto')
+    modelos = UsoRepuestoSerializer(many=True, source='uso_repuesto_set')
 
     class Meta:
         model = Repuesto
-        fields = 'id', 'nombre', 'precio', 'descripcion'
+        fields = 'id', 'nombre', 'precio', 'descripcion', 'modelos'
 
+    """
+    def validate(self, attrs):
+        if(attrs['precio_repuesto'] < 0):
+            raise serializers.ValidationError("El precio no puede ser negativo")
+        return super().validate(attrs)
+    """
+    
+    @transaction.atomic
     def create(self, validated_data):
-        if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists():
-            raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
+        modelos_data = validated_data.pop('uso_repuesto_set')
+        print(validated_data)
+        repuesto = Repuesto.objects.create(**validated_data)
+
         
-        return Repuesto.objects.create(**validated_data)
+        if repuesto.precio_repuesto < 0:
+            raise serializers.ValidationError({'precio': 'El precio no puede ser negativo'})
+        
+        for modelo in modelos_data:
+            Uso_Repuesto.objects.create(id_repuesto=repuesto, **modelo)
+        
+        
+        return repuesto
     
     def update(self, instance, validated_data):
         if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists() and instance.nombre_repuesto != validated_data['nombre_repuesto']:
