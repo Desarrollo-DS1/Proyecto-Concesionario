@@ -452,4 +452,90 @@ class CotizacionSerializer(serializers.ModelSerializer):
             Cotizacion_Modelo.objects.create(cotizacion=instance, **cotizacion_modelo)
 
         return instance
+
+class UsoRepuestoSerializer(serializers.ModelSerializer):   
+    id = serializers.IntegerField(source='id_uso_repuesto', read_only=True)
+    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', queryset=Repuesto.objects.all())
+    idmodelo = serializers.PrimaryKeyRelatedField(source='id_modelo', queryset=Modelo.objects.all())
+
+    class Meta:
+        model = Uso_Repuesto
+        fields = 'id', 'idRepuesto', 'idmodelo'
+
+    def create(self, validated_data):
+        id_repuesto = validated_data['id_repuesto']
+        id_modelo = validated_data['id_modelo']
+
+        if Uso_Repuesto.objects.filter(id_repuesto=id_repuesto, id_modelo=id_modelo).exists():
+            raise serializers.ValidationError({'id_repuesto': 'Ya existe un uso de repuesto para este repuesto y modelo'})
+
+        usoRepuesto = Uso_Repuesto.objects.create(**validated_data)
+        return usoRepuesto
     
+    def update(self, instance, validated_data):
+        id_repuesto = validated_data.get('id_repuesto', instance.id_repuesto)
+        id_modelo = validated_data.get('id_modelo', instance.id_modelo)
+
+        if Uso_Repuesto.objects.exclude(id_uso_repuesto=instance.id_uso_repuesto).filter(id_repuesto=id_repuesto, id_modelo=id_modelo).exists():
+            raise serializers.ValidationError({'id_repuesto': 'Ya existe un uso de repuesto para este repuesto y modelo'})
+
+        instance.id_repuesto = id_repuesto
+        instance.id_modelo = id_modelo
+        instance.save()
+
+        return instance
+    
+class InventarioRepuestoSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_repuesto_inventario', read_only=True)
+    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', queryset=Repuesto.objects.all())
+    idSucursal = serializers.PrimaryKeyRelatedField(source='id_sucursal', queryset=Sucursal.objects.all())
+    cantidad = serializers.IntegerField(source='cantidad_repuesto_inventario')
+
+    class Meta:
+        model = Inventario_Repuesto
+        fields = 'id', 'idRepuesto', 'idSucursal', 'cantidad'
+
+    def create(self, validated_data):
+        id_repuesto = validated_data['id_repuesto']
+        id_sucursal = validated_data['id_sucursal']
+
+        if Inventario_Repuesto.objects.filter(id_repuesto=id_repuesto, id_sucursal=id_sucursal).exists():
+            raise serializers.ValidationError({'id_repuesto': 'Ya existe un inventario para este repuesto y sucursal'})
+
+        repuestoInventario = Inventario_Repuesto.objects.create(**validated_data)
+        return repuestoInventario
+    
+    def update(self, instance, validated_data):
+        id_repuesto = validated_data.get('id_repuesto', instance.id_repuesto)
+        id_sucursal = validated_data.get('id_sucursal', instance.id_sucursal)
+
+        if Inventario_Repuesto.objects.exclude(id_repuesto_inventario=instance.id_repuesto_inventario).filter(id_repuesto=id_repuesto, id_sucursal=id_sucursal).exists():
+            raise serializers.ValidationError({'id_repuesto': 'Ya existe un inventario para este repuesto y sucursal'})
+
+        instance.id_repuesto = id_repuesto
+        instance.id_sucursal = id_sucursal
+        instance.save()
+
+        return instance
+
+class RepuestoSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_repuesto', read_only=True)
+    nombre = serializers.CharField(source='nombre_repuesto')
+    precio = serializers.IntegerField(source='precio_repuesto')
+    descripcion = serializers.CharField(source='descripcion_repuesto')
+
+    class Meta:
+        model = Repuesto
+        fields = 'id', 'nombre', 'precio', 'descripcion'
+
+    def create(self, validated_data):
+        if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists():
+            raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
+        
+        return Repuesto.objects.create(**validated_data)
+    
+    def update(self, instance, validated_data):
+        if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists() and instance.nombre_repuesto != validated_data['nombre_repuesto']:
+            raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
+        
+        return super().update(instance, validated_data)

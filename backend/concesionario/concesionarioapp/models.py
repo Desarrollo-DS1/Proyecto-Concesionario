@@ -417,7 +417,7 @@ class Repuesto(models.Model):
 		return 'Repuesto: ' + self.id_repuesto + 'nombre ' + self.nombre_repuesto + ' precio ' + self.precio_repuesto + ' descripcion ' + self.descripcion_repuesto
 	
 
-class UsoRepuesto(models.Model):
+class Uso_Repuesto(models.Model):
 	id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
 	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
 	id_modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
@@ -438,7 +438,7 @@ class UsoRepuesto(models.Model):
 		return self.id_modelo.nombre_modelo
 
 
-class InventarioRepuesto(models.Model):
+class Inventario_Repuesto(models.Model):
 	id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
 	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
 	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT)

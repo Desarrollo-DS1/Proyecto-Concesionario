@@ -382,6 +382,42 @@ class ExtraView(viewsets.ModelViewSet):
     queryset = Extra.objects.all()
     permission_classes = [IsAuthenticated, EsEmpleado]
 
+class UsoRepuestoView(viewsets.ModelViewSet):
+    serializer_class = UsoRepuestoSerializer
+    queryset = Uso_Repuesto.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class InventarioRepuestoView(viewsets.ModelViewSet):
+    serializer_class = InventarioRepuestoSerializer
+    queryset = Inventario_Repuesto.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class RepuestoView(viewsets.ModelViewSet):
+    serializer_class = RepuestoSerializer
+    queryset = Repuesto.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+    def destroy(self, request, *args, **kwargs):
+        Repuesto = self.get_object()
+
+        try:
+            self.perform_destroy(Repuesto)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar el repuesto porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
+
 
 @api_view(['POST'])
 def recaptcha(request):
