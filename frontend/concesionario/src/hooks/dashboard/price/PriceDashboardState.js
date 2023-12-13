@@ -1,46 +1,19 @@
 import propTypes from "prop-types";
-import React, {useState} from "react";
+import React, {useState, useContext } from "react";
 import {format} from "date-fns";
+import { getCotizacionesPerMonth, getModelosInCotizaciones, getCotizacionesPerBranch, getColoresInCotizaciones, getAnnualCotizaciones, getNumberOfAnnualCotizaciones, getMonthlyCotizaciones, getNumberOfMonthlyCotizaciones } from "../../../api/Cotizacion.api";
 import PriceDashboardContext from './PriceDashboardContext';
+import AuthContext from "../../auth/AuthContext";
 
 
 PriceDashboardState.propTypes = {
     children: propTypes.node,
 }
 
-const initialPricesMonthly = {
-    dataPrice: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
-    dataSale: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
-};
-
-const initialPricesModel = [
-    { name: 'Onix RS', data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70] },
-    { name: 'Onix LT', data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 90, 88, 86] },
-    { name: 'Onix Premier', data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 44, 50, 51] },
-    { name: 'Onix RS', data: [44, 55, 57, 56, 61, 58, 63, 60, 66, 67, 69, 70] },
-    { name: 'Onix LT', data: [76, 85, 101, 98, 87, 105, 91, 114, 94, 90, 88, 86] },
-    { name: 'Onix Premier', data: [35, 41, 36, 26, 45, 48, 52, 53, 41, 44, 50, 51] },
-];
-
-const initialPricesBranch = [
-    { label: 'Bogotá', value: 45 },
-    { label: 'Medellín', value: 4 },
-    { label: 'Cali', value: 34 },
-    { label: 'Barranquilla', value: 10 },
-    { label: 'Cartagena', value: 5 },
-    { label: 'Santa Marta', value: 15 },
-];
-
-const initialPricesColor = [
-    { label: 'Rojo', value: 45 },
-    { label: 'Azul', value: 4 },
-    { label: 'Verde', value: 34 },
-    { label: 'Amarillo', value: 10 },
-    { label: 'Negro', value: 5 },
-    { label: 'Blanco', value: 15 },
-];
 
 export function PriceDashboardState(props) {
+
+    const {authTokens, user} = useContext(AuthContext);
 
     const [month, setMonth] = useState(new Date());
     const [year, setYear] = useState(new Date());
@@ -71,35 +44,207 @@ export function PriceDashboardState(props) {
     }
 
     const getPricesMonthly = async () => {
-        setPricesMonthly(initialPricesMonthly);
+        try {
+            const response = await getCotizacionesPerMonth(authTokens.access, format(year, 'yyyy'));
+            const pricesMonthly = {
+                dataPrice: response.data.map((price) => price.cantidadCotizaciones),
+                dataSale: response.data.map((price) => price.cantidadVentas),
+            };
+            setPricesMonthly(pricesMonthly);
+
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesPorMes');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getPricesModel = async () => {
-        setPricesModel(initialPricesModel);
+        try {
+            const response = await getModelosInCotizaciones('authTokens.access', format(year, 'yyyy'));
+
+            const pricesModel = response.data.reduce((acc, price) => {
+                const {mes, modelo, cantidadCotizacionesModelo} = price;
+
+                let modelObj = acc.find((obj) => obj.name === modelo);
+
+                if (!modelObj) {
+                    modelObj = {
+                        name: modelo,
+                        data: new Array(12).fill(0),
+                    };
+                    acc.push(modelObj);
+                }
+
+                modelObj.data[mes - 1] = cantidadCotizacionesModelo;
+
+                return acc;
+
+            }, []);
+
+            setPricesModel(pricesModel);
+
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesPorModelo');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getPricesBranch = async () => {
-        setPricesBranch(initialPricesBranch);
+        try{
+            const response = await getCotizacionesPerBranch(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setPricesBranch(response.data);
+        
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else if (error.response.data.mes) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesPorSucursal');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getPricesColor = async () => {
-        setPricesColor(initialPricesColor);
+        try {
+            const response = await getColoresInCotizaciones(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setPricesColor(response.data);
+        
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else if (error.response.data.mes) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesPorColor');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getTotalAnualPrices = async () => {
-        setTotalAnualPrices(0);
-    }
+        try{
+            const response = await getAnnualCotizaciones(authTokens.access, format(year, 'yyyy'));
+            setTotalAnualPrices(response.data.totalCotizaciones);
 
-    const getTotalMonthlyPrices = async () => {
-        setTotalMonthlyPrices(0);
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesAnuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getNumberOfPricesAnual = async () => {
-        setNumberOfPricesAnual(0);
+        try {
+            const response = await getNumberOfAnnualCotizaciones(authTokens.access, format(year, 'yyyy'));
+            setNumberOfPricesAnual(response.data.numeroCotizaciones);
+
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoNumeroCotizacionesAnuales');
+                handleOpenSnackbar();
+            }
+        }
+    }
+
+    const getTotalMonthlyPrices = async () => {
+        try {
+            const response = await getMonthlyCotizaciones(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setTotalMonthlyPrices(response.data.totalCotizaciones);
+
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else if (error.response.data.mes) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoCotizacionesMensuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getNumberOfPricesMonthly = async () => {
-        setNumberOfPricesMonthly(0);
+        try {
+            const response = await getNumberOfMonthlyCotizaciones(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setNumberOfPricesMonthly(response.data.numeroCotizaciones);
+
+        } catch (error) {
+            if (error.response.data.anho) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+            
+            } else if (error.response.data.mes) {
+                setTypeSnackbar('error');
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+            
+            } else {
+                console.log(error);
+                setTypeSnackbar('error');
+                setMessageSnackbar('dashBoardCotizacion.mensaje.errorCargandoNumeroCotizacionesMensuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const handleMonthChange = (value) => {
@@ -115,6 +260,10 @@ export function PriceDashboardState(props) {
         getPricesMonthly();
         getPricesColor();
         getPricesBranch();
+        getTotalAnualPrices();
+        getTotalMonthlyPrices();
+        getNumberOfPricesAnual();
+        getNumberOfPricesMonthly();
     }
 
     return (

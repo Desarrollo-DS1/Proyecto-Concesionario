@@ -167,16 +167,16 @@ export default function PriceDashboard() {
                         ]}
                         chartData={[
                             {
-                                name: 'cotizaciones',
+                                name: 'ventas',
                                 type: 'column',
                                 fill: 'solid',
-                                data: PricesMonthly.dataPrice,
+                                data: PricesMonthly.dataSale,
                             },
                             {
-                                name: 'ventas',
+                                name: 'cotizaciones',
                                 type: 'area',
                                 fill: 'gradient',
-                                data: PricesMonthly.dataSale,
+                                data: PricesMonthly.dataPrice,
                             },
                         ]}
                     />

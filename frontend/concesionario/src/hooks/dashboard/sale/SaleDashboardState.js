@@ -2,7 +2,7 @@ import propTypes from "prop-types";
 import React, {useState, useContext} from "react";
 import {format} from "date-fns";
 import SaleDashboardContext from './SaleDashboardContext';
-import {getVentasPerMonth, getVentasPerBranch, getExtrasInVentas, getModelosInVentas} from '../../../api/Venta.api';
+import {getVentasPerMonth, getModelosInVentas, getVentasPerBranch, getExtrasInVentas, getAnnualVentas, getNumberOfAnnualVentas, getMonthlyVentas, getNumberOfMonthlyVentas} from '../../../api/Venta.api';
 import AuthContext from "../../auth/AuthContext";
 
 
@@ -58,7 +58,7 @@ export function SaleDashboardState(props) {
             } else {
                 console.log(error);
                 setTypeSnackbar("error");
-                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorMes');
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoVentasPorMes');
                 handleOpenSnackbar();
             }
         }
@@ -74,7 +74,10 @@ export function SaleDashboardState(props) {
                 let modelObj = acc.find(obj => obj.name === modelo);
         
                 if (!modelObj) {
-                    modelObj = { name: modelo, data:  Array(12).fill(0) };
+                    modelObj = {
+                        name: modelo,
+                        data:  Array(12).fill(0)
+                    };
                     acc.push(modelObj);
                 }
         
@@ -94,7 +97,7 @@ export function SaleDashboardState(props) {
             } else {
                 console.log(error);
                 setTypeSnackbar("error");
-                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorModelo');
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoVentasPorModelo');
                 handleOpenSnackbar();
             }
         }
@@ -119,7 +122,7 @@ export function SaleDashboardState(props) {
             } else {
                 console.log(error);
                 setTypeSnackbar("error");
-                setMessageSnackbar('salesDashboard.mensaje.errorCargandoVentasPorSucursal');
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoVentasPorSucursal');
                 handleOpenSnackbar();
             }
         }
@@ -144,26 +147,100 @@ export function SaleDashboardState(props) {
             } else {
                 console.log(error);
                 setTypeSnackbar("error");
-                setMessageSnackbar('salesDashboard.mensaje.errorCargandoExtrasEnVentas');
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoExtrasEnVentas');
                 handleOpenSnackbar();
             }
         }
     }
 
     const getTotalAnualSales = async () => {
-        setTotalAnualSales(0);
-    }
+        try{
+            const response  = await getAnnualVentas(authTokens.access, format(year, 'yyyy'));
+            setTotalAnualSales(response.data.totalVentas);
 
-    const getTotalMonthlySales = async () => {
-        setTotalMonthlySales(0);
+        } catch (error) {
+            if (error.response.data.anho){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+
+            } else {
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoVentasAnuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getNumberOfSalesAnual = async () => {
-        setNumberOfSalesAnual(0);
+        try{
+            const response  = await getNumberOfAnnualVentas(authTokens.access, format(year, 'yyyy'));
+            setNumberOfSalesAnual(response.data.numeroVentas);
+
+        } catch (error) {
+            if (error.response.data.anho){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+
+            } else {
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoNumeroVentasAnuales');
+                handleOpenSnackbar();
+            }
+        }
+    }
+
+    const getTotalMonthlySales = async () => {
+        try{
+            const response  = await getMonthlyVentas(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setTotalMonthlySales(response.data.totalVentas);
+
+        } catch (error) {
+            if (error.response.data.anho){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+
+            } else if (error.response.data.mes){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+
+            } else {
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoVentasMensuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const getNumberOfSalesMonthly = async () => {
-        setNumberOfSalesMonthly(0);
+        try{
+            const response  = await getNumberOfMonthlyVentas(authTokens.access, format(year, 'yyyy'), format(month, 'MM'));
+            setNumberOfSalesMonthly(response.data.numeroVentas);
+
+        } catch (error) {
+            if (error.response.data.anho){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.anho);
+                handleOpenSnackbar();
+
+            } else if (error.response.data.mes){
+                setTypeSnackbar("error");
+                setMessageSnackbar(error.response.data.mes);
+                handleOpenSnackbar();
+
+            } else {
+                console.log(error);
+                setTypeSnackbar("error");
+                setMessageSnackbar('dashBoardVenta.mensaje.errorCargandoNumeroVentasMensuales');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const handleMonthChange = (value) => {
@@ -179,6 +256,10 @@ export function SaleDashboardState(props) {
         getSalesMonthly();
         getSalesExtra();
         getSalesBranch();
+        getTotalAnualSales();
+        getNumberOfSalesAnual();
+        getTotalMonthlySales();
+        getNumberOfSalesMonthly();
     }
 
     return (
