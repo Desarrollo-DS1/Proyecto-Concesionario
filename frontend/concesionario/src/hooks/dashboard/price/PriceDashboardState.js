@@ -69,7 +69,7 @@ export function PriceDashboardState(props) {
 
     const getPricesModel = async () => {
         try {
-            const response = await getModelosInCotizaciones('authTokens.access', format(year, 'yyyy'));
+            const response = await getModelosInCotizaciones(authTokens.access, format(year, 'yyyy'));
 
             const pricesModel = response.data.reduce((acc, price) => {
                 const {mes, modelo, cantidadCotizacionesModelo} = price;

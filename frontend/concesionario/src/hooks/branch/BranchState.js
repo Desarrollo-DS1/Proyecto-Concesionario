@@ -10,32 +10,8 @@ BranchState.propTypes = {
     children: propTypes.node,
 }
 
-
 export default function BranchState(props) {
     const {authTokens} = useContext(AuthContext);
-
-    const initialBranches = [{
-        id: 1,
-        nombre: "Sucursal 1",
-        direccion: "Calle 1",
-        ciudad: "Ciudad 1",
-        telefono: "Telefono 1",
-    },
-    {
-        id: 2,
-        nombre: "Sucursal 2",
-        direccion: "Calle 2",
-        ciudad: "Ciudad 2",
-        telefono: "Telefono 2",
-
-    },
-    {
-        id: 3,
-        nombre: "Sucursal 3",
-        direccion: "Calle 3",
-        ciudad: "Ciudad 3",
-        telefono: "Telefono 3",
-    }]
     
     const TABLE_HEAD = [
         { id: 'nombre', label: 'Nombre', alignRight: false },
@@ -68,17 +44,15 @@ export default function BranchState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getBranches = async () => {
-        // try {
-        //     const response = await getAllSucursales(authTokens.access);
-        //     setBranches(response.data);
-        // }
-        // catch (error) {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('sucursales.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
-
-        setBranches(initialBranches);
+        try {
+            const response = await getAllSucursales(authTokens.access);
+            setBranches(response.data);
+        }
+        catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('sucursales.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const getBranch = async (id) => {

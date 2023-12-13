@@ -180,24 +180,26 @@ class EmpleadoSerializer(serializers.ModelSerializer):
 
 class SucursalSerializer(serializers.ModelSerializer):
     sucursal = serializers.IntegerField(source='id_sucursal', read_only=True)
-    nombreSucursal = serializers.CharField(source='nombre_sucursal')
-    direccionSucursal = serializers.CharField(source='direccion_sucursal', write_only=True)
-    ciudadSucursal = serializers.CharField(source='ciudad_sucursal', write_only=True)
-    telefonoSucursal = serializers.CharField(source='telefono_sucursal', write_only=True)
+    id = serializers.IntegerField(source='id_sucursal', read_only=True)
+    nombreSucursal = serializers.CharField(source='nombre_sucursal', read_only=True)
+    nombre = serializers.CharField(source='nombre_sucursal')
+    direccionSucursal = serializers.CharField(source='direccion_sucursal', read_only=True)
+    direccion = serializers.CharField(source='direccion_sucursal')
+    ciudadSucursal = serializers.CharField(source='ciudad_sucursal', read_only=True)
+    ciudad = serializers.CharField(source='ciudad_sucursal')
+    telefonoSucursal = serializers.CharField(source='telefono_sucursal', read_only=True)
+    telefono = serializers.CharField(source='telefono_sucursal')
 
     class Meta:
         model = Sucursal
-        fields = 'sucursal', 'nombreSucursal', 'direccionSucursal', 'ciudadSucursal', 'telefonoSucursal'
+        fields = 'sucursal', 'id', 'nombreSucursal', 'nombre', 'direccionSucursal', 'direccion', 'ciudadSucursal', 'ciudad', 'telefonoSucursal', 'telefono'
 
-    def create(self, validated_data):
-        if Sucursal.objects.filter(id_sucursal=validated_data['id_sucursal']).exists():
-            raise serializers.ValidationError({'id_sucursal': 'Ya existe una sucursal con este id'})
-        
+    def create(self, validated_data):        
         if Sucursal.objects.filter(nombre_sucursal=validated_data['nombre_sucursal']).exists():
-            raise serializers.ValidationError({'nombre_sucursal': 'Ya existe una sucursal con este nombre'})
+            raise serializers.ValidationError({'nombreSucursal': 'Ya existe una sucursal con este nombre'})
         
         if Sucursal.objects.filter(direccion_sucursal=validated_data['direccion_sucursal']).exists():
-            raise serializers.ValidationError({'direccion_sucursal': 'Ya existe una sucursal con esta dirección'})
+            raise serializers.ValidationError({'direccionSucursal': 'Ya existe una sucursal con esta dirección'})
         
         sucursal = Sucursal.objects.create(**validated_data)
         return sucursal
