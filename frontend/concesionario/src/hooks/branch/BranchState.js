@@ -117,16 +117,22 @@ export default function BranchState(props) {
             handleCloseForm();
         }
         catch (error) {
-
             const errors = error.response.data;
-            if (errors.nombre) {
+            if (errors.nombreSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorNombre');
-                handleOpenSnackbar();
                 setBranchError({ ...branchError, nombre: 'Error con el nombre ingresado' });
+                handleOpenSnackbar();
+
+            } else if (errors.direccionSucursal) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('sucursales.mensaje.errorDireccion');
+                setBranchError({ ...branchError, direccion: 'Error con la direccion ingresada' });
+                handleOpenSnackbar();
+
             } else {
                 setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.error');
+                setMessageSnackbar('sucursales.mensaje.errorEditar');
                 handleOpenSnackbar();
             }
         }

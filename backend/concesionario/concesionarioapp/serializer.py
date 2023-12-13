@@ -205,6 +205,12 @@ class SucursalSerializer(serializers.ModelSerializer):
         return sucursal
 
     def update(self, instance, validated_data):
+        if Sucursal.objects.filter(nombre_sucursal=validated_data['nombre_sucursal']).exists() and instance.nombre_sucursal != validated_data['nombre_sucursal']:
+            raise serializers.ValidationError({'nombreSucursal': 'Ya existe una sucursal con este nombre'})
+        
+        if Sucursal.objects.filter(direccion_sucursal=validated_data['direccion_sucursal']).exists() and instance.direccion_sucursal != validated_data['direccion_sucursal']:
+            raise serializers.ValidationError({'direccionSucursal': 'Ya existe una sucursal con esta dirección'})
+        
         Sucursal.objects.filter(id_sucursal=instance.id_sucursal).update(**validated_data)
         return instance
 
