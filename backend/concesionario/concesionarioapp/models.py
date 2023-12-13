@@ -419,8 +419,8 @@ class Repuesto(models.Model):
 
 class Uso_Repuesto(models.Model):
 	id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
-	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
-	id_modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
+	id_modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
 
 	class Meta:
 		verbose_name = 'Uso del Repuesto'
@@ -440,8 +440,8 @@ class Uso_Repuesto(models.Model):
 
 class Inventario_Repuesto(models.Model):
 	id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
-	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
-	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT)
+	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
+	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.CASCADE)
 	cantidad = models.IntegerField('Cantidad de Repuestos en Inventario', default=0)
 
 	class Meta:
