@@ -10,32 +10,8 @@ BranchState.propTypes = {
     children: propTypes.node,
 }
 
-
 export default function BranchState(props) {
     const {authTokens} = useContext(AuthContext);
-
-    const initialBranches = [{
-        id: 1,
-        nombre: "Sucursal 1",
-        direccion: "Calle 1",
-        ciudad: "Ciudad 1",
-        telefono: "Telefono 1",
-    },
-    {
-        id: 2,
-        nombre: "Sucursal 2",
-        direccion: "Calle 2",
-        ciudad: "Ciudad 2",
-        telefono: "Telefono 2",
-
-    },
-    {
-        id: 3,
-        nombre: "Sucursal 3",
-        direccion: "Calle 3",
-        ciudad: "Ciudad 3",
-        telefono: "Telefono 3",
-    }]
     
     const TABLE_HEAD = [
         { id: 'nombre', label: 'Nombre', alignRight: false },
@@ -68,17 +44,15 @@ export default function BranchState(props) {
     const [typeSnackbar, setTypeSnackbar] = useState('success');
 
     const getBranches = async () => {
-        // try {
-        //     const response = await getAllSucursales(authTokens.access);
-        //     setBranches(response.data);
-        // }
-        // catch (error) {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('sucursales.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
-
-        setBranches(initialBranches);
+        try {
+            const response = await getAllSucursales(authTokens.access);
+            setBranches(response.data);
+        }
+        catch (error) {
+            setTypeSnackbar('error');
+            setMessageSnackbar('sucursales.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const getBranch = async (id) => {
@@ -113,28 +87,16 @@ export default function BranchState(props) {
         catch (error) {
             const errors = error.response.data;
 
-            if (errors.nombre) {
+            if (errors.nombreSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorNombre');
                 setBranchError({ ...branchError, nombre: 'Error con el nombre ingresado' });
                 handleOpenSnackbar();
 
-            } else if (errors.direccion) {
+            } else if (errors.direccionSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorDireccion');
                 setBranchError({ ...branchError, direccion: 'Error con la direccion ingresada' });
-                handleOpenSnackbar();
-
-            } else if (errors.ciudad) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.errorCiudad');
-                setBranchError({ ...branchError, ciudad: 'Error con la ciudad ingresada' });
-                handleOpenSnackbar();
-
-            } else if (errors.telefono) {
-                setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.errorTelefono');
-                setBranchError({ ...branchError, telefono: 'Error con el telefono ingresado' });
                 handleOpenSnackbar();
 
             } else {
@@ -155,16 +117,22 @@ export default function BranchState(props) {
             handleCloseForm();
         }
         catch (error) {
-
             const errors = error.response.data;
-            if (errors.nombre) {
+            if (errors.nombreSucursal) {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorNombre');
-                handleOpenSnackbar();
                 setBranchError({ ...branchError, nombre: 'Error con el nombre ingresado' });
+                handleOpenSnackbar();
+
+            } else if (errors.direccionSucursal) {
+                setTypeSnackbar('error');
+                setMessageSnackbar('sucursales.mensaje.errorDireccion');
+                setBranchError({ ...branchError, direccion: 'Error con la direccion ingresada' });
+                handleOpenSnackbar();
+
             } else {
                 setTypeSnackbar('error');
-                setMessageSnackbar('sucursales.mensaje.error');
+                setMessageSnackbar('sucursales.mensaje.errorEditar');
                 handleOpenSnackbar();
             }
         }
@@ -185,6 +153,7 @@ export default function BranchState(props) {
                 setTypeSnackbar('error');
                 setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
+                
             } else {
                 setTypeSnackbar('error');
                 setMessageSnackbar('sucursales.mensaje.errorEliminar');
