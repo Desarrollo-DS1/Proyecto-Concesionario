@@ -18,7 +18,7 @@ router.register(r'Cotizacion', views.CotizacionView, 'Cotizacion')
 router.register(r'Cotizacion_Modelo', views.CotizacionModeloView, 'Cotizacion_Modelo')
 router.register(r'Extra', views.ExtraView, 'Extra')
 router.register(r'Uso_Repuesto', views.UsoRepuestoView, 'Uso_Repuesto')
-router.register(r'Inventario_Repuesto', views.Inventario_Repuesto, 'Inventario')
+router.register(r'Inventario_Repuesto', views.InventarioRepuestoView, 'Inventario_Repuesto')
 router.register(r'Repuesto', views.RepuestoView, 'Repuesto')
 
 
