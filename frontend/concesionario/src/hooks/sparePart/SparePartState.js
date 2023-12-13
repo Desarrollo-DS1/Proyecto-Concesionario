@@ -175,11 +175,10 @@ export default function SparePartState(props) {
 
         try
         {
-            await deleteVehiculo(sparePart.vin, authTokens.access);
+            await deleteRepuesto(sparePart.id, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.eliminado');
+            setMessageSnackbar('repuestos.mensaje.eliminado');
             handleOpenSnackbar();
-
         }
         catch (error)
         {
@@ -189,11 +188,11 @@ export default function SparePartState(props) {
                 setTypeSnackbar('error');
                 setMessageSnackbar(errors.protected);
                 handleOpenSnackbar();
-
-            } else
+            }
+            else
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('vehiculo.mensaje.errorEliminar');
+                setMessageSnackbar('repuestos.mensaje.errorEliminar');
                 handleOpenSnackbar();
             }
         }
