@@ -414,10 +414,10 @@ class Repuesto(models.Model):
 		ordering = ['nombre_repuesto']
 	
 	def __str__(self):
-		return 'Repuesto: ' + self.id_repuesto + 'nombre ' + self.nombre_repuesto + ' precio ' + self.precio_repuesto + ' descripcion ' + self.descripcion_repuesto
+		return 'Repuesto: ' + str(self.id_repuesto) + ' ' + self.nombre_repuesto + ' con precio ' + str(self.precio_repuesto) + ' y descripción ' + self.descripcion_repuesto
 	
 
-class UsoRepuesto(models.Model):
+class Uso_Repuesto(models.Model):
 	id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
 	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
 	id_modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
@@ -426,7 +426,7 @@ class UsoRepuesto(models.Model):
 		verbose_name = 'Uso del Repuesto'
 		verbose_name_plural = 'Usos de los Repuestos'
 		ordering = ['id_uso_repuesto']
-		unique_together = ('id_repuesto', 'id_modelo') # esto no se que es
+		unique_together = ('id_repuesto', 'id_modelo') 
 	
 	def __str__(self):
 		return 'Uso del Repuesto: ' + self.id_uso_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo + ' con ' + self.cantidad + ' unidades.'
@@ -438,7 +438,7 @@ class UsoRepuesto(models.Model):
 		return self.id_modelo.nombre_modelo
 
 
-class InventarioRepuesto(models.Model):
+class Inventario_Repuesto(models.Model):
 	id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
 	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
 	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.PROTECT)

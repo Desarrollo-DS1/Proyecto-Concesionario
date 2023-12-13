@@ -1387,6 +1387,10 @@ WHERE vin IN (
 );
 
 
+SELECT setval('concesionarioapp_uso_repuesto_id_uso_repuesto_seq', (SELECT MAX(id_uso_repuesto) FROM concesionarioapp_uso_repuesto));
+
+/*
+=======
 INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)
 VALUES 
 (1, '321234567', '11234567', '2022-01-01', '2022-01-21'),

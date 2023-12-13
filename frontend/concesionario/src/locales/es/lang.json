@@ -311,7 +311,9 @@
       "confirmacionEliminar": "¿Estas seguro que deseas eliminar el repuesto de nombre {{nombre}}?",
       "errorNombre": "Ya existe un repuesto con el nombre ingresado",
       "errorListando": "Error al listar repuestos",
-      "errorCargando": "Error al cargar repuesto"
+      "errorCargando": "Error al cargar repuesto",
+      "erroNombre": "Ya existe un repuesto con el nombre ingresado",
+      "errorPrecio": "El precio del repuesto debe ser mayor a 0"
     },
     "label": {
       "id": "ID",

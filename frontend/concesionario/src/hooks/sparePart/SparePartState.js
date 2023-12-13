@@ -6,6 +6,7 @@ import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
+import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
 
 
@@ -77,96 +78,76 @@ export default function SparePartState(props) {
 
     const getSpareParts = async () => {
 
-        const a = [{
-            id: 1,
-            nombre: "Tuerca",
-            precio: "2000",
-            modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-        },
-            {
-                id: 2,
-                nombre: "Capo",
-                precio: "30000",
-                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-            }]
-
-        setSpareParts(a);
-
-        // try
-        // {
-        //     const response = await getAllVehiculos(authTokens.access);
-        //     setSpareParts(response.data);
-        //
-        // }
-        // catch (error)
-        // {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('empleados.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
+      try
+        {
+             const response = await getAllRepuestos(authTokens.access);
+             setSpareParts(response.data);
+             console.log(response.data)
+         }
+         catch (error)
+         {
+             setTypeSnackbar('error');
+             setMessageSnackbar('empleados.mensaje.errorListando');
+             handleOpenSnackbar();
+         }
     }
 
     const getSparePart = async (id) => {
 
-        const a = {
-            id: 1,
-            nombre: "Tuerca",
-            precio: "2000",
-            descripcion: "Tuerca para rueda",
-            modelos: [1,2,7,3,4,5],
+        if (id == null)
+        {
+            setEdit(false);
+            setSparePart(emptySparePart);
         }
-
-        setSparePart(a);
-
-        // if (vin === null)
-        // {
-        //     setEdit(false);
-        //     setSparePart(emptySparePart);
-        // }
-        // else
-        // {
-        //     setEdit(true);
-        //     try
-        //     {
-        //         const response = await getVehiculo(vin, authTokens.access);
-        //         setSparePart(response.data);
-        //     }
-        //     catch (error)
-        //     {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('vehiculos.mensaje.errorCargando');
-        //         handleOpenSnackbar();
-        //     }
-        // }
+        else
+        {
+            setEdit(true);
+            try
+            {
+                const response = await getRepuesto(id, authTokens.access);
+                setSparePart(response.data);
+            }
+            catch (error)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorCargando');
+                handleOpenSnackbar();
+            }
+        }
     }
 
     const addSparePart = async (sparePart) => {
 
-        try
-        {
-            const response = await createVehiculo(sparePart, authTokens.access);
-            setSpareParts([...spareParts, response.data]);
+        try{
+            console.log(sparePart)
+            const response = await createRepuesto(sparePart, authTokens.access);
+            setSpareParts([...spareParts, response.data])
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.agregado');
+            setMessageSnackbar('repuestos.mensaje.agregado');
             handleOpenSnackbar();
             handleCloseForm();
-
         }
         catch (error)
         {
             const errors = error.response.data;
-            if(errors.vin)
+            if(errors.nombre)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('vehiculos.mensaje.errorCedula');
-                setSparePartError({...sparePartError, vin: 'Vin ya existe'});
+                setMessageSnackbar('repuestos.mensaje.errorNombre');
                 handleOpenSnackbar();
-
+                setSparePartError({...sparePartError, nombre: "Ya existe un repuesto con el nombre ingresado"});
+            }
+            else if(errors.precio)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorPrecio');
+                handleOpenSnackbar();
+                setSparePartError({...sparePartError, precio: "El precio del repuesto debe ser mayor a 0"});
             }
             else
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('vehiculos.mensaje.error');
+                setMessageSnackbar('repuestos.mensaje.error');
                 handleOpenSnackbar();
             }
         }
@@ -178,14 +159,14 @@ export default function SparePartState(props) {
         {
             await updateVehiculo(sparePart.vin, sparePart, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.editado');
+            setMessageSnackbar('vehiculos.mensaje.actualizado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
             setTypeSnackbar('error');
-            setMessageSnackbar('vehiculos.mensaje.errorEditar');
+            setMessageSnackbar('vehiculos.mensaje.errorActualizar');
             handleOpenSnackbar();
         }
     }
@@ -225,19 +206,26 @@ export default function SparePartState(props) {
             [name]: value
         });
     }
+
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateSparePartOnSubmit()) {
+
+            const modelsObjects = sparePart.modelos.map((id) => ({ idModelo: id }));
+
+            const a = {...sparePart, modelos: modelsObjects}
+
             if(edit)
             {
-                updateSparePart(sparePart).then(() => getSpareParts());
+                updateSparePart(a).then(() => getSpareParts());
             }
             else
             {
-                addSparePart(sparePart).then(() => getSpareParts());
+                addSparePart(a).then(() => getSpareParts());
             }
         }
     }
+
     const handleOnBlur = (event, name) => {
         if (name === undefined || name === null)
         {
