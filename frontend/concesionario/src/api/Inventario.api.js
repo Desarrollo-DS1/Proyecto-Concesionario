@@ -6,4 +6,5 @@ const inventarioApi = token =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
-export const getInventariosId = (id, token) => inventarioApi(token).get(`${id}/`);
+export const getInventariosId = (idRepuesto, token) =>
+inventarioApi(token).get(`getInventariosRepuesto/`, { params: { idRepuesto } });

@@ -1389,6 +1389,7 @@ WHERE vin IN (
 
 SELECT setval('concesionarioapp_uso_repuesto_id_uso_repuesto_seq', (SELECT MAX(id_uso_repuesto) FROM concesionarioapp_uso_repuesto));
 
+SELECT setval('concesionarioapp_inventario_repuesto_id_inventario_repuesto_seq', (SELECT MAX(id_inventario_repuesto) FROM concesionarioapp_inventario_repuesto));
 /*
 =======
 INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)

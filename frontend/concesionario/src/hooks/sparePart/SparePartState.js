@@ -5,6 +5,7 @@ import {checkSparePart} from "./SparePartValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
+import { getInventariosId } from "../../api/Inventario.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
@@ -356,32 +357,10 @@ export default function SparePartState(props) {
     const [subtitle, setSubtitle] = useState('');
 
     const getInventory = async (id) => {
-        setInventory([
-            {
-                id: 1,
-                sucursal: "Sucursal 1",
-                cantidad: 10,
-            },
-            {
-                id: 2,
-                sucursal: "Sucursal 2",
-                cantidad: 20,
-            },
-            {
-                id: 3,
-                sucursal: "Sucursal 3",
-                cantidad: 30,
-            },
-            {
-                id: 4,
-                sucursal: "Sucursal 4",
-                cantidad: 40,
-            },
-            {
-                id: 5,
-                sucursal: "Sucursal 5",
-                cantidad: 50,
-            }])
+        console.log(id)
+        const response = await getInventariosId(id, authTokens.access);
+        console.log(response.data)
+        setInventory(response.data);
     }
 
     const handleOpenInventoryForm = (e, id, name) => {

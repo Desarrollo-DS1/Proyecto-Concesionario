@@ -403,59 +403,119 @@ class Cotizacion(models.Model):
 		return precio_total
 
 class Repuesto(models.Model):
-	id_repuesto = models.AutoField('ID del Repuesto', primary_key=True)
-	nombre_repuesto = models.CharField('Nombre del Repuesto', unique=True)
-	precio_repuesto = models.DecimalField('Precio del Repuesto', max_digits=10, decimal_places=2, blank=True, null=True)
-	descripcion_repuesto = models.CharField('Descripción del Repuesto', max_length=100, blank=True, null=True)
+    id_repuesto = models.AutoField('ID del Repuesto', primary_key=True)
+    nombre_repuesto = models.CharField('Nombre del Repuesto', unique=True)
+    precio_repuesto = models.DecimalField('Precio del Repuesto', max_digits=10, decimal_places=2, blank=True, null=True)
+    descripcion_repuesto = models.CharField('Descripción del Repuesto', max_length=100, blank=True, null=True)
 
-	class Meta:
-		verbose_name = 'Repuesto'
-		verbose_name_plural = 'Repuestos'
-		ordering = ['nombre_repuesto']
-	
-	def __str__(self):
-		return 'Repuesto: ' + str(self.id_repuesto) + ' ' + self.nombre_repuesto + ' con precio ' + str(self.precio_repuesto) + ' y descripción ' + self.descripcion_repuesto
-	
+    class Meta:
+        verbose_name = 'Repuesto'
+        verbose_name_plural = 'Repuestos'
+        ordering = ['nombre_repuesto']
+    
+    def __str__(self):
+        return 'Repuesto: ' + str(self.id_repuesto) + ' ' + self.nombre_repuesto + ' con precio ' + str(self.precio_repuesto) + ' y descripción ' + self.descripcion_repuesto
+    
 
 class Uso_Repuesto(models.Model):
-	id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
-	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
-	id_modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
+    id_uso_repuesto = models.AutoField('ID del Uso del Repuesto', primary_key=True)
+    id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
+    id_modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
 
-	class Meta:
-		verbose_name = 'Uso del Repuesto'
-		verbose_name_plural = 'Usos de los Repuestos'
-		ordering = ['id_uso_repuesto']
-		unique_together = ('id_repuesto', 'id_modelo') 
-	
-	def __str__(self):
-		return 'Uso del Repuesto: ' + self.id_uso_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo + ' con ' + self.cantidad + ' unidades.'
-	
-	def nombre_repuesto(self):
-		return self.id_repuesto.nombre_repuesto
+    class Meta:
+        verbose_name = 'Uso del Repuesto'
+        verbose_name_plural = 'Usos de los Repuestos'
+        ordering = ['id_uso_repuesto']
+        unique_together = ('id_repuesto', 'id_modelo') 
+    
+    def __str__(self):
+        return 'Uso del Repuesto: ' + self.id_uso_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo + ' con ' + self.cantidad + ' unidades.'
+    
+    def nombre_repuesto(self):
+        return self.id_repuesto.nombre_repuesto
 
-	def nombre_modelo(self):
-		return self.id_modelo.nombre_modelo
-
+    def nombre_modelo(self):
+        return self.id_modelo.nombre_modelo
 
 class Inventario_Repuesto(models.Model):
-	id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
-	id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
-	id_sucursal = models.ForeignKey('Sucursal', on_delete=models.CASCADE)
-	cantidad = models.IntegerField('Cantidad de Repuestos en Inventario', default=0)
+    id_inventario_repuesto = models.AutoField('ID del Inventario de Repuesto', primary_key=True)
+    id_repuesto = models.ForeignKey('Repuesto', on_delete=models.CASCADE)
+    id_sucursal = models.ForeignKey('Sucursal', on_delete=models.CASCADE)
+    cantidad = models.IntegerField('Cantidad de Repuestos en Inventario', default=0)
 
-	class Meta:
-		verbose_name = 'Inventario de Repuesto'
-		verbose_name_plural = 'Inventarios de Repuestos'
-		ordering = ['id_inventario_repuesto']
-		unique_together = ('id_repuesto', 'id_sucursal')
-	
-	def __str__(self):
-		return 'Inventario de Repuesto: ' + self.id_inventario_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_sucursal.nombre_sucursal + ' con ' + self.cantidad + ' unidades.'
-	
-	def nombre_sucursal(self):
-		return self.id_sucursal.nombre_sucursal
+    class Meta:
+        verbose_name = 'Inventario de Repuesto'
+        verbose_name_plural = 'Inventarios de Repuestos'
+        ordering = ['id_inventario_repuesto']
+        unique_together = ('id_repuesto', 'id_sucursal')
+    
+    def __str__(self):
+        return 'Inventario de Repuesto: ' + self.id_inventario_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_sucursal.nombre_sucursal + ' con ' + self.cantidad + ' unidades.'
+    
+    def nombre_sucursal(self):
+        return self.id_sucursal.nombre_sucursal
 
-	def nombre_repuesto(self):
-		return self.id_repuesto.nombre_repuesto
-	
+    def nombre_repuesto(self):
+        return self.id_repuesto.nombre_repuesto
+
+"""
+class Orden_Trabajo(models.Model):
+    id_orden_trabajo = models.AutoField('ID de la Orden de Trabajo', primary_key=True)
+    id_jefe_taller = models.ForeignKey('Empleado', on_delete=models.PROTECT)
+    id_cliente = models.ForeignKey('Cliente', on_delete=models.PROTECT)
+    id_modelo = models.ForeignKey('Modelo', on_delete=models.PROTECT)
+    placa_carro = models.CharField('Placa del Carro', max_length=6, blank=True, null=True)
+    comentarios_estado_carro = models.CharField('Comentarios del Estado del Carro', max_length=300, blank=True, null=True)
+    fecha_creacion = models.DateField('Fecha de Creación', auto_now_add=True)
+    fecha_entrega_esperada = models.DateField('Fecha de Entrega Esperada', default=date.today() + timedelta(days=20))
+    fecha_entrega_real = models.DateField('Fecha de Entrega Real', blank=True, null=True)
+    estado_reparacion = models.CharField('Estado de la Reparación', max_length=1, choices=(('P', 'En Proceso'), ('R', 'Retrasada'), ('E', 'A la espera de repuestos'), ('F', 'Finalizada')), default='P')
+
+    class Meta:
+        verbose_name = 'Orden de Trabajo'
+        verbose_name_plural = 'Ordenes de Trabajo'
+        ordering = ['id_orden_trabajo']
+    
+    def __str__(self):
+        return 'Orden de Trabajo: ' + str(self.id_orden_trabajo) + ' Cliente: ' + self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido + ' Jefe de Taller: ' + self.id_jefe_taller.usuario.primer_nombre + ' ' + self.id_jefe_taller.usuario.primer_apellido + ' Fecha de Creación: ' + str(self.fecha_creacion) + ' Fecha de Entrega Esperada: ' + str(self.fecha_entrega_esperada) + ' Fecha de Entrega Real: ' + str(self.fecha_entrega_real) + ' Estado de la Reparación: ' + self.estado_reparacion
+    
+    def nombre_jefe_taller(self):
+        return self.id_jefe_taller.usuario.primer_nombre + ' ' + self.id_jefe_taller.usuario.primer_apellido
+    
+    def sucursal(self):
+        return self.id_jefe_taller.sucursal
+
+    def nombre_sucursal(self):
+        return self.id_jefe_taller.nombre_sucursal
+    
+    def nombre_cliente(self):
+        return self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido
+    
+    def nombre_modelo(self):
+        return self.id_modelo.nombre_modelo + ' ' + self.id_modelo.anho_modelo + ' ' + self.id_modelo.combustible
+
+    def lista_trabajos(self):
+        return ', '.join([trabajo.descripcion_trabajo for trabajo in Trabajo.objects.filter(orden_trabajo=self)])
+
+class Trabajo(models.Model):
+    id_trabajo = models.AutoField('ID del Trabajo', primary_key=True)
+    id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
+    descripcion_trabajo = models.CharField('Descripción del Trabajo', max_length=300, blank=True, null=True)
+    precio_trabajo = models.DecimalField('Precio del Trabajo', max_digits=10, decimal_places=2)
+    
+    class Meta:
+        verbose_name = 'Trabajo en la Orden de Trabajo'
+        verbose_name_plural = 'Trabajos en la Orden de Trabajo'
+        ordering = ['id_trabajo']
+    
+    def __str__(self):
+        return 'Trabajo: ' + str(self.id_trabajo) + ' Orden de Trabajo: ' + str(self.id_orden_trabajo) + ' Descripción: ' + self.descripcion_trabajo + ' Precio: ' + str(self.precio_trabajo)
+    
+class Repuesto_Orden(models.Model):
+    id_repuesto_orden = models.AutoField('ID del Repuesto en la Orden', primary_key=True)
+    id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
+    id_inventario_rep = models.ForeignKey('Inventario_Repuesto', on_delete=models.PROTECT)
+
+    class Meta:
+        verbose_name = 'Repuesto en la 
+"""
