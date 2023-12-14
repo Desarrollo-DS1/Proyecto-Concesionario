@@ -480,7 +480,7 @@ class InventarioRepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto_inventario', read_only=True)
     idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
     idSucursal = serializers.PrimaryKeyRelatedField(source='id_sucursal', queryset=Sucursal.objects.all())
-    cantidad = serializers.IntegerField(source='cantidad_repuesto_inventario')
+    cantidad = serializers.IntegerField()
     nombreSucursal = serializers.CharField(source='nombre_sucursal', read_only=True)
 
     class Meta:

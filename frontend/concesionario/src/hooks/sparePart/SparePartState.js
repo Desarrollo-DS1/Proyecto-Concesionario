@@ -124,7 +124,6 @@ export default function SparePartState(props) {
 
         try{
             console.log(sparePart)
-            const sucursales = await getAllSucursales(authTokens.access);
             const response = await createRepuesto(sparePart, authTokens.access);
             setSpareParts([...spareParts, response.data])
             setTypeSnackbar('success');
@@ -358,32 +357,10 @@ export default function SparePartState(props) {
     const [subtitle, setSubtitle] = useState('');
 
     const getInventory = async (id) => {
-        setInventory([
-            {
-                id: 1,
-                sucursal: "Sucursal 1",
-                cantidad: 10,
-            },
-            {
-                id: 2,
-                sucursal: "Sucursal 2",
-                cantidad: 20,
-            },
-            {
-                id: 3,
-                sucursal: "Sucursal 3",
-                cantidad: 30,
-            },
-            {
-                id: 4,
-                sucursal: "Sucursal 4",
-                cantidad: 40,
-            },
-            {
-                id: 5,
-                sucursal: "Sucursal 5",
-                cantidad: 50,
-            }])
+        console.log(id)
+        const response = await getInventariosId(id, authTokens.access);
+        console.log(response.data)
+        setInventory(response.data);
     }
 
     const handleOpenInventoryForm = (e, id, name) => {
