@@ -161,17 +161,37 @@ export default function SparePartState(props) {
 
         try
         {
-            await updateVehiculo(sparePart.vin, sparePart, authTokens.access);
+            await updateRepuesto(sparePart.id, sparePart, authTokens.access);
+            const sparePartsUpdated = spareParts.map((sparePartMap) => sparePartMap.id === sparePart.id ? sparePart : sparePartMap);
+            setSpareParts(sparePartsUpdated);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.actualizado');
+            setMessageSnackbar('repuestos.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
-            setTypeSnackbar('error');
-            setMessageSnackbar('vehiculos.mensaje.errorActualizar');
-            handleOpenSnackbar();
+            const errors = error.response.data;
+            if(errors.nombre)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorNombre');
+                handleOpenSnackbar();
+                setSparePartError({...sparePartError, nombre: "Ya existe un repuesto con el nombre ingresado"});
+            }
+            else if(errors.precio)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.errorPrecio');
+                handleOpenSnackbar();
+                setSparePartError({...sparePartError, precio: "El precio del repuesto debe ser mayor a 0"});
+            }
+            else
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('repuestos.mensaje.error');
+                handleOpenSnackbar();
+            }
         }
     }
 
@@ -387,6 +407,19 @@ export default function SparePartState(props) {
             );
         }
     };
+
+    /*
+
+    const updateInventorys = async (inventorys) => {
+
+        try
+        {
+
+        }
+
+    }
+
+    */
 
     const handleSubmitInventory = (event) => {
         event.preventDefault();

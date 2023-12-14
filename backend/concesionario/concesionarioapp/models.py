@@ -429,7 +429,7 @@ class Uso_Repuesto(models.Model):
         unique_together = ('id_repuesto', 'id_modelo') 
     
     def __str__(self):
-        return 'Uso del Repuesto: ' + self.id_uso_repuesto + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo + ' con ' + self.cantidad + ' unidades.'
+        return 'Uso del Repuesto: ' + str(self.id_uso_repuesto) + ' ' + self.id_repuesto.nombre_repuesto + ' en ' + self.id_modelo.nombre_modelo
     
     def nombre_repuesto(self):
         return self.id_repuesto.nombre_repuesto

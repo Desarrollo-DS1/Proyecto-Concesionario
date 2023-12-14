@@ -683,12 +683,12 @@ class ExtraView(viewsets.ModelViewSet):
 class UsoRepuestoView(viewsets.ModelViewSet):
     serializer_class = UsoRepuestoSerializer
     queryset = Uso_Repuesto.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
 class InventarioRepuestoView(viewsets.ModelViewSet):
     serializer_class = InventarioRepuestoSerializer
     queryset = Inventario_Repuesto.objects.all()
-    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
     @action(detail=False, methods=['get'])
     def getInventariosRepuesto(self, request):
@@ -698,23 +698,24 @@ class InventarioRepuestoView(viewsets.ModelViewSet):
         with connection.cursor() as cursor:
             cursor.execute(
                 """
-                SELECT ir.id_repuesto_id as id,
+                SELECT ir.id_repuesto_id as id_repuesto,
+	            ir.id_inventario_repuesto as id,
                 s.nombre_sucursal as nombre_sucursal,
                 ir.cantidad
                 FROM concesionarioapp_inventario_repuesto ir
-                JOIN concesionarioapp_sucursal s ON ir.id_sucursal_id = s.          id_sucursal
-                WHERE ir.id_repuesto_id =  %s;
+                JOIN concesionarioapp_sucursal s ON ir.id_sucursal_id = s.id_sucursal
+                WHERE ir.id_repuesto_id = %s;
                 """, [id_repuesto])
         
             resultado = cursor.fetchall()
-            json_resultado = [{'id': id, 'sucursal': nombre_sucursal, 'cantidad': cantidad } for id, nombre_sucursal, cantidad in resultado]
+            json_resultado = [{'id_repuesto': id_repuesto, 'id': id, 'sucursal': nombre_sucursal, 'cantidad': cantidad } for id_repuesto, id, nombre_sucursal, cantidad in resultado]
 
         return Response(json_resultado)
         
 class RepuestoView(viewsets.ModelViewSet):
     serializer_class = RepuestoSerializer
     queryset = Repuesto.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
     def destroy(self, request, *args, **kwargs):
         Repuesto = self.get_object()
