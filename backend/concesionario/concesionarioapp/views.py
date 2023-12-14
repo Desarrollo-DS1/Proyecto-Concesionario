@@ -738,6 +738,46 @@ class RepuestoView(viewsets.ModelViewSet):
         except Exception as e:
             raise serializers.ValidationError({'error': e})
 
+class RepuestoOrdenView(viewsets.ModelViewSet):
+    serializer_class = RepuestoOrdenSerializer
+    queryset = Repuesto_Orden.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class ServicioView(viewsets.ModelViewSet):
+    serializer_class = ServicioSerializer
+    queryset = Servicio.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class ServicioOrdenView(viewsets.ModelViewSet):
+    serializer_class = ServicioOrdenSerializer
+    queryset = Servicio_Orden.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class OrdenTrabajoView(viewsets.ModelViewSet):
+    serializer_class = OrdenTrabajoSerializer
+    queryset = Orden_Trabajo.objects.all()
+    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+    def destroy(self, request, *args, **kwargs):
+        orden = self.get_object()
+
+        try:
+            self.perform_destroy(orden)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar la orden porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
 
 @api_view(['POST'])
 def recaptcha(request):

@@ -540,46 +540,86 @@ class RepuestoSerializer(serializers.ModelSerializer):
         
         return instance
 
-"""
-class TrabajoSerializer(serializers.ModelSerializer):
-    id = serializers.IntegerField(source='id_trabajo', read_only=True)
-    nombre = serializers.CharField(source='nombre_trabajo')
-    precio = serializers.IntegerField(source='precio_trabajo')
-    descripcion = serializers.CharField(source='descripcion_trabajo')
+class ServicioSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_servicio', read_only=True)
+    nombre = serializers.CharField(source='nombre_servicio')
 
     class Meta:
-        model = Trabajo
-        fields = 'id', 'nombre', 'precio', 'descripcion'
+        model = Servicio
+        fields = 'id', 'nombre'
     
     def create(self, validated_data):
-        if Trabajo.objects.filter(nombre_trabajo=validated_data['nombre_trabajo']).exists():
-            raise serializers.ValidationError({'nombre': 'Ya existe un trabajo con este nombre'})
+        if Servicio.objects.filter(nombre_servicio=validated_data['nombre_servicio']).exists():
+            raise serializers.ValidationError({'nombre': 'Ya existe un servicio con este nombre'})
         
-        trabajo = Trabajo.objects.create(**validated_data)
-
-        if trabajo.precio_trabajo <= 0:
-            raise serializers.ValidationError({'precio': 'El precio no puede ser negativo'})
+        servicio = Servicio.objects.create(**validated_data)
         
-        return trabajo
+        return servicio
     
     def update(self, instance, validated_data):
-        if Trabajo.objects.filter(nombre_trabajo=validated_data['nombre_trabajo']).exists() and instance.nombre_trabajo != validated_data['nombre_trabajo']:
-            raise serializers.ValidationError({'nombre': 'Ya existe un trabajo con este nombre'})
+        if validated_data['nombre_servicio'] != instance.nombre_servicio and Servicio.objects.filter(nombre_servicio=validated_data['nombre_servicio']).exists():
+            raise serializers.ValidationError({'nombre': 'Ya existe un servicio con este nombre'})
         
-        return super().update(instance, validated_data)
+        Servicio.objects.filter(id_servicio=instance.id_servicio).update(**validated_data)
+        return instance
+
+class ServicioOrdenSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_servicio_orden', read_only=True)
+    idServicio = serializers.PrimaryKeyRelatedField(source='id_servicio', read_only=True)
+    idOrden = serializers.PrimaryKeyRelatedField(source='id_orden', read_only=True)
+    nombreServicio = serializers.CharField(source='nombre_servicio', read_only=True)
+    terminado = serializers.BooleanField()
+
+    class Meta:
+        model = Servicio_Orden
+        fields = 'id', 'idServicio', 'idOrden', 'nombreServicio', 'terminado'
+
+class RepuestoOrdenSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_repuesto_orden', read_only=True)
+    idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
+    idOrden = serializers.PrimaryKeyRelatedField(source='id_orden', read_only=True)
+
+    class Meta:
+        model = Repuesto_Orden
+        fields = 'id', 'idRepuesto', 'idOrden'
 
 class OrdenTrabajoSerializer(serializers.ModelSerializer):
-    id = serializable_field = serializers.IntegerField(source='id_orden_trabajo', read_only=True)
-    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cedula_cliente', queryset=Cliente.objects.all())
-    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
-    fechaInicio = serializers.DateField(source='fecha_inicio')
-    fechaEsperada = serializers.DateField(source='fecha_esperada')
-    modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
-    placa = serializers.CharField(source='placa_vehiculo')
-    estado = serializers.CharField(source='estado_orden_trabajo')
+    id = serializers.IntegerField(source='id_orden', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cedula',  queryset=Cliente.objects.all())
+    #nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    cedulaJefeTaller = serializers.PrimaryKeyRelatedField(source='cedula', read_only=True)
+    #nombreJefeTaller = serializers.CharField(source='nombre_jefe_taller', read_only=True)
+    fechaInicio = serializers.DateField(source='fecha_ingreso')
+    fechaEsperada = serializers.DateField(source='fecha_esperada', required=False, allow_null=True)
+    fechaEntrega = serializers.DateField(source='fecha_salida', required=False, allow_null=True)
+    placa = serializers.CharField(source='placa_carro')
+    estado = serializers.BooleanField(source='terminado')
+    servicios = ServicioOrdenSerializer(many=True, source='servicio_orden_set')
+    repuestos = RepuestoOrdenSerializer(many=True, source='repuesto_orden_set')
+    comentario = serializers.CharField()
 
     class Meta:
         model = Orden_Trabajo
-        fields = 'id', 'cedulaCliente', 'nombreCliente', 'fechaInicio', 'fechaEsperada', 'modelo', 'placa', 'estado'
+        fields = 'id', 'cedulaCliente', 'cedulaJefeTaller', 'fechaInicio', 'fechaEsperada', 'fechaEntrega', 'placa', 'estado', 'servicios', 'repuestos', 'comentario'
 
-"""
+    @transaction.atomic
+    def create(self, validated_data):
+        servicios_data = validated_data.pop('servicio_orden_set')
+        repuestos_data = validated_data.pop('repuesto_orden_set')
+
+        if validated_data['fecha_ingreso'] > now().date():
+            raise serializers.ValidationError({'fechaIngreso': 'La fecha de ingreso no puede ser mayor a la fecha actual'})
+        
+        if validated_data['fecha_salida'] and validated_data['fecha_salida'] > now().date():
+            raise serializers.ValidationError({'fechaSalida': 'La fecha de salida no puede ser mayor a la fecha actual'})
+        
+        if validated_data['fecha_salida'] and validated_data['fecha_salida'] < validated_data['fecha_ingreso']:
+            raise serializers.ValidationError({'fechaSalida': 'La fecha de salida no puede ser menor a la fecha de ingreso'})
+
+        orden = Orden_Trabajo.objects.create(**validated_data)
+
+        for servicio in servicios_data:
+            Servicio_Orden.objects.create(id_orden=orden, **servicio)
+        
+        for repuesto in repuestos_data:
+            Repuesto_Orden.objects.create(id_orden=orden, **repuesto)
