@@ -493,7 +493,6 @@ class RepuestoSerializer(serializers.ModelSerializer):
     precio = serializers.IntegerField(source='precio_repuesto')
     descripcion = serializers.CharField(source='descripcion_repuesto')
     modelos = UsoRepuestoSerializer(many=True, source='uso_repuesto_set')
-    # inventarios = InventarioRepuestoSerializer(many=True, source='inventario_repuesto_set')
 
     class Meta:
         model = Repuesto
@@ -502,8 +501,6 @@ class RepuestoSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         modelos_data = validated_data.pop('uso_repuesto_set')
-
-        print(validated_data)
 
         if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists():
             raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
@@ -522,11 +519,26 @@ class RepuestoSerializer(serializers.ModelSerializer):
         
         return repuesto
     
+    @transaction.atomic
     def update(self, instance, validated_data):
-        if Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists() and instance.nombre_repuesto != validated_data['nombre_repuesto']:
+        modelos_data = validated_data.pop('uso_repuesto_set')
+
+        if validated_data['nombre_repuesto'] != instance.nombre_repuesto and Repuesto.objects.filter(nombre_repuesto=validated_data['nombre_repuesto']).exists():
             raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
         
-        return super().update(instance, validated_data)
+        if validated_data['precio_repuesto'] <= 0:
+            raise serializers.ValidationError({'precio': 'El precio no puede ser negativo'})
+        
+        Repuesto.objects.filter(id_repuesto=instance.id_repuesto).update(**validated_data)
+
+        for modelo_anterior in instance.uso_repuesto_set.all():
+            modelo_anterior.delete()
+    
+
+        for modelo in modelos_data:
+            Uso_Repuesto.objects.create(id_repuesto=instance, **modelo)
+        
+        return instance
 
 """
 class TrabajoSerializer(serializers.ModelSerializer):
