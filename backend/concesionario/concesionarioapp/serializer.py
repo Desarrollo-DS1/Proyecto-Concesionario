@@ -465,10 +465,11 @@ class UsoRepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_uso_repuesto', read_only=True)
     idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
     idModelo = serializers.PrimaryKeyRelatedField(source='id_modelo', queryset=Modelo.objects.all())
+    nombre = serializers.CharField(source = 'nombre_modelo',read_only=True)
 
     class Meta:
         model = Uso_Repuesto
-        fields = 'id', 'idRepuesto', 'idModelo'
+        fields = 'id', 'idRepuesto', 'idModelo', 'nombre'
 
     def get_NombreModelo(self, obj):
         return obj.modelo.nombre_modelo if obj.modelo else None
@@ -480,24 +481,11 @@ class InventarioRepuestoSerializer(serializers.ModelSerializer):
     idRepuesto = serializers.PrimaryKeyRelatedField(source='id_repuesto', read_only=True)
     idSucursal = serializers.PrimaryKeyRelatedField(source='id_sucursal', queryset=Sucursal.objects.all())
     cantidad = serializers.IntegerField(source='cantidad_repuesto_inventario')
+    nombreSucursal = serializers.CharField(source='nombre_sucursal', read_only=True)
 
     class Meta:
         model = Inventario_Repuesto
-        fields = 'id', 'idRepuesto', 'idSucursal', 'cantidad'
-    
-    def update(self, instance, validated_data):
-        id_repuesto = validated_data.get('id_repuesto', instance.id_repuesto)
-        id_sucursal = validated_data.get('id_sucursal', instance.id_sucursal)
-
-        if Inventario_Repuesto.objects.exclude(id_repuesto_inventario=instance.id_repuesto_inventario).filter(id_repuesto=id_repuesto, id_sucursal=id_sucursal).exists():
-            raise serializers.ValidationError({'id_repuesto': 'Ya existe un inventario para este repuesto y sucursal'})
-
-        instance.id_repuesto = id_repuesto
-        instance.id_sucursal = id_sucursal
-        instance.save()
-
-        return instance
-
+        fields = 'id', 'idRepuesto', 'idSucursal', 'cantidad', 'nombreSucursal'
 
 class RepuestoSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='id_repuesto', read_only=True)
@@ -505,10 +493,11 @@ class RepuestoSerializer(serializers.ModelSerializer):
     precio = serializers.IntegerField(source='precio_repuesto')
     descripcion = serializers.CharField(source='descripcion_repuesto')
     modelos = UsoRepuestoSerializer(many=True, source='uso_repuesto_set')
+    inventario = InventarioRepuestoSerializer(many=True, source='inventario_repuesto_set')
 
     class Meta:
         model = Repuesto
-        fields = 'id', 'nombre', 'precio', 'descripcion', 'modelos'
+        fields = 'id', 'nombre', 'precio', 'descripcion', 'modelos', 'inventario'
     
     @transaction.atomic
     def create(self, validated_data):
@@ -534,3 +523,47 @@ class RepuestoSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'nombre': 'Ya existe un repuesto con este nombre'})
         
         return super().update(instance, validated_data)
+
+"""
+class TrabajoSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(source='id_trabajo', read_only=True)
+    nombre = serializers.CharField(source='nombre_trabajo')
+    precio = serializers.IntegerField(source='precio_trabajo')
+    descripcion = serializers.CharField(source='descripcion_trabajo')
+
+    class Meta:
+        model = Trabajo
+        fields = 'id', 'nombre', 'precio', 'descripcion'
+    
+    def create(self, validated_data):
+        if Trabajo.objects.filter(nombre_trabajo=validated_data['nombre_trabajo']).exists():
+            raise serializers.ValidationError({'nombre': 'Ya existe un trabajo con este nombre'})
+        
+        trabajo = Trabajo.objects.create(**validated_data)
+
+        if trabajo.precio_trabajo <= 0:
+            raise serializers.ValidationError({'precio': 'El precio no puede ser negativo'})
+        
+        return trabajo
+    
+    def update(self, instance, validated_data):
+        if Trabajo.objects.filter(nombre_trabajo=validated_data['nombre_trabajo']).exists() and instance.nombre_trabajo != validated_data['nombre_trabajo']:
+            raise serializers.ValidationError({'nombre': 'Ya existe un trabajo con este nombre'})
+        
+        return super().update(instance, validated_data)
+
+class OrdenTrabajoSerializer(serializers.ModelSerializer):
+    id = serializable_field = serializers.IntegerField(source='id_orden_trabajo', read_only=True)
+    cedulaCliente = serializers.PrimaryKeyRelatedField(source='cedula_cliente', queryset=Cliente.objects.all())
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    fechaInicio = serializers.DateField(source='fecha_inicio')
+    fechaEsperada = serializers.DateField(source='fecha_esperada')
+    modelo = serializers.PrimaryKeyRelatedField(source='modelo_vehiculo', queryset=Modelo.objects.all())
+    placa = serializers.CharField(source='placa_vehiculo')
+    estado = serializers.CharField(source='estado_orden_trabajo')
+
+    class Meta:
+        model = Orden_Trabajo
+        fields = 'id', 'cedulaCliente', 'nombreCliente', 'fechaInicio', 'fechaEsperada', 'modelo', 'placa', 'estado'
+
+"""
