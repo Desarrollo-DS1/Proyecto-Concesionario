@@ -5,6 +5,7 @@ import {checkSparePart} from "./SparePartValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
+import { getInventariosId } from "../../api/Inventario.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
@@ -123,6 +124,7 @@ export default function SparePartState(props) {
 
         try{
             console.log(sparePart)
+            const sucursales = await getAllSucursales(authTokens.access);
             const response = await createRepuesto(sparePart, authTokens.access);
             setSpareParts([...spareParts, response.data])
             setTypeSnackbar('success');
