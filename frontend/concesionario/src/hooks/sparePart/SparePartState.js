@@ -105,7 +105,9 @@ export default function SparePartState(props) {
             try
             {
                 const response = await getRepuesto(id, authTokens.access);
-                setSparePart(response.data);
+                const modelosArray = response.data.modelos.map(objeto => objeto.idModelo);
+                const auxSparePart = {...response.data, modelos: modelosArray};
+                setSparePart(auxSparePart);
             }
             catch (error)
             {
@@ -115,6 +117,7 @@ export default function SparePartState(props) {
             }
         }
     }
+
 
     const addSparePart = async (sparePart) => {
 

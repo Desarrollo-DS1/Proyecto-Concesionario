@@ -117,7 +117,7 @@ export default function SparePartPage() {
                                                     <List sx={{ listStyleType: 'disc', paddingLeft: 1}}>
                                                         {modelos.map((option) => (
                                                             <ListItem key={option.id} sx={{ display: 'list-item', paddingLeft: 0  }} dense>
-                                                                {option.idModelo}
+                                                                {option.nombre}
                                                             </ListItem>
                                                         ))}
                                                     </List>
