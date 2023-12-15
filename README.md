@@ -2,6 +2,7 @@ La aplicación web se encuentra desplegada en un servidor en la nube, accesible 
 https://concesionariods1.onrender.com/
 
 Para ingresar al sistema puede utilizar cualquier de los siguientes usuarios:
+
 Gerente:
 1001234567 - password100
 
