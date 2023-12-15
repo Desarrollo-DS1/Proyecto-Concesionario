@@ -1386,10 +1386,164 @@ WHERE vin IN (
   FROM concesionarioapp_venta_vehiculo
 );
 
+INSERT INTO concesionarioapp_repuesto(id_repuesto, nombre_repuesto, precio_repuesto, descripcion_repuesto)
+VALUES
+(1, 'Bomba de agua', 100000, 'Bomba de agua para motor de 4 cilindros'),
+(2, 'Luces', 150000, 'Bomba de agua para motor de 6 cilindros'),
+(3, 'Parachoques', 200000, 'Bomba de agua para motor de 8 cilindros'),
+(4, 'Bomba de aceite', 100000, 'Bomba de aceite para motor de 4 cilindros'),
+(5, 'Amortiguador 1', 150000, 'Bomba de aceite para motor de 6 cilindros'),
+(6, 'Amortiguador 2', 200000, 'Bomba de aceite para motor de 8 cilindros'),
+(7, 'Bomba de gasolina', 100000, 'Bomba de gasolina para motor de 4 cilindros'),
+(8, 'Bomba de gasolina 1', 150000, 'Bomba de gasolina para motor de 6 cilindros'),
+(9, 'Bomba de gasolina 2', 200000, 'Bomba de gasolina para motor de 8 cilindros'),
+(10, 'Bomba de frenos', 100000, 'Bomba de frenos para motor de 4 cilindros'),
+(11, 'Bomba de frenos 1', 150000, 'Bomba de frenos para motor de 6 cilindros'),
+(12, 'Bomba de frenos 2', 200000, 'Bomba de frenos para motor de 8 cilindros'),
+(13, 'Bomba de direccion 1', 100000, 'Bomba de direccion para motor de 4 cilindros'),
+(14, 'Bomba de direccion 2', 150000, 'Bomba de direccion para motor de 6 cilindros'),
+(15, 'Bomba de direccion 3', 200000, 'Bomba de direccion para motor de 8 cilindros'),
+(16, 'Bomba de aire', 100000, 'Bomba de aire para motor de 4 cilindros'),
+(17, 'Bomba de aire 2', 150000, 'Bomba de aire para motor de 6 cilindros')
+ON CONFLICT (id_repuesto) DO NOTHING;
+
+SELECT setval('concesionarioapp_repuesto_id_repuesto_seq', (SELECT MAX(id_repuesto) FROM concesionarioapp_repuesto));
+
+INSERT INTO concesionarioapp_uso_repuesto(id_uso_repuesto, id_modelo_id, id_repuesto_id)
+VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 1, 3),
+(4, 1, 4),
+(5, 1, 5),
+(6, 1, 6),
+(7, 1, 7),
+(8, 1, 8),
+(9, 1, 9),
+(10, 1, 10),
+(11, 1, 11),
+(12, 1, 12),
+(13, 1, 13),
+(14, 1, 14),
+(15, 1, 15),
+(16, 1, 16),
+(17, 1, 17),
+(18, 2, 1),
+(19, 2, 2),
+(20, 2, 3),
+(21, 2, 4),
+(22, 2, 5),
+(23, 2, 6),
+(24, 2, 7),
+(25, 2, 8),
+(26, 2, 9),
+(27, 2, 10),
+(28, 2, 11),
+(29, 2, 12),
+(30, 2, 13),
+(31, 2, 14),
+(32, 2, 15),
+(33, 2, 16),
+(34, 2, 17),
+(35, 3, 1),
+(36, 3, 2),
+(37, 3, 3),
+(38, 3, 4),
+(39, 3, 5),
+(40, 3, 6),
+(41, 3, 7),
+(42, 3, 8),
+(43, 3, 9),
+(44, 3, 10),
+(45, 3, 11),
+(46, 3, 12),
+(47, 3, 13),
+(48, 3, 14),
+(49, 3, 15),
+(50, 3, 16),
+(51, 3, 17),
+(52, 4, 1),
+(53, 4, 2),
+(54, 4, 3),
+(55, 4, 4)
+ON CONFLICT (id_uso_repuesto) DO NOTHING;
 
 SELECT setval('concesionarioapp_uso_repuesto_id_uso_repuesto_seq', (SELECT MAX(id_uso_repuesto) FROM concesionarioapp_uso_repuesto));
 
+
+INSERT INTO concesionarioapp_inventario_repuesto(id_inventario_repuesto, cantidad, id_repuesto_id, id_sucursal_id)
+VALUES
+(1, 100, 1, 1),
+(2, 100, 2, 1),
+(3, 100, 3, 1),
+(4, 100, 4, 1),
+(5, 100, 5, 1),
+(6, 100, 6, 1),
+(7, 100, 7, 1),
+(8, 100, 8, 1),
+(9, 100, 9, 1),
+(10, 100, 10, 1),
+(11, 100, 11, 1),
+(12, 100, 12, 1),
+(13, 100, 13, 1),
+(14, 100, 14, 1),
+(15, 100, 15, 1),
+(16, 100, 16, 1),
+(17, 100, 17, 1),
+(18, 100, 1, 2),
+(19, 100, 2, 2),
+(20, 100, 3, 2),
+(21, 100, 4, 2),
+(22, 100, 5, 2),
+(23, 100, 6, 2),
+(24, 100, 7, 2),
+(25, 100, 8, 2),
+(26, 100, 9, 2),
+(27, 100, 10, 2),
+(28, 100, 11, 2),
+(29, 100, 12, 2),
+(30, 100, 13, 2),
+(31, 100, 14, 2),
+(32, 100, 15, 2),
+(33, 100, 16, 2),
+(34, 100, 17, 2),
+(35, 100, 1, 3),
+(36, 100, 2, 3),
+(37, 100, 3, 3),
+(38, 100, 4, 3),
+(39, 100, 5, 3),
+(40, 100, 6, 3),
+(41, 100, 7, 3)
+ON CONFLICT (id_inventario_repuesto) DO NOTHING;
+
 SELECT setval('concesionarioapp_inventario_repuesto_id_inventario_repuesto_seq', (SELECT MAX(id_inventario_repuesto) FROM concesionarioapp_inventario_repuesto));
+
+
+INSERT INTO concesionarioapp_servicio(id_servicio, nombre_servicio,)
+VALUES
+(1, 'Cambio de aceite'),
+(2, 'Cambio de frenos'),
+(3, 'Cambio de amortiguadores'),
+(4, 'Cambio de bomba de agua'),
+(5, 'Cambio de bomba de gasolina'),
+(6, 'Cambio de bomba de frenos'),
+(7, 'Cambio de bomba de direccion'),
+(8, 'Cambio de bomba de aire'),
+(9, 'Cambio de luces'),
+(10, 'Cambio de parachoques')
+ON CONFLICT (id_servicio) DO NOTHING;
+
+SELECT setval('concesionarioapp_servicio_id_servicio_seq', (SELECT MAX(id_servicio) FROM concesionarioapp_servicio));
+
+SELECT setval('concesionarioapp_orden_trabajo_id_orden_trabajo_seq', (SELECT MAX(id_orden_trabajo) FROM concesionarioapp_orden_trabajo));
+
+SELECT setval('concesionarioapp_servicio_orden_id_servicio_orden_seq', (SELECT MAX(id_servicio_orden) FROM concesionarioapp_servicio_orden));
+
+SELECT setval('concesionarioapp_repuesto_orden_id_repuesto_orden_seq', (SELECT MAX(id_repuesto_orden) FROM concesionarioapp_repuesto_orden));
+
+
+
+
 /*
 =======
 INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)

@@ -7,6 +7,7 @@ import {getAllModelos} from "../../api/Modelo.api";
 import {getInventariosId, setInventarioSparePart} from "../../api/Inventario.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
+import { Try } from "@mui/icons-material";
 
 SparePartState.propTypes = {
     children: propTypes.node,
@@ -371,10 +372,19 @@ export default function SparePartState(props) {
     const [subtitle, setSubtitle] = useState('');
 
     const getInventory = async (id) => {
-        console.log(id)
-        const response = await getInventariosId(id, authTokens.access);
-        console.log(response.data)
-        setInventory(response.data);
+        try
+        {
+            console.log(id)
+            const response = await getInventariosId(id, authTokens.access);
+            console.log(response.data)
+            setInventory(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('inventario.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const handleOpenInventoryForm = (e, id, name) => {
