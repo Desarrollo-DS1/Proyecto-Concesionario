@@ -603,5 +603,17 @@
     "Oct": "Oct",
     "Nov": "Nov",
     "Dic": "Dic"
+  },
+  "servicios": {
+    "Cambio de aceite": "Cambio de aceite",
+    "Cambio de frenos": "Cambio de frenos",
+    "Cambio de amortiguadores": "Cambio de amortiguadores",
+    "Cambio de bomba de agua": "Cambio de bomba de agua",
+    "Cambio de bomba de gasolina": "Cambio de bomba de gasolina",
+    "Cambio de bomba de frenos": "Cambio de bomba de frenos",
+    "Cambio de bomba de direccion": "Cambio de bomba de direccion",
+    "Cambio de bomba de aire": "Cambio de bomba de aire",
+    "Cambio de luces": "Cambio de luces",
+    "Cambio de parachoques": "Cambio de parachoques"
   }
 }
