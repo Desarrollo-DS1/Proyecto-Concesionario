@@ -6,4 +6,5 @@ const repuestoUsoApi = token =>
     headers: { Authorization: `Bearer ${token}` }
   });
 
-ex
+
+  export const getRepuestosModelo = (idModelo, token) => repuestoUsoApi(token).get(`getRepuestosModelo/`, { params: { idModelo } });

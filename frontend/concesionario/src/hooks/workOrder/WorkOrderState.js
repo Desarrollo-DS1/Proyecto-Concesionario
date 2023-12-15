@@ -6,7 +6,7 @@ import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllServicios} from "../../api/Servicio.api";
-import {getAllRepuestos} from "../../api/Repuesto.api";
+import {getRepuestosModelo } from "../../api/RepuestoUso.api";
 import {getAllOrdenTrabajos, getOrdenTrabajo, createOrdenTrabajo, updateOrdenTrabajo, deleteOrdenTrabajo} from "../../api/OrdenTrabajo.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
 import AuthContext from "../auth/AuthContext";
@@ -100,10 +100,11 @@ export default function WorkOrderState(props) {
     }
 
     const getSpareParts = async (sparePart) => {
-
+        console.log(sparePart)
         try
         {
-            const response = await getAllRepuestos(authTokens.access);
+            const response = await getRepuestosModelo(sparePart, authTokens.access);
+            console.log(response.data)
             setSpareParts(response.data);
         }
         catch (error)
@@ -162,8 +163,16 @@ export default function WorkOrderState(props) {
     }
 
     const getWorkOrder = async (id) => {
-
-        try
+        
+        if(id == null)
+        {
+            setEdit(false);
+            setWorkOrder(emptyWorkOrder);
+        }
+        else
+        {
+            setEdit(true);
+            try
         {
             const response = await getOrdenTrabajo(id, authTokens.access);
             setWorkOrder(response.data);
@@ -173,6 +182,7 @@ export default function WorkOrderState(props) {
             setTypeSnackbar('error');
             setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
             handleOpenSnackbar();
+        }
         }
     }
 

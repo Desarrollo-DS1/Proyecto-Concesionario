@@ -53,7 +53,7 @@ class ClienteView(viewsets.ModelViewSet):
 class EmpleadoView(viewsets.ModelViewSet):
     serializer_class = EmpleadoSerializer
     queryset = Empleado.objects.all()
-    permission_classes = [IsAuthenticated, EsGerente]
+    # permission_classes = [IsAuthenticated, EsGerente]
 
     def destroy(self, request, *args, **kwargs):
         empleado = self.get_object()
@@ -685,10 +685,35 @@ class UsoRepuestoView(viewsets.ModelViewSet):
     queryset = Uso_Repuesto.objects.all()
     #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
+    @action(detail=False, methods=['get'])
+    def getRepuestosModelo(self, request):
+        id_modelo = request.query_params.get('idModelo', None)
+
+        id_modelo = int(id_modelo)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+    ir.id_repuesto_id as id_repuesto,
+    r.nombre_repuesto
+FROM
+    concesionarioapp_uso_repuesto ir
+JOIN
+    concesionarioapp_repuesto r ON ir.id_repuesto_id = r.id_repuesto
+WHERE
+    ir.id_modelo_id = %s;
+                """, [id_modelo])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'id': id, 'nombre': nombre} for id, nombre in resultado]
+
+        return Response(json_resultado)
+    
+
 class InventarioRepuestoView(viewsets.ModelViewSet):
     serializer_class = InventarioRepuestoSerializer
     queryset = Inventario_Repuesto.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    # permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
     @action(detail=False, methods=['get'])
     def getInventariosRepuesto(self, request):
@@ -741,22 +766,22 @@ class RepuestoView(viewsets.ModelViewSet):
 class RepuestoOrdenView(viewsets.ModelViewSet):
     serializer_class = RepuestoOrdenSerializer
     queryset = Repuesto_Orden.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
 class ServicioView(viewsets.ModelViewSet):
     serializer_class = ServicioSerializer
     queryset = Servicio.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
 class ServicioOrdenView(viewsets.ModelViewSet):
     serializer_class = ServicioOrdenSerializer
     queryset = Servicio_Orden.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
 class OrdenTrabajoView(viewsets.ModelViewSet):
     serializer_class = OrdenTrabajoSerializer
     queryset = Orden_Trabajo.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
     def destroy(self, request, *args, **kwargs):
         orden = self.get_object()
