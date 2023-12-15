@@ -189,34 +189,20 @@ export default function WorkOrderState(props) {
 
 
     const addWorkOrder = async (workOrder) => {
-
+        console.log(workOrder)
         try
         {
-            const response = await createVehiculo(workOrder, authTokens.access);
-            setWorkOrders([...workOrders, response.data]);
+            await createOrdenTrabajo(workOrder, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.agregado');
+            setMessageSnackbar('ordenesTrabajo.mensaje.creado');
             handleOpenSnackbar();
             handleCloseForm();
-
         }
         catch (error)
         {
-            const errors = error.response.data;
-            if(errors.vin)
-            {
-                setTypeSnackbar('error');
-                setMessageSnackbar('vehiculos.mensaje.errorCedula');
-                setWorkOrderError({...workOrderError, vin: 'Vin ya existe'});
-                handleOpenSnackbar();
-
-            }
-            else
-            {
-                setTypeSnackbar('error');
-                setMessageSnackbar('vehiculos.mensaje.error');
-                handleOpenSnackbar();
-            }
+            setTypeSnackbar('error');
+            setMessageSnackbar('ordenesTrabajo.mensaje.errorCrear');
+            handleOpenSnackbar();
         }
     }
 
@@ -289,13 +275,19 @@ export default function WorkOrderState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateWorkOrderOnSubmit()) {
+
+            const repuestosObjects = workOrder.repuestos.map((id) => ({ idRepuesto: id }));
+            const serviciosObjects = workOrder.servicios.map((id) => ({ idServicio: id }));
+            
+            const a = {...workOrder, repuestos: repuestosObjects, servicios: serviciosObjects};
+
             if(edit)
             {
-                updateWorkOrder(workOrder).then(() => getWorkOrders());
+                updateWorkOrder(a).then(() => getWorkOrders());
             }
             else
             {
-                addWorkOrder(workOrder).then(() => getWorkOrders());
+                addWorkOrder(a).then(() => getWorkOrders());
             }
         }
     }

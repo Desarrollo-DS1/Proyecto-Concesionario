@@ -568,7 +568,7 @@ class ServicioOrdenSerializer(serializers.ModelSerializer):
     idServicio = serializers.PrimaryKeyRelatedField(source='id_servicio', queryset=Servicio.objects.all())
     idOrden = serializers.PrimaryKeyRelatedField(source='id_orden_trabajo', read_only=True)
     nombreServicio = serializers.CharField(source='nombre_servicio', read_only=True)
-    terminado = serializers.BooleanField()
+    terminado = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Servicio_Orden
@@ -592,9 +592,9 @@ class OrdenTrabajoSerializer(serializers.ModelSerializer):
     #nombreJefeTaller = serializers.CharField(source='nombre_jefe_taller', read_only=True)
     fechaInicio = serializers.DateField(source='fecha_creacion')
     fechaEsperada = serializers.DateField(source='fecha_entrega_esperada', required=False, allow_null=True)
-    fechaEntrega = serializers.DateField(source='fecha_entrega_real', required=False, allow_null=True)
+    fechaEntrega = serializers.DateField(source='fecha_entrega_real', required=False, allow_null=True, read_only=True)
     placa = serializers.CharField(source='placa_carro')
-    estado = serializers.BooleanField(source='estado_reparacion')
+    estado = serializers.BooleanField(source='estado_reparacion', read_only=True)
     servicios = ServicioOrdenSerializer(many=True, source='servicio_orden_set')
     repuestos = RepuestoOrdenSerializer(many=True, source='repuesto_orden_set')
     comentario = serializers.CharField(source='comentarios_estado_carro')
@@ -616,8 +616,6 @@ class OrdenTrabajoSerializer(serializers.ModelSerializer):
         if validated_data['fecha_entrega_esperada'] and validated_data['fecha_entrega_esperada'] < validated_data['fecha_creacion']:
             raise serializers.ValidationError({'fechaEsperada': 'La fecha esperada no puede ser menor a la fecha de inicio'})
         
-        if validated_data['fecha_entrega_real'] and validated_data['fecha_entrega_real'] < validated_data['fecha_creacion']:
-            raise serializers.ValidationError({'fechaEntrega': 'La fecha de entrega no puede ser menor a la fecha de inicio'})
 
         orden = Orden_Trabajo.objects.create(**validated_data)
 
