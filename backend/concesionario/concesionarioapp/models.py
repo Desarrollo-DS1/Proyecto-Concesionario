@@ -176,6 +176,9 @@ class Modelo(models.Model):
 		ordering = ['id_modelo']
 
 	def __str__(self):
+		return self.nombre_modelo 
+	
+	def n_modelo(self):
 		return self.nombre_modelo
 
 class Color(models.Model):
@@ -458,7 +461,6 @@ class Inventario_Repuesto(models.Model):
     def nombre_repuesto(self):
         return self.id_repuesto.nombre_repuesto
 
-"""
 class Orden_Trabajo(models.Model):
     id_orden_trabajo = models.AutoField('ID de la Orden de Trabajo', primary_key=True)
     id_jefe_taller = models.ForeignKey('Empleado', on_delete=models.PROTECT)
@@ -469,7 +471,7 @@ class Orden_Trabajo(models.Model):
     fecha_creacion = models.DateField('Fecha de Creación', auto_now_add=True)
     fecha_entrega_esperada = models.DateField('Fecha de Entrega Esperada', default=date.today() + timedelta(days=20))
     fecha_entrega_real = models.DateField('Fecha de Entrega Real', blank=True, null=True)
-    estado_reparacion = models.CharField('Estado de la Reparación', max_length=1, choices=(('P', 'En Proceso'), ('R', 'Retrasada'), ('E', 'A la espera de repuestos'), ('F', 'Finalizada')), default='P')
+    estado_reparacion = models.BooleanField('Estado de la Reparación', default=False)
 
     class Meta:
         verbose_name = 'Orden de Trabajo'
@@ -477,7 +479,7 @@ class Orden_Trabajo(models.Model):
         ordering = ['id_orden_trabajo']
     
     def __str__(self):
-        return 'Orden de Trabajo: ' + str(self.id_orden_trabajo) + ' Cliente: ' + self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido + ' Jefe de Taller: ' + self.id_jefe_taller.usuario.primer_nombre + ' ' + self.id_jefe_taller.usuario.primer_apellido + ' Fecha de Creación: ' + str(self.fecha_creacion) + ' Fecha de Entrega Esperada: ' + str(self.fecha_entrega_esperada) + ' Fecha de Entrega Real: ' + str(self.fecha_entrega_real) + ' Estado de la Reparación: ' + self.estado_reparacion
+        return 'Orden de Trabajo: ' + str(self.id_orden_trabajo) + ' Cliente: ' + self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido + ' Jefe de Taller: ' + self.id_jefe_taller.usuario.primer_nombre + ' ' + self.id_jefe_taller.usuario.primer_apellido + ' Fecha de Creación: ' + str(self.fecha_creacion) + ' Fecha de Entrega Esperada: ' + str(self.fecha_entrega_esperada) + ' Fecha de Entrega Real: ' + str(self.fecha_entrega_real) + ' Estado de la Reparación: '
     
     def nombre_jefe_taller(self):
         return self.id_jefe_taller.usuario.primer_nombre + ' ' + self.id_jefe_taller.usuario.primer_apellido
@@ -490,32 +492,43 @@ class Orden_Trabajo(models.Model):
     
     def nombre_cliente(self):
         return self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido
-    
-    def nombre_modelo(self):
-        return self.id_modelo.nombre_modelo + ' ' + self.id_modelo.anho_modelo + ' ' + self.id_modelo.combustible
 
-    def lista_trabajos(self):
-        return ', '.join([trabajo.descripcion_trabajo for trabajo in Trabajo.objects.filter(orden_trabajo=self)])
+class Servicio(models.Model):
+	id_servicio = models.AutoField('ID del Servicio', primary_key=True)
+	nombre_servicio = models.CharField('Nombre del Servicio', max_length=30, unique=True)
+	
+	class Meta:
+		verbose_name = 'Servicio'
+		verbose_name_plural = 'Servicios'
+		ordering = ['nombre_servicio']
 
-class Trabajo(models.Model):
-    id_trabajo = models.AutoField('ID del Trabajo', primary_key=True)
-    id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
-    descripcion_trabajo = models.CharField('Descripción del Trabajo', max_length=300, blank=True, null=True)
-    precio_trabajo = models.DecimalField('Precio del Trabajo', max_digits=10, decimal_places=2)
-    
-    class Meta:
-        verbose_name = 'Trabajo en la Orden de Trabajo'
-        verbose_name_plural = 'Trabajos en la Orden de Trabajo'
-        ordering = ['id_trabajo']
-    
-    def __str__(self):
-        return 'Trabajo: ' + str(self.id_trabajo) + ' Orden de Trabajo: ' + str(self.id_orden_trabajo) + ' Descripción: ' + self.descripcion_trabajo + ' Precio: ' + str(self.precio_trabajo)
+	def __str__(self):
+		return 'Servicio: ' + str(self.id_servicio) + ' ' + self.nombre_servicio
+	
+class Servicio_Orden(models.Model):
+	id_servicio_orden = models.AutoField('ID del Servicio en la Orden', primary_key=True)
+	id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
+	id_servicio = models.ForeignKey('Servicio', on_delete=models.PROTECT)
+	terminado = models.BooleanField('Terminado', default=False)
+
+	class Meta:
+		verbose_name = 'Servicio en la Orden'
+		verbose_name_plural = 'Servicios en la Orden'
+		ordering = ['id_servicio_orden']
+
+	def __str__(self):
+		return 'Servicio en la Orden: ' + str(self.id_servicio_orden) + ' ' + self.id_servicio.nombre_servicio + ' en la Orden ' + self.id_orden_trabajo.id_orden_trabajo
     
 class Repuesto_Orden(models.Model):
-    id_repuesto_orden = models.AutoField('ID del Repuesto en la Orden', primary_key=True)
-    id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
-    id_inventario_rep = models.ForeignKey('Inventario_Repuesto', on_delete=models.PROTECT)
+	id_repuesto_orden = models.AutoField('ID del Repuesto en la Orden', primary_key=True)
+	id_orden_trabajo = models.ForeignKey('Orden_Trabajo', on_delete=models.CASCADE)
+	id_rep = models.ForeignKey('Repuesto', on_delete=models.PROTECT)
 
-    class Meta:
-        verbose_name = 'Repuesto en la 
-"""
+	class Meta:
+		verbose_name = 'Repuesto en la Orden'
+		verbose_name_plural = 'Repuestos en la Orden'
+		ordering = ['id_repuesto_orden']
+	
+	def __str__(self):
+		return 'Repuesto en la Orden: ' + str(self.id_repuesto_orden) + ' ' + self.id_rep.nombre_repuesto + ' en la Orden ' + self.id_orden_trabajo.id_orden_trabajo
+	

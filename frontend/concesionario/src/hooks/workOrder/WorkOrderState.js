@@ -5,6 +5,10 @@ import {checkWorkOrder} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
 import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
+import {getAllServicios} from "../../api/Servicio.api";
+import {getRepuestosModelo } from "../../api/RepuestoUso.api";
+import {getServiciosOrden} from "../../api/ServicioOrden.api";
+import {getAllOrdenTrabajos, getOrdenTrabajo, createOrdenTrabajo, updateOrdenTrabajo, deleteOrdenTrabajo} from "../../api/OrdenTrabajo.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
 import AuthContext from "../auth/AuthContext";
 
@@ -97,87 +101,34 @@ export default function WorkOrderState(props) {
     }
 
     const getSpareParts = async (sparePart) => {
-
-
-        if (sparePart === 1)
+        console.log(sparePart)
+        try
         {
-            const a = [{
-                id: 1,
-                nombre: "Tuerca",
-                precio: "2000",
-                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-            },
-                {
-                    id: 2,
-                    nombre: "Capo",
-                    precio: "30000",
-                    modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-                }]
-
-            setSpareParts(a);
+            const response = await getRepuestosModelo(sparePart, authTokens.access);
+            console.log(response.data)
+            setSpareParts(response.data);
         }
-        else
+        catch (error)
         {
-            const a = [{
-                id: 1,
-                nombre: "Tuerca",
-                precio: "2000",
-                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-            },{
-                id: 4,
-                nombre: "Llanta",
-                precio: "2000",
-                modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-            },
-                {
-                    id: 3,
-                    nombre: "Espejo",
-                    precio: "30000",
-                    modelos: [{id:1, nombre: "Chevrolet Spark"}, {id:2, nombre: "Chevrolet Sedan"}],
-                }]
-
-            setSpareParts(a);
+            setTypeSnackbar('error');
+            setMessageSnackbar('repuestos.mensaje.errorListando');
+            handleOpenSnackbar();
         }
-
-        // try
-        // {
-        //     const response = await getAllVehiculos(authTokens.access);
-        //     setSpareParts(response.data);
-        //
-        // }
-        // catch (error)
-        // {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('empleados.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
     }
 
     const getServices = async () => {
 
-        const a = [{
-            id: 1,
-            nombre: "Reparacion motor"
-        },
+        try
         {
-            id: 2,
-            nombre: "Reparacion parabrisas"
-        }]
-
-        setServices(a);
-
-        // try
-        // {
-        //     const response = await getAllVehiculos(authTokens.access);
-        //     setSpareParts(response.data);
-        //
-        // }
-        // catch (error)
-        // {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('empleados.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
+            const response = await getAllServicios(authTokens.access);
+            setServices(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('servicios.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const handleSearchService = (event) => {;
@@ -198,126 +149,44 @@ export default function WorkOrderState(props) {
 
     const getWorkOrders = async () => {
 
-        const a = [{
-            id: 1,
-            cedulaCliente: 1110363276,
-            nombreCliente: "Nicolas Herrera",
-            fechaInicio: "2021-10-10",
-            fechaEsperada: "2021-15-10",
-            modelo: "Chevrolet Spark",
-            placa: "ABC123",
-            estado: false,
-        },
-            {
-                id: 2,
-                cedulaCliente: 1110345276,
-                nombreCliente: "Julian Gomez",
-                fechaInicio: "2021-10-10",
-                fechaEsperada: "2021-18-10",
-                modelo: "Chevrolet Rio",
-                placa: "CDE456",
-                estado: true,
-            }]
-
-        setWorkOrders(a);
-
-        // try
-        // {
-        //     const response = await getAllVehiculos(authTokens.access);
-        //     setSpareParts(response.data);
-        //
-        // }
-        // catch (error)
-        // {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('empleados.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
+       try
+        {
+            const response = await getAllOrdenTrabajos(authTokens.access);
+            setWorkOrders(response.data);
+            console.log(response.data)
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const getWorkOrder = async (id) => {
-
-        if (id === null)
+        
+        if(id == null)
         {
             setEdit(false);
             setWorkOrder(emptyWorkOrder);
         }
         else
         {
-            setActivateSparePart(false)
             setEdit(true);
-
-            if (id === 1)
-            {
-                const a = {
-                    id: 1,
-                    cedulaJefeTaller: "100000000",
-                    cedulaCliente: "1110363276",
-                    nombreCliente: "Nicolas Herrera",
-                    fechaInicio: "2021-10-10",
-                    fechaEsperada: "2021-10-15",
-                    modelo: "1",
-                    placa: "ABC123",
-                    estado: false,
-                    servicios: [1,2],
-                    repuestos: [3,4],
-                    comentario: "Comentario de prueba",
-
-
-                }
-                getSpareParts(a.modelo);
-                setWorkOrder(a);
-            }
-            else
-            {
-                const a = {
-                    id: 1,
-                    cedulaJefeTaller: "100000000",
-                    cedulaCliente: "1110363276",
-                    nombreCliente: "Nicolas Herrera",
-                    fechaInicio: "2021-10-10",
-                    fechaEsperada: "2021-10-15",
-                    modelo: "1",
-                    placa: "ABC123",
-                    estado: true,
-                    servicios: [1,2],
-                    repuestos: [3,4],
-                    comentario: "Comentario de prueba",
-
-
-                }
-                getSpareParts(a.modelo);
-                setWorkOrder(a);
-
-            }
-
-
-
+            try
+        {
+            const response = await getOrdenTrabajo(id, authTokens.access);
+            setWorkOrder(response.data);
         }
-
-
-
-        // if (vin === null)
-        // {
-        //     setEdit(false);
-        //     setSparePart(emptySparePart);
-        // }
-        // else
-        // {
-        //     setEdit(true);
-        //     try
-        //     {
-        //         const response = await getVehiculo(vin, authTokens.access);
-        //         setSparePart(response.data);
-        //     }
-        //     catch (error)
-        //     {
-        //         setTypeSnackbar('error');
-        //         setMessageSnackbar('vehiculos.mensaje.errorCargando');
-        //         handleOpenSnackbar();
-        //     }
-        // }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
+        }
     }
+
 
     const addWorkOrder = async (workOrder) => {
 
@@ -561,28 +430,15 @@ export default function WorkOrderState(props) {
     const [service, setService] = useState([]);
     const [subtitle, setSubtitle] = useState('');
 
-    const getService = async () => {
-        setService([
-            {
-                id: 1,
-                servicio: "Reparacion motor",
-                estado: true,
-            },
-            {
-                id: 2,
-                servicio: "Reparacion parabrisas",
-                estado: true,
-            },
-            {
-                id: 3,
-                servicio: "Reparacion llantas",
-                estado: false,
-            }
-            ])
+    const getService = async (id) => {
+        console.log(id)
+        const response = await getServiciosOrden(id, authTokens.access);	
+        console.log(response.data)
+        setService(response.data);
     }
 
     const handleOpenServiceForm = (e, id, name) => {
-        getWorkOrder(id).then(()=>getService().then(() => setOpenServiceForm(true)))
+        getWorkOrder(id).then(()=>getService(id).then(() => setOpenServiceForm(true)))
         setSubtitle(name)
     }
 

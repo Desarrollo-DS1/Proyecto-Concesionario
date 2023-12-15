@@ -20,6 +20,10 @@ router.register(r'Extra', views.ExtraView, 'Extra')
 router.register(r'Uso_Repuesto', views.UsoRepuestoView, 'Uso_Repuesto')
 router.register(r'Inventario_Repuesto', views.InventarioRepuestoView, 'Inventario_Repuesto')
 router.register(r'Repuesto', views.RepuestoView, 'Repuesto')
+router.register(r'Servicio', views.ServicioView, 'Servicio')
+router.register(r'Servicio_Orden', views.ServicioOrdenView, 'Servicio_Orden')
+router.register(r'Respuesto_Orden', views.RepuestoOrdenView, 'Respuesto_Orden')
+router.register(r'Orden_Trabajo', views.OrdenTrabajoView, 'Orden_Trabajo')
 
 
 urlpatterns = [

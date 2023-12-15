@@ -53,7 +53,7 @@ class ClienteView(viewsets.ModelViewSet):
 class EmpleadoView(viewsets.ModelViewSet):
     serializer_class = EmpleadoSerializer
     queryset = Empleado.objects.all()
-    permission_classes = [IsAuthenticated, EsGerente]
+    # permission_classes = [IsAuthenticated, EsGerente]
 
     def destroy(self, request, *args, **kwargs):
         empleado = self.get_object()
@@ -685,10 +685,35 @@ class UsoRepuestoView(viewsets.ModelViewSet):
     queryset = Uso_Repuesto.objects.all()
     #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
+    @action(detail=False, methods=['get'])
+    def getRepuestosModelo(self, request):
+        id_modelo = request.query_params.get('idModelo', None)
+
+        id_modelo = int(id_modelo)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+    ir.id_repuesto_id as id_repuesto,
+    r.nombre_repuesto
+FROM
+    concesionarioapp_uso_repuesto ir
+JOIN
+    concesionarioapp_repuesto r ON ir.id_repuesto_id = r.id_repuesto
+WHERE
+    ir.id_modelo_id = %s;
+                """, [id_modelo])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'id': id, 'nombre': nombre} for id, nombre in resultado]
+
+        return Response(json_resultado)
+    
+
 class InventarioRepuestoView(viewsets.ModelViewSet):
     serializer_class = InventarioRepuestoSerializer
     queryset = Inventario_Repuesto.objects.all()
-    permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    # permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
     @action(detail=False, methods=['get'])
     def getInventariosRepuesto(self, request):
@@ -738,6 +763,71 @@ class RepuestoView(viewsets.ModelViewSet):
         except Exception as e:
             raise serializers.ValidationError({'error': e})
 
+class RepuestoOrdenView(viewsets.ModelViewSet):
+    serializer_class = RepuestoOrdenSerializer
+    queryset = Repuesto_Orden.objects.all()
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class ServicioView(viewsets.ModelViewSet):
+    serializer_class = ServicioSerializer
+    queryset = Servicio.objects.all()
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+class ServicioOrdenView(viewsets.ModelViewSet):
+    serializer_class = ServicioOrdenSerializer
+    queryset = Servicio_Orden.objects.all()
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+    @action(detail=False, methods=['get'])
+    def getServiciosOrden(self, request):
+        id_orden = request.query_params.get('idOrden', None)
+
+        id_orden = int(id_orden)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+    ir.id_servicio_orden as id,
+	ir.terminado as estado,
+    r.nombre_servicio as nombre
+FROM
+    concesionarioapp_servicio_orden ir
+JOIN
+    concesionarioapp_servicio r ON ir.id_servicio_id = r.id_servicio
+WHERE
+    ir.id_orden_trabajo_id = %s;
+                """, [id_orden])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'id': id, 'servicio': nombre, 'estado': estado} for id, estado, nombre in resultado]
+
+        return Response(json_resultado)
+
+class OrdenTrabajoView(viewsets.ModelViewSet):
+    serializer_class = OrdenTrabajoSerializer
+    queryset = Orden_Trabajo.objects.all()
+    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+
+    def destroy(self, request, *args, **kwargs):
+        orden = self.get_object()
+
+        try:
+            self.perform_destroy(orden)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        
+        except ProtectedError as e:
+            protectec_objects = list(e.protected_objects)
+
+            if protectec_objects:
+                first_protected_object = protectec_objects[0]
+                table_name  = first_protected_object._meta.verbose_name_plural
+            else:
+                table_name = ''
+            
+            raise serializers.ValidationError({'protected': f'No se puede eliminar la orden porque esta referenciado en {table_name}'})
+        
+        except Exception as e:
+            raise serializers.ValidationError({'error': e})
 
 @api_view(['POST'])
 def recaptcha(request):
