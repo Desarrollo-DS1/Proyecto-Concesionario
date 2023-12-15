@@ -49,6 +49,7 @@ export default function ServiceWorkOrderForm() {
          workOrder,
          service,
          subtitle,
+         plate,
          openServiceForm,
          handleInputChangeService,
          handleCloseServiceForm,
@@ -103,7 +104,7 @@ export default function ServiceWorkOrderForm() {
                     <HomeRepairServiceRoundedIcon />
                 </Stack>
                 <Stack direction="row" alignItems="center" mb={2} >
-                    <LabelPlate plate={workOrder.placa} />
+                    <LabelPlate plate={plate} />
                     <Typography variant="subtitle2" ml={1}>
                         {subtitle}
                     </Typography>

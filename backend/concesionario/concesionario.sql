@@ -2651,4 +2651,4 @@ UPDATE concesionarioapp_cotizacion_modelo SET modelo_id = FLOOR(RANDOM() * 8) + 
 UPDATE concesionarioapp_cotizacion_modelo SET color_id = FLOOR(RANDOM() * 8) + 1;
 
 UPDATE concesionarioapp_cotizacion_modelo SET extra_id = FLOOR(RANDOM() * 7) + 1;
-
+*/

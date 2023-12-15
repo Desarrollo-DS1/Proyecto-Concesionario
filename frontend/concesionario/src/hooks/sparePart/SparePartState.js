@@ -3,13 +3,10 @@ import React, {useContext, useState} from "react";
 import SparePartContext from './SparePartContext';
 import {checkSparePart} from "./SparePartValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
-import { getInventariosId } from "../../api/Inventario.api";
-import { getAllSucursales} from "../../api/Sucursal.api";
+import {getInventariosId, setInventarioSparePart} from "../../api/Inventario.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
-
 
 SparePartState.propTypes = {
     children: propTypes.node,
@@ -69,7 +66,7 @@ export default function SparePartState(props) {
         }
     }
 
-    const handleSearchModel = (event) => {;
+    const handleSearchModel = (event) => {
         setSearchModel(event.target.value);
     };
 
@@ -405,23 +402,18 @@ export default function SparePartState(props) {
         }
     };
 
-    /*
-
-    const updateInventorys = async (inventorys) => {
-
-        try
-        {
-
-        }
-
-    }
-
-    */
-
     const handleSubmitInventory = (event) => {
         event.preventDefault();
+        try {
+            setInventarioSparePart(inventory, authTokens.access).then(()=>handleCloseInventoryForm())
+        }
+        catch{
+            setTypeSnackbar('error');
+            setMessageSnackbar('inventaio.mensaje.errorEditar');
+            handleOpenSnackbar();
+            handleCloseInventoryForm()
+        }
     }
-
 
     return (
         <SparePartContext.Provider value={

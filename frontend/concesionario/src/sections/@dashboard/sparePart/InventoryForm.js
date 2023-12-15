@@ -33,10 +33,14 @@ const scrollBarStyle = {
 
 const createRows = (array, t, onChange) => (
     array.map(el => (
-
-
-        <Stack direction="row" alignItems="center" justifyContent="space-between" key={el.id} mb={2}>
-            <Typography variant="subtitle1">
+        <Stack
+            key={el.id}
+            direction={{ xs: 'column', sm: 'row' }} // Cambia la dirección a columna en pantallas pequeñas
+            alignItems="center"
+            justifyContent="space-between"
+            mb={{ xs: 2, sm: 2 }} // Agrega margen inferior en pantallas pequeñas
+        >
+            <Typography variant="subtitle1" mr={{ xs: 0, sm: 2 }} mb={{ xs: 2, sm: 0 }}> {/* Agrega margen derecho en pantallas grandes */}
                 {el.sucursal}
             </Typography>
             <TextField
@@ -44,7 +48,7 @@ const createRows = (array, t, onChange) => (
                 name="cantidad"
                 value={el.cantidad}
                 variant="outlined"
-                onChange={(event)=>onChange(event, el.id)}
+                onChange={(event) => onChange(event, el.id)}
                 InputProps={{
                     inputProps: { min: 0 }
                 }}
@@ -52,7 +56,6 @@ const createRows = (array, t, onChange) => (
         </Stack>
     ))
 );
-
 
 export default function SparePartInventoryForm() {
 
@@ -62,7 +65,7 @@ export default function SparePartInventoryForm() {
          openInventoryForm,
          handleInputChangeInventory,
          handleCloseInventoryForm,
-         handleOnSubmitInventory} = useContext(SparePartContext);
+        handleSubmitInventory} = useContext(SparePartContext);
 
 
     const theme = useTheme()
@@ -75,9 +78,9 @@ export default function SparePartInventoryForm() {
         transform: 'translate(-50%, -50%)',
         width: "auto",
         height: "auto",
-        maxWidth: isSmallScreen ? "80%" : "27%",
+        maxWidth: isSmallScreen ? "80%" : "37%",
         maxHeight: isSmallScreen ? "80%" : "80%",
-        minWidth: isSmallScreen ? "80%" : "27%",
+        minWidth: isSmallScreen ? "80%" : "37%",
         minHeight: "20%",
         overflowY: 'auto',
         bgcolor: 'background.paper',
@@ -92,7 +95,7 @@ export default function SparePartInventoryForm() {
 
     return (
         <Modal
-            open = {openInventoryForm}
+            open={openInventoryForm}
             onClose={handleCloseInventoryForm}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
@@ -102,28 +105,29 @@ export default function SparePartInventoryForm() {
                 sx={modalStyle}
                 noValidate
                 autoComplete="off"
-                // onSubmit={handleSubmit}
             >
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} >
-                    <Stack>
-                        <Typography variant="h4" gutterBottom>
-                            {t('repuestos.encabezado.inventario')}
-                        </Typography>
-                        <Typography variant="subtitle1">
-                            {subtitle}
-                        </Typography>
-                    </Stack >
-                    <Inventory2RoundedIcon />
-                </Stack>
-                <Divider sx={{ mb: 2}} />
-                {createRows(inventory, t, handleInputChangeInventory)}
-                <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
-                    <IconButton color="success" >
-                        <DoneRoundedIcon />
-                    </IconButton>
-                    <IconButton color="error" onClick={(event)=>handleCloseInventoryForm(event)}>
-                        <ClearRoundedIcon />
-                    </IconButton>
+                <Stack sx={{ padding: isSmallScreen ? 2 : 4 }}>
+                    <Stack direction={'row'} alignItems={"center"} justifyContent="space-between" mb={2}>
+                        <Stack mb={isSmallScreen ? 2 : 0} >
+                            <Typography variant="h4" gutterBottom>
+                                {t('repuestos.encabezado.inventario')}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                {subtitle}
+                            </Typography>
+                        </Stack>
+                        <Inventory2RoundedIcon />
+                    </Stack>
+                    <Divider sx={{ mb: 2 }} />
+                    {createRows(inventory, t, handleInputChangeInventory)}
+                    <Stack direction="row" alignItems="center" justifyContent="space-between" onClick={(event) => handleSubmitInventory(event)}>
+                        <IconButton color="success">
+                            <DoneRoundedIcon />
+                        </IconButton>
+                        <IconButton color="error" onClick={(event) => handleCloseInventoryForm(event)}>
+                            <ClearRoundedIcon />
+                        </IconButton>
+                    </Stack>
                 </Stack>
             </Box>
         </Modal>

@@ -1,12 +1,8 @@
 import {useContext, useState} from 'react';
 import {Link as RouterLink} from "react-router-dom";
 import {useTranslation} from "react-i18next";
-// @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import account from '../../../_mock/account';
-import AuthState from "../../../hooks/auth/AuthState";
 import AuthContext from "../../../hooks/auth/AuthContext";
 
 
@@ -17,11 +13,6 @@ const MENU_OPTIONS = [
     label: 'inicio',
     icon: 'eva:home-fill',
     href: '/dashboard'
-  },
-  {
-    label: 'perfil',
-    icon: 'eva:person-fill',
-    href: '/dashboard/perfil'
   }
 ];
 
@@ -107,9 +98,10 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
+
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose} to={option.href} component={RouterLink}>
+            <MenuItem key={option.label} onClick={handleClose} to={user.tipoUsuario === "Cliente" ? "/cliente" : option.href} component={RouterLink}>
               {t(`general.perfil.${option.label}`)}
             </MenuItem>
           ))}

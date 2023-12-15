@@ -3,8 +3,6 @@ import {styled} from "@mui/material/styles";
 import {useContext} from "react";
 import ThemeContext from "../../../theme/ThemeContext";
 
-
-
 const ViewSwitch = styled(Switch)(({ theme }) => ({
     width: 62,
     height: 34,

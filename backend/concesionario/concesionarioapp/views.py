@@ -738,6 +738,31 @@ class InventarioRepuestoView(viewsets.ModelViewSet):
             json_resultado = [{'id_repuesto': id_repuesto, 'id': id, 'sucursal': nombre_sucursal, 'cantidad': cantidad } for id_repuesto, id, nombre_sucursal, cantidad in resultado]
 
         return Response(json_resultado)
+
+    @action(detail=False, methods=['put'])
+    def setInventarioRepuesto(self, request):
+        # Recibir una lista de diccionarios con idServicio y terminado
+        data = request.data['params']['datos']
+        try:
+            updates = [(item['id'], int(item['cantidad'])) for item in data]
+        except (KeyError, ValueError):
+            return Response({'error': 'Formato de datos incorrecto'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            with connection.cursor() as cursor:
+                for id_repuesto, cantidad in updates:
+                    cursor.execute(
+                        """
+                        UPDATE concesionarioapp_inventario_repuesto
+                        SET cantidad = %s
+                        WHERE id_inventario_repuesto = %s;
+                        """, [cantidad, int(id_repuesto)]
+                    )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': 'Actualización exitosa'}, status=status.HTTP_200_OK)
+
+
         
 class RepuestoView(viewsets.ModelViewSet):
     serializer_class = RepuestoSerializer
@@ -831,7 +856,6 @@ WHERE
 
         servicios_terminados = all(estado for _, estado in updates)
 
-        # Modificar el atributo de estado en la tabla orden_de_trabajo si es necesario
         if servicios_terminados:
             Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(estado_reparacion=True)
             Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(fecha_entrega_real=timezone.now())

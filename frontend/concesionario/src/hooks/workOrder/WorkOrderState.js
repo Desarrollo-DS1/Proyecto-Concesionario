@@ -3,7 +3,6 @@ import React, {useContext, useState} from "react";
 import WorkOrderContext from './WorkOrderContext';
 import {checkWorkOrder} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import {deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllServicios} from "../../api/Servicio.api";
 import {getRepuestosModelo } from "../../api/RepuestoUso.api";
@@ -425,6 +424,7 @@ export default function WorkOrderState(props) {
     const [service, setService] = useState([]);
     const [subtitle, setSubtitle] = useState('');
     const [idOrder, setIdOrder] = useState('');
+    const [plate, setPlate] = useState('')
 
     const getService = async (id) => {
         try
@@ -440,9 +440,10 @@ export default function WorkOrderState(props) {
         }
     }
 
-    const handleOpenServiceForm = (e, id, name) => {
+    const handleOpenServiceForm = (e, id, name, plate) => {
         getService(id).then(() => setOpenServiceForm(true))
         setIdOrder(id);
+        setPlate(plate)
         setSubtitle(name)
     }
 
@@ -540,7 +541,8 @@ export default function WorkOrderState(props) {
                 services,
                 spareParts,
                 handleInputChangeModel,
-                activateSparePart}}>
+                activateSparePart,
+                plate}}>
             {props.children}
         </WorkOrderContext.Provider>
     )

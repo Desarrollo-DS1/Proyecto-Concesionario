@@ -1,6 +1,5 @@
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
-// import MODELIST from '../../_mock/model';
 import ModelContext from './ModelContext';
 import {checkModel} from "./ModelValidation";
 import {applySortFilter, getComparator} from "../filter/Filter"; 

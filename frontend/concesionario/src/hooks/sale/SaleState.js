@@ -1,5 +1,4 @@
 import propTypes from "prop-types";
-import {round} from "lodash";
 import React, { useContext, useState } from "react";
 import { getAllExtras } from "../../api/Extra.api";
 import SaleContext from "./SaleContext";

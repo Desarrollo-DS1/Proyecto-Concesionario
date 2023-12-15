@@ -8,3 +8,5 @@ const inventarioApi = token =>
 
 export const getInventariosId = (idRepuesto, token) =>
 inventarioApi(token).get(`getInventariosRepuesto/`, { params: { idRepuesto } });
+
+export const setInventarioSparePart = (datos, token) => inventarioApi(token).put(`setInventarioRepuesto/`, { params: {datos} });

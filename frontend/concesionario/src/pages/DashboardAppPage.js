@@ -36,8 +36,8 @@ export default function DashboardAppPage() {
                 </Tabs>
 
                  <Box mt={5} >
-                    {tabIndex === 0 && <SaleDashboardState><SaleDashboard/></SaleDashboardState>}
-                    {tabIndex === 1 && <PriceDashboardState><PriceDashboard/></PriceDashboardState>}
+                    {tabIndex === 0 && (user.tipoUsuario === "Gerente" || user.tipoUsuario === "Superusuario" || user.tipoUsuario === "Vendedor") && <SaleDashboardState><SaleDashboard/></SaleDashboardState>}
+                    {tabIndex === 1 && (user.tipoUsuario === "Gerente" || user.tipoUsuario === "Superusuario" || user.tipoUsuario === "Vendedor") && <PriceDashboardState><PriceDashboard/></PriceDashboardState>}
                  </Box>
             </Container>
         </>

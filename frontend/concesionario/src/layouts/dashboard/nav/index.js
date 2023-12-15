@@ -1,19 +1,13 @@
 import PropTypes from 'prop-types';
-import {Fragment, useContext, useEffect} from 'react';
+import {useContext, useEffect} from 'react';
 import { useLocation } from 'react-router-dom';
 import {useTranslation} from "react-i18next";
-// @mui
 import { styled, alpha } from '@mui/material/styles';
 import {Box, Link, Drawer, Typography, Avatar, Divider, List} from '@mui/material';
-// mock
-import account from '../../../_mock/account';
-// hooks
 import useResponsive from '../../../hooks/useResponsive';
-// components
 import Logo from '../../../components/logo';
 import Scrollbar from '../../../components/scrollbar';
 import NavSection from '../../../components/nav-section';
-//
 import navConfig from './config';
 import AuthContext from "../../../hooks/auth/AuthContext";
 

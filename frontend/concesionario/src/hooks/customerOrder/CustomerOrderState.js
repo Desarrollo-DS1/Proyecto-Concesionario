@@ -2,8 +2,6 @@ import propTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import CustomerOrderContext from './CustomerOrderContext';
 import { applySortFilter, getComparator } from "../filter/Filter";
-import { getAllClientes, getCliente, createCliente, updateCliente, deleteCliente } from "../../api/Cliente.api";
-import { createUsuario } from "../../api/Usuario.api";
 import {getServiciosCliente} from "../../api/OrdenTrabajo.api";
 import AuthContext from "../auth/AuthContext";
 

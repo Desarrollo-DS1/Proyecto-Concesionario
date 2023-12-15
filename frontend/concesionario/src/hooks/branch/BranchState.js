@@ -2,7 +2,6 @@ import propTypes from 'prop-types';
 import React, { useContext, useState } from "react";
 import BranchContext from './BranchContext';
 import { checkBranch } from './BranchValidation';
-import { applySortFilter, getComparator } from '../filter/Filter';
 import { getAllSucursales, getSucursal, createSucursal, updateSucursal, deleteSucursal } from '../../api/Sucursal.api';
 import AuthContext from '../auth/AuthContext';
 
