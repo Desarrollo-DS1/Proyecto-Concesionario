@@ -9,6 +9,7 @@ import {
     Stack,TablePagination,
     Typography
 } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -87,6 +88,8 @@ export default function CustomerOrderPage() {
         rowsPerPage,
         handleChangePage,
         handleChangeRowsPerPage} = useContext(CustomerOrderContext);
+
+    const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     const theme = useTheme();
 
@@ -221,8 +224,7 @@ export default function CustomerOrderPage() {
                                                             </List>
                                                         </Grid>
 
-                                                        <Divider orientation={"vertical"} flexItem sx={{ mr: "-1px",mt: 5 }}/>
-
+                                                        {!isSmallScreen && <Divider orientation="vertical" flexItem sx={{ mr: "-1px", mt: 5 }} />}
                                                         <Grid item sm={6} xs={12} >
                                                             <Stack direction="row" alignItems="center">
                                                                 <PlumbingIcon sx={{ fontSize: 20 }} />

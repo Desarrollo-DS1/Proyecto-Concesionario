@@ -7,7 +7,6 @@ import {getAllModelos} from "../../api/Modelo.api";
 import {getInventariosId, setInventarioSparePart} from "../../api/Inventario.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
-import { Try } from "@mui/icons-material";
 
 SparePartState.propTypes = {
     children: propTypes.node,
