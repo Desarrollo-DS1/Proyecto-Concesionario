@@ -3,15 +3,12 @@ import React, {useContext, useState} from "react";
 import WorkOrderContext from './WorkOrderContext';
 import {checkWorkOrder} from "./WorkOrderValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
+import {deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllServicios} from "../../api/Servicio.api";
 import {getRepuestosModelo } from "../../api/RepuestoUso.api";
-import {getServiciosOrden} from "../../api/ServicioOrden.api";
-import {getAllOrdenTrabajos, getOrdenTrabajo, createOrdenTrabajo, updateOrdenTrabajo, deleteOrdenTrabajo} from "../../api/OrdenTrabajo.api";
-import { getAllSucursales} from "../../api/Sucursal.api";
-import AuthContext from "../auth/AuthContext";
-
+import {getServiciosOrden, setEstadosServicios} from "../../api/ServicioOrden.api";
+import {getAllOrdenTrabajos, getOrdenTrabajo, createOrdenTrabajo, updateOrdenTrabajo, deleteOrdenTrabajo} from "../../api/OrdenTrabajo.api";import AuthContext from "../auth/AuthContext";
 
 WorkOrderState.propTypes = {
     children: propTypes.node,
@@ -40,7 +37,6 @@ export default function WorkOrderState(props) {
         { id: "fechaEsperada", label: "fechaEsperada"},
         { id: "modelo", label: "modelo"},
         { id: "placa", label: "placa"},
-        { id: "estado", label: "estado"},
     ];
 
     const emptyWorkOrder = {
@@ -52,7 +48,7 @@ export default function WorkOrderState(props) {
         fechaEsperada: "",
         fechaEntrega: "",
         placa: "",
-        estado: "",
+        estado: false,
         servicios: [],
         repuestos: [],
         comentario: "",
@@ -101,11 +97,9 @@ export default function WorkOrderState(props) {
     }
 
     const getSpareParts = async (sparePart) => {
-        console.log(sparePart)
         try
         {
             const response = await getRepuestosModelo(sparePart, authTokens.access);
-            console.log(response.data)
             setSpareParts(response.data);
         }
         catch (error)
@@ -153,7 +147,6 @@ export default function WorkOrderState(props) {
         {
             const response = await getAllOrdenTrabajos(authTokens.access);
             setWorkOrders(response.data);
-            console.log(response.data)
         }
         catch (error)
         {
@@ -174,22 +167,26 @@ export default function WorkOrderState(props) {
         {
             setEdit(true);
             try
-        {
-            const response = await getOrdenTrabajo(id, authTokens.access);
-            setWorkOrder(response.data);
-        }
-        catch (error)
-        {
-            setTypeSnackbar('error');
-            setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
-            handleOpenSnackbar();
-        }
+            {
+                const response = await getOrdenTrabajo(id, authTokens.access);
+                getSpareParts(response.data.modelo);
+                setActivateSparePart(false);
+                const serviciosArray = response.data.servicios.map(objeto => objeto.idServicio);
+                const repuestosArray = response.data.repuestos.map(objeto => objeto.idRepuesto);
+                const auxWorkOrder = {...response.data, servicios: serviciosArray, repuestos: repuestosArray};
+                setWorkOrder(auxWorkOrder);
+            }
+            catch (error)
+            {
+                setTypeSnackbar('error');
+                setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
+                handleOpenSnackbar();
+            }
         }
     }
 
 
     const addWorkOrder = async (workOrder) => {
-        console.log(workOrder)
         try
         {
             await createOrdenTrabajo(workOrder, authTokens.access);
@@ -207,19 +204,18 @@ export default function WorkOrderState(props) {
     }
 
     const updateWorkOrder = async (workOrder) => {
-
         try
         {
-            await updateVehiculo(workOrder.vin, workOrder, authTokens.access);
+            await updateOrdenTrabajo(workOrder.id, workOrder, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.editado');
+            setMessageSnackbar('ordenesTrabajo.mensaje.editado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
             setTypeSnackbar('error');
-            setMessageSnackbar('vehiculos.mensaje.errorEditar');
+            setMessageSnackbar('ordenesTrabajo.mensaje.errorEditar');
             handleOpenSnackbar();
         }
     }
@@ -228,11 +224,10 @@ export default function WorkOrderState(props) {
 
         try
         {
-            await deleteVehiculo(workOrder.vin, authTokens.access);
+            await deleteOrdenTrabajo(workOrder.id, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('vehiculos.mensaje.eliminado');
+            setMessageSnackbar('ordenesTrabajo.mensaje.eliminado');
             handleOpenSnackbar();
-
         }
         catch (error)
         {
@@ -246,7 +241,7 @@ export default function WorkOrderState(props) {
             } else
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('vehiculo.mensaje.errorEliminar');
+                setMessageSnackbar('ordenesTrabajo.mensaje.errorEliminar');
                 handleOpenSnackbar();
             }
         }
@@ -275,19 +270,27 @@ export default function WorkOrderState(props) {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (!validateWorkOrderOnSubmit()) {
+            try
+                {
+                const repuestosObjects = workOrder.repuestos.map((id) => ({ idRepuesto: id }));
+                const serviciosObjects = workOrder.servicios.map((id) => ({ idServicio: id }));
+                
+                const a = {...workOrder, repuestos: repuestosObjects, servicios: serviciosObjects};
 
-            const repuestosObjects = workOrder.repuestos.map((id) => ({ idRepuesto: id }));
-            const serviciosObjects = workOrder.servicios.map((id) => ({ idServicio: id }));
-            
-            const a = {...workOrder, repuestos: repuestosObjects, servicios: serviciosObjects};
-
-            if(edit)
+                if(edit)
+                {
+                    updateWorkOrder(a).then(() => getWorkOrders());
+                }
+                else
+                {
+                    addWorkOrder(a).then(() => getWorkOrders());
+                }
+                }
+            catch (error)
             {
-                updateWorkOrder(a).then(() => getWorkOrders());
-            }
-            else
-            {
-                addWorkOrder(a).then(() => getWorkOrders());
+                setTypeSnackbar('error');
+                setMessageSnackbar('ordenesTrabajo.mensaje.errorListar');
+                handleOpenSnackbar();
             }
         }
     }
@@ -421,16 +424,25 @@ export default function WorkOrderState(props) {
     const [openServiceForm, setOpenServiceForm] = useState(false);
     const [service, setService] = useState([]);
     const [subtitle, setSubtitle] = useState('');
+    const [idOrder, setIdOrder] = useState('');
 
     const getService = async (id) => {
-        console.log(id)
-        const response = await getServiciosOrden(id, authTokens.access);	
-        console.log(response.data)
-        setService(response.data);
+        try
+        {
+            const response = await getServiciosOrden(id, authTokens.access);	
+            setService(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('servicios.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const handleOpenServiceForm = (e, id, name) => {
-        getWorkOrder(id).then(()=>getService(id).then(() => setOpenServiceForm(true)))
+        getService(id).then(() => setOpenServiceForm(true))
+        setIdOrder(id);
         setSubtitle(name)
     }
 
@@ -439,7 +451,7 @@ export default function WorkOrderState(props) {
         setService([])
         setOpenServiceForm(false);
     }
-
+    
     const handleInputChangeService = (event, id) => {
         const { checked } = event.target;
 
@@ -450,8 +462,20 @@ export default function WorkOrderState(props) {
         );
     };
 
-    const handleSubmitService = (event) => {
+    const handleSubmitService  = async (event) => {
         event.preventDefault();
+        try
+        {
+            setEstadosServicios(idOrder, service, authTokens.access).then(() => getWorkOrders());
+            handleCloseServiceForm();
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('servicios.mensaje.errorEditar');
+            handleOpenSnackbar();
+            handleCloseServiceForm();
+        }
     }
 
 

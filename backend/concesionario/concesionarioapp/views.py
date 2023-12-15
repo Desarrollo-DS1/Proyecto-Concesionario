@@ -14,6 +14,7 @@ from .utils import *
 from decouple import config
 import requests
 import calendar
+from concesionarioapp.models import Orden_Trabajo
 
 
 class UsuarioView(viewsets.ModelViewSet):
@@ -802,6 +803,39 @@ WHERE
             json_resultado = [{'id': id, 'servicio': nombre, 'estado': estado} for id, estado, nombre in resultado]
 
         return Response(json_resultado)
+
+    @action(detail=False, methods=['put'])
+    def setEstadoServicioOrden(self, request):
+        # Recibir una lista de diccionarios con idServicio y terminado
+        data = request.data['params']['datos']
+        idOrden = request.data['params']['idOrden']
+        print(data)
+        try:
+            updates = [(item['id'], bool(item['estado'])) for item in data]
+        except (KeyError, ValueError):
+            return Response({'error': 'Formato de datos incorrecto'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            with connection.cursor() as cursor:
+                for id_servicio, estado in updates:
+                    cursor.execute(
+                        """
+                        UPDATE concesionarioapp_servicio_orden
+                        SET terminado = %s
+                        WHERE id_servicio_orden = %s;
+                        """, [estado, int(id_servicio)]
+                    )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        servicios_terminados = all(estado for _, estado in updates)
+
+        # Modificar el atributo de estado en la tabla orden_de_trabajo si es necesario
+        if servicios_terminados:
+            Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(estado_reparacion=True)
+            Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(fecha_entrega_real=timezone.now())
+
+        return Response({'message': 'Actualización exitosa'}, status=status.HTTP_200_OK)
 
 class OrdenTrabajoView(viewsets.ModelViewSet):
     serializer_class = OrdenTrabajoSerializer

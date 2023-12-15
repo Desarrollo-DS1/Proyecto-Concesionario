@@ -83,7 +83,6 @@ export default function SparePartState(props) {
         {
              const response = await getAllRepuestos(authTokens.access);
              setSpareParts(response.data);
-             console.log(response.data)
          }
          catch (error)
          {
@@ -162,8 +161,6 @@ export default function SparePartState(props) {
         try
         {
             await updateRepuesto(sparePart.id, sparePart, authTokens.access);
-            const sparePartsUpdated = spareParts.map((sparePartMap) => sparePartMap.id === sparePart.id ? sparePart : sparePartMap);
-            setSpareParts(sparePartsUpdated);
             setTypeSnackbar('success');
             setMessageSnackbar('repuestos.mensaje.editado');
             handleOpenSnackbar();

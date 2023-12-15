@@ -603,7 +603,7 @@ class OrdenTrabajoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Orden_Trabajo
-        fields = 'id', 'cedulaJefeTaller', 'cedulaCliente', 'modelo', 'fechaInicio', 'fechaEsperada', 'fechaEntrega', 'placa', 'estado', 'servicios', 'repuestos', 'comentario', 'nombreCliente', 'nombreModelo'
+        fields = 'id', 'cedulaJefeTaller', 'cedulaCliente', 'modelo', 'fechaInicio', 'fechaEsperada', 'fechaEntrega', 'placa', 'estado', 'servicios', 'repuestos', 'comentario', 'nombreCliente', 'nombreModelo',
 
     @transaction.atomic
     def create(self, validated_data):
@@ -626,3 +626,30 @@ class OrdenTrabajoSerializer(serializers.ModelSerializer):
             Repuesto_Orden.objects.create(id_orden_trabajo=orden, **repuesto)
         
         return orden
+
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        servicios_data = validated_data.pop('servicio_orden_set')
+        repuestos_data = validated_data.pop('repuesto_orden_set')
+
+        if validated_data['fecha_creacion'] > now().date():
+            raise serializers.ValidationError({'fechaInicio': 'La fecha de inicio no puede ser mayor a la fecha actual'})
+        
+        if validated_data['fecha_entrega_esperada'] and validated_data['fecha_entrega_esperada'] < validated_data['fecha_creacion']:
+            raise serializers.ValidationError({'fechaEsperada': 'La fecha esperada no puede ser menor a la fecha de inicio'})
+        
+        Orden_Trabajo.objects.filter(id_orden_trabajo=instance.id_orden_trabajo).update(**validated_data)
+
+        for servicio_anterior in instance.servicio_orden_set.all():
+            servicio_anterior.delete()
+        
+        for repuesto_anterior in instance.repuesto_orden_set.all():
+            repuesto_anterior.delete()
+        
+        for servicio in servicios_data:
+            Servicio_Orden.objects.create(id_orden_trabajo=instance, **servicio)
+        
+        for repuesto in repuestos_data:
+            Repuesto_Orden.objects.create(id_orden_trabajo=instance, **repuesto)
+
+        return instance

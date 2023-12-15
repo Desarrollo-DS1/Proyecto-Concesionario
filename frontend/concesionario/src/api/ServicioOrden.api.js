@@ -8,3 +8,5 @@ const serivicioOrdenApi = token =>
 
 
 export const getServiciosOrden = (idOrden, token) => serivicioOrdenApi(token).get(`getServiciosOrden/`, { params: { idOrden } });
+
+export const setEstadosServicios = (idOrden, datos, token) => serivicioOrdenApi(token).put(`setEstadoServicioOrden/`, { params: {idOrden, datos} });

@@ -51,7 +51,8 @@ export default function ServiceWorkOrderForm() {
          subtitle,
          openServiceForm,
          handleInputChangeService,
-         handleCloseServiceForm} = useContext(WorkOrderContext);
+         handleCloseServiceForm,
+         handleSubmitService} = useContext(WorkOrderContext);
 
 
     const theme = useTheme()
@@ -110,7 +111,7 @@ export default function ServiceWorkOrderForm() {
                 <Divider/>
                 {createRows(service, t, handleInputChangeService, workOrder)}
                 <Stack direction="row" alignItems="center" justifyContent="space-between" mt={2}>
-                    <IconButton color="success" disabled={workOrder.estado}>
+                    <IconButton color="success" disabled={workOrder.estado} onClick={(event)=>handleSubmitService(event)}>
                         <DoneRoundedIcon />
                     </IconButton>
                     <IconButton color="error" onClick={(event)=>handleCloseServiceForm(event)}>

@@ -487,11 +487,14 @@ class Orden_Trabajo(models.Model):
     def sucursal(self):
         return self.id_jefe_taller.sucursal
 
-    def nombre_sucursal(self):
-        return self.id_jefe_taller.nombre_sucursal
-    
+    def nombre_modelo(self):
+        return self.id_modelo.nombre_modelo
+	
     def nombre_cliente(self):
         return self.id_cliente.usuario.primer_nombre + ' ' + self.id_cliente.usuario.primer_apellido
+	
+	
+
 
 class Servicio(models.Model):
 	id_servicio = models.AutoField('ID del Servicio', primary_key=True)

@@ -103,7 +103,7 @@ export default function WorkOrderPage() {
                                 <ListHead context={WorkOrderContext} name={'ordenesTrabajo'}/>
                                 <TableBody>
                                     {filteredWorkOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                                        const {id, cedulaCliente, nombreCliente, fechaInicio, fechaEsperada, modelo, placa, estado} = row;
+                                        const {id, cedulaCliente, nombreCliente, fechaInicio, fechaEsperada, modelo, placa, estado, nombreModelo} = row;
                                         const selectedWorkOrder = selected.indexOf(id) !== -1;
 
                                         return (
@@ -122,7 +122,7 @@ export default function WorkOrderPage() {
 
                                                 <TableCell align="left">{fechaEsperada}</TableCell>
 
-                                                <TableCell align="left">{modelo}</TableCell>
+                                                <TableCell align="left">{nombreModelo}</TableCell>
 
                                                 <TableCell align="left"><LabelPlate plate={placa} /></TableCell>
 
@@ -137,13 +137,13 @@ export default function WorkOrderPage() {
 
                                                 <TableCell align="center" width={"5%"}>
                                                     <div style={{ display: 'flex' }}>
-                                                        <IconButton color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
+                                                        <IconButton disabled={estado} color="inherit" onClick={(event)=>handleOpenForm(event, id)}>
                                                             <EditIcon />
                                                         </IconButton>
-                                                        <IconButton disabled={!estado} color="error" onClick={(event)=> handleOpenDelete(event, id)}>
+                                                        <IconButton disabled={estado} color="error" onClick={(event)=> handleOpenDelete(event, id)}>
                                                             <DeleteIcon />
                                                         </IconButton>
-                                                        <IconButton color="primary" onClick={(event)=>handleOpenServiceForm(event, id, modelo)}>
+                                                        <IconButton color="primary" onClick={(event)=>handleOpenServiceForm(event, id, nombreModelo)}>
                                                             <HomeRepairServiceRoundedIcon />
                                                         </IconButton>
                                                     </div>

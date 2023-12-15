@@ -12,7 +12,7 @@ CustomerOrderState.propTypes = {
     children: propTypes.node,
 }
 
-export function CustomerOrderState(props) {
+export default function CustomerOrderState(props) {
     const {authTokens} = useContext(AuthContext);
 
     const FILTER_OPTIONS = [
