@@ -289,7 +289,8 @@
       "confirmacionEliminar": "Você tem certeza de que deseja excluir a peça de reposição chamada {{nome}}?",
       "errorNombre": "Já existe uma peça de reposição com o nome inserido",
       "errorListando": "Erro ao listar nomes",
-      "errorCargando": "Erro ao carregar nome"
+      "errorCargando": "Erro ao carregar nome",
+      "errorPrecio": "O preço deve ser maior que 0"
     },
     "label": {
       "id": "ID",
@@ -556,5 +557,18 @@
     "Oct": "Out",
     "Nov": "Nov",
     "Dic": "Dez"
+  },
+  "servicios": {
+    "Cambio de aceite": "Troca de óleo",
+    "Cambio de frenos": "Substituição de freios",
+    "Cambio de amortiguadores": "Substituição do amortecedor",
+    "Cambio de bomba de agua": "Substituição da bomba d'água",
+    "Cambio de bomba de gasolina": "Substituição da bomba de combustível",
+    "Cambio de bomba de frenos": "Substituição da bomba de freio",
+    "Cambio de bomba de direccion": "Substituição da bomba de direção hidráulica",
+    "Cambio de bomba de aire": "Substituição da bomba de ar",
+    "Cambio de luces": "Substituição de luzes",
+    "Cambio de parachoques": "Substituição do para-choque"
   }
+
 }

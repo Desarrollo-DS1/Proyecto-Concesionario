@@ -295,7 +295,8 @@
       "confirmacionEliminar": "Are you sure you want to delete the spare part named {{nombre}}?",
       "errorNombre": "A spare part with the entered name already exists",
       "errorListando": "Error listing names",
-      "errorCargando": "Error loading name"
+      "errorCargando": "Error loading name",
+      "errorPrecio": "The price must be greater than 0"
     },
     "label": {
       "id": "ID",
@@ -560,5 +561,17 @@
     "Oct": "Oct",
     "Nov": "Nov",
     "Dic": "Dec"
+  },
+  "servicios": {
+    "Cambio de aceite": "Change of oil",
+    "Cambio de frenos": "Brake replacement",
+    "Cambio de amortiguadores": "Shock absorber replacement",
+    "Cambio de bomba de agua": "Water pump replacement",
+    "Cambio de bomba de gasolina": "Fuel pump replacement",
+    "Cambio de bomba de frenos": "Brake pump replacement",
+    "Cambio de bomba de direccion": "Power steering pump replacement",
+    "Cambio de bomba de aire": "Air pump replacement",
+    "Cambio de luces": "Light replacement",
+    "Cambio de parachoques": "Bumper replacement"
   }
 }

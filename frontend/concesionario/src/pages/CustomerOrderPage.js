@@ -215,7 +215,7 @@ export default function CustomerOrderPage() {
                                                                     <ListItem key={option.id} sx={{ display: 'list-item', paddingLeft: 0  }} dense>
                                                                         <Stack direction={"row"} alignItems={"center"} justifyContent="space-between">
                                                                             <Typography variant={"body2"} fontWeight={1}>
-                                                                                {option.nombreServicio}
+                                                                                {t(`servicios.${option.nombreServicio}`)}
                                                                             </Typography>
                                                                             {option.estado ? <DoneRoundedIcon sx={{color: "#115923"}} fontSize={"small"}/> : <QueryBuilderRoundedIcon sx={{color: "#BF1F2C"}} fontSize={"small"}/>}
                                                                         </Stack>

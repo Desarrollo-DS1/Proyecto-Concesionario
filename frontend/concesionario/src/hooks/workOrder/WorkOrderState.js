@@ -1,3 +1,4 @@
+import {useTranslation} from "react-i18next";
 import propTypes from "prop-types";
 import React, {useContext, useState} from "react";
 import WorkOrderContext from './WorkOrderContext';
@@ -14,7 +15,9 @@ WorkOrderState.propTypes = {
 }
 
 export default function WorkOrderState(props) {
-    const {authTokens, user} = useContext(AuthContext);
+    const {authTokens, user} = useContext(AuthContext)
+
+    const {t}=useTranslation("lang");
 
     const TABLE_HEAD = [
         { id: "id", label: "id", alignRight: false },
@@ -114,7 +117,12 @@ export default function WorkOrderState(props) {
         try
         {
             const response = await getAllServicios(authTokens.access);
-            setServices(response.data);
+            const translatedServices = response.data.map(service => ({
+                id: service.id,
+                nombre: t(`servicios.${service.nombre}`)
+            }));
+
+            setServices(translatedServices);
         }
         catch (error)
         {
@@ -441,7 +449,7 @@ export default function WorkOrderState(props) {
     }
 
     const handleOpenServiceForm = (e, id, name, plate) => {
-        getService(id).then(() => setOpenServiceForm(true))
+        getWorkOrder(id).then(getService(id).then(() => setOpenServiceForm(true)))
         setIdOrder(id);
         setPlate(plate)
         setSubtitle(name)

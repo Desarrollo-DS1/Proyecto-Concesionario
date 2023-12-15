@@ -36,7 +36,7 @@ const createRows = (array, t, onChange, workOrder) => (
     array.map(el => (
         <Stack direction="row" alignItems="center" justifyContent="space-between" key={el.id}>
             <Typography variant="subtitle1">
-                {el.servicio}
+                {t(`servicios.${el.servicio}`)}
             </Typography>
             <Checkbox disabled={workOrder.estado} checked={el.estado} onChange={(event)=>onChange(event, el.id)}/>
         </Stack>
