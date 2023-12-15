@@ -176,6 +176,9 @@ class Modelo(models.Model):
 		ordering = ['id_modelo']
 
 	def __str__(self):
+		return self.nombre_modelo 
+	
+	def n_modelo(self):
 		return self.nombre_modelo
 
 class Color(models.Model):

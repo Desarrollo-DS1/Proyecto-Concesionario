@@ -7,6 +7,7 @@ import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehi
 import {getAllModelos} from "../../api/Modelo.api";
 import {getAllServicios} from "../../api/Servicio.api";
 import {getRepuestosModelo } from "../../api/RepuestoUso.api";
+import {getServiciosOrden} from "../../api/ServicioOrden.api";
 import {getAllOrdenTrabajos, getOrdenTrabajo, createOrdenTrabajo, updateOrdenTrabajo, deleteOrdenTrabajo} from "../../api/OrdenTrabajo.api";
 import { getAllSucursales} from "../../api/Sucursal.api";
 import AuthContext from "../auth/AuthContext";
@@ -429,28 +430,15 @@ export default function WorkOrderState(props) {
     const [service, setService] = useState([]);
     const [subtitle, setSubtitle] = useState('');
 
-    const getService = async () => {
-        setService([
-            {
-                id: 1,
-                servicio: "Reparacion motor",
-                estado: true,
-            },
-            {
-                id: 2,
-                servicio: "Reparacion parabrisas",
-                estado: true,
-            },
-            {
-                id: 3,
-                servicio: "Reparacion llantas",
-                estado: false,
-            }
-            ])
+    const getService = async (id) => {
+        console.log(id)
+        const response = await getServiciosOrden(id, authTokens.access);	
+        console.log(response.data)
+        setService(response.data);
     }
 
     const handleOpenServiceForm = (e, id, name) => {
-        getWorkOrder(id).then(()=>getService().then(() => setOpenServiceForm(true)))
+        getWorkOrder(id).then(()=>getService(id).then(() => setOpenServiceForm(true)))
         setSubtitle(name)
     }
 

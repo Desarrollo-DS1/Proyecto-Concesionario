@@ -778,6 +778,31 @@ class ServicioOrdenView(viewsets.ModelViewSet):
     queryset = Servicio_Orden.objects.all()
     #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
 
+    @action(detail=False, methods=['get'])
+    def getServiciosOrden(self, request):
+        id_orden = request.query_params.get('idOrden', None)
+
+        id_orden = int(id_orden)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                SELECT
+    ir.id_servicio_orden as id,
+	ir.terminado as estado,
+    r.nombre_servicio as nombre
+FROM
+    concesionarioapp_servicio_orden ir
+JOIN
+    concesionarioapp_servicio r ON ir.id_servicio_id = r.id_servicio
+WHERE
+    ir.id_orden_trabajo_id = %s;
+                """, [id_orden])
+        
+            resultado = cursor.fetchall()
+            json_resultado = [{'id': id, 'servicio': nombre, 'estado': estado} for id, estado, nombre in resultado]
+
+        return Response(json_resultado)
+
 class OrdenTrabajoView(viewsets.ModelViewSet):
     serializer_class = OrdenTrabajoSerializer
     queryset = Orden_Trabajo.objects.all()
