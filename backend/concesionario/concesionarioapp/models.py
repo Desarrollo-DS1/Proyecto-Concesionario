@@ -520,7 +520,7 @@ class Servicio_Orden(models.Model):
 		ordering = ['id_servicio_orden']
 
 	def __str__(self):
-		return 'Servicio en la Orden: ' + str(self.id_servicio_orden) + ' ' + self.id_servicio.nombre_servicio + ' en la Orden ' + self.id_orden_trabajo.id_orden_trabajo
+		return 'Servicio en la Orden: ' + str(self.id_servicio_orden) + ' ' + self.id_servicio.nombre_servicio + ' en la Orden ' + str(self.id_orden_trabajo.id_orden_trabajo)
     
 class Repuesto_Orden(models.Model):
 	id_repuesto_orden = models.AutoField('ID del Repuesto en la Orden', primary_key=True)
@@ -533,5 +533,5 @@ class Repuesto_Orden(models.Model):
 		ordering = ['id_repuesto_orden']
 	
 	def __str__(self):
-		return 'Repuesto en la Orden: ' + str(self.id_repuesto_orden) + ' ' + self.id_rep.nombre_repuesto + ' en la Orden ' + self.id_orden_trabajo.id_orden_trabajo
+		return 'Repuesto en la Orden: ' + str(self.id_repuesto_orden) + ' ' + self.id_rep.nombre_repuesto + ' en la Orden ' + str(self.id_orden_trabajo.id_orden_trabajo)
 	

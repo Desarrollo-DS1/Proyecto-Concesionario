@@ -15,3 +15,5 @@ export const updateOrdenTrabajo = (id, ordenTrabajo, token) => OrdenTrabajoApi(t
 
 export const deleteOrdenTrabajo = (id, token) => OrdenTrabajoApi(token).delete(`${id}/`);
 
+export const getServiciosCliente = (idCliente, token) => OrdenTrabajoApi(token).get(`getServiciosCliente/`, { params: { idCliente } });
+

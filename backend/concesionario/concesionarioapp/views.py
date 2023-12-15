@@ -15,6 +15,7 @@ from decouple import config
 import requests
 import calendar
 from concesionarioapp.models import Orden_Trabajo
+from concesionarioapp.models import Repuesto_Orden
 
 
 class UsuarioView(viewsets.ModelViewSet):
@@ -862,6 +863,43 @@ class OrdenTrabajoView(viewsets.ModelViewSet):
         
         except Exception as e:
             raise serializers.ValidationError({'error': e})
+
+    @action(detail=False, methods=['get'])
+    def getServiciosCliente(self, request):
+        id_cliente = request.query_params.get('idCliente', None)
+        id_cliente = int(id_cliente)
+        data = Orden_Trabajo.objects.filter(id_cliente_id=id_cliente)
+
+        resultado = []
+
+        for item in data:
+            repuestos = Repuesto_Orden.objects.filter(id_orden_trabajo=item.id_orden_trabajo)
+            servicios = Servicio_Orden.objects.filter(id_orden_trabajo_id=item.id_orden_trabajo)
+
+            orden_id = item.id_orden_trabajo
+            cedulaEmpleado = "a"
+            nombreEmpleado = "a"
+            fechaInicio = item.fecha_creacion
+            fechaEsperada = item.fecha_entrega_esperada
+            fechaFin = item.fecha_entrega_real
+            modelo = Modelo.objects.get(id_modelo=item.id_modelo_id).nombre_modelo
+            placa = item.placa_carro
+            estado = item.estado_reparacion
+
+
+
+            # Obtener nombres de repuestos
+            repuesto_list = [{'id': r.id_repuesto_orden, 'nombreRepuesto': r.id_rep.nombre_repuesto} for r in repuestos]
+
+            # Obtener nombres de servicios
+            servicio_list = [{'id': s.id_servicio_orden, 'nombreServicio': s.id_servicio.nombre_servicio, 'estado': s.terminado} for s in servicios]
+
+            resultado.append({'id': orden_id, 'cedulaEmpleado': cedulaEmpleado, 'nombreEmpleado': nombreEmpleado, 'fechaInicio': fechaInicio, 'fechaEsperada': fechaEsperada, 'fechaFin': fechaFin, 'modelo': modelo, 'placa': placa, 'estado': estado, 'servicio': servicio_list, 'repuesto': repuesto_list})
+
+
+
+        return Response(resultado)
+
 
 @api_view(['POST'])
 def recaptcha(request):
