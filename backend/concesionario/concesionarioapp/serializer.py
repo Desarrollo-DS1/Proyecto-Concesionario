@@ -594,14 +594,16 @@ class OrdenTrabajoSerializer(serializers.ModelSerializer):
     fechaEsperada = serializers.DateField(source='fecha_entrega_esperada', required=False, allow_null=True)
     fechaEntrega = serializers.DateField(source='fecha_entrega_real', required=False, allow_null=True)
     placa = serializers.CharField(source='placa_carro')
-    estado = serializers.CharField(source='estado_reparacion')
+    estado = serializers.BooleanField(source='estado_reparacion')
     servicios = ServicioOrdenSerializer(many=True, source='servicio_orden_set')
     repuestos = RepuestoOrdenSerializer(many=True, source='repuesto_orden_set')
     comentario = serializers.CharField(source='comentarios_estado_carro')
+    nombreCliente = serializers.CharField(source='nombre_cliente', read_only=True)
+    nombreModelo = serializers.CharField(source='nombre_modelo', read_only=True)
 
     class Meta:
         model = Orden_Trabajo
-        fields = 'id', 'cedulaJefeTaller', 'cedulaCliente', 'modelo', 'fechaInicio', 'fechaEsperada', 'fechaEntrega', 'placa', 'estado', 'servicios', 'repuestos', 'comentario'
+        fields = 'id', 'cedulaJefeTaller', 'cedulaCliente', 'modelo', 'fechaInicio', 'fechaEsperada', 'fechaEntrega', 'placa', 'estado', 'servicios', 'repuestos', 'comentario', 'nombreCliente', 'nombreModelo'
 
     @transaction.atomic
     def create(self, validated_data):
