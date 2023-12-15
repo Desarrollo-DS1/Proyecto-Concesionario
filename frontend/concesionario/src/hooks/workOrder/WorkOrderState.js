@@ -191,14 +191,14 @@ export default function WorkOrderState(props) {
         {
             await createOrdenTrabajo(workOrder, authTokens.access);
             setTypeSnackbar('success');
-            setMessageSnackbar('ordenesTrabajo.mensaje.creado');
+            setMessageSnackbar('ordenesTrabajo.mensaje.agregado');
             handleOpenSnackbar();
             handleCloseForm();
         }
         catch (error)
         {
             setTypeSnackbar('error');
-            setMessageSnackbar('ordenesTrabajo.mensaje.errorCrear');
+            setMessageSnackbar('ordenesTrabajo.mensaje.error');
             handleOpenSnackbar();
         }
     }
@@ -289,7 +289,7 @@ export default function WorkOrderState(props) {
             catch (error)
             {
                 setTypeSnackbar('error');
-                setMessageSnackbar('ordenesTrabajo.mensaje.errorListar');
+                setMessageSnackbar('ordenesTrabajo.mensaje.errorListando');
                 handleOpenSnackbar();
             }
         }
