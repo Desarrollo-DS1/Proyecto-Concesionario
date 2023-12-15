@@ -110,7 +110,7 @@ class SucursalView(viewsets.ModelViewSet):
 class ModelView(viewsets.ModelViewSet):
     serializer_class = ModeloSerializer
     queryset = Modelo.objects.all()
-    permission_classes = [IsAuthenticated, EsVendedorOGerente]
+    permission_classes = [IsAuthenticated, EsEmpleado]
 
     def destroy(self, request, *args, **kwargs):
         modelo = self.get_object()
@@ -793,17 +793,17 @@ class RepuestoView(viewsets.ModelViewSet):
 class RepuestoOrdenView(viewsets.ModelViewSet):
     serializer_class = RepuestoOrdenSerializer
     queryset = Repuesto_Orden.objects.all()
-    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    permission_classes = [IsAuthenticated]
 
 class ServicioView(viewsets.ModelViewSet):
     serializer_class = ServicioSerializer
     queryset = Servicio.objects.all()
-    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    permission_classes = [IsAuthenticated]
 
 class ServicioOrdenView(viewsets.ModelViewSet):
     serializer_class = ServicioOrdenSerializer
     queryset = Servicio_Orden.objects.all()
-    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    permission_classes = [IsAuthenticated]
 
     @action(detail=False, methods=['get'])
     def getServiciosOrden(self, request):
@@ -865,7 +865,7 @@ WHERE
 class OrdenTrabajoView(viewsets.ModelViewSet):
     serializer_class = OrdenTrabajoSerializer
     queryset = Orden_Trabajo.objects.all()
-    #permission_classes = [IsAuthenticated, EsJefeDeTallerOGerente]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         orden = self.get_object()

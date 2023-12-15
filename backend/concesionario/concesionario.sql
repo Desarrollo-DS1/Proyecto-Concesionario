@@ -1519,7 +1519,7 @@ ON CONFLICT (id_inventario_repuesto) DO NOTHING;
 SELECT setval('concesionarioapp_inventario_repuesto_id_inventario_repuesto_seq', (SELECT MAX(id_inventario_repuesto) FROM concesionarioapp_inventario_repuesto));
 
 
-INSERT INTO concesionarioapp_servicio(id_servicio, nombre_servicio,)
+INSERT INTO concesionarioapp_servicio(id_servicio, nombre_servicio)
 VALUES
 (1, 'Cambio de aceite'),
 (2, 'Cambio de frenos'),
@@ -1541,11 +1541,6 @@ SELECT setval('concesionarioapp_servicio_orden_id_servicio_orden_seq', (SELECT M
 
 SELECT setval('concesionarioapp_repuesto_orden_id_repuesto_orden_seq', (SELECT MAX(id_repuesto_orden) FROM concesionarioapp_repuesto_orden));
 
-
-
-
-/*
-=======
 INSERT INTO concesionarioapp_cotizacion(id_cotizacion, vendedor_id, cliente_id, fecha_creacion, fecha_vencimiento)
 VALUES 
 (1, '321234567', '11234567', '2022-01-01', '2022-01-21'),
@@ -2166,8 +2161,6 @@ ON CONFLICT (id_cotizacion) DO NOTHING;
 SELECT setval('concesionarioapp_cotizacion_id_cotizacion_seq', (SELECT MAX(id_cotizacion) FROM concesionarioapp_cotizacion));
 
 UPDATE concesionarioapp_cotizacion SET fecha_vencimiento = fecha_creacion + interval '20 days';
-
-
 
 INSERT INTO concesionarioapp_cotizacion_modelo(id_cotizacion_modelo, cotizacion_id, modelo_id, color_id, extra_id, cantidad)
 VALUES
@@ -2805,4 +2798,4 @@ UPDATE concesionarioapp_cotizacion_modelo SET modelo_id = FLOOR(RANDOM() * 8) + 
 UPDATE concesionarioapp_cotizacion_modelo SET color_id = FLOOR(RANDOM() * 8) + 1;
 
 UPDATE concesionarioapp_cotizacion_modelo SET extra_id = FLOOR(RANDOM() * 7) + 1;
-*/
+
