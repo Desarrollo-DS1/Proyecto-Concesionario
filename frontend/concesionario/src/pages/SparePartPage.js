@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import React, {useContext, useEffect} from 'react';
 import {useTranslation} from "react-i18next";
-// @mui
 import {
     Card,
     Table,
@@ -17,19 +16,16 @@ import {
     TableContainer,
     TablePagination, Box, Snackbar, List, ListItem,
 } from '@mui/material';
-// components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Inventory2RoundedIcon from '@mui/icons-material/Inventory2Rounded';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-// sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import SparePartInventoryForm from "../sections/@dashboard/sparePart/InventoryForm";
 import SparePartForm from "../sections/@dashboard/sparePart/SparePartForm";
 import SparePartDelete from "../sections/@dashboard/sparePart/SparePartDelete";
-// context
 import SparePartContext from "../hooks/sparePart/SparePartContext";
 import AuthContext from "../hooks/auth/AuthContext";
 

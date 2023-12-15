@@ -1,13 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import {useTranslation} from "react-i18next";
-// @mui
-import {alpha, styled, useTheme} from '@mui/material/styles';
+import {alpha, useTheme} from '@mui/material/styles';
 import {Typography, Divider, Stack, Button, Box, Card, Avatar} from '@mui/material';
-// hooks
 import useResponsive from '../hooks/useResponsive';
-// components
 import Logo from '../components/logo';
-// sections
 import { LoginForm } from '../sections/auth/login';
 import {bgGradient} from "../utils/cssStyles";
 

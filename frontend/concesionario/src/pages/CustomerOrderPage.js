@@ -1,16 +1,14 @@
 import { Helmet } from 'react-helmet-async';
 import React, {useContext, useEffect, useState} from 'react';
 import {useTranslation} from "react-i18next";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import {alpha, styled, useTheme} from "@mui/material/styles";
+import {styled, useTheme} from "@mui/material/styles";
 import {
     Box,
     Card, CardContent, Collapse,
     Divider, Grid, IconButton, lighten, LinearProgress, linearProgressClasses, List, ListItem, Snackbar,
-    Stack, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow,
+    Stack,TablePagination,
     Typography
 } from "@mui/material";
-// @mui
 import DirectionsCarFilledRoundedIcon from '@mui/icons-material/DirectionsCarFilledRounded';
 import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -23,21 +21,9 @@ import DoneRoundedIcon from '@mui/icons-material/DoneRounded';
 import QueryBuilderRoundedIcon from '@mui/icons-material/QueryBuilderRounded';
 import PlumbingIcon from '@mui/icons-material/Plumbing';
 import Alert from "@mui/material/Alert";
-
-
-
-// components
 import LabelPlate from "../components/label-plate";
 import Scrollbar from "../components/scrollbar";
 import CustomerOrderContext from "../hooks/customerOrder/CustomerOrderContext";
-
-
-
-
-// sections
-
-// context
-
 
 const chooseColor = (value, date, theme) => {
     if (value === 100) {
@@ -128,60 +114,67 @@ export default function CustomerOrderPage() {
                     return (
                         <Box mb={4} key={id}>
                             <Card key={id} >
-                                <Stack direction="row" alignItems="center" m={4}>
-                                    <Stack sx={{width:"20%"}} alignItems="center">
-                                        <DirectionsCarFilledRoundedIcon sx={{ fontSize: 80 }}/>
-                                        <Typography variant="subtitle1" gutterBottom align={"center"}>
-                                            {modelo}
-                                        </Typography>
-                                        <LabelPlate plate={placa}/>
-                                    </Stack>
-                                    <Stack sx={{width:"80%"}} mx={5}  >
-                                        <Stack direction="row" alignItems="center" justifyContent="space-between">
-                                            <Stack alignItems="center" direction="row">
-                                                <HourglassTopRoundedIcon sx={{ fontSize: 50 }} color={"primary"}/>
-                                                <Stack alignItems="center" justifyContent="space-between">
-                                                    <Typography variant="subtitle1">
-                                                        {t('ordenesCliente.label.fechaInicio')}
-                                                    </Typography>
-                                                    <Typography variant="subtitle2" fontWeight={1}>
-                                                        {fechaInicio}
-                                                    </Typography>
-                                                </Stack>
-                                            </Stack>
-                                            <Stack alignItems="center" direction="row">
-                                                <HourglassBottomRoundedIcon sx={{ fontSize: 50 }} color={"warning"}/>
-                                                <Stack alignItems="center" justifyContent="space-between">
-                                                    <Typography variant="subtitle1">
-                                                        {t('ordenesCliente.label.fechaEsperada')}
-                                                    </Typography>
-                                                    <Typography variant="subtitle2" fontWeight={1}>
-                                                        {fechaEsperada}
-                                                    </Typography>
-                                                </Stack>
-                                            </Stack>
-                                            <Stack alignItems="center" direction="row">
-                                                <EventAvailableRoundedIcon sx={{ fontSize: 50, color:"#115923" }}/>
-                                                <Stack alignItems="center" justifyContent="space-between">
-                                                    <Typography variant="subtitle1">
-                                                        {t('ordenesCliente.label.fechaFin')}
-                                                    </Typography>
-                                                    <Typography variant="subtitle2" fontWeight={1}>
-                                                        {fechaFin}
-                                                    </Typography>
-                                                </Stack>
-                                            </Stack>
-                                        </Stack>
-                                        <Stack mt={5} direction="row">
-                                            <BorderLinearProgress variant="determinate" value={calculateValue(servicio)} sx={{ width: '90%', mr: 3 }} colorchoose={color}/>
-                                            <Typography variant="subtitle1" align={"center"}>
-                                                {calculateValue(servicio)} %
+                                <Grid container>
+                                    <Grid item xs={12} sm={4}>
+                                        <Stack direction="column" alignItems="center" m={4}>
+                                            <DirectionsCarFilledRoundedIcon sx={{ fontSize: 80 }} />
+                                            <Typography variant="subtitle1" gutterBottom align={"center"}>
+                                                {modelo}
                                             </Typography>
+                                            <LabelPlate plate={placa} />
                                         </Stack>
-                                    </Stack>
-
-                                </Stack>
-                                <Divider/>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8} pt={{ xs: 2, sm: 5 }}>
+                                        <Stack sx={{ width: "90%" }}>
+                                            <Stack
+                                                direction={{ xs: 'column', sm: 'row' }} // Cambia la dirección a columna en pantallas pequeñas
+                                                alignItems={{ xs: 'center', sm: 'flex-start' }} // Centra en pantallas pequeñas
+                                                justifyContent="space-between"
+                                            >
+                                                <Stack alignItems="center" direction="row" mb={{ xs: 4, sm: 0 }}>
+                                                    <HourglassTopRoundedIcon sx={{ fontSize: { xs: 40, sm: 50 } }} color={"primary"} />
+                                                    <Stack alignItems="center" justifyContent="space-between">
+                                                        <Typography variant="subtitle1">
+                                                            {t('ordenesCliente.label.fechaInicio')}
+                                                        </Typography>
+                                                        <Typography variant="subtitle2" fontWeight={1}>
+                                                            {fechaInicio}
+                                                        </Typography>
+                                                    </Stack>
+                                                </Stack>
+                                                <Stack alignItems="center" direction="row" mb={{ xs: 4, sm: 0 }}>
+                                                    <HourglassBottomRoundedIcon sx={{ fontSize: { xs: 40, sm: 50 } }} color={"warning"} />
+                                                    <Stack alignItems="center" justifyContent="space-between">
+                                                        <Typography variant="subtitle1">
+                                                            {t('ordenesCliente.label.fechaEsperada')}
+                                                        </Typography>
+                                                        <Typography variant="subtitle2" fontWeight={1}>
+                                                            {fechaEsperada}
+                                                        </Typography>
+                                                    </Stack>
+                                                </Stack>
+                                                <Stack alignItems="center" direction="row" mb={{ xs: 4, sm: 0 }}>
+                                                    <EventAvailableRoundedIcon sx={{ fontSize: { xs: 40, sm: 50 }, color: "#115923" }} />
+                                                    <Stack alignItems="center" justifyContent="space-between">
+                                                        <Typography variant="subtitle1">
+                                                            {t('ordenesCliente.label.fechaFin')}
+                                                        </Typography>
+                                                        <Typography variant="subtitle2" fontWeight={1}>
+                                                            {fechaFin}
+                                                        </Typography>
+                                                    </Stack>
+                                                </Stack>
+                                            </Stack>
+                                            <Stack mt={{ xs: 3, sm: 5 }} direction={{ xs: 'column', sm: 'row' }}>
+                                                <BorderLinearProgress variant="determinate" value={calculateValue(servicio)} sx={{ width: { xs: '100%', sm: '90%' }, mr: { xs: 0, sm: 3 }, ml: { xs: 2, sm: 0 }}} colorchoose={color} />
+                                                <Typography variant="subtitle1" align={'center'} mb={{ xs: 1, sm: 0 }} mt={{ xs: 1, sm: 0 }} ml={{ xs: 2, sm: 0 }}>
+                                                    {calculateValue(servicio)} %
+                                                </Typography>
+                                            </Stack>
+                                        </Stack>
+                                    </Grid>
+                                </Grid>
+                                <Divider />
 
                                 <Box m={2}>
                                     <Card>

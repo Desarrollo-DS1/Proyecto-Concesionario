@@ -3,13 +3,11 @@ import React, {useContext, useState} from "react";
 import SparePartContext from './SparePartContext';
 import {checkSparePart} from "./SparePartValidation";
 import {applySortFilter, getComparator} from "../filter/Filter";
-import {getAllVehiculos, getVehiculo, createVehiculo, updateVehiculo, deleteVehiculo} from "../../api/Vehiculo.api";
 import {getAllModelos} from "../../api/Modelo.api";
-import { getInventariosId } from "../../api/Inventario.api";
-import { getAllSucursales} from "../../api/Sucursal.api";
+import {getInventariosId, setInventarioSparePart} from "../../api/Inventario.api";
 import {getAllRepuestos, getRepuesto, createRepuesto, updateRepuesto, deleteRepuesto} from "../../api/Repuesto.api";
 import AuthContext from "../auth/AuthContext";
-
+import { Try } from "@mui/icons-material";
 
 SparePartState.propTypes = {
     children: propTypes.node,
@@ -69,7 +67,7 @@ export default function SparePartState(props) {
         }
     }
 
-    const handleSearchModel = (event) => {;
+    const handleSearchModel = (event) => {
         setSearchModel(event.target.value);
     };
 
@@ -83,7 +81,6 @@ export default function SparePartState(props) {
         {
              const response = await getAllRepuestos(authTokens.access);
              setSpareParts(response.data);
-             console.log(response.data)
          }
          catch (error)
          {
@@ -162,8 +159,6 @@ export default function SparePartState(props) {
         try
         {
             await updateRepuesto(sparePart.id, sparePart, authTokens.access);
-            const sparePartsUpdated = spareParts.map((sparePartMap) => sparePartMap.id === sparePart.id ? sparePart : sparePartMap);
-            setSpareParts(sparePartsUpdated);
             setTypeSnackbar('success');
             setMessageSnackbar('repuestos.mensaje.editado');
             handleOpenSnackbar();
@@ -377,10 +372,19 @@ export default function SparePartState(props) {
     const [subtitle, setSubtitle] = useState('');
 
     const getInventory = async (id) => {
-        console.log(id)
-        const response = await getInventariosId(id, authTokens.access);
-        console.log(response.data)
-        setInventory(response.data);
+        try
+        {
+            console.log(id)
+            const response = await getInventariosId(id, authTokens.access);
+            console.log(response.data)
+            setInventory(response.data);
+        }
+        catch (error)
+        {
+            setTypeSnackbar('error');
+            setMessageSnackbar('inventario.mensaje.errorListando');
+            handleOpenSnackbar();
+        }
     }
 
     const handleOpenInventoryForm = (e, id, name) => {
@@ -408,23 +412,18 @@ export default function SparePartState(props) {
         }
     };
 
-    /*
-
-    const updateInventorys = async (inventorys) => {
-
-        try
-        {
-
-        }
-
-    }
-
-    */
-
     const handleSubmitInventory = (event) => {
         event.preventDefault();
+        try {
+            setInventarioSparePart(inventory, authTokens.access).then(()=>handleCloseInventoryForm())
+        }
+        catch{
+            setTypeSnackbar('error');
+            setMessageSnackbar('inventaio.mensaje.errorEditar');
+            handleOpenSnackbar();
+            handleCloseInventoryForm()
+        }
     }
-
 
     return (
         <SparePartContext.Provider value={

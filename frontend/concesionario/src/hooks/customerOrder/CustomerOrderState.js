@@ -2,8 +2,7 @@ import propTypes from "prop-types";
 import React, { useContext, useState } from "react";
 import CustomerOrderContext from './CustomerOrderContext';
 import { applySortFilter, getComparator } from "../filter/Filter";
-import { getAllClientes, getCliente, createCliente, updateCliente, deleteCliente } from "../../api/Cliente.api";
-import { createUsuario } from "../../api/Usuario.api";
+import {getServiciosCliente} from "../../api/OrdenTrabajo.api";
 import AuthContext from "../auth/AuthContext";
 
 
@@ -12,8 +11,8 @@ CustomerOrderState.propTypes = {
     children: propTypes.node,
 }
 
-export function CustomerOrderState(props) {
-    const {authTokens} = useContext(AuthContext);
+export default function CustomerOrderState(props) {
+    const {authTokens, user} = useContext(AuthContext);
 
     const FILTER_OPTIONS = [
         { id: 'cedula', label: 'cedula' },
@@ -37,58 +36,16 @@ export function CustomerOrderState(props) {
 
     const getCustomerOrders = async () => {
 
-        const a =
-            [{
-                id: 1,
-                cedulaEmpleado: 1110363276,
-                nombreEmpleado: "Nicolas Herrera",
-                fechaInicio: "2023-11-10",
-                fechaEsperada: "2023-11-15",
-                fechaFin: "2023-11-15",
-                modelo: "Chevrolet Spark",
-                placa: "ABC123",
-                estado: false,
-                servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: true}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-                repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}, {id: 3, nombreRepuesto: "Filtro de aceite"}],
-            },
-                {
-                    id: 2,
-                    cedulaEmpleado: 1110363276,
-                    nombreEmpleado: "Nicolas Herrera",
-                    fechaInicio: "2021-11-10",
-                    fechaEsperada: "2021-11-15",
-                    fechaFin: "",
-                    modelo: "Chevrolet Spark",
-                    placa: "ABC123",
-                    estado: false,
-                    servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: false}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-                    repuesto: [{id: 1, nombreRepuesto: "Aceite"}, {id: 2, nombreRepuesto: "Llantas"}],
-                },
-                {
-                    id: 3,
-                    cedulaEmpleado: 1110363276,
-                    nombreEmpleado: "Nicolas Herrera",
-                    fechaInicio: "2023-11-15",
-                    fechaEsperada: "2023-11-28",
-                    fechaFin: "",
-                    modelo: "Chevrolet Spark",
-                    placa: "ABC123",
-                    estado: false,
-                    servicio: [{id: 1, nombreServicio: "Cambio de aceite", estado: true}, {id: 2, nombreServicio: "Cambio de llantas", estado: false}, {id: 3, nombreServicio: "Cambio de filtro de aceite", estado: true}],
-                    repuesto: [{id: 1, nombreRepuesto: "Aceite"}],
-                }]
-
-        setCustomerOrders(a);
-
-        // try {
-        //     const response = await getAllClientes(authTokens.access);
-        //     setCustomerOrders(response.data);
-        //
-        // } catch (error) {
-        //     setTypeSnackbar('error');
-        //     setMessageSnackbar('clientes.mensaje.errorListando');
-        //     handleOpenSnackbar();
-        // }
+        try
+        {
+            const response = await getServiciosCliente(user.user_id, authTokens.access);
+            console.log(response.data);
+            setCustomerOrders(response.data);
+        }
+        catch (error)
+        {
+            console.log(error);
+        }
     }
 
     const handleCloseSnackbar = (event, reason) => {

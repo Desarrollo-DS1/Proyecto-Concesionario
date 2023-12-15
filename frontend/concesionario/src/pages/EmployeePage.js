@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import React, {useContext, useEffect} from 'react';
 import {useTranslation} from "react-i18next";
-// @mui
 import {
     Card,
     Table,
@@ -15,19 +14,16 @@ import {
     Typography,
     IconButton,
     TableContainer,
-    TablePagination, Box, Snackbar, CircularProgress, Backdrop,
+    TablePagination, Box, Snackbar
 } from '@mui/material';
-// components
 import Alert from '@mui/material/Alert';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Iconify from '../components/iconify';
 import Scrollbar from '../components/scrollbar';
-// sections
 import {ListHead, ListToolbar} from "../sections/@dashboard/list";
 import EmployeeForm from "../sections/@dashboard/employee/EmployeeForm";
 import EmployeeDelete from "../sections/@dashboard/employee/EmployeeDelete";
-// context
 import EmployeeContext from "../hooks/employee/EmployeeContext";
 import {fCurrency} from "../utils/formatNumber";
 

@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async';
+import {useContext} from "react";
 import { Link as RouterLink } from 'react-router-dom';
-// @mui
 import {styled, useTheme} from '@mui/material/styles';
 import { Button, Typography, Container} from '@mui/material';
 import {useTranslation} from "react-i18next";
+import AuthContext from "../hooks/auth/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -20,6 +21,8 @@ const StyledContent = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function Page404() {
+
+  const {user} = useContext(AuthContext);
 
   const theme = useTheme();
 
@@ -45,7 +48,7 @@ export default function Page404() {
             4O4
           </Typography>
 
-          <Button to="/dashboard" size="large" variant="contained" component={RouterLink}>
+          <Button to={user.tipoUsuario === "Cliente" ? "/cliente" : "/dashboard"} size="large" variant="contained" component={RouterLink}>
             {t('404.boton')}
           </Button>
         </StyledContent>

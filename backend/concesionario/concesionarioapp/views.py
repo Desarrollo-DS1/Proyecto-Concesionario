@@ -14,6 +14,8 @@ from .utils import *
 from decouple import config
 import requests
 import calendar
+from concesionarioapp.models import Orden_Trabajo
+from concesionarioapp.models import Repuesto_Orden
 
 
 class UsuarioView(viewsets.ModelViewSet):
@@ -736,6 +738,31 @@ class InventarioRepuestoView(viewsets.ModelViewSet):
             json_resultado = [{'id_repuesto': id_repuesto, 'id': id, 'sucursal': nombre_sucursal, 'cantidad': cantidad } for id_repuesto, id, nombre_sucursal, cantidad in resultado]
 
         return Response(json_resultado)
+
+    @action(detail=False, methods=['put'])
+    def setInventarioRepuesto(self, request):
+        # Recibir una lista de diccionarios con idServicio y terminado
+        data = request.data['params']['datos']
+        try:
+            updates = [(item['id'], int(item['cantidad'])) for item in data]
+        except (KeyError, ValueError):
+            return Response({'error': 'Formato de datos incorrecto'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            with connection.cursor() as cursor:
+                for id_repuesto, cantidad in updates:
+                    cursor.execute(
+                        """
+                        UPDATE concesionarioapp_inventario_repuesto
+                        SET cantidad = %s
+                        WHERE id_inventario_repuesto = %s;
+                        """, [cantidad, int(id_repuesto)]
+                    )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': 'Actualización exitosa'}, status=status.HTTP_200_OK)
+
+
         
 class RepuestoView(viewsets.ModelViewSet):
     serializer_class = RepuestoSerializer
@@ -803,6 +830,38 @@ WHERE
 
         return Response(json_resultado)
 
+    @action(detail=False, methods=['put'])
+    def setEstadoServicioOrden(self, request):
+        # Recibir una lista de diccionarios con idServicio y terminado
+        data = request.data['params']['datos']
+        idOrden = request.data['params']['idOrden']
+        print(data)
+        try:
+            updates = [(item['id'], bool(item['estado'])) for item in data]
+        except (KeyError, ValueError):
+            return Response({'error': 'Formato de datos incorrecto'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            with connection.cursor() as cursor:
+                for id_servicio, estado in updates:
+                    cursor.execute(
+                        """
+                        UPDATE concesionarioapp_servicio_orden
+                        SET terminado = %s
+                        WHERE id_servicio_orden = %s;
+                        """, [estado, int(id_servicio)]
+                    )
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        servicios_terminados = all(estado for _, estado in updates)
+
+        if servicios_terminados:
+            Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(estado_reparacion=True)
+            Orden_Trabajo.objects.filter(id_orden_trabajo=idOrden).update(fecha_entrega_real=timezone.now())
+
+        return Response({'message': 'Actualización exitosa'}, status=status.HTTP_200_OK)
+
 class OrdenTrabajoView(viewsets.ModelViewSet):
     serializer_class = OrdenTrabajoSerializer
     queryset = Orden_Trabajo.objects.all()
@@ -828,6 +887,43 @@ class OrdenTrabajoView(viewsets.ModelViewSet):
         
         except Exception as e:
             raise serializers.ValidationError({'error': e})
+
+    @action(detail=False, methods=['get'])
+    def getServiciosCliente(self, request):
+        id_cliente = request.query_params.get('idCliente', None)
+        id_cliente = int(id_cliente)
+        data = Orden_Trabajo.objects.filter(id_cliente_id=id_cliente)
+
+        resultado = []
+
+        for item in data:
+            repuestos = Repuesto_Orden.objects.filter(id_orden_trabajo=item.id_orden_trabajo)
+            servicios = Servicio_Orden.objects.filter(id_orden_trabajo_id=item.id_orden_trabajo)
+
+            orden_id = item.id_orden_trabajo
+            cedulaEmpleado = "a"
+            nombreEmpleado = "a"
+            fechaInicio = item.fecha_creacion
+            fechaEsperada = item.fecha_entrega_esperada
+            fechaFin = item.fecha_entrega_real
+            modelo = Modelo.objects.get(id_modelo=item.id_modelo_id).nombre_modelo
+            placa = item.placa_carro
+            estado = item.estado_reparacion
+
+
+
+            # Obtener nombres de repuestos
+            repuesto_list = [{'id': r.id_repuesto_orden, 'nombreRepuesto': r.id_rep.nombre_repuesto} for r in repuestos]
+
+            # Obtener nombres de servicios
+            servicio_list = [{'id': s.id_servicio_orden, 'nombreServicio': s.id_servicio.nombre_servicio, 'estado': s.terminado} for s in servicios]
+
+            resultado.append({'id': orden_id, 'cedulaEmpleado': cedulaEmpleado, 'nombreEmpleado': nombreEmpleado, 'fechaInicio': fechaInicio, 'fechaEsperada': fechaEsperada, 'fechaFin': fechaFin, 'modelo': modelo, 'placa': placa, 'estado': estado, 'servicio': servicio_list, 'repuesto': repuesto_list})
+
+
+
+        return Response(resultado)
+
 
 @api_view(['POST'])
 def recaptcha(request):

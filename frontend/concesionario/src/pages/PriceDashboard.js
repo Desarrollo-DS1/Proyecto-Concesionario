@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import {es, enUS, pt} from "date-fns/locale";
 import {useTranslation} from "react-i18next";
-// @mui
 import { useTheme } from '@mui/material/styles';
 import React, {useContext, useEffect} from "react";
 import {Grid, Stack, Card, Button, Snackbar} from '@mui/material';
@@ -10,8 +9,6 @@ import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import SellIcon from '@mui/icons-material/Sell';
 import {DatePicker, LocalizationProvider} from "@mui/x-date-pickers";
 import {AdapterDateFns} from "@mui/x-date-pickers/AdapterDateFns";
-// components
-// sections
 import Alert from "@mui/material/Alert";
 import {
     AppMonthlyBranches,
@@ -20,7 +17,6 @@ import {
     AppMonthlySalesModel,
     AppMonthlyPrices,
 } from '../sections/@dashboard/app';
-
 import PriceDashboardContext from "../hooks/dashboard/price/PriceDashboardContext";
 import {fCurrency} from "../utils/formatNumber";
 
